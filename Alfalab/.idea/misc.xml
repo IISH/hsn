@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DependencyValidationManager">
+    <option name="SKIP_IMPORT_STATEMENTS" value="false" />
+  </component>
+  <component name="EntryPointsManager">
+    <entry_points version="2.0" />
+  </component>
+  <component name="FacetAutodetectingManager">
+    <autodetection-disabled>
+      <facet-type id="ejb">
+        <modules>
+          <module name="Java2word">
+            <files>
+              <file url="file://$PROJECT_DIR$/src/nl/iisg/java2word/src/META-INF/ejb-jar.xml" />
+            </files>
+          </module>
+        </modules>
+      </facet-type>
+      <facet-type id="javaeeApplication">
+        <modules>
+          <module name="Java2word">
+            <files>
+              <file url="file://$PROJECT_DIR$/src/nl/iisg/java2word/META-INF/application.xml" />
+            </files>
+          </module>
+        </modules>
+      </facet-type>
+      <facet-type id="jpa">
+        <modules>
+          <module name="Alfalab">
+            <files>
+              <file url="file://$PROJECT_DIR$/META-INF/persistence.xml" />
+              <file url="file://$PROJECT_DIR$/src/META-INF/persistence.xml" />
+            </files>
+          </module>
+        </modules>
+      </facet-type>
+    </autodetection-disabled>
+  </component>
+  <component name="IdProvider" IDEtalkID="45C331ED49F70EDAEDFA83373A2DF590" />
+  <component name="JavadocGenerationManager">
+    <option name="OUTPUT_DIRECTORY" />
+    <option name="OPTION_SCOPE" value="protected" />
+    <option name="OPTION_HIERARCHY" value="true" />
+    <option name="OPTION_NAVIGATOR" value="true" />
+    <option name="OPTION_INDEX" value="true" />
+    <option name="OPTION_SEPARATE_INDEX" value="true" />
+    <option name="OPTION_DOCUMENT_TAG_USE" value="false" />
+    <option name="OPTION_DOCUMENT_TAG_AUTHOR" value="false" />
+    <option name="OPTION_DOCUMENT_TAG_VERSION" value="false" />
+    <option name="OPTION_DOCUMENT_TAG_DEPRECATED" value="true" />
+    <option name="OPTION_DEPRECATED_LIST" value="true" />
+    <option name="OTHER_OPTIONS" value="" />
+    <option name="HEAP_SIZE" />
+    <option name="LOCALE" />
+    <option name="OPEN_IN_BROWSER" value="true" />
+  </component>
+  <component name="ProjectResources">
+    <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$/../alfalabbackend/ConvertPK">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://diwoto.iisg.nl/svn/hsntest/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://diwoto.iisg.nl/svn/hsntest/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://diwoto.iisg.nl/svn/hsntest/branches" />
+                  <option value="https://diwoto.iisg.nl/svn/hsntest/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://diwoto.iisg.nl/svn/hsntest/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../alfalabbackend/HSNMigrate">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://diwoto.iisg.nl/svn/hsntest/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://diwoto.iisg.nl/svn/hsntest/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://diwoto.iisg.nl/svn/hsntest/branches" />
+                  <option value="https://diwoto.iisg.nl/svn/hsntest/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://diwoto.iisg.nl/svn/hsntest/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../alfalabbackend/IDSCheckConvert02">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://diwoto.iisg.nl/svn/hsntest/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://diwoto.iisg.nl/svn/hsntest/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://diwoto.iisg.nl/svn/hsntest/branches" />
+                  <option value="https://diwoto.iisg.nl/svn/hsntest/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://diwoto.iisg.nl/svn/hsntest/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../alfalabbackend/JavaDBF">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://diwoto.iisg.nl/svn/hsntest/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://diwoto.iisg.nl/svn/hsntest/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://diwoto.iisg.nl/svn/hsntest/branches" />
+                  <option value="https://diwoto.iisg.nl/svn/hsntest/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://diwoto.iisg.nl/svn/hsntest/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../alfalabbackend/ReferenceTables">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://diwoto.iisg.nl/svn/hsntest/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://diwoto.iisg.nl/svn/hsntest/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://diwoto.iisg.nl/svn/hsntest/branches" />
+                  <option value="https://diwoto.iisg.nl/svn/hsntest/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://diwoto.iisg.nl/svn/hsntest/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="mySupportsUserInfoFilter" value="true" />
+  </component>
+  <component name="WebServicesPlugin" addRequiredLibraries="true" />
+</project>
+

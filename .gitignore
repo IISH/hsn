@@ -1,0 +1,7 @@
+*.jar
+temp
+out
+.svn
+bin
+.cfs
+.metadata

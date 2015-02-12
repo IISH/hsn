@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="nl.iisg.alfalabFrontEnd.PrintSubmenu">
+  <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="GridLayoutManager" row-count="7" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="500" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <component id="ef6f3" class="javax.swing.JButton" binding="a3ControleAMeldingButton" default-binding="true">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <horizontalAlignment value="2"/>
+          <text value="1 Controle A  melding 1000-serie Ronde 2"/>
+        </properties>
+      </component>
+      <component id="179e0" class="javax.swing.JButton" binding="a4ControleBMeldingButton" default-binding="true">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <horizontalAlignment value="2"/>
+          <text value="2 Controle B melding 1000-serie Ronde 2"/>
+        </properties>
+      </component>
+      <component id="e3eea" class="javax.swing.JButton" binding="a5ControleABButton" default-binding="true">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <horizontalAlignment value="2"/>
+          <text value="3 Controle A/B melding 1000-serie Ronde 3"/>
+        </properties>
+      </component>
+      <component id="db73e" class="javax.swing.JButton" binding="a6ControleAMeldingButton" default-binding="true">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <horizontalAlignment value="2"/>
+          <text value="4 Controle A melding 4000-serie Ronde 4"/>
+        </properties>
+      </component>
+      <component id="fff8b" class="javax.swing.JButton" binding="a7ControleBMeldingButton" default-binding="true">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <horizontalAlignment value="2"/>
+          <text value="5 Controle B melding 4000-serie Ronde 4"/>
+        </properties>
+      </component>
+      <component id="b47b1" class="javax.swing.JButton" binding="a8ControleABButton" default-binding="true">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <horizontalAlignment value="2"/>
+          <text value="6 Controle A/B melding 4000-serie Ronde 5"/>
+        </properties>
+      </component>
+      <vspacer id="b2120">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+    </children>
+  </grid>
+</form>

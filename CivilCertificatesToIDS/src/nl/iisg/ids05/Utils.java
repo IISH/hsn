@@ -1,0 +1,889 @@
+package nl.iisg.ids05;
+
+import javax.persistence.EntityManager;
+
+import nl.iisg.idscontext.ContextElement;
+import nl.iisg.idscontext.Contxt;
+
+public class Utils {
+	
+	static int Id_I;
+
+	public static int getId_I() {
+		return Id_I++;
+	}
+
+	public static void setId_I(int id_I) {
+		Id_I = id_I;
+	}
+
+	
+	/**
+	 * 
+	 * This routine gets the context element of a Municipality 
+	 * It returns an array (length = 3) with either:
+	 *   
+	 *   Country - Province - Municipality or
+	 *   Country - null     - Municipality 
+	 * 
+	 * 
+	 * 
+	 * @param ce
+	 * @return
+	 */
+
+	public static String [] getLocationHierarchy(ContextElement ce){
+		
+		 String[] s = new String[3];
+		 int j = 0;
+		 while(ce != null){
+			 for(int i = 0; i < ce.getTypes().size(); i++)
+				 if(ce.getTypes().get(i).equals("NAME")){    				 
+					 s[2-j++] = ce.getValues().get(i);
+					 break;
+				 }
+			 ce = ce.getParent();
+		 }
+		 
+		 if(s[0] == null){ // this means that there was only 1 level above ce (Country), not 2 (Country and Province), so we correct
+			 s[0] = s[1];
+			 s[1] = null;
+		 }
+
+		 return s;
+		
+	}
+	
+	/*
+	 *  Input: address  
+	 * 
+	 *  Output: String array:
+	 *  				Quarter
+	 *                  Street
+	 *                  Number
+	 *                  Addition
+	 * 
+	 */
+	
+	public static String[] splitAddress(String address){
+		
+		String [] r =  new String[4];  // return array
+		String [] t = getQuarter(address);
+		r[0] = t[0];  // copy Quarter
+		String [] s = getNumber(t[1]);
+		r[1] = s[0]; // Street
+		r[2] = s[1]; // Number
+		r[3] = s[2]; // Addition
+		
+		return r;
+	}
+	
+	
+	public static  String[] getQuarter(String s){
+		
+		//System.out.println("s = " + s);
+		String [] sa = s.split("[ ]+");
+		String [] r =  new String[2]; // return arry
+		
+		for(int i = 0; i < sa.length -1; i++){
+			if(sa[i].equalsIgnoreCase("WIJK") || sa[i].equalsIgnoreCase("WK")){
+				
+				r[0] = sa[i + 1]; // Quarter
+				
+				String t = "";
+				
+				for(int j = 0; j < sa.length; j++){
+					if(j != i && j != i + 1)
+						t = t + " " + sa[j].trim();
+					
+				}
+				
+				r[1] = t;
+				return r;
+				
+				
+			}
+			else
+				if(sa[i].length() <= 2 && sa[i].length() > 0 && Character.isUpperCase(sa[i].charAt(0))){
+					
+					r[0] = sa[i];
+
+					String t = "";				
+					for(int j = 0; j < sa.length; j++){
+						if(j != i)
+							t = t + " " + sa[j].trim();
+						
+					}
+					
+					r[1] = t;
+					return r;
+
+				}
+		}
+		
+		r[0] = null;
+		r[1] = s;
+
+		return r;
+		
+	}
+	
+
+	public static  String[] getNumber(String s){
+	
+		//System.out.println("s = " + s);
+		
+		String [] sa = s.split("[ ,]");
+		sa[sa.length-1].trim();
+		
+		String nr = null;
+		String addition = null;
+		
+		
+		for(int i = 0; i < sa.length; i++){
+			
+			//System.out.println(sa[i] + "  " + sa[i].length());
+			
+			switch(sa[i].length()){
+			
+			case 1:
+				
+				if(Character.isDigit(sa[i].charAt(0)))
+					nr = sa[i];
+
+				break;
+				
+			case 2:
+				
+				if(Character.isDigit(sa[i].charAt(0))){
+					if(Character.isDigit(sa[i].charAt(1))){
+						nr = sa[i];					
+
+					}
+					else{
+						nr = sa[i].substring(0,1);
+						addition = sa[i].substring(1,2);
+						
+					}
+				}
+				break;
+
+			case 3:
+				
+				if(Character.isDigit(sa[i].charAt(0))){
+					if(Character.isDigit(sa[i].charAt(1))){
+						if(Character.isDigit(sa[i].charAt(2))){
+							nr = sa[i];
+						}
+						else{
+							nr = sa[i].substring(0,2);
+							addition = sa[i].substring(2,3);
+						}
+					}
+				}
+				break;
+				
+			case 4:
+				
+				//System.out.println(sa[i]);
+
+				if(Character.isDigit(sa[i].charAt(0))){
+					if(Character.isDigit(sa[i].charAt(1))){
+						if(Character.isDigit(sa[i].charAt(2))){
+							if(Character.isDigit(sa[i].charAt(3))){
+							nr = sa[i];
+							}
+						}
+						else{
+							nr = sa[i].substring(0,3);
+							addition = sa[i].substring(3,4);
+						}
+					}
+				}
+				break;	
+			
+			
+			}
+			
+
+			if(nr != null){
+
+				String t = "";
+
+				if(i > 0 && (sa[i - 1].equalsIgnoreCase("NR") || sa[i - 1].equalsIgnoreCase("NO"))){
+					for(int j = 0; j < sa.length; j++){
+						if(j != i && j != i - 1)
+							t = t + " " + sa[j].trim();
+							
+					}
+				}
+				else{
+					for(int j = 0; j < sa.length; j++){
+						if(j != i)
+							t = t + " " + sa[j].trim();
+							
+					}
+					
+					
+				}
+				
+				String [] r =  new String[3];
+				
+				r[0] = t;
+				r[1] = nr;
+				r[2] = addition;
+				
+				return r;
+				
+				
+			}
+		}
+
+		String [] r =  new String[3];
+		
+		r[0] = s;
+		r[1] = null;
+		r[2] = null;
+		
+		return r;
+
+		
+	}
+	
+	
+	public static void addIndivIndiv(EntityManager em, int IDNR, int id_i_1,  int id_i_2, String source, String relation, 
+			String dateType, String estimation, int day, int month, int year){
+		
+		INDIV_INDIV iiUp = new INDIV_INDIV();
+		
+		iiUp.setId_I_1(id_i_1);
+		iiUp.setId_I_2(id_i_2);
+		iiUp.setRelation(relation.length() <= 100 ? relation : relation.substring(0, 100));
+		iiUp.setId_D((new Integer(IDNR).toString()));
+		iiUp.setSource("HSN " + source);
+
+		if(dateType.equalsIgnoreCase("Missing"))
+			iiUp.setMissing(estimation);
+		else
+		{
+			iiUp.setDate_type(dateType);
+			iiUp.setEstimation(estimation);
+			iiUp.setDay(day);
+			iiUp.setMonth(month);
+			iiUp.setYear(year);			
+		}
+		
+		em.persist(iiUp);
+		
+		String [] a = relation.split("[ ]+");
+
+		
+		// If there is the word " AND " in the relation, it is automatically split and made reciprocal 
+		
+		int index = -1;
+		for(int i = 0; i < a.length; i++){
+			if(a[i].equalsIgnoreCase(" AND ")){
+				index = i;
+				break;
+			}
+		}
+			
+		if(index > 0){
+			
+			INDIV_INDIV iiDown = new INDIV_INDIV();
+			iiDown.setId_I_1(id_i_2);
+			iiDown.setId_I_2(id_i_1);
+			
+			String r = "";
+			for(int i = index + 1; i < a.length; i++){
+				r += a[i] + " ";
+			}
+			r += "and ";
+			for(int i = 0; i < index; i++)
+				r += a[i] + " ";
+			r = r.trim();
+
+			iiDown.setRelation(r.length() <= 100 ? r : r.substring(0, 100));
+			iiDown.setSource("HSN " + source);
+			iiDown.setId_D((new Integer(IDNR).toString()));
+
+			if(dateType.equalsIgnoreCase("Missing"))
+				iiDown.setMissing(estimation);
+			else{
+				iiDown.setDate_type(dateType);
+				iiDown.setEstimation(estimation);
+				iiDown.setDay(day);
+				iiDown.setMonth(month);
+				iiDown.setYear(year);			
+			}
+			
+			em.persist(iiDown);
+			
+		}
+		
+		
+		
+	}
+	
+	public static void addIndivContextAndContextCertificate(int yearCertificate, int sequenceNumberCertificate, ContextElement ceCertificate, EntityManager em, int IDNR, int Id_I, String source, String relation, 
+			String dateType, String estimation, int day, int month, int year){
+
+		String [] s = Utils.getLocationHierarchy(ceCertificate);
+		int Id_C = Contxt.addCertificate(s[0], s[1], s[2], source, yearCertificate, sequenceNumberCertificate);
+		
+		INDIV_CONTEXT ic = new INDIV_CONTEXT();
+		ic.setId_D((new Integer(IDNR).toString()));
+		ic.setId_I(Id_I);
+		ic.setId_C(Id_C);
+		ic.setSource("HSN " + source);
+
+		
+		ic.setRelation(relation);
+		
+		ic.setDate_type(dateType);
+		ic.setEstimation(estimation);
+		ic.setDay(day);
+		ic.setMonth(month);
+		ic.setYear(year);
+
+		em.persist(ic);
+		
+	}
+	public static void addIndivContextAndContext(String address, ContextElement ceCertificate, EntityManager em, int IDNR, int Id_I, String source, String relation, 
+			String dateType, String estimation, int day, int month, int year){
+
+		String [] s = Utils.getLocationHierarchy(ceCertificate);
+		String[] t = {null, null, null, null};
+		if(address != null)
+		    t = Utils.splitAddress(address);
+		int Id_C = Contxt.add(s[0], s[1], s[2], null, t[0], t[1], t[2], t[3], null);
+		
+		INDIV_CONTEXT ic = new INDIV_CONTEXT();
+		ic.setId_D((new Integer(IDNR).toString()));
+		ic.setId_I(Id_I);
+		ic.setId_C(Id_C);
+		ic.setSource("HSN " + source);
+
+		
+		ic.setRelation(relation);
+
+		
+		if(dateType.equalsIgnoreCase("Missing"))
+			ic.setMissing(estimation);
+		else{	
+			ic.setDate_type(dateType);
+			ic.setEstimation(estimation);
+			ic.setDay(day);
+			ic.setMonth(month);
+			ic.setYear(year);
+		}
+		em.persist(ic);
+		
+	}
+	
+	public static void addIndivAndContext(String address, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String type, 
+			String dateType, String estimation, int day, int month, int year){
+
+		String [] s = Utils.getLocationHierarchy(ce);
+		String[] t = {null, null, null, null};
+		if(address != null)
+		    t = Utils.splitAddress(address);
+		int Id_C = Contxt.add(s[0], s[1], s[2], null, t[0], t[1], t[2], t[3], null);		
+
+		INDIVIDUAL i = new INDIVIDUAL();
+
+		i.setId_I(Id_I);
+		i.setId_D((new Integer(IDNR).toString()));
+		i.setSource("HSN " + source);
+
+		i.setType(type);
+		i.setValue(null);
+		
+		i.setId_C(Id_C);
+		
+
+		if(dateType.equalsIgnoreCase("Missing"))
+			i.setMissing(estimation);
+		else{
+
+			i.setDate_type(dateType);
+			i.setEstimation(estimation);
+			i.setDay(day);
+			i.setMonth(month);
+			i.setYear(year);
+		}
+		em.persist(i);
+
+
+
+		
+	}
+		
+	
+	
+	public static void addIndiv(EntityManager em, int IDNR, int Id_I, String source, String type, String value, 
+			String dateType, String estimation, int day, int month, int year){
+		
+		int x = 0;
+		if(Id_I == 0)
+			 x = 1/0;
+		
+		INDIVIDUAL i = new INDIVIDUAL();
+		
+		i.setId_I(Id_I);
+		i.setId_D((new Integer(IDNR).toString()));
+		i.setSource("HSN " + source);
+
+		
+		i.setType(type);
+		i.setValue(value);
+		
+		
+		if(dateType.equalsIgnoreCase("Missing")){
+			i.setMissing(estimation);
+			
+		}
+		else{
+			i.setDate_type(dateType);
+			i.setEstimation(estimation);
+			i.setDay(day);
+			i.setMonth(month);
+			i.setYear(year);
+		}
+		
+		em.persist(i);
+	}
+
+	public static void addIndiv(EntityManager em, int IDNR, int Id_I, String source, String type, String value, 
+			String dateType, String estimation, int day, int month, int year, int hour, int minute){
+
+		int x = 0;
+		if(Id_I == 0)
+			 x = 1/0;
+
+		
+		INDIVIDUAL i = new INDIVIDUAL();
+		
+		i.setId_I(Id_I);
+		i.setId_D((new Integer(IDNR).toString()));
+		i.setSource("HSN " + source);
+
+		
+		i.setType(type);
+		i.setValue(value);
+		
+		
+		if(dateType.equalsIgnoreCase("Missing")){
+			i.setMissing(estimation);
+			
+		}
+		else{
+			i.setDate_type(dateType);
+			i.setEstimation(estimation);
+			i.setHour(hour);
+			i.setMinute(minute);
+			i.setDay(day);
+			i.setMonth(month);
+			i.setYear(year);
+		}
+		
+		em.persist(i);
+	}
+
+	public static void addIndiv(EntityManager em, int IDNR, int Id_I, String source, String type, String value, 
+			String dateType, String estimation, int startDay, int startMonth, int startYear, int endDay, int endMonth, int endYear){
+		
+		
+		//System.out.println("dateType = " + dateType);
+		INDIVIDUAL i = new INDIVIDUAL();
+		
+		i.setId_I(Id_I);
+		i.setId_D((new Integer(IDNR).toString()));
+		i.setSource("HSN " + source);
+
+		
+		i.setType(type);
+		i.setValue(value);
+
+		i.setDate_type(dateType);
+		i.setEstimation(estimation);
+		i.setStart_day(startDay);
+		i.setStart_month(startMonth);
+		i.setStart_year(startYear);
+		i.setEnd_day(endDay);
+		i.setEnd_month(endMonth);
+		i.setEnd_year(endYear);
+		
+		em.persist(i);
+		
+		
+	}
+
+	/**
+	 * 
+	 * Calculates the number of days since 01-01-1600
+	 * 
+	 * @param day1
+	 * @param month1
+	 * @param year1
+	 * @return
+	 */
+	 public static int dayCount(int day1, int month1, int year1){
+
+		 //System.out.println("" + day1+ month1 + year1);
+
+		 int [] monthLength = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+		 int day = 1;
+		 int month = 1;
+		 int year = 1600;
+
+		 int dayCount = 0;
+
+		 if(year1 <= 1600)
+			 return -1;
+		 else{
+			 if(month1 <= 0)
+				 month1 = 1;
+			 if(day1 <= 0)
+				 day1 = 1;
+		 }
+			 
+
+		 if(year1 > 1800){
+
+			 int decade = (year1 - 1800)/10;
+
+			 
+			 // to speed things up
+			 switch(decade){				
+			 case 0:
+				 dayCount = 73049;
+				 year = 1800;
+				 break;				    
+			 case 1:
+				 dayCount = 76701;
+				 year = 1810;
+				 break;				    
+			 case 2:
+				 dayCount = 80353;
+				 year = 1820;
+				 break;				    
+			 case 3:
+				 dayCount = 84006;
+				 year = 1830;
+				 break;				    
+			 case 4:
+				 dayCount = 87658;
+				 year = 1840;
+				 break;				    
+			 case 5:
+				 dayCount = 91311;
+				 year = 1850;
+				 break;				    
+			 case 6:
+				 dayCount = 94963;
+				 year = 1860;
+				 break;				    
+			 case 7:
+				 dayCount = 98616;
+				 year = 1870;
+				 break;				    
+			 case 8:
+				 dayCount = 102268;
+				 year = 1880;
+				 break;				    
+			 case 9:
+				 dayCount = 105921;
+				 year = 1890;
+				 break;				    
+			 case 10:
+				 dayCount = 109573;
+				 year = 1900;
+				 break;				    
+			 case 11:
+				 dayCount = 113225;
+				 year = 1910;
+				 break;				    
+			 case 12:
+				 dayCount = 116877;
+				 year = 1920;
+				 break;			    
+			 case 13:
+				 dayCount = 120530;
+				 year = 1930;
+				 break;				    
+			 case 14:
+				 dayCount = 124182;
+				 year = 1940;
+				 break;				    
+			 case 15:
+				 dayCount = 127835;
+				 year = 1950;
+				 break;				    
+			 default:
+
+			 }
+		 }
+
+
+		 while(day != day1 || month != month1 || year != year1){
+
+			 //System.out.println("" + day + " " + month + " " + year);
+			 if(day < monthLength[month])
+				 day++;
+			 else{
+				 if(month == 2 && day == monthLength[2] && year % 4 == 0 && (year % 100 != 0 || year % 400 == 0))
+					 day++;		  
+				 else{
+					 day = 1;
+					 if(month < 12){
+						 month++;
+
+					 }
+					 else{
+						 month = 1;
+						 year++;
+					 }
+				 }
+			 }
+
+			 dayCount++;
+
+		 }
+
+		 return(dayCount);
+	 }
+	 
+		/**
+		 * 
+		 * This routine calculates the date if count contains the number of days 
+		 * since 01-01-1600.
+		 * It is the inverse of dayCount
+		 * 
+		 * 
+		 * @param count1
+		 * @return
+		 */
+		
+	    public static String dateFromDayCount(int count1){
+	    	
+	    	int [] monthLength = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	    	
+	    	int day = 1;
+	    	int month = 1;
+	    	int year = 1600;
+	    	
+	    	int count = count1;
+	    	
+	    	if(count <= 0)
+	    		count = 1/0; // force exception;
+	    	
+	    	
+	    	while(count > 0){
+	    		
+	    		if(day < monthLength[month])
+					day++;
+				else{
+				  if(month == 2 && day == monthLength[2] && year % 4 == 0 && (year % 100 != 0 || year % 400 == 0))
+				      day++;		  
+				  else{
+					  day = 1;
+					  if(month < 12){
+						  month++;
+						  
+					  }
+					  else{
+						  month = 1;
+						  year++;
+					  }
+				  }
+				}
+				count--;
+	    	}
+	    	//System.out.println(String.format("%02d-%02d-%04d    %d", day, month, year, count1));
+	        return(String.format("%02d-%02d-%04d", day, month, year));  
+	    	
+	    }
+		
+		/**
+		 * 
+		 * Checks if a date is a valid date
+		 * 
+		 * @param day
+		 * @param month
+		 * @param year
+		 * @return -1: One ore more elements are <= 0
+		 *          0: Valid date
+		 *          1: Invalid date 
+		 * 
+		 * 
+		 */
+		
+	public static int dateIsValid(int day, int month, int year){
+			
+		int [] monthLength = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+			
+		if(year <= 0 || month <= 0 || day <= 0) return -1;
+			
+		if(!(year  > 1750 ))   return 1;
+		if(!(month > 0    && month <= 12))     return 1;
+		if(!(day   > 0    && (day  <=  monthLength[month] || (day <= monthLength[2] + 1 && month == 2 && year % 4 == 0 && (year % 100 != 0 || year % 400 == 0))))) return 1;
+			
+        return 0;		
+			
+	}
+		
+
+
+	 public static String permission(String c){
+		
+		 if(c.equalsIgnoreCase("s"))
+			 return "Written";
+		 if(c.equalsIgnoreCase("m"))
+			 return "Verbal";
+		 if(c.equalsIgnoreCase("k"))
+			 return "Notarial";
+		 if(c.equalsIgnoreCase("a"))
+			 return "Otherwise";
+		 return "Not specified";
+		 
+		 
+	 }
+
+	 public static String signature(String c){
+		 
+		 if(c.equalsIgnoreCase("a"))
+			 return "No";
+		 if(c.equalsIgnoreCase("b"))
+			 return "Sabbath";
+		 if(c.equalsIgnoreCase("c"))
+			 return "Unable";
+		 if(c.equalsIgnoreCase("d"))
+			 return "Unable";
+		 if(c.equalsIgnoreCase("e"))
+			 return "Unable";
+		 if(c.equalsIgnoreCase("h"))
+			 return "Yes";
+		 if(c.equalsIgnoreCase("j"))
+			 return "Yes";
+		 if(c.equalsIgnoreCase("n"))
+			 return "No";
+		 if(c.equalsIgnoreCase("o"))
+			 return "Unknown";
+		 
+		 return "No";
+		 
+	 }
+
+	 public static String civilStatus(String c){
+
+		 if(c.equalsIgnoreCase("1"))
+			 return "Unmarried";
+		 if(c.equalsIgnoreCase("2"))
+			 return "Widowed";
+		 if(c.equalsIgnoreCase("3"))
+			 return "Divorced";
+		 if(c.equalsIgnoreCase("4"))
+			 return "Married";
+		 if(c.equalsIgnoreCase("5"))
+			 return "Married";
+		 if(c.equalsIgnoreCase("6"))
+			 return "Unknown";
+		 if(c.equalsIgnoreCase("7"))
+			 return "Unknown";
+		 if(c.equalsIgnoreCase("8"))
+			 return "Unmarried";
+		 
+		 return "Unknown";
+
+		 
+	 }
+	 
+	 /**
+	  * 
+	  * @param age
+	  * @param day
+	  * @param month
+	  * @param year
+	  * @return
+	  * 
+	  * We know the age at a certain date. We must calculate a range of possible birthdates
+	  * 
+	  */
+	 public static int[] birthRange(int age, int day, int month, int year){
+
+		 int[] a =  {0, 0, 0, 0, 0, 0};
+
+		 
+		 if(Utils.dateIsValid(day, month, year) != 0)
+			 return a;
+		 
+		 
+		 int [] monthDays = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+		 
+		 // Earliest birthday: tomorrow - (age + 1)
+		 
+		 int tomorrowDay = 0;
+		 int tomorrowMonth = 0;
+		 int tomorrowYear = 0;
+		 
+		 if(day < monthDays[month] || (day == 29 && month == 2 && year % 4 == 0)){
+			 tomorrowDay =  day + 1;
+			 tomorrowMonth = month;
+			 tomorrowYear = year;
+		 }
+		 else{
+			 if(month < 12){
+				 tomorrowDay = 1;
+				 tomorrowMonth = month + 1;
+				 tomorrowYear = year;
+			 }
+			 else{
+				 tomorrowDay = 1;
+				 tomorrowMonth = 1;
+				 tomorrowYear = year + 1;
+			 }
+		 }
+		 
+		 if(Utils.dateIsValid(tomorrowDay, tomorrowMonth, tomorrowYear) != 0){
+			 tomorrowDay = tomorrowDay - 1; 
+			 if(Utils.dateIsValid(tomorrowDay, tomorrowMonth, tomorrowYear) != 0)
+				 return a;
+			 
+		 }
+		 
+		 a[0] = tomorrowDay;
+		 a[1] = tomorrowMonth;
+		 a[2] = tomorrowYear  - (age + 1);
+
+		 if(Utils.dateIsValid(a[0], a[1], a[2]) != 0)
+			 a[0] = a[0] - 1; // can only be 29-3 in a non-leap year so subtract 1
+
+		 
+		 // Latest birthday: today - age
+		 
+		 a[3] = day;
+		 a[4] = month;
+		 a[5] = year - age;
+		 
+		 if(Utils.dateIsValid(a[3], a[4], a[5]) != 0)
+			 a[3] = a[3] - 1; // can only be 29-3 in a non-leap year so subtract 1
+		 
+		 return a;
+		 
+	 }
+	 
+    public static String sex(String sex){
+	    	
+    	if(sex.trim().toUpperCase().equals("M"))
+    		return "Male";
+    	if(sex.trim().toUpperCase().equals("V"))
+    		return "Female";
+   		return "Unknown";
+	    	
+    }
+
+
+	 
+}

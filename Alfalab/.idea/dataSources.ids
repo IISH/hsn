@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?><component name="dataSourceStorage">
+  <data-source source="LOCAL" name="bdated_tables" product="MySQL" version="5.1.41-3ubuntu12.10" jdbc-version="4.0" driver-version="mysql-connector-java-5.1.18 ( Revision: tonci.grgin@oracle.com-20110930151701-jfj14ddfq48ifkfq )" uuid="4da34bf4-dc67-43a6-9bfd-4b9ca07191da">
+    <extra-name-characters>#@</extra-name-characters>
+    <identifier-quote-string>`</identifier-quote-string>
+    <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+    <jdbc-url>jdbc:mysql://10.24.63.203:3306/bdated_tables?useUnicode=true&amp;amp;characterEncoding=UTF-8</jdbc-url>
+    <user-name>chris</user-name>
+    <user-password>dfc9dfd8dfc5df9bdf98df99df9edf9f</user-password>
+    <default-dialect>MySQL</default-dialect>
+    <libraries>
+      <library>
+        <url>jar://$PROJECT_DIR$/lib/mysql-connector-java-5.1.18-bin.jar!/</url>
+      </library>
+      <library>
+        <url>file://$PROJECT_DIR$/lib/mysql-connector-license.txt</url>
+      </library>
+    </libraries>
+    <table name="b2_st" schema="" catalog="bdated_tables" type="TABLE">
+      <column name="B1IDBG" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="B2DIBG" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="IDNR" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="B2RNBG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B2FCBG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B2RDNR" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="B2RDFG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="PERSON_ID" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="PERSON_ID_FG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="PERSON_ID_FA" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="PERSON_ID_FA_FG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="PERSON_ID_MO" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="PERSON_ID_MO_FG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="START_DATE" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="START_FLAG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="START_EST" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="END_DATE" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="END_FLAG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="END_EST" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="FAMILYNAME" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="PREFIX_FAMILYNAME" sqlType="VARCHAR" length="15" precision="0" nullable="true" jdbcType="12" />
+      <column name="TITLE_NOBLE" sqlType="VARCHAR" length="15" precision="0" nullable="true" jdbcType="12" />
+      <column name="TITLE_ELSE" sqlType="VARCHAR" length="15" precision="0" nullable="true" jdbcType="12" />
+      <column name="FAMILYNAME_FG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="FIRSTNAME" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="FIRSTNAME_FG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="SEX" sqlType="CHAR" length="1" precision="0" nullable="true" jdbcType="1" />
+      <column name="B2GDNR" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="B2GDFG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="BIRTH_LOCALITY_ID" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="BIRTH_LOCALITY_ST" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="BIRTH_LOCALITY_FG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="B2ODNR" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="B2ODFG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="DEATH_LOCALITY_ID" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="DEATH_LOCALITY_ST" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="DEATH_LOCALITY_FG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="NATIONALITY" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="LEGAL_LIVPL_ID" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="LEGAL_LIVPL_ST" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="LEGAL_LIVPL_FG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="LEGAL_LIVPL_CODE" sqlType="VARCHAR" length="2" precision="0" nullable="true" jdbcType="12" />
+      <column name="REMARKS" sqlType="VARCHAR" length="256" precision="0" nullable="true" jdbcType="12" />
+      <column name="ADDITION" sqlType="VARCHAR" length="256" precision="0" nullable="true" jdbcType="12" />
+      <column name="VERSIE" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="ONDRZKO" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="VERSIEO" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="DATUM" sqlType="VARCHAR" length="10" precision="0" nullable="true" jdbcType="12" />
+    </table>
+    <table name="b311_st" schema="" catalog="bdated_tables" type="TABLE">
+      <column name="B1IDBG" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="B2DIBG" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="IDNR" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="B2RNBG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3TYPE" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="B3VRNR" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="START_DATE" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="START_FLAG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="START_EST" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="END_DATE" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="END_FLAG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="END_EST" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3KODE" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3RGLN" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B2FCBG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3MDNR" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="B3MDFG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="B3GEGEVEN" sqlType="VARCHAR" length="256" precision="0" nullable="true" jdbcType="12" />
+      <column name="VERSIE" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="ONDRZKO" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="VERSIEO" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="DATUM" sqlType="VARCHAR" length="10" precision="0" nullable="true" jdbcType="12" />
+    </table>
+    <table name="b312_st" schema="" catalog="bdated_tables" type="TABLE">
+      <column name="B1IDBG" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="B2DIBG" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="IDNR" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="B2RNBG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3TYPE" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="B3VRNR" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="START_DATE" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="START_FLAG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="START_EST" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="END_DATE" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="END_FLAG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="END_EST" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3KODE" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3RGLN" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="RELATION_FG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="B2FCBG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3MDNR" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="B3MDFG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="VERSIE" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="ONDRZKO" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="VERSIEO" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="DATUM" sqlType="VARCHAR" length="10" precision="0" nullable="true" jdbcType="12" />
+    </table>
+    <table name="b32_st" schema="" catalog="bdated_tables" type="TABLE">
+      <column name="B1IDBG" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="B2DIBG" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="IDNR" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="B2RNBG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3TYPE" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="B3VRNR" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="START_DATE" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="START_FLAG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="START_EST" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="END_DATE" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="END_FLAG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="END_EST" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3KODE" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3RGLN" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="CIVIL_STATUS_FG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="B2FCBG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3MDNR" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="B3MDFG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="CIVIL_LOCALITY_ID" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="CIVIL_LOCALITY_ST" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="CIVIL_LOCALITY_FG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="VERSIE" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="ONDRZKO" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="VERSIEO" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="DATUM" sqlType="VARCHAR" length="10" precision="0" nullable="true" jdbcType="12" />
+    </table>
+    <table name="b33_st" schema="" catalog="bdated_tables" type="TABLE">
+      <column name="B1IDBG" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="B2DIBG" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="IDNR" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="B2RNBG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3TYPE" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="B3VRNR" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="START_DATE" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="START_FLAG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="START_EST" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="END_DATE" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="END_FLAG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="END_EST" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3RGLN" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B2FCBG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3MDNR" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="B3MDFG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="RELIGION_ID" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="RELIGION_ST" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="RELIGION_FG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="VERSIE" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="ONDRZKO" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="VERSIEO" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="DATUM" sqlType="VARCHAR" length="10" precision="0" nullable="true" jdbcType="12" />
+    </table>
+    <table name="b34_st" schema="" catalog="bdated_tables" type="TABLE">
+      <column name="B1IDBG" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="B2DIBG" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="IDNR" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="B2RNBG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3TYPE" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="B3VRNR" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="START_DATE" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="START_FLAG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="START_EST" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="END_DATE" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="END_FLAG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="END_EST" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3KODE" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3RGLN" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B2FCBG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3MDNR" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="B3MDFG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="VERSIE" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="ONDRZKO" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="VERSIEO" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="DATUM" sqlType="VARCHAR" length="10" precision="0" nullable="true" jdbcType="12" />
+    </table>
+    <table name="b35_st" schema="" catalog="bdated_tables" type="TABLE">
+      <column name="B1IDBG" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="B2DIBG" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="IDNR" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="B2RNBG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3TYPE" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="B3VRNR" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="START_DATE" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="START_FLAG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="START_EST" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="END_DATE" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="END_FLAG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="END_EST" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3RGLN" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B2FCBG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3MDNR" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="B3MDFG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="OCCUPATION_ID" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="OCCUPATION_ST" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="OCCUPATION_FG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="VERSIE" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="ONDRZKO" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="VERSIEO" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="DATUM" sqlType="VARCHAR" length="10" precision="0" nullable="true" jdbcType="12" />
+    </table>
+    <table name="b36_st" schema="" catalog="bdated_tables" type="TABLE">
+      <column name="B1IDBG" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="B2DIBG" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="IDNR" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="B2RNBG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3TYPE" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="B3VRNR" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="START_DATE" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="START_FLAG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="START_EST" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="END_DATE" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="END_FLAG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="END_EST" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3RGLN" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B2FCBG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3MDNR" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="B3MDFG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="ORIGIN_ID" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="ORIGIN_ST" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="ORIGIN_FG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="ORIGIN_EQUAL" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="ADDRESS" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="REGISTER" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="CENSUS" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="VERSIE" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="ONDRZKO" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="VERSIEO" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="DATUM" sqlType="VARCHAR" length="10" precision="0" nullable="true" jdbcType="12" />
+    </table>
+    <table name="b37_st" schema="" catalog="bdated_tables" type="TABLE">
+      <column name="B1IDBG" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="B2DIBG" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="IDNR" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="B2RNBG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3TYPE" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="B3VRNR" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="START_DATE" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="START_FLAG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="START_EST" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="END_DATE" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="END_FLAG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="END_EST" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3KODE" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3RGLN" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B2FCBG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B3MDNR" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="B3MDFG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="DESTINATION_ID" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="DESTINATION_ST" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="DESTINATION_FG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="DESTINATION_EQUAL" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="ADDRESS" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="REGISTER" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="CENSUS" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="VERSIE" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="ONDRZKO" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="VERSIEO" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="DATUM" sqlType="VARCHAR" length="10" precision="0" nullable="true" jdbcType="12" />
+    </table>
+    <table name="b4_st" schema="" catalog="bdated_tables" type="TABLE">
+      <column name="B1IDBG" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="B2DIBG" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="IDNR" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="B2FDBG" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="REGISTER_PAGE" sqlType="VARCHAR" length="15" precision="0" nullable="true" jdbcType="12" />
+      <column name="REGISTER_LINE" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="NAME_HEAD_GK" sqlType="VARCHAR" length="256" precision="0" nullable="true" jdbcType="12" />
+      <column name="SPECIAL_CODE" sqlType="VARCHAR" length="256" precision="0" nullable="true" jdbcType="12" />
+      <column name="SPECIAL_REMARKS" sqlType="VARCHAR" length="256" precision="0" nullable="true" jdbcType="12" />
+      <column name="VERSIE" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="ONDRZKO" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="VERSIEO" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="DATUM" sqlType="VARCHAR" length="10" precision="0" nullable="true" jdbcType="12" />
+    </table>
+    <table name="b6_st" schema="" catalog="bdated_tables" type="TABLE">
+      <column name="B1IDBG" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="B2DIBG" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="IDNR" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="B2RNBG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B6VRNR" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="B6MDNR" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="B6MDFG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="START_DATE" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="START_FLAG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="START_EST" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="END_DATE" sqlType="CHAR" length="10" precision="0" nullable="true" jdbcType="1" />
+      <column name="END_FLAG" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="END_EST" sqlType="SMALLINT" length="5" precision="0" nullable="true" jdbcType="5" />
+      <column name="MUNICIPALITY_ST" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="ADDRESS_ID" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" />
+      <column name="STREET_ST" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="QUARTER_ST" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="PLACE_ST" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="BOAT_ST" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="BERTH_ST" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="INSTIT_ST" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="LANDLORD_ST" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="OTHER_ST" sqlType="VARCHAR" length="60" precision="0" nullable="true" jdbcType="12" />
+      <column name="ADDRESS_FG" sqlType="TINYINT" length="3" precision="0" nullable="true" jdbcType="-6" />
+      <column name="NUMBER_ST" sqlType="VARCHAR" length="15" precision="0" nullable="true" jdbcType="12" />
+      <column name="ADDITION_ST" sqlType="VARCHAR" length="15" precision="0" nullable="true" jdbcType="12" />
+      <column name="VERSIE" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="ONDRZKO" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="VERSIEO" sqlType="VARCHAR" length="8" precision="0" nullable="true" jdbcType="12" />
+      <column name="DATUM" sqlType="VARCHAR" length="10" precision="0" nullable="true" jdbcType="12" />
+    </table>
+  </data-source>
+</component>

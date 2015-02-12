@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Alfalab.iml" filepath="$PROJECT_DIR$/Alfalab.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../alfalabbackend/ConvertPK/ConvertPK.iml" filepath="$PROJECT_DIR$/../alfalabbackend/ConvertPK/ConvertPK.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../alfalabbackend/HSNMigrate/HSNMigrate.iml" filepath="$PROJECT_DIR$/../alfalabbackend/HSNMigrate/HSNMigrate.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../alfalabbackend/IDSCheckConvert02/IDSCheckConvert02.iml" filepath="$PROJECT_DIR$/../alfalabbackend/IDSCheckConvert02/IDSCheckConvert02.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../alfalabbackend/JavaDBF/JavaDBF.iml" filepath="$PROJECT_DIR$/../alfalabbackend/JavaDBF/JavaDBF.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../alfalabbackend/ReferenceTables/ReferenceTables.iml" filepath="$PROJECT_DIR$/../alfalabbackend/ReferenceTables/ReferenceTables.iml" />
+    </modules>
+  </component>
+</project>
+
