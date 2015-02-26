@@ -197,7 +197,7 @@ public class PersonStandardized {
 		if(name != null){
 			Ref_FamilyName f = Ref.getFamilyName(name);
 
-			if(f != null  && f.getCode() != null && (f.getCode().equalsIgnoreCase("j") == true || f.getCode().equalsIgnoreCase("o") == true) && f.getName() != null && f.getName().length() > 0){
+			if(f != null  && f.getCode() != null && (f.getCode().equalsIgnoreCase("y") == true) && f.getName() != null && f.getName().length() > 0){
 				name = f.getName();
 			}
 			else{
@@ -213,7 +213,7 @@ public class PersonStandardized {
 
 		if(prefix != null){	    
 			Ref_Prefix pr = Ref.getPrefix(prefix);    
-			if(pr != null && pr.getCode() != null && (pr.getCode().equalsIgnoreCase("j") == true || pr.getCode().equalsIgnoreCase("o") == true) && pr.getPrefix() != null && pr.getPrefix().length() > 0){
+			if(pr != null && pr.getCode() != null && (pr.getCode().equalsIgnoreCase("y") == true) && pr.getPrefix() != null && pr.getPrefix().length() > 0){
 				prefix = pr.getPrefix();  	
 			}  
 			else{
@@ -228,7 +228,7 @@ public class PersonStandardized {
 
 		if(title != null){
 			Ref_Prefix pr = Ref.getPrefix(title);
-			if(pr != null && pr.getCode() != null && (pr.getCode().equalsIgnoreCase("j") == true || pr.getCode().equalsIgnoreCase("o") == true)){
+			if(pr != null && pr.getCode() != null && (pr.getCode().equalsIgnoreCase("y")) == true){
 				if(pr.getTitleNoble() != null && pr.getTitleNoble().length() > 0)
 					titleNoble = pr.getTitleNoble();
 				if(pr.getTitleOther() != null && pr.getTitleOther().length() > 0)
@@ -276,7 +276,7 @@ public class PersonStandardized {
 				name.trim(); 
 				Ref_FirstName f = Ref.getFirstName(name);
 
-				if(f != null  && f.getCode() != null && (f.getCode().equalsIgnoreCase("j") == true || f.getCode().equalsIgnoreCase("o") == true) && f.getName() != null && f.getName().length() > 0)
+				if(f != null  && f.getCode() != null && (f.getCode().equalsIgnoreCase("y") == true) && f.getName() != null && f.getName().length() > 0)
 					name = f.getName();
 				else{
 					if(f == null){

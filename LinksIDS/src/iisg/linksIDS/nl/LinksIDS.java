@@ -96,7 +96,7 @@ public class LinksIDS{
 
 
 			PersonNumber.personNumber();		
-			if(1==1) System.exit(8);
+			//if(1==1) System.exit(8);
 
 			int previousPersonNumber = -1;
 
@@ -147,6 +147,8 @@ public class LinksIDS{
 						" P.religion, " + 
 						" P.civil_status, " + 
 						" P.living_location, " + 
+						" P.id_person_o, " + 
+						" P.id_source, " + 
 						" R.id_orig_registration, " +
 						" R.id_source, " +
 						" R.registration_day, " +
@@ -234,7 +236,8 @@ public class LinksIDS{
 		catch (Exception e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
-			Utils.closeConnection(connection);			
+			Utils.closeConnection(connection);	
+			System.exit(9);
 		}		
 		
 		flushIndiv(connection);
@@ -429,7 +432,9 @@ public class LinksIDS{
 				System.out.println("In catch");
 				System.out.println(e.getMessage());
 				e.printStackTrace();
-				Utils.closeConnection(connection);				
+				Utils.closeConnection(connection);			
+				System.exit(9);
+
 			}		
 		}
 		
@@ -482,6 +487,9 @@ public class LinksIDS{
 		String registration_seq = null;
 
 		String stillborn = null;
+		
+		int id_source = 0;
+		int id_person_o = 0;
 
 		for(int i = 0; i < persons.size(); i++){
 
@@ -554,7 +562,7 @@ public class LinksIDS{
 				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null){
 					Integer bll = new Integer(persons.get(i)[h.get(columnName)]);
 					Integer Id_C = locNo2Id_C.get(bll);
-					System.out.println("birth_location = " + persons.get(i)[h.get(columnName)] + " Id_C = " + Id_C);
+					//System.out.println("birth_location = " + persons.get(i)[h.get(columnName)] + " Id_C = " + Id_C);
 					if(Id_C != null && Id_C != 0){
 						addIndiv(connection, person_number, "" + registration_maintype, "BIRTH_PLACE",   null, Id_C, "Declared", "Exact", 
 								birth_day, birth_month, birth_year,
@@ -672,12 +680,26 @@ public class LinksIDS{
 				Integer livingLocation = new Integer(persons.get(i)[h.get(columnName)]); 
 				Integer Id_C_l = locNo2Id_C.get(livingLocation);						
 				addIndivContext(connection, person_number, Id_C_l,  "" + registration_maintype, "LIVING_LOCATION", "Event", "Exact", registration_day, registration_month, registration_year);
+			}
+
+			// Special processing for HSN Start
+
+			columnName = " P.id_source";
+			if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) id_source = new Integer (persons.get(i)[h.get(columnName)]);
+			
+			if(id_source == 10){
+				
+				columnName = " P.id_person_o";
+				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) id_person_o = new Integer (persons.get(i)[h.get(columnName)]);
+				
+				if(id_person_o > 0)
+					addIndiv(connection, person_number, "" + registration_maintype, "HSN_IDENTIFIER",   "" + id_person_o, 0, "Declared", "Exact", registration_day, registration_month, registration_year,0,0,0,0,0,0);
 				
 				
 			}
-
 			
-
+			// Special processing for HSN End
+			
 			
 		}
 		
@@ -701,6 +723,8 @@ public class LinksIDS{
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				System.exit(9);
+
 			}
 		persons.add(row);
 	}
@@ -1251,7 +1275,9 @@ public class LinksIDS{
 			System.out.println("In catch");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
-			Utils.closeConnection(connection);				
+			Utils.closeConnection(connection);
+			System.exit(9);
+
 		}	
 		
 		flushContext(connection);

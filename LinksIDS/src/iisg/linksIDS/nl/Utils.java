@@ -248,7 +248,7 @@ public class Utils {
 	
 	public static Connection connect(String dataBase){
 		
-		System.out.println("Database = " + dataBase);
+		//System.out.println("Database = " + dataBase);
 		
 		Connection c = null;
 		

@@ -26,10 +26,12 @@ public class PersonNumber implements Runnable {
 	//static HashMap<Integer, HashSet<Integer>>   personNumberToP_IDs     = new HashMap<Integer, HashSet<Integer>>();  
 	//static HashMap<Integer, Integer>            personNumbers = new HashMap<Integer, Integer>();
 	static String                               insStmt   = null;	
-	static int []                               personNumber = null;
-	static HashSet<Integer> []                  id_person = null;
-	static HashSet<Integer>                     onlySelf = new HashSet<Integer>();
+	//static int []                               personNumber = null;
+	//static HashSet<Integer> []                  id_person = null;
+	static ArrayList<Integer>                     onlySelf = new ArrayList<Integer>();
 	static int                                  max_id_person = 100 * 1000 * 1000;
+	static ArrayList<Integer>[]                 aliases = null;
+	
 	
 	
     static BlockingQueue<ArrayList<Integer>>    queue = new LinkedBlockingQueue<ArrayList<Integer>>(1024);
@@ -102,7 +104,7 @@ public class PersonNumber implements Runnable {
 		int totalCount = 0;
 		int effectiveCount = 0;
 		int pageSize = 1 * 1000 * 1000;
-		for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
+outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 			try {
 				java.sql.Statement statement = connection.createStatement();
 				//String select = "select X.ego_id, X.mother_id, X.father_id, Y.ego_id, Y.mother_id, Y.father_id" +
@@ -114,6 +116,7 @@ public class PersonNumber implements Runnable {
 						" from links_match.matches as M, links_prematch.links_base as X,  links_prematch.links_base as Y " +
 						" where X.id_base = id_linksbase_1 and " +
 						"       Y.id_base = id_linksbase_2 and " + 
+						"      (M.id_match_process = 330 or M.id_match_process = 334) and " + 
 						"       M.id_matches >= " + i + " and " + 
 						"       M.id_matches < " + (i + pageSize) ;
 				
@@ -151,6 +154,7 @@ public class PersonNumber implements Runnable {
 					count++;		  
 					if(count % 1000 == 0)
 						System.out.println("Read " + count + " matches");
+					
 				}
 
 				totalCount += count;
@@ -187,16 +191,19 @@ public class PersonNumber implements Runnable {
 
 //		for (Entry<Integer, Integer> entry : personNumbers.entrySet()) {		
 		
-	    for (int j = 0; j < personNumber.length; j++) {
+	    for (int j = 0; j < aliases.length; j++) {
 	    	
 	    	
 	    	//System.out.println("Adding");
 	    	
-	    	if(personNumber[j] == 0) continue;
+	    	if(aliases[j] == null) continue;
 			count++;
 			
 			i.add(j);
-			i.add(personNumber[j]);
+			if(aliases[j] == onlySelf)
+				i.add(j);
+			else	
+				i.add(aliases[j].get(0));
 			if(count % 16384  == 0){
 				try {
 					queue.put(i);
@@ -245,7 +252,7 @@ public class PersonNumber implements Runnable {
 
 
 		Utils.closeConnection(connection);
-		System.out.println("\nFinished");
+		System.out.println("\nFinished creating person numbers");
 	}
 	
 	private static void write(ArrayList<Integer> iL, Connection connection){
@@ -287,43 +294,32 @@ public class PersonNumber implements Runnable {
 		if(x == 0      || y == 0 ) return(0);
 
 		
-		if(personNumber[x] == personNumber[y]) return(0);	
-
+		if(aliases[x] != onlySelf && (aliases[x] == aliases[y])) return(0);
 		
-		if(personNumber[x] == 0 || personNumber[y] == 0){
+		if(aliases[x].size() > 100) return 0;
+		
+		if(aliases[y].size() > 100) return 0;
+
+	   ArrayList<Integer> h = null;
+	   
+		if(aliases[x] == onlySelf){
+			h = new ArrayList<Integer>();
+			aliases[x] = h;
+			h.add(x);
+		}
+
+		if(aliases[y] == onlySelf){
+			aliases[y] = aliases[x];
+			aliases[x].add(y);
 			
-			System.out.println("Unknown id_person in links_base ");
-			return(0);			
+		}
+		else{
+			for(Integer y1: aliases[y]){
+				aliases[y1] = aliases[x];
+				aliases[x].add(y1);
+			}
 		}
 		
-
-	   if(id_person[personNumber[x]] == null){
-		   System.out.println("id_person[personNumber[x]] = 0 voor x");
-		   System.exit(0);
-	   }
-	   if(id_person[personNumber[y]] == null){
-		   System.out.println("id_person[personNumber[y]] = 0 voor y");
-		   System.exit(0);
-	   }
-		
-	   HashSet<Integer> h = null;
-	   
-		if(id_person[personNumber[x]] == onlySelf){
-			h = new HashSet<Integer>();
-			id_person[personNumber[x]] = h;
-		}
-
-	   int pny = personNumber[y];
-	   
-		for(Integer i: id_person[pny]){
-			personNumber[i] = personNumber[x];	
-			id_person[personNumber[x]].add(i);
-		}
-		personNumber[pny] =  personNumber[x]; // This is the implicit "Self". It must now be added explicitly
-		id_person[personNumber[x]].add(pny);
-
-		
-		id_person[pny] = null;
 
 		return(1); 
 	}
@@ -340,11 +336,12 @@ public class PersonNumber implements Runnable {
 			initializePersonNumbers(connection);
 			
 			int highest_ID_Person = getHighestID_Person(connection);
-			id_person = new HashSet[highest_ID_Person + 1]; 
-			personNumber = new int[highest_ID_Person + 1]; 
+			//id_person = new HashSet[highest_ID_Person + 1]; 
+			//personNumber = new int[highest_ID_Person + 1]; 
+			aliases = new ArrayList[highest_ID_Person + 1]; 
 			
 			
-			HashSet<Integer> h = null;
+			ArrayList<Integer> h = null;
 			int prevPersonNumber = - 1;
 			//java.sql.Statement statement1 = connection.createStatement();
 			
@@ -366,33 +363,32 @@ public class PersonNumber implements Runnable {
 					if(r.getInt("person_number") != prevPersonNumber){
 						if(h != null){
 							//personNumberToP_IDs.put(prevPersonNumber, h);
-							if(h.size() == 0){
-								id_person[prevPersonNumber] = onlySelf;
+							if(h.size() == 1){
+								aliases[prevPersonNumber] = onlySelf;
 							}
 							else{
-								id_person[prevPersonNumber] = h;
-								h = new HashSet<Integer>();
+								for(Integer y1: h)
+									aliases[y1] = h;
+								h = new ArrayList<Integer>();
 							}
 						}
 						else
-							h = new HashSet<Integer>();
+							h = new ArrayList<Integer>();
 						prevPersonNumber = r.getInt("person_number");
 					}
 					
 					int id_person     = r.getInt("id_person");
 					int person_number = r.getInt("person_number");
 					
-					if(person_number != id_person)
-						h.add(r.getInt("id_person"));
-					personNumber[id_person] = person_number;
-					
+					h.add(r.getInt("id_person"));
 				}
 				if(h != null){
-					if(h.size() == 0){
-						id_person[prevPersonNumber] = onlySelf;
+					if(h.size() == 1){
+						aliases[prevPersonNumber] = onlySelf;
 					}
 					else{
-						id_person[prevPersonNumber] = h;
+						for(Integer y1: h)
+							aliases[y1] = h;
 					}
 					h = null;
 						

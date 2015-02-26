@@ -49,9 +49,9 @@ public class LinkInputAndMapping {
 		// Execute queries 
 
 		Statement stmt = null;
+		Connection conn = null;
 		try{
-			Connection conn = getConnection(args[1], args[2], args[3]);
-			stmt = conn.createStatement();
+			 conn = getConnection(args[1], args[2], args[3]);
 		}
 		catch(Exception e) {
 			System.out.println(e.getMessage());
@@ -62,6 +62,7 @@ public class LinkInputAndMapping {
 			System.out.println("\nRunning query: \n");
 			System.out.println(s);
 			try{
+				stmt = conn.createStatement();
 				stmt.executeUpdate(s);
 				SQLWarning SQLWarning = stmt.getWarnings();
 				while(SQLWarning != null){				

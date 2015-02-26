@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -22,18 +21,15 @@ import org.w3c.dom.stylesheets.LinkStyle;
 //import com.mysql.jdbc.PreparedStatement;
 //import com.mysql.jdbc.Statement;
 // SELECT * FROM links_match.personNumbers as X , links_cleaned.person_c as Y where X.id_person = Y.id_person order by person_number
-public class PersonNumber2 implements Runnable {
+public class PersonNumber3 implements Runnable {
 
 	//static HashMap<Integer, HashSet<Integer>>   personNumberToP_IDs     = new HashMap<Integer, HashSet<Integer>>();  
 	//static HashMap<Integer, Integer>            personNumbers = new HashMap<Integer, Integer>();
 	static String                               insStmt   = null;	
 	static int []                               personNumber = null;
-	static int [][]                             id_person = null;
-	static int []                               onlySelf = {-1};
-	static int []                               h = null;
+	static HashSet<Integer> []                  id_person = null;
+	static HashSet<Integer>                     onlySelf = new HashSet<Integer>();
 	static int                                  max_id_person = 100 * 1000 * 1000;
-	
-	static int                                  dd = 1000;  
 	
 	
     static BlockingQueue<ArrayList<Integer>>    queue = new LinkedBlockingQueue<ArrayList<Integer>>(1024);
@@ -63,14 +59,11 @@ public class PersonNumber2 implements Runnable {
     public void run(){
     	
     	//Connection connection = Utils.connect("//hebe/links_match?user=linksbeta&password=betalinks");
-    	System.out.println("In run 1");
-
     	Connection connection = Utils.connect(Constants.links_ids);
     	String name = Thread.currentThread().getName();
-    	System.out.println("In run 2");
+    	
     	while(true){
-        	System.out.println("In run 3, number written = " + personNumbersWritten);
-
+    		
     		ArrayList<Integer> values = null;
 			try {
 				 values = queue.take();
@@ -108,7 +101,7 @@ public class PersonNumber2 implements Runnable {
 		
 		int totalCount = 0;
 		int effectiveCount = 0;
-		int pageSize = 1 * 1000 * 100;
+		int pageSize = 1 * 1000 * 1000;
 		for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 			try {
 				java.sql.Statement statement = connection.createStatement();
@@ -183,7 +176,7 @@ public class PersonNumber2 implements Runnable {
 		ArrayList<Thread> a = new ArrayList<Thread>();
 		
 		for(int i = 0; i < numberOfThreads; i++){
-			Thread p = new Thread(new PersonNumber2());
+			Thread p = new Thread(new PersonNumber3());
 			p.start();
 			a.add(p);
 		}
@@ -289,140 +282,69 @@ public class PersonNumber2 implements Runnable {
 	
 	
 	private static int add(int x, int y){
-
-		//if(dd++ > 1000000) System.exit(0);
-		
-		boolean deb = true;
-		int t = 1;
 		
 		if(x >= max_id_person  || y >= max_id_person) return(0);
 		if(x == 0      || y == 0 ) return(0);
 
-
+		
 		if(personNumber[x] == personNumber[y]) return(0);	
 
-
+		
 		if(personNumber[x] == 0 || personNumber[y] == 0){
-
+			
 			System.out.println("Unknown id_person in links_base ");
 			return(0);			
 		}
-
-
-		if(id_person[personNumber[x]] == null){
-			System.out.println("id_person[personNumber[x]] = null voor x");
-			System.exit(0);
-		}
-		if(id_person[personNumber[y]] == null){
-			System.out.println("id_person[personNumber[y]] = null voor y");
-			System.exit(0);
-		}
-
-		if(deb && dd%t == 0){
-		System.out.println();
-		System.out.println("x = " + x + " y = " + y);
-		System.out.println("px = " + personNumber[x] + " py = " + personNumber[y]);
-		
-		System.out.println("id_person[personNumber[x]]:");
-		for(int a: id_person[personNumber[x]]) System.out.println(a);
-		System.out.println("id_person[personNumber[y]]:");
-		for(int a: id_person[personNumber[y]]) System.out.println(a);
-
-		System.out.println();
-
-		}
-
-		h = new int[id_person[personNumber[x]].length + id_person[personNumber[y]].length + 1];
-		int hi = 0;
-		if(deb && dd%t == 0)
-		System.out.println("Dimension h = " + h.length);
 		
 
-		for(Integer i: id_person[personNumber[x]]){
-			if(i < 0) break;
-			h[hi++] = i;
-			
-		}
+	   if(id_person[personNumber[x]] == null){
+		   System.out.println("id_person[personNumber[x]] = 0 voor x");
+		   System.exit(0);
+	   }
+	   if(id_person[personNumber[y]] == null){
+		   System.out.println("id_person[personNumber[y]] = 0 voor y");
+		   System.exit(0);
+	   }
 		
-		h[hi++] = personNumber[personNumber[x]];  		
+	   HashSet<Integer> h = null;
+	   
+		if(id_person[personNumber[x]] == onlySelf){
+			h = new HashSet<Integer>();
+			id_person[personNumber[x]] = h;
+		}
 
-		if(deb){
-		System.out.println("h 1:");
-		for(int a: h) System.out.println(a);
-		}
-		
-		int py = personNumber[y];  // save this
-		
-		for(Integer i: id_person[py]){   
-			if(i < 0) break;
+	   int pny = personNumber[y];
+	   
+		for(Integer i: id_person[pny]){
 			personNumber[i] = personNumber[x];	
-			h[hi++] = i;
+			id_person[personNumber[x]].add(i);
 		}
-
-		if(deb){
-		System.out.println("h 2:");
-		for(int a: h) System.out.println(a);
-		}
-		// Always add implicit self
-
-
-        personNumber[py] = personNumber[x];  
-		h[hi++] = personNumber[py];  		
-		
-       // free this storage
-		
-		id_person[py] = null;
-
-		// copy to new array
+		personNumber[pny] =  personNumber[x]; // This is the implicit "Self". It must now be added explicitly
+		id_person[personNumber[x]].add(pny);
 
 		
-		
-		id_person[personNumber[x]] = new int[hi];
-        for(int j = 0; j < hi; j++){
-        	if(h[j] == 0) break;
-        	if(personNumber[x] != h[j])
-        		id_person[personNumber[x]][j] = h[j];
-        }
-        
-        int cnt = 0;
-        if(deb && dd%t == 0){
-    		System.out.println("px = " + personNumber[x] + " py = " + personNumber[y]);
+		id_person[pny] = null;
 
-        	System.out.println("id_person[personNumber[x]]:");
-        	for(int a: id_person[personNumber[x]]) 
-        		System.out.println(a);
-        	cnt++;	
-        }
-		//System.out.println("id_person[personNumber[y]]:");
-		//for(int a: id_person[personNumber[y]]) System.out.println(a);
-		
-        //if(cnt > 10) System.exit(0);
-		dd++;
-
-		//for(int a: id_person[personNumber[x]]) 
-			//if(a ==x) System.exit(8);
-		
 		return(1); 
 	}
-
+	
 	private static void initDB(Connection connection){		
-
+		
 		try {
 
 			// java.sql.Statement statement = connection.createStatement();
 
 			// Next two statements only first time
-
+			
 			createTable(connection);	
 			initializePersonNumbers(connection);
-
+			
 			int highest_ID_Person = getHighestID_Person(connection);
-			id_person    = new int[highest_ID_Person + 1][]; 
+			id_person = new HashSet[highest_ID_Person + 1]; 
 			personNumber = new int[highest_ID_Person + 1]; 
-
-
-			//int [] h = new int[100];
-			int hi = 0;
+			
+			
+			HashSet<Integer> h = null;
 			int prevPersonNumber = - 1;
 			//java.sql.Statement statement1 = connection.createStatement();
 			
@@ -442,35 +364,38 @@ public class PersonNumber2 implements Runnable {
 					
 					count++;
 					if(r.getInt("person_number") != prevPersonNumber){
-						//personNumberToP_IDs.put(prevPersonNumber, h);
-						if(prevPersonNumber > 0){
-							if(hi == 0){
+						if(h != null){
+							//personNumberToP_IDs.put(prevPersonNumber, h);
+							if(h.size() == 0){
 								id_person[prevPersonNumber] = onlySelf;
 							}
 							else{
-								id_person[prevPersonNumber] =  new int[hi];
-								for(int j = 0; j < hi; j++) id_person[prevPersonNumber][j] = h[j];
-								hi = 0;
+								id_person[prevPersonNumber] = h;
+								h = new HashSet<Integer>();
 							}
 						}
+						else
+							h = new HashSet<Integer>();
 						prevPersonNumber = r.getInt("person_number");
 					}
 					
 					int id_person     = r.getInt("id_person");
 					int person_number = r.getInt("person_number");
 					
-					if(person_number != id_person)  // do not add self
-						h[hi] = r.getInt("id_person");
+					if(person_number != id_person)
+						h.add(r.getInt("id_person"));
 					personNumber[id_person] = person_number;
 					
 				}
-				if(hi == 0){
-					id_person[prevPersonNumber] = onlySelf;
-				}
-				else{
-					id_person[prevPersonNumber] =  new int[hi];
-					for(int j = 0; j < hi; j++) id_person[prevPersonNumber][j] = h[j];
-					hi = 0;
+				if(h != null){
+					if(h.size() == 0){
+						id_person[prevPersonNumber] = onlySelf;
+					}
+					else{
+						id_person[prevPersonNumber] = h;
+					}
+					h = null;
+						
 				}
 				r.close();
 				connection.createStatement().close();

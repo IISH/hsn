@@ -141,7 +141,7 @@ public class RegistrationAddressStandardized {
 			setLandlord("Living in");
 				
 		Ref_Address  refAdd = Ref.getAddress(getStreet(), getQuarter(),	getPlace(), getBoat(), getBerth(), getInstitution(), getLandlord(), getOther());
-		if(refAdd != null && refAdd.getCode() != null && (refAdd.getCode().equalsIgnoreCase("j") == true || refAdd.getCode().equalsIgnoreCase("o") == true)){
+		if(refAdd != null && refAdd.getCode() != null && (refAdd.getCode().equalsIgnoreCase("y") == true)){
 			
 			setStreet(refAdd.getStreet());
 			setQuarter(refAdd.getQuarter());
@@ -187,7 +187,7 @@ public class RegistrationAddressStandardized {
 		
 		if(getNumber() != null && getNumber().trim().length() != 0){
 			Ref_Housenumber  refHousenumber = Ref.getHousenumber(getNumber());
-			if(refHousenumber != null && refHousenumber.getCode() != null && (refHousenumber.getCode().equalsIgnoreCase("j") == true || refHousenumber.getCode().equalsIgnoreCase("o") == true)){
+			if(refHousenumber != null && refHousenumber.getCode() != null && (refHousenumber.getCode().equalsIgnoreCase("y") == true)){
 				setNumber(refHousenumber.getHousenumber());
 			}
 			else{
@@ -206,7 +206,7 @@ public class RegistrationAddressStandardized {
 
 		if(getAddition() != null && getAddition().trim().length() != 0){
 			Ref_Housenumberaddition  refHousenumberaddition = Ref.getHousenumberaddition(getAddition());
-			if(refHousenumberaddition != null && refHousenumberaddition.getCode() != null && (refHousenumberaddition.getCode().equalsIgnoreCase("j") == true || refHousenumberaddition.getCode().equalsIgnoreCase("o") == true)){
+			if(refHousenumberaddition != null && refHousenumberaddition.getCode() != null && (refHousenumberaddition.getCode().equalsIgnoreCase("y") == true)){
 				setAddition(refHousenumberaddition.getAddition());
 			}
 			else{

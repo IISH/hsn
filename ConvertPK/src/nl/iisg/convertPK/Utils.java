@@ -338,7 +338,7 @@ public class Utils {
 			
 		Ref_FamilyName familyName = Ref.getFamilyName(original);      // See if familyName is already in our list
 		if(familyName != null){                                       // If it is...
-			if(familyName.getCode().equalsIgnoreCase("J"))            // .. See if it has been validated (by HSN Staff)
+			if(familyName.getCode().equalsIgnoreCase("Y"))            // .. See if it has been validated (by HSN Staff)
 				return familyName.getName(); 	    				  // Use the standardized value
 			else                                                      // It is there, but not validated    
 				return original; 							          // Use the original value instead of the standard 
@@ -366,7 +366,7 @@ public class Utils {
 			
 		Ref_FirstName firstName = Ref.getFirstName(original);        // See if firstName is already in our list
 		if(firstName != null){                                       // If it is...
-			if(firstName.getCode().equalsIgnoreCase("J"))            // .. See if it has been validated (by HSN Staff)
+			if(firstName.getCode().equalsIgnoreCase("Y"))            // .. See if it has been validated (by HSN Staff)
 				return firstName.getName().trim();   				 // Use the standardized value
 			else                                                     // It is there, but not validated    
 				return original; 							         // Use the original value instead of the standard 
@@ -392,7 +392,7 @@ public class Utils {
 
 		Ref_Prefix prefix = Ref.getPrefix(original);        		 // See if prefix is already in our list
 		if(prefix != null){                                       	 // If it is...
-			if(prefix.getCode().equalsIgnoreCase("J"))            	 // .. See if it has been validated (by HSN Staff)
+			if(prefix.getCode().equalsIgnoreCase("Y") )            	 // .. See if it has been validated (by HSN Staff)
 				return prefix.getPrefix(); 	    				 	 // Use the standardized value
 			else                                                     // It is there, but not validated    
 				return original; 							         // Use the original value instead of the standard 
@@ -423,7 +423,7 @@ public class Utils {
 		
 		Ref_Location location = Ref.getLocation(original);           // See if Location is already in our list
 		if(location != null){                                        // If it is...
-			if(location.getStandardCode().equalsIgnoreCase("J")){    // .. See if it has been validated (by HSN Staff)
+			if(location.getStandardCode().equalsIgnoreCase("Y")){    // .. See if it has been validated (by HSN Staff)
 				a.add(location.getLocation()); 	    				 // Use the standardized value
 				a.add(location.getLocationID());
 			}
@@ -461,7 +461,7 @@ public class Utils {
 		
 		Ref_Profession profession = Ref.getProfession(original);     // See if Profession is already in our list
 		if(profession != null){                                      // If it is...
-			if(profession.getCode().equalsIgnoreCase("J")){          // .. See if it has been validated (by HSN Staff)
+			if(profession.getCode().equalsIgnoreCase("Y")){          // .. See if it has been validated (by HSN Staff)
 				a.add(profession.getProfession()); 	    			 // Use the standardized value
 				a.add(profession.getProfessionID());
 			}
@@ -495,7 +495,7 @@ public class Utils {
 
 		Ref_Housenumber housenumber = Ref.getHousenumber(original);  // See if housenumber is already in our list
 		if(housenumber != null){                                     // If it is...
-			if(housenumber.getCode().equalsIgnoreCase("J"))          // .. See if it has been validated (by HSN Staff)
+			if(housenumber.getCode().equalsIgnoreCase("Y"))          // .. See if it has been validated (by HSN Staff)
 				return housenumber.getHousenumber(); 	    		 // Use the standardized value
 			else                                                     // It is there, but not validated    
 				return original; 							         // Use the original value instead of the standard 
@@ -521,7 +521,7 @@ public class Utils {
 
 		Ref_Housenumberaddition housenumberaddition = Ref.getHousenumberaddition(original);  // See if housenumberaddition is already in our list
 		if(housenumberaddition != null){       					                             // If it is...
-			if(housenumberaddition.getCode().equalsIgnoreCase("J"))					         // .. See if it has been validated (by HSN Staff)
+			if(housenumberaddition.getCode().equalsIgnoreCase("Y"))					         // .. See if it has been validated (by HSN Staff)
 				return housenumberaddition.getAddition(); 	    		 					 // Use the standardized value
 			else                                                     						 // It is there, but not validated    
 				return original; 							         						 // Use the original value instead of the standard 
