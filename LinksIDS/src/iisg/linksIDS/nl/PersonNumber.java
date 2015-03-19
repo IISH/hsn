@@ -15,6 +15,8 @@ import java.util.Map.Entry;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import javax.security.auth.login.AccountNotFoundException;
+
 import org.w3c.dom.stylesheets.LinkStyle;
 
 //import com.mysql.jdbc.Connection;
@@ -39,6 +41,7 @@ public class PersonNumber implements Runnable {
 	private static ArrayList<Integer>    		pLStop         = new ArrayList<Integer>(); 
 
     static final int                            numberOfThreads =  5;
+    static final int                            accepted_Levenshtein = 0;
     
 	private static String sp01                         = "%s";                
 	private static String sp02                         = sp01 + sp01;             
@@ -112,13 +115,28 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 				//		" where X.id_base = id_linksbase_1 and " +
 				//		"       Y.id_base = id_linksbase_2" + 
 				//		" limit " + i + ","  +  pageSize;
-				String select = "select X.ego_id, X.mother_id, X.father_id, X.partner_id, Y.ego_id, Y.mother_id, Y.father_id, Y.partner_id" +
-						" from links_match.matches as M, links_prematch.links_base as X,  links_prematch.links_base as Y " +
-						" where X.id_base = id_linksbase_1 and " +
-						"       Y.id_base = id_linksbase_2 and " + 
-						"      (M.id_match_process = 330 or M.id_match_process = 334) and " + 
-						"       M.id_matches >= " + i + " and " + 
-						"       M.id_matches < " + (i + pageSize) ;
+				String select = "select M.id_matches, " +  
+						"M.value_firstname_ego,  M.value_familyname_ego, X.ego_id,     Y.ego_id,    " + 
+						"M.value_firstname_mo ,  M.value_familyname_mo,  X.mother_id,  Y.mother_id, " +
+						"M.value_firstname_fa ,  M.value_familyname_fa,  X.father_id,  Y.father_id, " + 
+						"M.value_firstname_pa ,  M.value_familyname_pa,  X.partner_id, Y.partner_id  " +
+						" from "
+						+ " links_match.matches as M, "
+						+ " links_match.match_process as MP, "
+						+ " links_prematch.links_base as X, "
+						+ " links_prematch.links_base as Y " +
+						" where " + 
+						" (M.id_match_process = 339 or "
+						+ "M.id_match_process = 340 or "
+						+ "M.id_match_process = 341 or "
+						+ "M.id_match_process = 342 or "
+						+ " M.id_match_process = 343) and " +
+						//" (M.id_match_process = 339) and " +
+						" M.id_match_process = MP.id and " +
+						" X.id_base = id_linksbase_1 and " +
+						" Y.id_base = id_linksbase_2 and " + 
+						" M.id_matches >= " + i + "  and " + 
+						" M.id_matches <  " + (i + pageSize) ;
 				
 				System.out.println(select);
 
@@ -127,34 +145,79 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 				
 				
 				while (r.next()) {
+					
+					//System.out.println("match = "+ r.getInt("M.id_matches")) ;
 
-					int x = r.getInt("X.ego_id");
-					int y = r.getInt("Y.ego_id");
-					if(x != 0 && y != 0) 
-						effectiveCount += add(x, y);
+					String fies = r.getString("M.value_firstname_ego");
+					int    fie  = r.getInt   ("M.value_firstname_ego");
+					String faes = r.getString("M.value_familyname_ego");
+					int    fae  = r.getInt   ("M.value_familyname_ego");
+					
 
-					x = r.getInt("X.mother_id");
-					y = r.getInt("Y.mother_id"); 
+					if(fies != null && faes != null && fie <= accepted_Levenshtein && fae <= accepted_Levenshtein){
 
-					if(x != 0 && y != 0) 
-						effectiveCount += add(x, y);
+						int x = r.getInt("X.ego_id");
+						int y = r.getInt("Y.ego_id");
+						if(x != 0 && y != 0) 
+							effectiveCount += add(x, y);
+					}
 
-					x = r.getInt("X.father_id");
-					y = r.getInt("Y.father_id");
 
-					if(x != 0 && y != 0) 
-						effectiveCount += add(x, y);
+					
+					String fims = r.getString("M.value_firstname_mo");
+					int    fim  = r.getInt   ("M.value_firstname_mo");
+					String fams = r.getString("M.value_familyname_mo");
+					int    fam  = r.getInt   ("M.value_familyname_mo");
 
-					x = r.getInt("X.partner_id");
-					y = r.getInt("Y.partner_id");
+					
+					
+					if(fims != null && fams != null && fim <= accepted_Levenshtein && fam <= accepted_Levenshtein){
 
-					if(x != 0 && y != 0) 
-						effectiveCount += add(x, y);
+
+						int x = r.getInt("X.mother_id");
+						int y = r.getInt("Y.mother_id"); 
+
+						if(x != 0 && y != 0) 
+							effectiveCount += add(x, y);
+					}
+					
+					String fifs = r.getString("M.value_firstname_fa");
+					int    fif  = r.getInt   ("M.value_firstname_fa");
+					String fafs = r.getString("M.value_familyname_fa");
+					int    faf  = r.getInt   ("M.value_familyname_fa");
+					
+
+					if(fifs != null && fafs != null && fif <= accepted_Levenshtein && faf <= accepted_Levenshtein){
+
+						int x = r.getInt("X.father_id");
+						int y = r.getInt("Y.father_id");
+
+						if(x != 0 && y != 0) 
+							effectiveCount += add(x, y);
+
+					}
+
+					String fips = r.getString("M.value_firstname_pa");
+					int    fip  = r.getInt   ("M.value_firstname_pa");
+					String faps = r.getString("M.value_familyname_pa");
+					int    fap  = r.getInt   ("M.value_familyname_pa");
+					
+
+					
+					if(fips != null && faps != null && fip <= accepted_Levenshtein && fap <= accepted_Levenshtein){
+
+						int x = r.getInt("X.partner_id");
+						int y = r.getInt("Y.partner_id");
+
+						if(x != 0 && y != 0) 
+							effectiveCount += add(x, y);
+
+					}
 
 					count++;		  
 					if(count % 1000 == 0)
 						System.out.println("Read " + count + " matches");
-					
+
 				}
 
 				totalCount += count;
@@ -191,6 +254,7 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 
 //		for (Entry<Integer, Integer> entry : personNumbers.entrySet()) {		
 		
+		
 	    for (int j = 0; j < aliases.length; j++) {
 	    	
 	    	
@@ -226,6 +290,10 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 			//executeQ(connection, insStmt);
 		}
 
+		
+		aliases = null;
+		
+		
 		try {
 			for(int j = 0; j < numberOfThreads; j++)
 				queue.put(pLStop);
@@ -290,6 +358,7 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 	
 	private static int add(int x, int y){
 		
+				
 		if(x >= max_id_person  || y >= max_id_person) return(0);
 		if(x == 0      || y == 0 ) return(0);
 
@@ -320,6 +389,7 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 			}
 		}
 		
+		if(aliases[1] != onlySelf) System.out.println(1/0);
 
 		return(1); 
 	}
@@ -334,7 +404,7 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 			
 			createTable(connection);	
 			initializePersonNumbers(connection);
-			
+									
 			int highest_ID_Person = getHighestID_Person(connection);
 			//id_person = new HashSet[highest_ID_Person + 1]; 
 			//personNumber = new int[highest_ID_Person + 1]; 
@@ -356,30 +426,34 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 				System.out.println(select);
 				//ResultSet r = statement.executeQuery(select);
 				ResultSet r = connection.createStatement().executeQuery(select);
-				
+
 				while (r.next()) {
-					
+
 					count++;
 					if(r.getInt("person_number") != prevPersonNumber){
-						if(h != null){
-							//personNumberToP_IDs.put(prevPersonNumber, h);
+
+						//personNumberToP_IDs.put(prevPersonNumber, h);
+
+						if(h == null){
+							h = new ArrayList<Integer>();													
+						}
+						else{
 							if(h.size() == 1){
 								aliases[prevPersonNumber] = onlySelf;
 							}
-							else{
+							else{							
 								for(Integer y1: h)
 									aliases[y1] = h;
-								h = new ArrayList<Integer>();
+
 							}
-						}
-						else
 							h = new ArrayList<Integer>();
+						}
 						prevPersonNumber = r.getInt("person_number");
 					}
-					
-					int id_person     = r.getInt("id_person");
-					int person_number = r.getInt("person_number");
-					
+
+					//int id_person     = r.getInt("id_person");
+					//int person_number = r.getInt("person_number");
+
 					h.add(r.getInt("id_person"));
 				}
 				if(h != null){
@@ -390,8 +464,8 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 						for(Integer y1: h)
 							aliases[y1] = h;
 					}
-					h = null;
-						
+					//h = null;
+
 				}
 				r.close();
 				connection.createStatement().close();
