@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.concurrent.LinkedBlockingQueue;
 
 //import com.mysql.jdbc.Connection;
@@ -39,6 +40,7 @@ public class LinksIDS{
 	
 	static HashMap<Pair, Integer>                      relations = null;
 	static HashMap<Integer, Integer>                   locations = null;
+	static HashSet<Integer>[]                          relationsX = null; 
 	static HashMap<Integer, Integer>                   locNo2Id_C = new HashMap<Integer, Integer>();
 	
 	private static String sp01                         = "%s";                
@@ -69,7 +71,8 @@ public class LinksIDS{
 
 		int c = 0;
 		int pageSize = 1000 * 1000;
-		
+
+
 		try{
 			   
 			System.out.println("Started");
@@ -105,12 +108,12 @@ public class LinksIDS{
 
 			// SELECT * from links_match.personNumbers as N,  links_cleaned.person_c as P, links_cleaned.registration_c as R where N.id_person = P.id_person and P.id_registration =  R.id_registration and (person_number > 0 and   person_number <=  100000) order by person_number
 
-			
+
 			
 			System.out.println("Processing Perons");
 			outer: for(int a = 0; a < 100*1000*1000; a += pageSize){
 				
-				//if(1==1) break;
+				//if(1==1) break outer;
 				//if(1==1)continue;
 
 				//String q = "SELECT * from links_ids.personNumbers as N,  links_cleaned.person_c   as P, links_cleaned.registration_c as R  " +
@@ -118,12 +121,13 @@ public class LinksIDS{
 				//		" and (person_number > " + a + " and " +	"  person_number <=  " + (a + pageSize)  + ")" + 
 				//		" order by person_number";
 
-				String q = "SELECT" +
+				String q = "SELECT   " +
 						" N.person_number," +
 						" P.firstname, " +
 						" P.familyname, " +
 						" P.prefix, " +
 						" P.sex, " +
+						
 						" P.birth_day, " +
 						" P.birth_month, " +
 						" P.birth_year, " +
@@ -134,15 +138,41 @@ public class LinksIDS{
 						" P.birth_month_max, " +
 						" P.birth_year_max, " +
 						" P.birth_location, " + 
+						
 						" P.death_day, " +
 						" P.death_month, " +
 						" P.death_year, " +
+						" P.death_day_min, " +
+						" P.death_month_min, " +
+						" P.death_year_min, " +
+						" P.death_day_max, " +
+						" P.death_month_max, " +
+						" P.death_year_max, " +
+
 						" P.death_location, " + 
 						" P.role, " + 
 						" P.stillbirth, " + 
 						" P.occupation, " + 
 						" P.religion, " + 
 						" P.civil_status, " + 
+						" P.mar_location, " + 
+						
+						" P.mar_day, " +
+						" P.mar_month, " +
+						" P.mar_year, " +
+						" P.mar_day_min, " +
+						" P.mar_month_min, " +
+						" P.mar_year_min, " +
+						" P.mar_day_max, " +
+						" P.mar_month_max, " +
+						" P.mar_year_max, " +
+
+						
+						" P.divorce_location, " + 
+						" P.divorce_day, " + 
+						" P.divorce_month, " + 
+						" P.divorce_year, " + 
+						
 						" P.living_location, " + 
 						" P.id_person_o, " + 
 						" P.id_source, " + 
@@ -247,6 +277,12 @@ public class LinksIDS{
 		//if(1==1) System.exit(0);
 		
 		relations = new HashMap<Pair, Integer>();
+		int highest_ID_Person = getHighestID_Person(connection); 
+		relationsX = new HashSet[highest_ID_Person + 1]; 
+		
+		String regType = null;
+		String [] certType = {"", "Birth Cert", "Marriage Cert", "Death Cert"};
+
 		
 
 		ArrayList<Integer> personNumbers = new ArrayList<Integer>();
@@ -312,9 +348,7 @@ public class LinksIDS{
 						"Witness"
 				};
 
-				String [] certType = {"", "B", "M", "D"};
-				String regType = null;
-						
+	
 				
 				
 				int previousRegistrationNumber = -1;
@@ -349,7 +383,7 @@ public class LinksIDS{
 
 
 						if(personNumbers.size() > 0)
-							writeIndivIndiv(personNumbers, roles, stillborns, registration_day, registration_month, registration_year, registration_maintype);
+							writeIndivIndiv(personNumbers, roles, stillborns, registration_day, registration_month, registration_year, regType);
 
 						// Add context for this source
 
@@ -363,28 +397,21 @@ public class LinksIDS{
 								regType,
 								locNo2Id_C.get(resultSet.getInt("registration_location_no")), 
 								resultSet.getInt("registration_year"), 
+								resultSet.getInt("registration_month"), 
+								resultSet.getInt("registration_day"), 
 								resultSet.getString("registration_seq"));
 
+						// Add context elemnets for
 						
 						previousRegistrationNumber = resultSet.getInt("id_registration");
 
-						// Save all registration_c columns
+						// Save some registration_c columns
 
-						id_source 					=  resultSet.getInt("id_source");
-						id_persist_source 			=  resultSet.getInt("id_persist_source");
-						id_persist_registration 	=  resultSet.getString("id_persist_registration");
-						id_orig_registration 		=  resultSet.getInt("id_orig_registration");
 						registration_maintype 		=  resultSet.getInt("registration_maintype");
-						//registration_type 			=  resultSet.getString("registration_type");
-						//extract 					=  resultSet.getString("extract");
-						//registration_location_no 	=  resultSet.getInt("registration_location_no");
-						//registration_spec 			=  resultSet.getInt("id_registration_spec");
-						//registration_church 		=  resultSet.getString("registration_church");
 						registration_day 			=  resultSet.getInt("registration_day");
 						registration_month 			=  resultSet.getInt("registration_month");
 						registration_year 			=  resultSet.getInt("registration_year");
 						registration_seq 			=  resultSet.getString("registration_seq");
-						//remarks 					=  resultSet.getString("remarks");
 						person_number 	     		=  resultSet.getInt("person_number");
 						role        	     		=  resultSet.getInt("role");
 						stillborn      	     		=  resultSet.getString("stillbirth");
@@ -418,7 +445,7 @@ public class LinksIDS{
 				}
 
 				if(personNumbers.size() > 0){
-					writeIndivIndiv(personNumbers, roles, stillborns, registration_day, registration_month, registration_year, registration_maintype);
+					writeIndivIndiv(personNumbers, roles, stillborns, registration_day, registration_month, registration_year, regType);
 					personNumbers.clear();
 					roles.clear();
 				}
@@ -469,6 +496,19 @@ public class LinksIDS{
 		
 		boolean deathDay = false;
 
+		int mar_day = 0;
+		int mar_month = 0;
+		int mar_year = 0;
+		int mar_day_min = 0;
+		int mar_month_min = 0;
+		int mar_year_min = 0;
+		int mar_day_max = 0;
+		int mar_month_max = 0;
+		int mar_year_max = 0;
+		
+		int divorce_day = 0;
+		int divorce_month = 0;
+		int divorce_year = 0;
 		
 		boolean fn = false;
 		boolean ln = false;
@@ -483,6 +523,10 @@ public class LinksIDS{
 		int registration_month = 0;
 		int registration_year = 0;
 		String registration_seq = null;
+		
+		String regType = "Unknown";
+		String [] certType = {"", "Birth Cert", "Marriage Cert", "Death Cert", "Divorce Cert"};
+
 
 		String stillborn = null;
 		
@@ -496,7 +540,11 @@ public class LinksIDS{
 
 			columnName = "registration_maintype";
 			if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) registration_maintype = new Integer (persons.get(i)[h.get(columnName)]);
+			
+			if(registration_maintype < certType.length)
+				regType = certType[registration_maintype];
 
+			
 			columnName = "registration_day";
 			if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) registration_day = new Integer (persons.get(i)[h.get(columnName)]);
 
@@ -544,7 +592,7 @@ public class LinksIDS{
 				String birthdate = "BIRTH_DATE";
 				if(stillborn != null && stillborn.trim().equals("1")) birthdate = "STILLBIRTH_DATE";
 
-				if(birth_year != 0 || birth_year_min != 0 || birth_year_max != 0){					
+				if(birth_year != 0){					
 					if(birth_year != 0){
 						
 						birth_day_min   = 0;
@@ -554,7 +602,7 @@ public class LinksIDS{
 						birth_month_max = 0;
 						birth_year_max  = 0;						
 					}
-					addIndiv(connection, person_number, "" + registration_maintype, birthdate, null,  0, "Declared", "Exact", birth_day, birth_month, birth_year,
+					addIndiv(connection, person_number, regType, birthdate, "",  0, "Declared", "Exact", birth_day, birth_month, birth_year,
 							birth_day_min, birth_month_min, birth_year_min,  birth_day_max, birth_month_max, birth_year_max);
 														
 					
@@ -571,7 +619,7 @@ public class LinksIDS{
 					Integer Id_C = locNo2Id_C.get(bll);
 					//System.out.println("birth_location = " + persons.get(i)[h.get(columnName)] + " Id_C = " + Id_C);
 					if(Id_C != null && Id_C != 0){
-						addIndiv(connection, person_number, "" + registration_maintype, "BIRTH_PLACE",   null, Id_C, "Declared", "Exact", 
+						addIndiv(connection, person_number, "" + regType, "BIRTH_LOCATION",   "", Id_C, "Declared", "Exact", 
 								birth_day, birth_month, birth_year,
 								birth_day_min, birth_month_min, birth_year_min,  birth_day_max, birth_month_max, birth_year_max);
 
@@ -584,7 +632,7 @@ public class LinksIDS{
 			if(fn == false){
 				columnName = "firstname";
 				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null && persons.get(i)[h.get(columnName)].trim().length() > 0){ 
-					addIndiv(connection, person_number, "" + registration_maintype, "FIRST_NAME",   persons.get(i)[h.get(columnName)].trim(), 0, "Declared", "Exact", birth_day, birth_month, birth_year,
+					addIndiv(connection, person_number, regType, "FIRST_NAME",   persons.get(i)[h.get(columnName)].trim(), 0, "Declared", "Exact", birth_day, birth_month, birth_year,
 							birth_day_min, birth_month_min, birth_year_min,  birth_day_max, birth_month_max, birth_year_max);
 					fn = true;
 				}
@@ -593,7 +641,7 @@ public class LinksIDS{
 			if(ln == false){
 				columnName = "familyname";
 				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null && persons.get(i)[h.get(columnName)].trim().length() > 0){ 
-					addIndiv(connection, person_number, "" + registration_maintype, "LAST_NAME",   persons.get(i)[h.get(columnName)].trim(), 0, "Declared", "Exact", birth_day, birth_month, birth_year,
+					addIndiv(connection, person_number, regType, "LAST_NAME",   persons.get(i)[h.get(columnName)].trim(), 0, "Declared", "Exact", birth_day, birth_month, birth_year,
 							birth_day_min, birth_month_min, birth_year_min,  birth_day_max, birth_month_max, birth_year_max);
 					ln = true;
 				}
@@ -602,7 +650,7 @@ public class LinksIDS{
 			if(pf == false){
 				columnName = "prefix";
 				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null && persons.get(i)[h.get(columnName)].trim().length() > 0) {
-					addIndiv(connection, person_number, "" + registration_maintype, "PREFIX_LAST_NAME",   persons.get(i)[h.get(columnName)].trim(), 0, "Declared", "Exact", birth_day, birth_month, birth_year,
+					addIndiv(connection, person_number, regType, "PREFIX_LAST_NAME",   persons.get(i)[h.get(columnName)].trim(), 0, "Declared", "Exact", birth_day, birth_month, birth_year,
 							birth_day_min, birth_month_min, birth_year_min,  birth_day_max, birth_month_max, birth_year_max);
 					pf = true;
 
@@ -612,94 +660,186 @@ public class LinksIDS{
 			if(sx == false){
 				columnName = "sex";
 				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null && persons.get(i)[h.get(columnName)].trim().length() > 0){ 
-					addIndiv(connection, person_number, "" + registration_maintype, "SEX",   persons.get(i)[h.get(columnName)].trim(), 0, "Declared", "Exact", birth_day, birth_month, birth_year,
+					addIndiv(connection, person_number, regType, "SEX",   persons.get(i)[h.get(columnName)].trim(), 0, "Declared", "Exact", birth_day, birth_month, birth_year,
 							birth_day_min, birth_month_min, birth_year_min,  birth_day_max, birth_month_max, birth_year_max);
 					sx = true;
 				}
 			}
 
-			if(deathDay == false){
-				
-				columnName = "death_day";
-				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) death_day = new Integer (persons.get(i)[h.get(columnName)]);
+			if(registration_maintype == 3){
 
-				columnName = "death_month";
-				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) death_month = new Integer (persons.get(i)[h.get(columnName)]);
+				if(deathDay == false){
 
-				columnName = "death_year";
-				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) death_year = new Integer (persons.get(i)[h.get(columnName)]);
+					columnName = "death_day";
+					if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) death_day = new Integer (persons.get(i)[h.get(columnName)]);
 
-				columnName = "death_day_min";
-				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) death_day_min = new Integer (persons.get(i)[h.get(columnName)]);
+					columnName = "death_month";
+					if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) death_month = new Integer (persons.get(i)[h.get(columnName)]);
 
-				columnName = "death_month_min";
-				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) death_month_min = new Integer (persons.get(i)[h.get(columnName)]);
+					columnName = "death_year";
+					if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) death_year = new Integer (persons.get(i)[h.get(columnName)]);
 
-				columnName = "death_year_min";
-				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) death_year_min = new Integer (persons.get(i)[h.get(columnName)]);
+					columnName = "death_day_min";
+					if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) death_day_min = new Integer (persons.get(i)[h.get(columnName)]);
 
-				columnName = "death_day_max";
-				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) death_day_max = new Integer (persons.get(i)[h.get(columnName)]);
+					columnName = "death_month_min";
+					if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) death_month_min = new Integer (persons.get(i)[h.get(columnName)]);
 
-				columnName = "death_month_max";
-				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) death_month_max = new Integer (persons.get(i)[h.get(columnName)]);
+					columnName = "death_year_min";
+					if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) death_year_min = new Integer (persons.get(i)[h.get(columnName)]);
 
-				columnName = "death_year_max";
-				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) death_year_max = new Integer (persons.get(i)[h.get(columnName)]);
+					columnName = "death_day_max";
+					if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) death_day_max = new Integer (persons.get(i)[h.get(columnName)]);
 
-				if(death_year != 0 || death_year_min != 0 || death_year_max != 0){
-					if(death_year != 0){						
-						death_day_min   = 0;
-						death_month_min = 0;
-						death_year_min  = 0;
-						death_day_max   = 0;
-						death_month_max = 0;
-						death_year_max  = 0;
+					columnName = "death_month_max";
+					if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) death_month_max = new Integer (persons.get(i)[h.get(columnName)]);
+
+					columnName = "death_year_max";
+					if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) death_year_max = new Integer (persons.get(i)[h.get(columnName)]);
+
+					if(death_year != 0){
+						if(death_year != 0){						
+							death_day_min   = 0;
+							death_month_min = 0;
+							death_year_min  = 0;
+							death_day_max   = 0;
+							death_month_max = 0;
+							death_year_max  = 0;
+						}
+
+						addIndiv(connection, person_number, regType, "DEATH_DATE",   "", 0, "Declared", "Exact", death_day, death_month, death_year,
+								death_day_min, death_month_min, death_year_min, death_day_max, death_month_max, death_year_max);
+
+						deathDay = true;
 					}
-					
-					addIndiv(connection, person_number, "" + registration_maintype, "DEATH_DATE",   null, 0, "Declared", "Exact", death_day, death_month, death_year,
-							death_day_min, death_month_min, death_year_min, death_day_max, death_month_max, death_year_max);
 
-					deathDay = true;
+
 				}
-								
+
+				if(dl == false){
+					columnName = "death_location";
+					if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null){
+						Integer pn = new Integer(persons.get(i)[h.get(columnName)]);
+						Integer Id_C = locNo2Id_C.get(pn);
+						if(Id_C != null && Id_C != 0){
+							addIndiv(connection, person_number, regType, "DEATH_LOCATION",   "", Id_C, "Declared", "Exact", 
+									death_day, death_month, death_year,
+									death_day_min, death_month_min, death_year_min, death_day_max, death_month_max, death_year_max);
+
+							dl = true;
+						}
+
+					}
+				}
 
 			}
 			
-			if(dl == false){
-				columnName = "death_location";
+			if(registration_maintype == 4){
+
+				columnName = "divorce_day";
+				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) mar_day = new Integer (persons.get(i)[h.get(columnName)]);
+
+				columnName = "divorce_month";
+				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) mar_month = new Integer (persons.get(i)[h.get(columnName)]);
+
+				columnName = "divorce_year";
+				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) mar_year = new Integer (persons.get(i)[h.get(columnName)]);
+
+				if(mar_year != 0)
+					addIndiv(connection, person_number, regType, "DIVORCE_DATE",   "", 0, "Declared", "Exact", divorce_day, divorce_month, divorce_year,	0, 0, 0, 0, 0, 0);
+
+
+				columnName = "divorce_location";
 				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null){
 					Integer pn = new Integer(persons.get(i)[h.get(columnName)]);
 					Integer Id_C = locNo2Id_C.get(pn);
-					if(Id_C != null && Id_C != 0){
-						addIndiv(connection, person_number, "" + registration_maintype, "DEATH_PLACE",   null, Id_C, "Declared", "Exact", 
-								death_day, death_month, death_year,
-								death_day_min, death_month_min, death_year_min, death_day_max, death_month_max, death_year_max);
+					if(Id_C != null && Id_C != 0)
+						addIndiv(connection, person_number, regType, "DIVORCE_LOCATION",   "", Id_C, "Declared", "Exact", divorce_day, divorce_month, divorce_year,	0, 0, 0, 0, 0, 0);
 
-						dl = true;
+
+
+
+				}
+			}
+
+			if(registration_maintype == 2){
+
+				columnName = "mar_day";
+				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) mar_day = new Integer (persons.get(i)[h.get(columnName)]);
+
+				columnName = "mar_month";
+				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) mar_month = new Integer (persons.get(i)[h.get(columnName)]);
+
+				columnName = "mar_year";
+				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) mar_year = new Integer (persons.get(i)[h.get(columnName)]);
+
+				columnName = "mar_day_min";
+				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) mar_day_min = new Integer (persons.get(i)[h.get(columnName)]);
+
+				columnName = "mar_month_min";
+				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) mar_month_min = new Integer (persons.get(i)[h.get(columnName)]);
+
+				columnName = "mar_year_min";
+				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) mar_year_min = new Integer (persons.get(i)[h.get(columnName)]);
+
+				columnName = "mar_day_max";
+				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) mar_day_max = new Integer (persons.get(i)[h.get(columnName)]);
+
+				columnName = "mar_month_max";
+				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) mar_month_max = new Integer (persons.get(i)[h.get(columnName)]);
+
+				columnName = "mar_year_max";
+				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) mar_year_max = new Integer (persons.get(i)[h.get(columnName)]);
+
+
+				if(mar_year != 0){
+
+					if(mar_year != 0){						
+						mar_day_min   = 0;
+						mar_month_min = 0;
+						mar_year_min  = 0;
+						mar_day_max   = 0;
+						mar_month_max = 0;
+						mar_year_max  = 0;
 					}
+
+					addIndiv(connection, person_number, regType, "MARRIAGE_DATE",   "", 0, "Declared", "Exact", mar_day, mar_month, mar_year,
+							mar_day_min, mar_month_min, mar_year_min, mar_day_max, mar_month_max, mar_year_max);
+
+				}
+
+				columnName = "mar_location";
+				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null){
+					Integer pn = new Integer(persons.get(i)[h.get(columnName)]);
+					Integer Id_C = locNo2Id_C.get(pn);
+					if(Id_C != null && Id_C != 0)
+						addIndiv(connection, person_number, regType, "MARRIAGE_LOCATION",   "", Id_C, "Declared", "Exact", mar_day, mar_month, mar_year,	
+								mar_day_min, mar_month_min, mar_year_min, mar_day_max, mar_month_max, mar_year_max);
+
+
+
 
 				}
 			}
 
 			columnName = "occupation";
 			if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null && persons.get(i)[h.get(columnName)].trim().length() > 0)
-				addIndiv(connection, person_number, "" + registration_maintype, "OCCUPATION_STANDARD",   persons.get(i)[h.get(columnName)].trim(), 0, "Declared", "Exact", registration_day, registration_month, registration_year,0,0,0,0,0,0);
+				addIndiv(connection, person_number, regType, "OCCUPATION_STANDARD",   persons.get(i)[h.get(columnName)].trim(), 0, "Declared", "Exact", registration_day, registration_month, registration_year,0,0,0,0,0,0);
 
 			columnName = "religion";
 			if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null && persons.get(i)[h.get(columnName)].trim().length() > 0)
-				addIndiv(connection, person_number, "" + registration_maintype, "RELIGION_STANDARD",   persons.get(i)[h.get(columnName)].trim(), 0, "Declared", "Exact", registration_day, registration_month, registration_year,0,0,0,0,0,0);
+				addIndiv(connection, person_number, regType, "RELIGION_STANDARD",   persons.get(i)[h.get(columnName)].trim(), 0, "Declared", "Exact", registration_day, registration_month, registration_year,0,0,0,0,0,0);
 
 			columnName = "civil_status";
 			if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null && persons.get(i)[h.get(columnName)].trim().length() > 0)
-				addIndiv(connection, person_number, "" + registration_maintype, "CIVIL_STATUS",   persons.get(i)[h.get(columnName)].trim(), 0, "Declared", "Exact", registration_day, registration_month, registration_year,0,0,0,0,0,0);
+				addIndiv(connection, person_number, regType, "CIVIL_STATUS",   persons.get(i)[h.get(columnName)].trim(), 0, "Declared", "Exact", registration_day, registration_month, registration_year,0,0,0,0,0,0);
 
 
 			columnName = "living_location";
 			if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null && persons.get(i)[h.get(columnName)].trim().length() > 0){
 				Integer livingLocation = new Integer(persons.get(i)[h.get(columnName)]); 
 				Integer Id_C_l = locNo2Id_C.get(livingLocation);						
-				addIndivContext(connection, person_number, Id_C_l,  "" + registration_maintype, "LIVING_LOCATION", "Event", "Exact", registration_day, registration_month, registration_year);
+				addIndivContext(connection, person_number, Id_C_l,  regType, "LIVING_LOCATION", "Event", "Exact", registration_day, registration_month, registration_year);
 			}
 
 			// Special processing for HSN Start
@@ -713,7 +853,7 @@ public class LinksIDS{
 				if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) id_person_o = new Integer (persons.get(i)[h.get(columnName)]);
 				
 				if(id_person_o > 0)
-					addIndiv(connection, person_number, "" + registration_maintype, "HSN_IDENTIFIER",   "" + id_person_o, 0, "Declared", "Exact", registration_day, registration_month, registration_year,0,0,0,0,0,0);
+					addIndiv(connection, person_number, regType, "HSN_IDENTIFIER",   "" + id_person_o, 0, "Declared", "Exact", registration_day, registration_month, registration_year,0,0,0,0,0,0);
 				
 				
 			}
@@ -764,11 +904,17 @@ public class LinksIDS{
 		
 	}
 
-	public static void addIndivIndiv(Connection connection, int Id_I_1, int Id_I_2, int source, String relation, 
+	
+	
+	public static void addIndivIndiv(Connection connection, int Id_I_1, int Id_I_2, String source, String relation, 
 			String dateType, String estimation, int day, int month, int year){
+	
+		String missing = "";
+		if(year == 0)
+			missing = "Time_invariant";
 		
-		String t = String.format("(\"%d\",\"%d\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%d\",\"%d\",\"%d\"),",  
-				                    Id_I_1,  Id_I_2, "LINKS", "" + source, relation, dateType, estimation, day, month, year);
+		String t = String.format("(\"%d\",\"%d\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%d\",\"%d\",\"%d\",\"%s\"),",  
+				                    Id_I_1,  Id_I_2, "LINKS", "" + source, relation, dateType, estimation, day, month, year, missing);
 		
 		
 		iiList.add(t);
@@ -854,7 +1000,7 @@ public class LinksIDS{
 		String s = String.format(sp15.substring(0, 2 * iiList.size()), iiList.toArray());
 		iiList.clear();
 		s = s.substring(0, s.length() -1);
-		String u = "insert into links_ids.indiv_indiv (Id_I_1, Id_I_2, Id_D, Source, relation, date_type, estimation, day, month, year) values" + s;
+		String u = "insert into links_ids.indiv_indiv (Id_I_1, Id_I_2, Id_D, Source, relation, date_type, estimation, day, month, year, Missing) values" + s;
 			
    		Utils.executeQ(connection, u);
 	}
@@ -907,7 +1053,7 @@ public class LinksIDS{
 
 		
 	static void writeIndivIndiv(ArrayList<Integer> personNumbers, ArrayList<Integer> roles, ArrayList<String> stillborns,  
-			int registration_day, int registration_month, int registration_year, int source){
+			int registration_day, int registration_month, int registration_year, String source){
 		
 		// 1 Child 
 		// 2 Mother
@@ -995,23 +1141,23 @@ public class LinksIDS{
 			String rel = "Child";
 			if(stillborn) rel = "Stillbirth-child";
 			
-			addIi(x[1], x[2], rel, source);
-			addIi(x[1], x[3], rel, source);
+			addIi(x[1], x[2], rel, source, 0, 0, 0);
+			addIi(x[1], x[3], rel, source, 0, 0, 0);
 		}
 
 		if(x[2] != 0){
 			//addIi(x[2], x[1], "Mother and Child", source);
 			//addIi(x[2], x[10], "Mother and Child", source);
-			addIi(x[2], x[1], "Mother", source);
-			addIi(x[2], x[10], "Mother", source);
+			addIi(x[2], x[1], "Mother", source, 0, 0, 0);
+			addIi(x[2], x[10], "Mother", source, 0, 0, 0);
 			
 		}
 
 		if(x[3] != 0){
 			//addIi(x[3], x[1], "Father and Child", source);
 			//addIi(x[3], x[10], "Father and Child", source);
-			addIi(x[3], x[1], "Father", source);
-			addIi(x[3], x[10], "Father", source);
+			addIi(x[3], x[1], "Father", source, 0, 0, 0);
+			addIi(x[3], x[10], "Father", source, 0, 0, 0);
 			
 		}
 
@@ -1021,25 +1167,25 @@ public class LinksIDS{
 			//addIi(x[4], x[7], "Bride and Groom", source);
 			//addIi(x[4], x[8], "Daughter-in-law and Mother-in-law", source);
 			//addIi(x[4], x[9], "Daughter-in-law and Father-in-law", source);
-			addIi(x[4], x[5], "Child", source);
-			addIi(x[4], x[6], "Child", source);
-			addIi(x[4], x[7], "Bride", source);
-			addIi(x[4], x[8], "Daughter-in-law", source);
-			addIi(x[4], x[9], "Daughter-in-law", source);
+			addIi(x[4], x[5], "Child", source, 0, 0, 0);
+			addIi(x[4], x[6], "Child", source, 0, 0, 0);
+			addIi(x[4], x[7], "Bride", source, registration_year, registration_month, registration_day);
+			addIi(x[4], x[8], "Daughter-in-law", source, registration_year, registration_month, registration_day);
+			addIi(x[4], x[9], "Daughter-in-law", source, registration_year, registration_month, registration_day);
 		}
 
 		if(x[5] != 0){
 			//addIi(x[5], x[4], "Mother and Child", source);
 			//addIi(x[5], x[7], "Mother-in-law and Son-in-law", source);
-			addIi(x[5], x[4], "Mother", source);
-			addIi(x[5], x[7], "Mother-in-law", source);
+			addIi(x[5], x[4], "Mother", source, 0, 0, 0);
+			addIi(x[5], x[7], "Mother-in-law", source, registration_year, registration_month, registration_day);
 		}
 
 		if(x[6] != 0){
 			//addIi(x[6], x[4], "Father and Child", source);
 			//addIi(x[6], x[7], "Father-in-law and Son-in-law", source);
-			addIi(x[6], x[4], "Father", source);
-			addIi(x[6], x[7], "Father-in-law", source);
+			addIi(x[6], x[4], "Father", source, 0, 0, 0);
+			addIi(x[6], x[7], "Father-in-law", source, registration_year, registration_month, registration_day);
 		}
 
 		if(x[7] != 0){
@@ -1048,61 +1194,80 @@ public class LinksIDS{
 			//addIi(x[7], x[4], "Groom and Bride", source);
 			//addIi(x[7], x[5], "Son-in-law and Mother-in-law", source);
 			//addIi(x[7], x[6], "Son-in-law and Father-in-law", source);
-			addIi(x[7], x[8], "Child", source);
-			addIi(x[7], x[9], "Child", source);
-			addIi(x[7], x[4], "Groom", source);
-			addIi(x[7], x[5], "Son-in-law", source);
-			addIi(x[7], x[6], "Son-in-law", source);
+			addIi(x[7], x[8], "Child", source, 0, 0, 0);
+			addIi(x[7], x[9], "Child", source, 0, 0, 0);
+			addIi(x[7], x[4], "Groom", source, registration_year, registration_month, registration_day);
+			addIi(x[7], x[5], "Son-in-law", source, registration_year, registration_month, registration_day);
+			addIi(x[7], x[6], "Son-in-law", source, registration_year, registration_month, registration_day);
 		}
 
 		if(x[8] != 0){
 			//addIi(x[8], x[7], "Mother and Child", source);
 			//addIi(x[8], x[4], "Mother-in-law and Daughter-in-law", source);
-			addIi(x[8], x[7], "Mother", source);
-			addIi(x[8], x[4], "Mother-in-law", source);
+			addIi(x[8], x[7], "Mother", source, 0, 0, 0);
+			addIi(x[8], x[4], "Mother-in-law", source, registration_year, registration_month, registration_day);
 		}
 
 		if(x[9] != 0){
 			//addIi(x[9], x[7], "Father and Child", source);
 			//addIi(x[9], x[4], "Father-in-law and Daughter-in-law", source);
-			addIi(x[9], x[7], "Father", source);
-			addIi(x[9], x[4], "Father-in-law", source);
+			addIi(x[9], x[7], "Father", source, 0, 0, 0);
+			addIi(x[9], x[4], "Father-in-law", source, registration_year, registration_month, registration_day);
 		}
 
 		if(x[10] != 0){
 			//addIi(x[10], x[2], "Child and Mother", source);
 			//addIi(x[10], x[3], "Child and Father", source);
 			//addIi(x[10], x[11], "Spouse and spouse", source);
-			addIi(x[10], x[2], "Child", source);
-			addIi(x[10], x[3], "Child", source);
-			addIi(x[10], x[11], "Spouse", source);
+			addIi(x[10], x[2], "Child", source, 0, 0, 0);
+			addIi(x[10], x[3], "Child", source, 0, 0, 0);
+			addIi(x[10], x[11], "Spouse", source, registration_year, registration_month, registration_day);
 		}
 
 		if(x[11] != 0){
 			//addIi(x[11], x[10], "Spouse and spouse", source);
-			addIi(x[11], x[10], "Spouse", source);
+			addIi(x[11], x[10], "Spouse", source, registration_year, registration_month, registration_day);
 		}
 
 		
 		
 	}
 	
-	static void addIi(int personNumber1, int personNumber2, String relation, int source){
+	static void addIi(int personNumber1, int personNumber2, String relation, String source, int year, int month, int day){
+		
+		
+		
+		
 		
 		if(personNumber1 == 0 || personNumber2 == 0) return;
 		
-		Pair p = new Pair();
-		p.x = personNumber1;
-		p.y = personNumber2;
 		
-		if(!relations.containsKey(p)){			
-			relations.put(p, -1);
-			addIndivIndiv(connection, personNumber1, personNumber2, source, relation, "Event", "Exact", 0, 0, 0);
+		String[] s = {"Father-in-law", "Mother-in-law", "Son-in-law", "Daughter-in-law", "Bride", "Groom"};
+		
+		boolean nodub = true;
+		for(String r: s)
+			if(r.equalsIgnoreCase(relation)){
+				addIndivIndiv(connection, personNumber1, personNumber2, source, relation, "Event", "Exact", day, month, year);
+				return;
+			}
+		
+		
+		
+		
+		
+		if(relationsX[personNumber1] == null)
+			relationsX[personNumber1] = new HashSet<Integer>();
+		
+		if(!relationsX[personNumber1].contains(personNumber2)){
+			addIndivIndiv(connection, personNumber1, personNumber2, source, relation, "Event", "Exact", day, month, year);
+			relationsX[personNumber1].add(personNumber2);
 		}
-		
+
 	}
 	
 	static void populateContext(){
+		
+		System.out.println("Populate Context 1");
 	
 		Connection connection_ref = null;
 		try{
@@ -1302,7 +1467,31 @@ public class LinksIDS{
 		
 		flushContext(connection);
 		flushContextContext(connection);
-		Utils.closeConnection(connection_ref);	
+		Utils.closeConnection(connection_ref);
+		System.out.println("Populate Context 2");
+
+	}
+	
+	private static int getHighestID_Person(Connection connection){
+		
+		System.out.println("Identifying highest id_person");
+		ResultSet r = null;
+		try {
+			r = connection.createStatement().executeQuery("select max(id_person) as m FROM links_ids.personNumbers");
+			while (r.next()) {
+				System.out.println("Highest id_person = " + r.getInt("m"));
+				return(r.getInt("m"));
+			}
+			r.close();
+			//connection.createStatement().close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(0);
+		}
+		
+		return -1;
+		
 	}
 
 }

@@ -110,17 +110,18 @@ public static void saveContext(Connection connection, ArrayList<String> cL, Arra
 	
 }
 
-public static int addCertificate(Connection connection, ArrayList<String> cL, ArrayList<String> ccL, String source, int Id_C_registration_location, int yearCertificate, String sequenceNumberCertificate){
+public static int addCertificate(Connection connection, ArrayList<String> cL, ArrayList<String> ccL, String source, int Id_C_registration_location, 
+		int yearCertificate, int month, int day, String sequenceNumberCertificate){
 	
 		
 		int Id_C_1 = getNewContextID();
 		
-		addContext(cL, connection, Id_C_1, source, "LEVEL", "Source", null, null, 0, 0, 0);		
-		addContext(cL, connection, Id_C_1, source, "NAME", source, null, null, 0, 0, 0);		
-		addContext(cL, connection, Id_C_1, source, "PERIOD", "" + yearCertificate, null, null, 0, 0, 0);		
-		addContext(cL, connection, Id_C_1, source, "SEQUENCE_NUMBER", sequenceNumberCertificate, null, null, 0, 0, 0);
+		addContext(cL, connection, Id_C_1, source, "LEVEL", "Source", "Event", "Exact", day, month, yearCertificate);		
+		addContext(cL, connection, Id_C_1, source, "NAME", source, "Event", "Exact", day, month, yearCertificate);		
+		addContext(cL, connection, Id_C_1, source, "PERIOD", "" + yearCertificate, "Event", "Exact", day, month, yearCertificate);		
+		addContext(cL, connection, Id_C_1, source, "SEQUENCE_NUMBER", sequenceNumberCertificate, "Event", "Exact", day, month, yearCertificate);
 		
-		addContextContext(ccL, connection, Id_C_1, Id_C_registration_location, source, "Source and Municipality",  null, null, 0, 0, 0);		
+		addContextContext(ccL, connection, Id_C_1, Id_C_registration_location, source, "Source and Municipality",  null, null,  yearCertificate, month, day);	
 
 		return Id_C_1;
 	

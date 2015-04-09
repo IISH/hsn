@@ -5,7 +5,8 @@ public class Constants {
 	
 	//static String node = "//10.24.62.219/";  // Hebe
 	//static String node  = "//10.24.64.152/";
-	static String node  = "//10.24.64.158/";
+	//static String node  = "//10.24.64.158/";
+	static String node  = "//localhost/";
 
 	static String node2 = "//10.24.64.30/";
 	//static String node = "//localhost/";

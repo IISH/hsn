@@ -116,23 +116,16 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 				//		"       Y.id_base = id_linksbase_2" + 
 				//		" limit " + i + ","  +  pageSize;
 				String select = "select M.id_matches, " +  
-						"M.value_firstname_ego,  M.value_familyname_ego, X.ego_id,     Y.ego_id,    " + 
-						"M.value_firstname_mo ,  M.value_familyname_mo,  X.mother_id,  Y.mother_id, " +
-						"M.value_firstname_fa ,  M.value_familyname_fa,  X.father_id,  Y.father_id, " + 
-						"M.value_firstname_pa ,  M.value_familyname_pa,  X.partner_id, Y.partner_id  " +
+						" X.ego_id,     Y.ego_id,    " + 
+						" X.mother_id,  Y.mother_id,  M.value_familyname_mo," +
+						" X.father_id,  Y.father_id,  M.value_familyname_fa," + 
+						" X.partner_id, Y.partner_id, M.value_familyname_pa" +
 						" from "
 						+ " links_match.matches as M, "
-						+ " links_match.match_process as MP, "
 						+ " links_prematch.links_base as X, "
 						+ " links_prematch.links_base as Y " +
 						" where " + 
-						" (M.id_match_process = 339 or "
-						+ "M.id_match_process = 340 or "
-						+ "M.id_match_process = 341 or "
-						+ "M.id_match_process = 342 or "
-						+ " M.id_match_process = 343) and " +
-						//" (M.id_match_process = 339) and " +
-						" M.id_match_process = MP.id and " +
+						" M.ids = 'y' and " +
 						" X.id_base = id_linksbase_1 and " +
 						" Y.id_base = id_linksbase_2 and " + 
 						" M.id_matches >= " + i + "  and " + 
@@ -143,75 +136,36 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 				ResultSet r = statement.executeQuery(select);
 				int count = 0;
 				
+				int x = 0;
+				int y = 0;
 				
 				while (r.next()) {
-					
-					//System.out.println("match = "+ r.getInt("M.id_matches")) ;
 
-					String fies = r.getString("M.value_firstname_ego");
-					int    fie  = r.getInt   ("M.value_firstname_ego");
-					String faes = r.getString("M.value_familyname_ego");
-					int    fae  = r.getInt   ("M.value_familyname_ego");
-					
+					x = r.getInt("X.ego_id");
+					y = r.getInt("Y.ego_id");
+					if(x != 0 && y != 0) 
+						effectiveCount += add(x, y);
 
-					if(fies != null && faes != null && fie <= accepted_Levenshtein && fae <= accepted_Levenshtein){
+					if(r.getString("M.value_familyname_mo") != null){
+						x = r.getInt("X.mother_id");
+						y = r.getInt("Y.mother_id"); 
+						if(x != 0 && y != 0) 
+							effectiveCount += add(x, y);
+					}
 
-						int x = r.getInt("X.ego_id");
-						int y = r.getInt("Y.ego_id");
+					if(r.getString("M.value_familyname_fa") != null){
+						x = r.getInt("X.father_id");
+						y = r.getInt("Y.father_id");
 						if(x != 0 && y != 0) 
 							effectiveCount += add(x, y);
 					}
 
 
-					
-					String fims = r.getString("M.value_firstname_mo");
-					int    fim  = r.getInt   ("M.value_firstname_mo");
-					String fams = r.getString("M.value_familyname_mo");
-					int    fam  = r.getInt   ("M.value_familyname_mo");
-
-					
-					
-					if(fims != null && fams != null && fim <= accepted_Levenshtein && fam <= accepted_Levenshtein){
-
-
-						int x = r.getInt("X.mother_id");
-						int y = r.getInt("Y.mother_id"); 
-
+					if(r.getString("M.value_familyname_pa") != null){
+						x = r.getInt("X.partner_id");
+						y = r.getInt("Y.partner_id");
 						if(x != 0 && y != 0) 
 							effectiveCount += add(x, y);
-					}
-					
-					String fifs = r.getString("M.value_firstname_fa");
-					int    fif  = r.getInt   ("M.value_firstname_fa");
-					String fafs = r.getString("M.value_familyname_fa");
-					int    faf  = r.getInt   ("M.value_familyname_fa");
-					
-
-					if(fifs != null && fafs != null && fif <= accepted_Levenshtein && faf <= accepted_Levenshtein){
-
-						int x = r.getInt("X.father_id");
-						int y = r.getInt("Y.father_id");
-
-						if(x != 0 && y != 0) 
-							effectiveCount += add(x, y);
-
-					}
-
-					String fips = r.getString("M.value_firstname_pa");
-					int    fip  = r.getInt   ("M.value_firstname_pa");
-					String faps = r.getString("M.value_familyname_pa");
-					int    fap  = r.getInt   ("M.value_familyname_pa");
-					
-
-					
-					if(fips != null && faps != null && fip <= accepted_Levenshtein && fap <= accepted_Levenshtein){
-
-						int x = r.getInt("X.partner_id");
-						int y = r.getInt("Y.partner_id");
-
-						if(x != 0 && y != 0) 
-							effectiveCount += add(x, y);
-
 					}
 
 					count++;		  
