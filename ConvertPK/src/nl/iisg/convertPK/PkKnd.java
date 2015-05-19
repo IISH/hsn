@@ -920,7 +920,10 @@ public class PkKnd {
     				b35.setDynamicDataSequenceNumber(seqNoPr++);
 
     				b35.setStartDate(Common1.dateFromDayCount(date));
-    				b35.setEndDate(Common1.dateFromDayCount(date + increment - 1));
+    				if(seqNoPr <= getProfessions().size())
+    					b35.setEndDate(Common1.dateFromDayCount(date + increment - 1));
+    				else
+    					b35.setEndDate(b2pk.getEndDate());  // to make the last date equal the death date
 
     				date += increment;
 
@@ -929,6 +932,8 @@ public class PkKnd {
     					b2pk.getProfessions().add(b35); // Link B35_ST -> B2_ST
     				}
     			}
+    			
+    			
     		}
     	}
     	// Remarks of PK-Holder -> B4 (Remarks)

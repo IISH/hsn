@@ -494,7 +494,7 @@ public class PkAdres {
     	b6.setMunicipality((String)a.get(0));
 				
 		Ref_Address  refAdd = Ref.getAddress(b6.getStreet(), b6.getQuarter(), b6.getPlace(), b6.getBoat(), b6.getBerth(), b6.getInstitution(), b6.getLandlord(), b6.getOther());
-		if(refAdd != null && refAdd.getCode() != null && (refAdd.getCode().equalsIgnoreCase("y") == true)){
+		if(refAdd != null && refAdd.getCode() != null && (refAdd.getCode().equalsIgnoreCase("y") || refAdd.getCode().equalsIgnoreCase("u"))){
 			
 			b6.setStreet(refAdd.getStreet());
 			b6.setQuarter(refAdd.getQuarter());
@@ -533,7 +533,7 @@ public class PkAdres {
 		
 		if(b6.getNumber() != null && b6.getNumber().trim().length() != 0){
 			Ref_Housenumber  refHousenumber = Ref.getHousenumber(b6.getNumber());
-			if(refHousenumber != null && refHousenumber.getCode() != null && (refHousenumber.getCode().equalsIgnoreCase("y") == true)){
+			if(refHousenumber != null && refHousenumber.getCode() != null && (refHousenumber.getCode().equalsIgnoreCase("y") || refHousenumber.getCode().equalsIgnoreCase("u"))){
 				b6.setNumber(refHousenumber.getHousenumber());
 			}
 			else{
@@ -552,7 +552,7 @@ public class PkAdres {
 
 		if(b6.getAddition() != null && b6.getAddition().trim().length() != 0){
 			Ref_Housenumberaddition  refHousenumberaddition = Ref.getHousenumberaddition(b6.getAddition());
-			if(refHousenumberaddition != null && refHousenumberaddition.getCode() != null && (refHousenumberaddition.getCode().equalsIgnoreCase("y") == true)){
+			if(refHousenumberaddition != null && refHousenumberaddition.getCode() != null && (refHousenumberaddition.getCode().equalsIgnoreCase("y") || refHousenumberaddition.getCode().equalsIgnoreCase("y"))){
 				b6.setAddition(refHousenumberaddition.getAddition());
 			}
 			else{

@@ -19,6 +19,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="ref_religion")
+//@SQLInsert(sql = "INSERT INTO ref_religion (id_religion, standard_code, original, standard) VALUES (?, ?, ?, ?)");
 public class Ref_KG {
 	
   @Id@Column(name = "id_religion")   private int       id_religion;

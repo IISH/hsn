@@ -74,6 +74,7 @@ public class B4_ST {
     	//System.out.println("RP = " + getKeyToRP());
 
     	for(B2_ST psA: getPersons()){
+    		
 
     		int relToHeadA = 0; 
     		for(B313_ST pdsA: psA.getRelationsToPKHolder()){
@@ -110,8 +111,14 @@ public class B4_ST {
     	        			
     	        			relAB = relABa[0]; // male form
     	        			
-    	        			if(relABa.length == 2 && psA.getSex().equalsIgnoreCase("V"))
-        	        			relAB = relABa[1];  // female form
+    	        			//if(relABa.length == 2 && psA.getSex().equalsIgnoreCase("V")){
+
+    	        	    		//if(psA.getKeyToRP()  == 70269)
+    	        	    		//	System.out.println("relAB (m)= " + relAB);
+        	        			//relAB = relABa[1];  // female form
+        	        			//if(psA.getKeyToRP()  == 70269)
+        	        			//	System.out.println("relAB (v) = " + relAB);
+    	        			//}
     	        			
     	        			
     	        		}

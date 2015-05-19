@@ -59,9 +59,9 @@ public class B3_ST {
 		m.setMonthEntryHead((new Integer(getEntryDateHead().substring(3,5)).intValue()));
 		m.setYearEntryHead((new Integer(getEntryDateHead().substring(6,10)).intValue()));
 		
-		m.setDayEntryRP((new Integer(getPerson().getRegistration().getEntryDateRP().substring(0,2)).intValue()));
-		m.setMonthEntryRP((new Integer(getPerson().getRegistration().getEntryDateRP().substring(3,5)).intValue()));
-		m.setYearEntryRP((new Integer(getPerson().getRegistration().getEntryDateRP().substring(6,10)).intValue()));
+		//m.setDayEntryRP((new Integer(getPerson().getRegistration().getEntryDateRP().substring(0,2)).intValue()));
+		//m.setMonthEntryRP((new Integer(getPerson().getRegistration().getEntryDateRP().substring(3,5)).intValue()));
+		//m.setYearEntryRP((new Integer(getPerson().getRegistration().getEntryDateRP().substring(6,10)).intValue()));
 		
 		m.setKeyToRegistrationPersons(getKeyToRegistrationPersons());
 		m.setNatureOfPerson(getNatureOfPerson());

@@ -197,7 +197,7 @@ public class PersonStandardized {
 		if(name != null){
 			Ref_FamilyName f = Ref.getFamilyName(name);
 
-			if(f != null  && f.getCode() != null && (f.getCode().equalsIgnoreCase("y") == true) && f.getName() != null && f.getName().length() > 0){
+			if(f != null  && f.getCode() != null && (f.getCode().equalsIgnoreCase("y") || f.getCode().equalsIgnoreCase("u")) && f.getName() != null && f.getName().length() > 0){
 				name = f.getName();
 			}
 			else{

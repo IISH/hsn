@@ -205,10 +205,6 @@ public class Ref {
 		for(Ref_KG g: ref_KG){
 			if(g.getId_religion() > highest_ID)
 				highest_ID = g.getId_religion();
-			if(g.getDenomination() == null)
-				g.setDenomination(""); // sort cannot handle null pointer
-			else
-				g.setDenomination(g.getDenomination().trim());
 			count++;
 		}
 
@@ -218,7 +214,9 @@ public class Ref {
 		Collections.sort(ref_KG, new Comparator<Ref_KG>()
 				{
 			public int compare(Ref_KG kg1, Ref_KG kg2){
-				return (kg1.getDenomination().compareToIgnoreCase(kg2.getDenomination()));
+				String kg01 = kg1.getDenomination() != null ?  kg1.getDenomination() : "" ;
+				String kg02 = kg2.getDenomination() != null ?  kg2.getDenomination() : "" ;
+				return (kg01.compareToIgnoreCase(kg02));
 			}
 				});
 		
@@ -241,11 +239,6 @@ public class Ref {
 			
 			if(f.getLastNameID() > highest_ID)
 				highest_ID = f.getLastNameID();
-			if(f.getOriginal() == null)
-				f.setOriginal(""); // sort cannot handle null pointer
-			else
-				f.setOriginal(f.getOriginal().trim());
-			
 			count++;
 		}
 
@@ -255,7 +248,10 @@ public class Ref {
 		Collections.sort(ref_famName, new Comparator<Ref_FamilyName>()
 				{
 			public int compare(Ref_FamilyName f1, Ref_FamilyName f2){
-				return (f1.getOriginal().compareToIgnoreCase(f2.getOriginal()));
+				
+				String f01 = f1.getOriginal() != null ? f1.getOriginal() : "";
+				String f02 = f2.getOriginal() != null ? f2.getOriginal() : "";
+				return (f01.compareToIgnoreCase(f02));
 			}
 				});
 		
@@ -275,10 +271,6 @@ public class Ref {
 		for(Ref_FirstName f: ref_firstName){
 			if(f.getFirstNameID() > highest_ID)
 				highest_ID = f.getFirstNameID();
-			if(f.getOriginal() == null)
-				f.setOriginal(""); // sort cannot handle null pointer
-			else
-				f.setOriginal(f.getOriginal().trim());
 
 			count++;
 		}	
@@ -289,7 +281,9 @@ public class Ref {
 		Collections.sort(ref_firstName, new Comparator<Ref_FirstName>()
 				{
 			public int compare(Ref_FirstName f1, Ref_FirstName f2){
-				return (f1.getOriginal().compareToIgnoreCase(f2.getOriginal()));
+				String f01 = f1.getOriginal() != null ? f1.getOriginal() : "";
+				String f02 = f2.getOriginal() != null ? f2.getOriginal() : "";
+				return (f01.compareToIgnoreCase(f02));
 			}
 				});
 		
@@ -308,10 +302,6 @@ public class Ref {
 		for(Ref_Prefix p: ref_prefix){
 			if(p.getPrefixID() > highest_ID)
 				highest_ID = p.getPrefixID();
-			if(p.getOriginal() == null)
-				p.setOriginal(""); // sort cannot handle null pointer
-			else
-				p.setOriginal(p.getOriginal().trim());
 
 			count++;
 		}	
@@ -321,8 +311,10 @@ public class Ref {
 
 		Collections.sort(ref_prefix, new Comparator<Ref_Prefix>()
 				{
-			public int compare(Ref_Prefix p1, Ref_Prefix p2){
-				return (p1.getOriginal().compareToIgnoreCase(p2.getOriginal()));
+			public int compare(Ref_Prefix f1, Ref_Prefix f2){
+				String f01 = f1.getOriginal() != null ? f1.getOriginal() : "";
+				String f02 = f2.getOriginal() != null ? f2.getOriginal() : "";
+				return (f01.compareToIgnoreCase(f02));
 			}
 				});
 		
@@ -344,10 +336,6 @@ public class Ref {
 		for(Ref_Location f: ref_location){
 			if(f.getLocationID() > highest_ID)
 				highest_ID = f.getLocationID();
-			if(f.getOriginal() == null)
-				f.setOriginal(""); // sort cannot handle null pointer
-			else
-				f.setOriginal(f.getOriginal().trim());
 
 			count++; 
 		}
@@ -358,7 +346,9 @@ public class Ref {
 		Collections.sort(ref_location, new Comparator<Ref_Location>()
 				{
 			public int compare(Ref_Location l1, Ref_Location l2){
-				return (l1.getOriginal().compareToIgnoreCase(l2.getOriginal()));
+				String loc1 = l1.getOriginal() != null ? l1.getOriginal() : "";
+				String loc2 = l2.getOriginal() != null ? l2.getOriginal() : "";
+				return (loc1.compareToIgnoreCase(loc2));
 			}
 				});
 		
@@ -377,10 +367,6 @@ public class Ref {
 		for(Ref_Profession p: ref_profession){
 			if(p.getProfessionID() > highest_ID)
 				highest_ID = p.getProfessionID();
-			if(p.getOriginal() == null)
-				p.setOriginal(""); // sort cannot handle null pointer
-			else
-				p.setOriginal(p.getOriginal().trim());
 
 
 			count++;
@@ -390,8 +376,10 @@ public class Ref {
 
 		Collections.sort(ref_profession, new Comparator<Ref_Profession>()
 				{
-			public int compare(Ref_Profession p1, Ref_Profession p2){
-				return (p1.getOriginal().compareToIgnoreCase(p2.getOriginal()));
+			public int compare(Ref_Profession f1, Ref_Profession f2){
+				String f01 = f1.getOriginal() != null ? f1.getOriginal() : "";
+				String f02 = f2.getOriginal() != null ? f2.getOriginal() : "";
+				return (f01.compareToIgnoreCase(f02));
 			}
 				});
 		
@@ -438,12 +426,6 @@ public class Ref {
 			for(Ref_Housenumber h: ref_housenumber){
 				if(h.getHousenumberID() > highest_ID)
 					highest_ID = h.getHousenumberID();
-				if(h.getOriginal() == null)
-					h.setOriginal(""); // sort cannot handle null pointer
-				else
-					h.setOriginal(h.getOriginal().trim());
-
-
 					count++;
 			}
 		}
@@ -452,8 +434,10 @@ public class Ref {
 
 		Collections.sort(ref_housenumber, new Comparator<Ref_Housenumber>()
 				{
-			public int compare(Ref_Housenumber h1, Ref_Housenumber h2){
-				return (h1.getOriginal().compareToIgnoreCase(h2.getOriginal()));
+			public int compare(Ref_Housenumber f1, Ref_Housenumber f2){
+				String f01 = f1.getOriginal() != null ? f1.getOriginal() : "";
+				String f02 = f2.getOriginal() != null ? f2.getOriginal() : "";
+				return (f01.compareToIgnoreCase(f02));
 			}
 				});
 
@@ -475,12 +459,6 @@ public class Ref {
 			for(Ref_Housenumberaddition a: ref_housenumberaddition){
 				if(a.getHousenumberadditionID() > highest_ID)
 					highest_ID = a.getHousenumberadditionID();
-				if(a.getOriginal() == null)
-					a.setOriginal(""); // sort cannot handle null pointer
-				else
-					a.setOriginal(a.getOriginal().trim());
-
-
 				count++;
 			}
 		}
@@ -489,8 +467,10 @@ public class Ref {
 
 		Collections.sort(ref_housenumberaddition, new Comparator<Ref_Housenumberaddition>()
 				{
-			public int compare(Ref_Housenumberaddition h1, Ref_Housenumberaddition h2){
-				return (h1.getOriginal().compareToIgnoreCase(h2.getOriginal()));
+			public int compare(Ref_Housenumberaddition f1, Ref_Housenumberaddition f2){
+				String f01 = f1.getOriginal() != null ? f1.getOriginal() : "";
+				String f02 = f2.getOriginal() != null ? f2.getOriginal() : "";
+				return (f01.compareToIgnoreCase(f02));
 			}
 				});
 		
@@ -535,11 +515,6 @@ public class Ref {
 		for(Ref_Relation_B p: ref_relation_b){
 			if(p.getRelationID() > highest_ID)
 				highest_ID = p.getRelationID();
-			if(p.getNederlands() == null)
-				p.setNederlands(""); // sort cannot handle null pointer
-			else
-				p.setNederlands(p.getNederlands().trim());
-
 			count++;
 		}	
 
@@ -548,8 +523,10 @@ public class Ref {
 
 		Collections.sort(ref_relation_b, new Comparator<Ref_Relation_B>()
 				{
-			public int compare(Ref_Relation_B p1, Ref_Relation_B p2){
-				return (p1.getNederlands().compareToIgnoreCase(p2.getNederlands()));
+			public int compare(Ref_Relation_B f1, Ref_Relation_B f2){
+				String f01 = f1.getNederlands() != null ? f1.getNederlands() : "";
+				String f02 = f2.getNederlands() != null ? f2.getNederlands() : "";
+				return (f01.compareToIgnoreCase(f02));
 			}
 				});
 		
@@ -658,7 +635,7 @@ public class Ref {
 		//System.out.println("In addPrefix, origineel not null");
 
 		
-		if(getPrefix(kg.getDenomination()) != null)
+		if(getKG(kg.getDenomination()) != null)
 			return;
 		//System.out.println("In addPrefix, getPrefix = null");
 
@@ -935,6 +912,9 @@ public class Ref {
 
 
 	public static void addLocation(Ref_Location l){
+		
+		
+		System.out.println("add location " + l.getOriginal());
 		
 		if(l == null || l.getOriginal() == null || l.getOriginal().trim().length() == 0)
 			return;

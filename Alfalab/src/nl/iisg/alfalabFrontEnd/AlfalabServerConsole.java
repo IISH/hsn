@@ -27,6 +27,7 @@ import nl.iisg.ids03.*;
 import nl.iisg.ids04.PopulationRegisterToIDS;
 import nl.iisg.ids05.CivilCertificatesToIDS;
 import nl.iisg.ids06.PKToIDS;
+import nl.iisg.ids_init.IDS_INIT;
 import nl.iisg.ref.*;
 import word.api.interfaces.IDocument;
 import word.w2004.Document2004;
@@ -59,6 +60,8 @@ public class AlfalabServerConsole implements Runnable {
     private final static String MISC_PRINT_HSN_POP_REG_SELECTED = "miscPrintHSNPopRegSelected";
     private final static String RESET_TEMP_DIR = "resetTempDir";
     private final static String ADD_LINKS_DATA= "addLinksData";
+    private final static String INITIALISE_HSN = "initialiseHSN";
+
 
 
     //        private final static String INPUT_DIRECTORY = "C:\\Users\\cro\\Documents\\temp";
@@ -510,6 +513,25 @@ public class AlfalabServerConsole implements Runnable {
             
             workerThread = new Thread(ids);
             workerThread.start();
+
+        } else if (command.length() >= INITIALISE_HSN.length() && command.substring(0, INITIALISE_HSN.length()).equals(INITIALISE_HSN)) {
+ 
+        	String rest = null;
+        	if(command.length() > INITIALISE_HSN.length()){
+        		
+        		rest = command.substring(INITIALISE_HSN.length());
+            	//print("Rest: " + rest.trim() + ", length = " + rest.trim().length()); 
+        		
+        	}
+        	
+        	
+        	IDS_INIT ids_init = new IDS_INIT(out); 
+        	ids_init.setVersion(rest);
+        	
+                        
+            workerThread = new Thread(ids_init);
+            workerThread.start();
+
             
         } else if (command.equals(ADD_LINKS_DATA)) {
  

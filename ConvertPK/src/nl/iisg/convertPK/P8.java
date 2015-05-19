@@ -79,7 +79,7 @@ public class P8 {
     	// address
     	
 		Ref_Address  refAdd = Ref.getAddress(getP8opws(), null, getP8opwl(), null, null, null, null, null);
-		if(refAdd != null && refAdd.getCode() != null && (refAdd.getCode().equalsIgnoreCase("y") == true)){
+		if(refAdd != null && refAdd.getCode() != null && (refAdd.getCode().equalsIgnoreCase("y") || refAdd.getCode().equalsIgnoreCase("u"))){
 			
 			b6.setStreet(refAdd.getStreet());
 			b6.setQuarter(refAdd.getQuarter());
@@ -125,7 +125,7 @@ public class P8 {
 		
 		if(getP8opwh() != null && getP8opwh().trim().length() != 0){
 			Ref_Housenumber  refHousenumber = Ref.getHousenumber(b6.getNumber());
-			if(refHousenumber != null && refHousenumber.getCode() != null && (refHousenumber.getCode().equalsIgnoreCase("y") == true)){
+			if(refHousenumber != null && refHousenumber.getCode() != null && (refHousenumber.getCode().equalsIgnoreCase("y") || refHousenumber.getCode().equalsIgnoreCase("u"))){
 				b6.setNumber(refHousenumber.getHousenumber());
 			}
 			else{
@@ -161,7 +161,7 @@ public class P8 {
 
 		if(addition != null && addition.trim().length() != 0){
 			Ref_Housenumberaddition  refHousenumberaddition = Ref.getHousenumberaddition(b6.getAddition());
-			if(refHousenumberaddition != null && refHousenumberaddition.getCode() != null && (refHousenumberaddition.getCode().equalsIgnoreCase("y") == true)){
+			if(refHousenumberaddition != null && refHousenumberaddition.getCode() != null && (refHousenumberaddition.getCode().equalsIgnoreCase("y") || refHousenumberaddition.getCode().equalsIgnoreCase("u"))){
 				b6.setAddition(refHousenumberaddition.getAddition());
 			}
 			else{

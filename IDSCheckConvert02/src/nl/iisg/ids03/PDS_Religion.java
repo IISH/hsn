@@ -41,7 +41,7 @@ public class PDS_Religion extends PersonDynamicStandardized {
         if(pd.getDynamicData2() != null && pd.getDynamicData2().trim().length() > 0){
     		Ref_KG kg = Ref.getKG(pd.getDynamicData2().trim());
     		if(kg != null  && kg.getStandard() != null && kg.getStandard().trim().length() > 0 &&
-    				kg.getCode() != null && (kg.getCode().trim().equalsIgnoreCase("y"))){ 
+    				kg.getCode() != null && (kg.getCode().trim().equalsIgnoreCase("y") || kg.getCode().trim().equalsIgnoreCase("u"))){ 
     			// Special processing for Standard value "Ïdem"
     			if(kg.getStandard().trim().equalsIgnoreCase("Idem")){
     				

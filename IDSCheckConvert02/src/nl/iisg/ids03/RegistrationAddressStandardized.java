@@ -187,7 +187,7 @@ public class RegistrationAddressStandardized {
 		
 		if(getNumber() != null && getNumber().trim().length() != 0){
 			Ref_Housenumber  refHousenumber = Ref.getHousenumber(getNumber());
-			if(refHousenumber != null && refHousenumber.getCode() != null && (refHousenumber.getCode().equalsIgnoreCase("y") == true)){
+			if(refHousenumber != null && refHousenumber.getCode() != null && (refHousenumber.getCode().equalsIgnoreCase("y") ||refHousenumber.getCode().equalsIgnoreCase("u"))){
 				setNumber(refHousenumber.getHousenumber());
 			}
 			else{

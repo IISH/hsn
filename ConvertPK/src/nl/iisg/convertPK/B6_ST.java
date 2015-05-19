@@ -77,7 +77,7 @@ public class B6_ST {
 
 				
 		Ref_Address  refAdd = Ref.getAddress(getStreet(), getQuarter(),	getPlace(), getBoat(), getBerth(), getInstitution(), getLandlord(), getOther());
-		if(refAdd != null && refAdd.getCode() != null && (refAdd.getCode().equalsIgnoreCase("y") == true)){
+		if(refAdd != null && refAdd.getCode() != null && (refAdd.getCode().equalsIgnoreCase("y") == true || refAdd.getCode().equalsIgnoreCase("u") == true)){
 			
 			setStreet(refAdd.getStreet());
 			setQuarter(refAdd.getQuarter());
@@ -116,7 +116,7 @@ public class B6_ST {
 		
 		if(getNumber() != null && getNumber().trim().length() != 0){
 			Ref_Housenumber  refHousenumber = Ref.getHousenumber(getNumber());
-			if(refHousenumber != null && refHousenumber.getCode() != null && (refHousenumber.getCode().equalsIgnoreCase("y") == true)){
+			if(refHousenumber != null && refHousenumber.getCode() != null && (refHousenumber.getCode().equalsIgnoreCase("y") || refHousenumber.getCode().equalsIgnoreCase("u"))){
 				setNumber(refHousenumber.getHousenumber());
 			}
 			else{
@@ -135,7 +135,7 @@ public class B6_ST {
 
 		if(getAddition() != null && getAddition().trim().length() != 0){
 			Ref_Housenumberaddition  refHousenumberaddition = Ref.getHousenumberaddition(getAddition());
-			if(refHousenumberaddition != null && refHousenumberaddition.getCode() != null && (refHousenumberaddition.getCode().equalsIgnoreCase("y") == true)){
+			if(refHousenumberaddition != null && refHousenumberaddition.getCode() != null && (refHousenumberaddition.getCode().equalsIgnoreCase("y") ||refHousenumberaddition.getCode().equalsIgnoreCase("u"))){
 				setAddition(refHousenumberaddition.getAddition());
 			}
 			else{

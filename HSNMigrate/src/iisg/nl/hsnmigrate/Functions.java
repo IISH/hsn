@@ -448,7 +448,7 @@ public class Functions {
 				
 				Ref_FirstName f = Ref.getFirstName(name);
 				
-				if(f != null  && f.getCode() != null && (f.getCode().equalsIgnoreCase("y") == true) && f.getName() != null && f.getName().length() > 0){
+				if(f != null  && f.getCode() != null && (f.getCode().equalsIgnoreCase("y") || f.getCode().equalsIgnoreCase("u")) && f.getName() != null && f.getName().length() > 0){
 					result = result + f.getName() + " ";
 				}
 				else{
@@ -478,7 +478,7 @@ public class Functions {
 		if(name != null && name.trim().length() != 0){
 			Ref_FamilyName f = Ref.getFamilyName(name);
 
-			if(f != null  && f.getCode() != null && (f.getCode().equalsIgnoreCase("y") == true) && f.getName() != null && f.getName().length() > 0){
+			if(f != null  && f.getCode() != null && (f.getCode().equalsIgnoreCase("y") || f.getCode().equalsIgnoreCase("u")) && f.getName() != null && f.getName().length() > 0){
 				return f.getName();
 			}
 			else{
@@ -508,7 +508,7 @@ public class Functions {
 		if(prefix != null && prefix.trim().length() != 0){
 			Ref_Prefix p = Ref.getPrefix(prefix);
 
-			if(p != null  && p.getCode() != null && (p.getCode().equalsIgnoreCase("y") == true) && p.getPrefix() != null && p.getPrefix().length() > 0){
+			if(p != null  && p.getCode() != null && (p.getCode().equalsIgnoreCase("y") || p.getCode().equalsIgnoreCase("u")) && p.getPrefix() != null && p.getPrefix().length() > 0){
 				return p.getPrefix();
 			}
 			else{
@@ -536,7 +536,7 @@ public class Functions {
 		if(profession != null && profession.trim().length() != 0){
 			Ref_Profession p = Ref.getProfession(profession);
 			//System.out.println("Profession = " + p);
-			if(p != null  && p.getCode() != null && (p.getCode().equalsIgnoreCase("y") == true) && p.getProfession() != null && p.getProfession().length() > 0){
+			if(p != null  && p.getCode() != null && (p.getCode().equalsIgnoreCase("y") || p.getCode().equalsIgnoreCase("u")) && p.getProfession() != null && p.getProfession().length() > 0){
 				return p.getProfession();
 			}
 			else{
@@ -567,7 +567,7 @@ public class Functions {
 		if(location != null && location.trim().length() != 0){
 			Ref_Location l = Ref.getLocation(location);
 
-			if(l != null  && l.getStandardCode() != null && (l.getStandardCode().equalsIgnoreCase("y") == true) && l.getLocation() != null && l.getLocation().length() > 0){
+			if(l != null  && l.getStandardCode() != null && (l.getStandardCode().equalsIgnoreCase("y") || l.getStandardCode().equalsIgnoreCase("u")) && l.getLocation() != null && l.getLocation().length() > 0){
 				return l.getLocation();
 			}
 			else{

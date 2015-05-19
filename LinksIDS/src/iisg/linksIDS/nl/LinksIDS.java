@@ -392,14 +392,23 @@ public class LinksIDS{
 						if(registration_maintype < certType.length)
 							regType = certType[registration_maintype];
 
-						if(resultSet.getInt("registration_location_no") != 0)
+						System.out.println("registration_location_no = " + resultSet.getInt("registration_location_no"));
+						
+						if(resultSet.getString("registration_location_no") != null){
+
+							System.out.println("locNo2Id_C = " +  locNo2Id_C.get(resultSet.getInt("registration_location_no")));
+
+							if(locNo2Id_C.get(resultSet.getInt("registration_location_no")) != null){
+
 								Id_C = Contxt2.addCertificate(connection, cList, ccList, 
-								regType,
-								locNo2Id_C.get(resultSet.getInt("registration_location_no")), 
-								resultSet.getInt("registration_year"), 
-								resultSet.getInt("registration_month"), 
-								resultSet.getInt("registration_day"), 
-								resultSet.getString("registration_seq"));
+										regType,
+										locNo2Id_C.get(resultSet.getInt("registration_location_no")), 
+										resultSet.getInt("registration_year"), 
+										resultSet.getInt("registration_month"), 
+										resultSet.getInt("registration_day"), 
+										resultSet.getString("registration_seq"));
+							}
+						}
 
 						// Add context elemnets for
 						

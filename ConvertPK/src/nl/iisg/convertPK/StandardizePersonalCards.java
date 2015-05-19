@@ -316,6 +316,7 @@ public class StandardizePersonalCards implements Runnable {
         
         print("Reading reference tables... ");
         
+        Ref.loadKG();
         Ref.loadFamName();
         Ref.loadFirstName();
         Ref.loadPrefix();

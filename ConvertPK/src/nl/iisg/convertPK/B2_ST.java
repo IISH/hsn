@@ -265,9 +265,9 @@ public class B2_ST {
 		m.setYearEntryHead((new Integer(getRegistration().getEntryDateHead().substring(6,10)).intValue()));
 		
 		
-		m.setDayEntryRP((new Integer(getRegistration().getEntryDateRP().substring(0,2)).intValue()));
-		m.setMonthEntryRP((new Integer(getRegistration().getEntryDateRP().substring(3,5)).intValue()));
-		m.setYearEntryRP((new Integer(getRegistration().getEntryDateRP().substring(6,10)).intValue()));
+		//m.setDayEntryRP((new Integer(getRegistration().getEntryDateRP().substring(0,2)).intValue()));
+		//m.setMonthEntryRP((new Integer(getRegistration().getEntryDateRP().substring(3,5)).intValue()));
+		//m.setYearEntryRP((new Integer(getRegistration().getEntryDateRP().substring(6,10)).intValue()));
 		
 		m.setKeyToRegistrationPersons(getKeyToPersons());
 		m.setNatureOfPerson(getNatureOfPerson());

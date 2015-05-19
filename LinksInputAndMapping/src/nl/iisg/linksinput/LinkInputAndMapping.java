@@ -173,7 +173,19 @@ public class LinkInputAndMapping {
 		
 		
 
-		inputMapping = inputMapping.replaceAll("\r\n", " \r\n"); // Add blank before end of line  
+		//System.out.println(inputMapping);
+		//String s = inputMapping.replaceAll("[\n]", " \n"); // Add blank before end of line  WINDOWS!!!!
+		
+		inputMapping = inputMapping.replaceAll("[\n]", " \n"); // Add blank before end of line  UNIX!!!!
+
+		//System.out.println();
+		//System.out.println();
+		//System.out.println("Index = " + inputMapping.indexOf("\r\n"));
+
+		//System.out.println(s);
+
+		
+		//if(1==1) System.exit(0);
 		
 		// Check that input file sections are specified and in correct order
 		

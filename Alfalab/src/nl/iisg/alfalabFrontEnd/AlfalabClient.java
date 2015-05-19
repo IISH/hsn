@@ -37,6 +37,7 @@ public class AlfalabClient extends JFrame implements ActionListener {
     private final static String CIVIL_CERTS_TO_IDS= "civilCertsToIDS";
     private final static String ADD_LINKS_DATA= "addLinksData";
     private final static String BUILD_NEW_HSN = "buildNewHSN";
+    private final static String INITIALISE_HSN = "initialiseHSN";
     private final static String BUILD_EXTRACTION_SET_HSN_STANDARD = "buildExtractionSetHSNStandard";
     private final static String BUILD_EXTRACTION_SET_MIGRATION_FILE = "buildExtractionSetMigrationFile";
     private final static String MISC_PRINT_HSN_POP_REG_ERRORS = "miscPrintHSNPopRegErrors";
@@ -91,7 +92,7 @@ public class AlfalabClient extends JFrame implements ActionListener {
         addLinksData.addActionListener(this);
         extractionSetButton.setEnabled(false);
         miscButton.addActionListener(this);
-        showPersons.addActionListener(this);
+        initialiseIDS.addActionListener(this);
 
     }
 
@@ -254,20 +255,25 @@ public class AlfalabClient extends JFrame implements ActionListener {
                 miscSubmenu.setVisible(true);
                 dispatchMisc(miscSubmenu.getAction());
 
-            } else if (source == showPersons) {
+            } else if (source == initialiseIDS) {
+            	
+            	String version = JOptionPane.showInputDialog(null, "Version: ",	"Please enter Version", 1);
 
-            	textArea.append("\nShow Persons             Started\n");
-            	textArea.append("\n");
-            	textArea.append("     \\   /                \\   /            \n");
-            	textArea.append("      \\0/                  \\0/             \n");
-            	textArea.append("       *                    *              \n");
-            	textArea.append("      ***                  ***             \n");
-            	textArea.append("     *****                *****            \n");
-            	textArea.append("      ***                  ***             \n");
-            	textArea.append("     /   \\                /   \\           \n");
-            	textArea.append("    /     \\              /     \\          \n");
-            	textArea.append("\n");
-            	textArea.append("\nShow Persons             Ended\n");
+            	if(version != null)
+            		 out.writeUTF(INITIALISE_HSN + " " + version);
+
+            	//textArea.append("\nShow Persons             Started\n");
+            	//textArea.append("\n");
+            	//textArea.append("     \\   /                \\   /            \n");
+            	//textArea.append("      \\0/                  \\0/             \n");
+            	//textArea.append("       *                    *              \n");
+            	//textArea.append("      ***                  ***             \n");
+            	//textArea.append("     *****                *****            \n");
+            	//textArea.append("      ***                  ***             \n");
+            	//textArea.append("     /   \\                /   \\           \n");
+            	//textArea.append("    /     \\              /     \\          \n");
+            	//textArea.append("\n");
+            	//textArea.append("\nShow Persons             Ended\n");
 
                 //ViewPerson viewPersonPanel = new ViewPerson(this);
                 //viewPersonPanel.setVisible(true);
@@ -622,7 +628,7 @@ public class AlfalabClient extends JFrame implements ActionListener {
 		extractionSetButton = new JButton();
 		addLinksData = new JButton();
 		miscButton = new JButton();
-		showPersons = new JButton();
+		initialiseIDS = new JButton();
 
 		//======== Interface ========
 		{
@@ -749,13 +755,26 @@ public class AlfalabClient extends JFrame implements ActionListener {
 				GridConstraints.SIZEPOLICY_FIXED,
 				null, null, null));
 
-			//---- showPersons ----
-			showPersons.setText("Show persons");
-			Interface.add(showPersons, new GridConstraints(5, 1, 1, 1,
+			//
+			
+			initialiseIDS.setHorizontalAlignment(SwingConstants.LEFT);
+			initialiseIDS.setHorizontalTextPosition(SwingConstants.TRAILING);
+			initialiseIDS.setText("IDS                          - Initialise");
+			Interface.add(initialiseIDS, new GridConstraints(5, 1, 1, 1,
 				GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
 				GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
 				GridConstraints.SIZEPOLICY_FIXED,
 				null, null, null));
+
+			
+			
+			//---- showPersons ----
+			//showPersons.setText("IDS                  - Initialise Context");
+			//Interface.add(showPersons, new GridConstraints(5, 1, 1, 1,
+			//	GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+			//	GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+			//	GridConstraints.SIZEPOLICY_FIXED,
+			//	null, null, null));
 		}
 		// JFormDesigner - End of component initialization  //GEN-END:initComponents
 	}
@@ -774,6 +793,6 @@ public class AlfalabClient extends JFrame implements ActionListener {
 	private JButton extractionSetButton;  //addLinksData
 	private JButton addLinksData;
 	private JButton miscButton;
-	private JButton showPersons;
+	private JButton initialiseIDS;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

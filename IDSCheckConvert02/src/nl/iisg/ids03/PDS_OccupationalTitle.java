@@ -59,7 +59,7 @@ public class PDS_OccupationalTitle extends PersonDynamicStandardized {
 
 
 
-        			if(rp.getCode().equalsIgnoreCase("y")){
+        			if(rp.getCode().equalsIgnoreCase("y") || rp.getCode().equalsIgnoreCase("u")){
         				if(rp.getProfession() != null){
         					setOccupationStandardized(rp.getProfession());
         					setOccupationID(rp.getProfessionID()); 
