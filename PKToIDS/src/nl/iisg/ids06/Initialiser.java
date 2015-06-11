@@ -246,6 +246,8 @@ public class Initialiser {
 			for(OP op: ops){
 				for(B4_ST r: op.getRegistrationsStandardizedOfOP()){
 					
+					//System.out.println(r.getKeyToRP());
+					
 					while(i_ra < addresses.size() && r.contains(addresses.get(i_ra))){	
 						
 						addresses.get(i_ra).setRegistration(r);

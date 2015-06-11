@@ -126,6 +126,8 @@ public class PKToIDS implements Runnable{
 		int idCount = 0;
 	    for(OP op: ops){
 	    	for(B4_ST r: op.getRegistrationsStandardizedOfOP()){
+		    	System.out.println(r.getKeyToRP());
+
 	    		for(B2_ST p: r.getPersons()){
 	    			p.convert(em);
 	    		}

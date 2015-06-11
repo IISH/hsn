@@ -152,6 +152,8 @@ public class Message {
 		for(Message m: messages)
 			em.persist(m);
 
+		messages.clear();
+		
 		em.getTransaction().commit();
         em.clear();
 		em.close();

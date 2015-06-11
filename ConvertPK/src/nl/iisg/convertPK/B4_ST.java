@@ -52,6 +52,10 @@ public class B4_ST {
 	
 	public void save(EntityManager em){
 		
+		
+		
+		System.out.println("B4_ST: idnr = " + getKeyToRP());
+		
 		em.persist(this);
 		
 		for(B2_ST person: getPersons())

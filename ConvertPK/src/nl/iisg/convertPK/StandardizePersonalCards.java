@@ -243,7 +243,21 @@ public class StandardizePersonalCards implements Runnable {
             }
         });
 
+        
+        
+        
+        //if(1==1) System.exit(0);;
+        
+        if(!keyCheck(pkkndL, pkbrpL, pkhuwL, pkeigkndL, pkadresL, pkbyzL, p7L, p8L)){
+        	
+        	print("Saving Message Table...");
+            Message.finalise(); // write messages to disk
 
+        	print("Fatal error has occurred. Check bfout7t and repair");
+        	print("\nPersonal Cards - Standardize      finished\n");
+        	//System.out.println("\nPopulation Register - Standardize      finished\n");
+        	return;
+        }
         // Link the PK* objects
 
         int i_br = 0;
@@ -255,9 +269,14 @@ public class StandardizePersonalCards implements Runnable {
         int i_p8 = 0;
 
         for (PkKnd pkknd : pkkndL) {
+        	
+        	System.out.println("knd idnr = " + pkknd.getIdnr());
 
             while (i_br < pkbrpL.size() && pkbrpL.get(i_br).getIdnr() == pkknd.getIdnr()) {
 
+            	//System.out.println("    i_br =  " + i_br + " idnr = " + pkbrpL.get(i_br).getIdnr());
+
+            	
                 pkknd.getProfessions().add(pkbrpL.get(i_br));  // add profession to ArrayList professions in PkKnd
                 pkbrpL.get(i_br).setPkHolder(pkknd);           // set PK-Holder object in Profession Object 
                 i_br++;
@@ -272,12 +291,16 @@ public class StandardizePersonalCards implements Runnable {
 
             while (i_ek < pkeigkndL.size() && pkeigkndL.get(i_ek).getIdnr() == pkknd.getIdnr()) {
 
+            	//System.out.println("    i_ek =  " + i_ek + " idnr = " + pkeigkndL.get(i_ek).getIdnr());
+            	
                 pkknd.getChildren().add(pkeigkndL.get(i_ek));  // add child to ArrayList children in PkKnd
                 pkeigkndL.get(i_ek).setPkHolder(pkknd);        // set PK-Holder object in Child Object 
                 i_ek++;
             }
 
             while (i_hw < pkhuwL.size() && pkhuwL.get(i_hw).getIdnr() == pkknd.getIdnr()) {
+            	
+            	//System.out.println("    i_hw =  " + i_hw + " idnr = " + pkhuwL.get(i_hw).getIdnr());
 
                 pkknd.getMarriages().add(pkhuwL.get(i_hw));   // add marriage to ArrayList marriages in PkKnd
                 pkhuwL.get(i_hw).setPkHolder(pkknd);          // set PK-Holder object in Marriage Object 
@@ -304,14 +327,17 @@ public class StandardizePersonalCards implements Runnable {
                 p8L.get(i_p8).setPkHolder(pkknd);             // set PK-Holder object in P8 Object 
                 i_p8++;
             }
+            
+            //System.out.println(pkknd.getIdnr());
         }
 
+        //if(1==1) System.exit(0);
         
         //for (PkKnd pkknd1 : pkkndL) {
         	
-        	//pkknd1.print();
+        //	pkknd1.print();
         	
-        //}
+       // }
         // Load Reference Tables
         
         print("Reading reference tables... ");
@@ -373,106 +399,124 @@ public class StandardizePersonalCards implements Runnable {
         	//System.out.println("PersonID = " + p.getPersonID() + "LastName = " + p.getFamilyName() + "    Firstname = " + p.getFirstName());
         
         // update partner info
+        
+        
+        // To simplify processing, we create a second list of Pkknd objects, sorted on idnrP 
+        
+        List<PkKnd> pkkndL2 = new ArrayList(); 
+        
+        pkkndL2.addAll(pkkndL);        
+        
+        Collections.sort(pkkndL2, new Comparator<PkKnd>() {
+            public int compare(PkKnd pkknd1, PkKnd pkknd2) {
+                if (pkknd1.getIdnrp() > pkknd2.getIdnrp()) return 1;
+                else if (pkknd1.getIdnrp() < pkknd2.getIdnrp()) return -1;
+                return 0;
+            }
+        });
 
         
-        for (PkKnd pkknd1 : pkkndL) {
-        	if(pkknd1.getIdnrp() !=  0 && pkknd1.getIdnrp() != pkknd1.getIdnr()){
-        		
-        		// locate partner registration
+        
+        
+        
+        for (PkKnd pkknd1 : pkkndL) { // the Wives are selected from this list
 
-        		int i = 0;       // number of wife records
-        		int idnrW = 0;   // wife idnr 
-        		
-                for (PkKnd pkknd2 : pkkndL) {
-                	
-                	if(pkknd2.getIdnr() == pkknd1.getIdnrp()){
+        	// locate partner registration
 
-                		idnrW = pkknd2.getIdnr();
-                		if(i == 0){
-                			copyPartnerInfo(pkknd1.getB4(), pkknd2.getB4());
-                			copyPartnerInfo(pkknd2.getB4(), pkknd1.getB4());
-                			i++;
-                		}
-                		else
-                			i++;
-                		
-                	}
-                }
-                
-                // Now we must change the key of pkknd1.getB4():
-                // It must be registered under the IDNR of the wife
-                // Also for the B2 and B3 elements under it
-                // In order to get a unique key, we must use b2dibg also
-                
+        	int i = 1;       // number of husbands
+        	
 
-                // Determine b2dibg
-                
-                String b2dibg = String.format("%02d-%02d-%04d", (i + 1), 1, 1940);
-                
-                System.out.println("b2dibg = " + b2dibg);
-                
-              	pkknd1.getB4().setKeyToRP(pkknd1.getIdnrp());
-              	pkknd1.getB4().setEntryDateHead(b2dibg);
-            	pkknd1.getB4().setIdnrSpouse(pkknd1.getIdnr());
-            	
-            	for(B2_ST p: pkknd1.getB4().getPersons()){
-            		p.setKeyToRP(idnrW);
-            		p.setEntryDateHead(b2dibg);
-            		
-            		for(B3_ST d: p.getRelationsToPKHolder()){
-            			d.setKeyToRP(idnrW);
-            			d.setEntryDateHead(b2dibg);
-            		}
-            		
-            		for(B3_ST d: p.getCivilStatus()){
-            			d.setKeyToRP(idnrW);
-            			d.setEntryDateHead(b2dibg);
-            		}
-            		
-            		for(B3_ST d: p.getReligions()){
-            			d.setKeyToRP(idnrW);
-            			d.setEntryDateHead(b2dibg);
-            		}
-            		
-            		for(B3_ST d: p.getRelations()){
-            			d.setKeyToRP(idnrW);
-            			d.setEntryDateHead(b2dibg);
-            		}
-            		
-            		for(B3_ST d: p.getProfessions()){
-            			d.setKeyToRP(idnrW);
-            			d.setEntryDateHead(b2dibg);
-            		}
-            		
-            		for(B3_ST d: p.getOrigins()){
-            			d.setKeyToRP(idnrW);
-            			d.setEntryDateHead(b2dibg);
-            		}
-            		
-            		for(B3_ST d: p.getDestinations()){
-            			d.setKeyToRP(idnrW);
-            			d.setEntryDateHead(b2dibg);
-            		}
-            	}
+        	for (PkKnd pkknd2 : pkkndL2) { // The husbands are selected from this list
 
-            	for(B6_ST a: pkknd1.getB4().getAddresses()){
-            		a.setKeyToRP(idnrW);
-            		a.setDateEntryHeadOfHousehold(b2dibg);
-            		
-            	}
+        		//System.out.println("pkknd1.idnr = " + pkknd1.getIdnr() + " pkknd1.idnrp = " + pkknd1.getIdnrp() + " pkknd2.idnr = " + pkknd2.getIdnr());
+
+        		if(pkknd1 != pkknd2 && pkknd2.getIdnrp() == pkknd1.getIdnr()){  // Wife-pkknd1 was married to husband-pkknd2
+
+        			System.out.println("found " + pkknd1.getIdnr() + " " + pkknd2.getIdnr());
+
+        			
+        			copyPartnerInfo(pkknd2.getB4(), pkknd1.getB4());
+
+
+
+        			// Now we must change the key of pkknd2.getB4():
+        			// It must be registered under the IDNR of the wife
+        			// Also for the B2 and B3 elements under it
+        			// In order to get a unique key, we must use b2dibg also
+
+
+        			// Determine b2dibg
+
+        			String b2dibg = String.format("%02d-%02d-%04d", ++i, 1, 1940);
+        			System.out.println("i = " + i);
+
+        			//System.out.println("b2dibg = " + b2dibg);
+
+        			pkknd2.getB4().setKeyToRP(pkknd1.getIdnr());
+        			pkknd2.getB4().setEntryDateHead(b2dibg);
+        			pkknd2.getB4().setIdnrSpouse(pkknd2.getIdnr());
+
+        			for(B2_ST p: pkknd2.getB4().getPersons()){
+        				p.setKeyToRP(pkknd1.getIdnr());
+        				p.setEntryDateHead(b2dibg);
+
+        				for(B3_ST d: p.getRelationsToPKHolder()){
+        					d.setKeyToRP(pkknd1.getIdnr());
+        					d.setEntryDateHead(b2dibg);
+        				}
+
+        				for(B3_ST d: p.getCivilStatus()){
+        					d.setKeyToRP(pkknd1.getIdnr());
+        					d.setEntryDateHead(b2dibg);
+        				}
+
+        				for(B3_ST d: p.getReligions()){
+        					d.setKeyToRP(pkknd1.getIdnr());
+        					d.setEntryDateHead(b2dibg);
+        				}
+
+        				for(B3_ST d: p.getRelations()){
+        					d.setKeyToRP(pkknd1.getIdnr());
+        					d.setEntryDateHead(b2dibg);
+        				}
+
+        				for(B3_ST d: p.getProfessions()){
+        					d.setKeyToRP(pkknd1.getIdnr());
+        					d.setEntryDateHead(b2dibg);
+        				}
+
+        				for(B3_ST d: p.getOrigins()){
+        					d.setKeyToRP(pkknd1.getIdnr());
+        					d.setEntryDateHead(b2dibg);
+        				}
+
+        				for(B3_ST d: p.getDestinations()){
+        					d.setKeyToRP(pkknd1.getIdnr());
+        					d.setEntryDateHead(b2dibg);
+        				}
+        			}
+
+        			for(B6_ST a: pkknd2.getB4().getAddresses()){
+        				a.setKeyToRP(pkknd1.getIdnr());
+        				a.setDateEntryHeadOfHousehold(b2dibg);
+
+        			}
+
+
+        		}
         	}
         }
 
-        
+
         // Relate All to All
-        
+
         for (PkKnd pkknd1 : pkkndL) {
         	if(pkknd1.getIdnr() < 1000000){
         		pkknd1.getB4().relateAllToAll(); 
         	}
         }
-        
-        
+
+
         for (PkKnd pkknd1 : pkkndL)
         	if(pkknd1.getIdnr() < 1000000)
         		pkknd1.getB4().truncate();
@@ -524,6 +568,13 @@ public class StandardizePersonalCards implements Runnable {
      */
     private static void copyPartnerInfo(B4_ST b4Husband, B4_ST b4Wife){
     	
+    	
+    	System.out.println("Husband = " + b4Husband + "wife = "+ b4Wife);
+    	
+    	//System.out.println("Copy Partner Info"); 
+    	
+    	//if(1==1) return; 
+    	
     	B2_ST b2Partner = null;
     	
     A:	for(B2_ST b2H: b4Husband.getPersons()){
@@ -537,32 +588,37 @@ public class StandardizePersonalCards implements Runnable {
     				if(b2H.getPersonID() == b2W.getPersonID()){
     					
     					b2Partner = b2W;
-    					
-    					b2W.setDateOfDecease(b2H.getDateOfDecease());
-    					b2W.setPlaceOfDeceaseStandardized(b2H.getPlaceOfDeceaseStandardized());
-    					b2W.setNationality(b2H.getNationality());
-    					
-    					for(B33_ST b33H: b2H.getReligions()){
-    						
-    						B33_ST b33W = allocateB33(b2W, b33H);
-    						b33W.setDynamicDataSequenceNumber(b2W.getReligions().size() + 1);
-    						b2W.getReligions().add(b33W);
-    						
-    					}
-    						
-    					for(B35_ST b35H: b2H.getProfessions()){
-    						
-    						B35_ST b35W = allocateB35(b2W, b35H);
-    						b35W.setDynamicDataSequenceNumber(b2W.getProfessions().size() + 1);
-    						b2W.getProfessions().add(b35W);
-    						
-    					}
     					break;
-    					
     				}
     			}
-    			
-    		break;
+    							
+    			if(b2Partner != null){				
+
+    				b2Partner.setDateOfDecease(b2H.getDateOfDecease());
+    				b2Partner.setPlaceOfDeceaseStandardized(b2H.getPlaceOfDeceaseStandardized());
+    				b2Partner.setNationality(b2H.getNationality());
+
+    				for(B33_ST b33H: b2H.getReligions()){
+
+    					B33_ST b33W = allocateB33(b2Partner, b33H);
+    					b33W.setDynamicDataSequenceNumber(b2Partner.getReligions().size() + 1);
+    					b2Partner.getReligions().add(b33W);
+
+    				}
+
+    				for(B35_ST b35H: b2H.getProfessions()){
+    					
+    					B35_ST b35W = allocateB35(b2Partner, b35H);
+    					b35W.setDynamicDataSequenceNumber(b2Partner.getProfessions().size() + 1);
+    					b2Partner.getProfessions().add(b35W);
+
+    				}
+    			}
+    			break;
+
+
+
+    		
     		
     		case 2:  // The wife as partner of her husband. Leave alone, we have her already as RP
     			break;
@@ -1169,6 +1225,130 @@ public class StandardizePersonalCards implements Runnable {
         return true;
 
     }
+    
+    
+    private static boolean keyCheck( List<PkKnd> pkkndL,
+    		List<PkBrp> pkBrpL,
+    		List<PkHuw> pkhuwL,
+    		List<PkEigknd> pkeigkndL,
+    		List<PkAdres> pkadresL,
+    		List<PkByz> pkbyzL,
+    		List<P7> p7L,
+    		List<P8> p8L
+    		){
+    	
+    	Comparator<PkKnd> cpk = new Comparator<PkKnd>() {
+			public int compare(PkKnd pkknd1, PkKnd pkknd2) {
+				if (pkknd1.getIdnr() > pkknd2.getIdnr())
+					return 1;
+				else if (pkknd1.getIdnr() < pkknd2.getIdnr())
+					return -1;
+				return 0;
+			}
+		}; 
+    	
+		for (PkHuw b : pkhuwL){
+			PkKnd pkn = new PkKnd();
+			pkn.setIdnr(b.getIdnr());
+			if (Collections.binarySearch(pkkndL, pkn, cpk) < 0) {
+				message(b.getIdnr(), "7110", "" + b.getIdnr());
+				return false;
+			}
+			;
+		}
+		
+		for (PkEigknd b : pkeigkndL) {
+			PkKnd pkn = new PkKnd();
+			pkn.setIdnr(b.getIdnr());
+			if (Collections.binarySearch(pkkndL, pkn, cpk) < 0) {
+				message(b.getIdnr(), "7111", "" + b.getIdnr());
+				return false;
+			}
+			;
+		}
+		
+		for (PkByz b : pkbyzL) {
+			PkKnd pkn = new PkKnd();
+			pkn.setIdnr(b.getIdnr());
+			if (Collections.binarySearch(pkkndL, pkn, cpk) < 0) {
+				message(b.getIdnr(), "7112", "" + b.getIdnr());
+				return false;
+			}
+			;
+		}
+
+		for (PkBrp b : pkBrpL) {
+			PkKnd pkn = new PkKnd();
+			pkn.setIdnr(b.getIdnr());
+			if (Collections.binarySearch(pkkndL, pkn, cpk) < 0) {
+				message(b.getIdnr(), "7113", "" + b.getIdnr());
+				return false;
+			}
+			;
+		}
+		
+		for (PkAdres b : pkadresL) {
+			PkKnd pkn = new PkKnd();
+			pkn.setIdnr(b.getIdnr());
+			if (Collections.binarySearch(pkkndL, pkn, cpk) < 0) {
+				message(b.getIdnr(), "7114", "" + b.getIdnr());
+				return false;
+			}
+			;
+		}
+		
+		for (P7 b : p7L) {
+			PkKnd pkn = new PkKnd();
+			pkn.setIdnr(b.getIdnr());
+			if (Collections.binarySearch(pkkndL, pkn, cpk) < 0) {
+				message(b.getIdnr(), "7115", "" + b.getIdnr());
+				return false;
+			}
+			;
+		}
+		
+		for (P8 b : p8L) {
+			PkKnd pkn = new PkKnd();
+			pkn.setIdnr(b.getIdnr());
+			if (Collections.binarySearch(pkkndL, pkn, cpk) < 0) {
+				message(b.getIdnr(), "7116", "" + b.getIdnr());
+				return false;
+			}
+			;
+		}
+		
+
+		
+		
+		
+		
+		
+		
+    	
+    	/*
+    	 * List<PkKnd> pkkndL = Utils.createObjects("nl.iisg.convertPK.PkKnd", inputDirectory);
+        print("Read PKKND.DBF, " + pkkndL.size() + " rows");
+        List<PkBrp> pkbrpL = Utils.createObjects("nl.iisg.convertPK.PkBrp", inputDirectory);
+        print("Read PKBRP.DBF, " + pkbrpL.size() + " rows");
+        List<PkHuw> pkhuwL = Utils.createObjects("nl.iisg.convertPK.PkHuw", inputDirectory);
+        print("Read PKHUW.DBF, " + pkhuwL.size() + " rows");
+        List<PkEigknd> pkeigkndL = Utils.createObjects("nl.iisg.convertPK.PkEigknd", inputDirectory);
+        print("Read PKEIGKND.DBF, " + pkeigkndL.size() + " rows");
+        List<PkAdres> pkadresL = Utils.createObjects("nl.iisg.convertPK.PkAdres", inputDirectory);
+        print("Read PKADRES.DBF, " + pkadresL.size() + " rows");
+        List<PkByz> pkbyzL = Utils.createObjects("nl.iisg.convertPK.PkByz", inputDirectory);
+        print("Read PKBYZ.DBF, " + pkbyzL.size() + " rows");
+        List<P7> p7L = Utils.createObjects("nl.iisg.convertPK.P7", inputDirectory);
+        print("Read P7.DBF, " + p7L.size() + " rows");
+        List<P8> p8L = Utils.createObjects("nl.iisg.convertPK.P8", inputDirectory);
+        print("Read P8.DBF, " + p8L.size() + " rows");
+    	 * 
+    	 */
+    	
+    	return true;
+    }
+    
+    
     
     private static void message(int idnr, String number, String... fills) {
 

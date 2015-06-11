@@ -392,11 +392,11 @@ public class LinksIDS{
 						if(registration_maintype < certType.length)
 							regType = certType[registration_maintype];
 
-						System.out.println("registration_location_no = " + resultSet.getInt("registration_location_no"));
+						//System.out.println("registration_location_no = " + resultSet.getInt("registration_location_no"));
 						
 						if(resultSet.getString("registration_location_no") != null){
 
-							System.out.println("locNo2Id_C = " +  locNo2Id_C.get(resultSet.getInt("registration_location_no")));
+							//System.out.println("locNo2Id_C = " +  locNo2Id_C.get(resultSet.getInt("registration_location_no")));
 
 							if(locNo2Id_C.get(resultSet.getInt("registration_location_no")) != null){
 

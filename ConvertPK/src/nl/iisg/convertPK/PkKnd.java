@@ -146,6 +146,8 @@ public class PkKnd {
     
     public void convert(String B2dibg){
     	
+    	System.out.println("Pkknd: idnr = " +  getIdnr());
+    	
     	// New Family
     	
     	B4_ST b4 = new B4_ST();  
@@ -154,17 +156,18 @@ public class PkKnd {
     	b4.setEntryDateHead(B2dibg);
     	b4.setKeyToSourceRegister(getPktype());
     	
-    	// Handle idnr/idnrp: Later
+    	// Handle idnr/idnrpr
     	
-    	//  if(getIdnrp() != 0 && getIdnrp() != getIdnr()){
+    	/*
+    	 if(getIdnrp() != 0 && getIdnrp() != getIdnr()){
 
-      	//	b4.setKeyToRP(getIdnrp());
-    	//	b4.setIdnrSpouse(getIdnr());
+      		b4.setKeyToRP(getIdnrp());
+    		b4.setIdnrSpouse(getIdnr());
 
     		// We must determine how many B4 objects there are with this idnrp
     		
-    	//  }
-    	
+    	 }
+    	*/
     	// dating
     	
     	String startDate = "01-07-1938";
@@ -234,12 +237,10 @@ public class PkKnd {
 
     	// Check if PK-Holder is research person
     	
-    	if(getIdnr() == getIdnrp())
+    	if(getIdnr() == getIdnrp() || getIdnrp() == 0)
     		b2.setNatureOfPerson(1);
     	else
     		b2.setNatureOfPerson(2);
-    	
-
     	
 
     	String registrationDate = String.format("%02d-%02d-%04d", getCtrdgp(), getCtrmdp(), getCtrjrp());
@@ -727,8 +728,12 @@ public class PkKnd {
     	// Marriages of PK-Holder
 		
     	int seqNoCivil = 1;
+    	
+    	if(getIdnr() == 71047) System.out.println("  == > " + getIdnr());
     	for(PkHuw pkhuw: getMarriages()){
     		
+    		
+    		if(getIdnr() == 71047) System.out.println("  == > " + getIdnr() + " marriage nr " + seqNoPersons);
     		seqNoPersons++;
     		
     		b2 = new B2_ST();
@@ -1215,6 +1220,8 @@ public class PkKnd {
     
     
    	public void print(){
+   		
+   		if(getIdnr() != 71047) return;
     		
   		System.out.println("In PkKnd, idnr = " + getIdnr() + ", Family Name = " + getAnmperp() + ", datum = " + getDatum());
   		

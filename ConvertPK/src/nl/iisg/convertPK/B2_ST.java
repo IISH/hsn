@@ -102,6 +102,8 @@ public class B2_ST {
 
 	public void save(EntityManager em){
 		
+		//System.out.println("B2_ST save, idnr = " + getKeyToRP());
+		
 		em.persist(this);
 		
 		for(B313_ST b313: getRelationsToPKHolder())
