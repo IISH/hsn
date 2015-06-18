@@ -187,9 +187,15 @@ public class PkEigknd {
     		
     	ArrayList a = Utils.standardizeLocation(birthPlace + countrySuffix); // Combine place with Country
     	b2.setPlaceOfBirthStandardized((String)a.get(0));
-    	b2.setPlaceOfBirthID((Integer)a.get(1));
+    	b2.setPlaceOfBirthID((Integer)a.get(1));   	
     	
-    	String deceaseDate = String.format("%02d-%02d-%04d", getOdgkndp(), getOmdkndp(), getOjrkndp());
+    	
+    	String deceaseDate = null;
+    	if(getOjrkndp() > 0)
+    		deceaseDate = String.format("%02d-%02d-%04d", getOdgkndp(), getOmdkndp(), getOjrkndp());
+    	else
+    		deceaseDate = "00-00-0000";
+
     	b2.setDateOfDecease(deceaseDate);    	
     	b2.setDateOfDeceaseFlag(1);
     	
@@ -234,6 +240,13 @@ public class PkEigknd {
     		if(Common1.dayCount(getAdgkndp(), getAmdkndp(), getAjrkndp()) < Common1.dayCount(b2.getEndDate())){
     			b2.setEndDate(String.format("%02d-%02d-%04d", getAdgkndp(), getAmdkndp(), getAjrkndp()));
     			b2.setEndFlag(41);
+    		}
+    	}
+    	
+    	if(getHjrkndp() > 0){
+    		if(Common1.dayCount(getHdgkndp(), getHmdkndp(), getHjrkndp()) < Common1.dayCount(b2.getEndDate())){
+    			b2.setEndDate(String.format("%02d-%02d-%04d",getHdgkndp(), getHmdkndp(), getHjrkndp()));
+    			b2.setEndFlag(42);
     		}
     	}
     	

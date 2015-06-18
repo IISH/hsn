@@ -90,6 +90,8 @@ public class PkHuw {
     	
     	String lastName = getAnmhuwp().trim();
     	
+    	System.out.println("---> lastName = " + lastName);
+    	
     	if(lastName != null){
 			if(lastName.split("%").length > 1){
 				lastName = lastName.split("%")[0].trim();
@@ -153,6 +155,9 @@ public class PkHuw {
 
     	// Prefix
     	
+    	System.out.println("---> prefix = " + prefix + " or " + Utils.standardizePrefix(prefix));
+
+    	
     	if(getTushuwp() == null){
     		if(prefix != null)    	
     	    	b2.setPrefixLastName(Utils.standardizePrefix(prefix));
@@ -194,8 +199,13 @@ public class PkHuw {
     	ArrayList a = Utils.standardizeLocation(birthPlace);
     	b2.setPlaceOfBirthStandardized((String)a.get(0));
     	b2.setPlaceOfBirthID((Integer)a.get(1));
+    	
+    	String deceaseDate = null;
 
-    	String deceaseDate = String.format("%02d-%02d-%04d", getOdghuwp(), getOmdhuwp(), getOjrhuwp());
+    	if(getOjrhuwp() > 0)
+    		deceaseDate = String.format("%02d-%02d-%04d", getOdghuwp(), getOmdhuwp(), getOjrhuwp());
+    	else
+    		deceaseDate = "00-00-0000";
     	b2.setDateOfDecease(deceaseDate); 
     	b2.setDateOfDeceaseFlag(1);
     	
@@ -216,10 +226,10 @@ public class PkHuw {
     	b2.setPlaceOfDeceaseStandardized((String)a.get(0));
     	b2.setPlaceOfDeceaseID((Integer)a.get(1)); 
     	
-    	// Registration date
+    	// Registration date - not needed
     	
-    	String registrationDate = String.format("%02d-%02d-%04d", getDdghuwp(), getDmdhuwp(), getDjrhuwp());
-    	b2.setDateOfRegistration(registrationDate);    	
+    	//String registrationDate = String.format("%02d-%02d-%04d", getDdghuwp(), getDmdhuwp(), getDjrhuwp());
+    	//b2.setDateOfRegistration(registrationDate);    	
     	
     	// dating
     	

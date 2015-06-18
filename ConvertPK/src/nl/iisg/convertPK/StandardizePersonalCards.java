@@ -715,8 +715,8 @@ public class StandardizePersonalCards implements Runnable {
         
         b2.setNatureOfPerson(2); 
 
-        b2.setDateOfRegistration(b2I.getDateOfRegistration());
-        b2.setDateOfRegistrationFlag(b2I.getDateOfRegistrationFlag());
+        //b2.setDateOfRegistration(b2I.getDateOfRegistration());
+        //b2.setDateOfRegistrationFlag(b2I.getDateOfRegistrationFlag());
 
         b2.setPersonID(b2I.getPersonID());
         b2.setPersonIDFlag(b2I.getPersonIDFlag());

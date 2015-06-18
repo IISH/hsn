@@ -236,19 +236,23 @@ public class PkKnd {
     	//	b2.setKeyToRP(getIdnrp());
 
     	// Check if PK-Holder is research person
-    	
-    	if(getIdnr() == getIdnrp() || getIdnrp() == 0)
+    	// Change:  PK-Holder is research person
+    	//if(getIdnr() == getIdnrp() || getIdnrp() == 0)
     		b2.setNatureOfPerson(1);
-    	else
-    		b2.setNatureOfPerson(2);
+    	//else
+    		//b2.setNatureOfPerson(2);
     	
+    	
+    	// Registration data - not needed
 
-    	String registrationDate = String.format("%02d-%02d-%04d", getCtrdgp(), getCtrmdp(), getCtrjrp());
-    	b2.setDateOfRegistration(registrationDate);
+    	//String registrationDate = String.format("%02d-%02d-%04d", getCtrdgp(), getCtrmdp(), getCtrjrp());
+    	//b2.setDateOfRegistration(registrationDate);
     	
     	// Last name
     	
     	String lastName = getAnmperp().trim();
+    	
+    	System.out.println("++++> lastName = " + lastName);
     	
     	if(lastName != null){
 			if(lastName.split("%").length > 1){
@@ -315,6 +319,8 @@ public class PkKnd {
 
     	
     	// Prefix
+    	System.out.println("++++> prefix = " + prefix);
+
     	
     	if(getTusperp() == null){
     		if(prefix != null)    	
@@ -366,8 +372,14 @@ public class PkKnd {
     	b2.setPlaceOfBirthID((Integer)a.get(1));
     	
     	// Decease date
+    	
+    	String deceaseDate = null;
 
-    	String deceaseDate = String.format("%02d-%02d-%04d", getOdgperp(), getOmdperp(), getOjrperp());
+    	if(getOjrperp() > 0)    	
+    		deceaseDate = String.format("%02d-%02d-%04d", getOdgperp(), getOmdperp(), getOjrperp());
+    	else
+    		deceaseDate = "00-00-00";
+    		
     	b2.setDateOfDecease(deceaseDate);    	
     	b2.setDateOfDeceaseFlag(1);
     	
