@@ -363,43 +363,40 @@ public class StandardizePersonalCards implements Runnable {
         int idnr = -1;
         String B2dibg = null;  // this is secondary key for to distinguish PkKnd rows with equal IDNR
         for (PkKnd pkknd1 : pkkndL) {
-        	if(pkknd1.getIdnr() < 1000000){
-        		if (pkknd1.getIdnr() == idnr) {
-        			B2dibg = Common1.dateFromDayCount(Common1.dayCount(B2dibg) + 1);
-        		} else
-        			B2dibg = "01-01-1940";
-        		idnr = pkknd1.getIdnr();
-        		pkknd1.convert(B2dibg);
-        	}
+        	if (pkknd1.getIdnr() == idnr) {
+        		B2dibg = Common1.dateFromDayCount(Common1.dayCount(B2dibg) + 1);
+        	} else
+        		B2dibg = "01-01-1940";
+        	idnr = pkknd1.getIdnr();
+        	pkknd1.convert(B2dibg);
         }
 
         ArrayList<B2_ST> uniquePersons = new ArrayList<B2_ST>();
 
         for (PkKnd pkknd1 : pkkndL) {
-        	if(pkknd1.getIdnr() < 1000000){
-        		for (B2_ST b2 : pkknd1.getB4().getPersons()) {
-        			boolean found = false;
-        			for (B2_ST b2unique : uniquePersons) {
-        
-        				if (comparePersons(b2, b2unique) == 0) {
-        					b2.setPersonID(b2unique.getPersonID());
-        					found = true;
-        					break;
-        				}
-        			}
-        			if (found == false) {
-        				b2.setPersonID(getPersonID());
-        				uniquePersons.add(b2);
+        	for (B2_ST b2 : pkknd1.getB4().getPersons()) {
+        		boolean found = false;
+        		for (B2_ST b2unique : uniquePersons) {
+
+        			if (comparePersons(b2, b2unique) == 0) {
+        				b2.setPersonID(b2unique.getPersonID());
+        				found = true;
+        				break;
         			}
         		}
+        		if (found == false) {
+        			b2.setPersonID(getPersonID());
+        			uniquePersons.add(b2);
+        		}
         	}
+
         }
 
         //for(B2_ST p: uniquePersons)
         	//System.out.println("PersonID = " + p.getPersonID() + "LastName = " + p.getFamilyName() + "    Firstname = " + p.getFirstName());
         
         // update partner info
-        
+        //if(1==1) return;
         
         // To simplify processing, we create a second list of Pkknd objects, sorted on idnrP 
         
@@ -510,15 +507,13 @@ public class StandardizePersonalCards implements Runnable {
 
         // Relate All to All
 
-        for (PkKnd pkknd1 : pkkndL) {
-        	if(pkknd1.getIdnr() < 1000000){
+        for (PkKnd pkknd1 : pkkndL) 
         		pkknd1.getB4().relateAllToAll(); 
-        	}
-        }
+        	
+        
 
 
         for (PkKnd pkknd1 : pkkndL)
-        	if(pkknd1.getIdnr() < 1000000)
         		pkknd1.getB4().truncate();
 
 
@@ -533,7 +528,6 @@ public class StandardizePersonalCards implements Runnable {
             em.getTransaction().begin();
 
             for (PkKnd pkknd1 : pkkndL)
-            	if(pkknd1.getIdnr() < 1000000)
             		pkknd1.getB4().save(em);
 
 

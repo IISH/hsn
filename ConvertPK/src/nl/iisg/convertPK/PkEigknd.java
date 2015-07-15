@@ -141,7 +141,7 @@ public class PkEigknd {
     	
     	// Prefix
     	
-    	if(getTuskndp() == null){
+    	if(getTuskndp() == null || getTuskndp().trim().length() == 0){
     		if(prefix != null)    	
     	    	b2.setPrefixLastName(Utils.standardizePrefix(prefix));
     		else;

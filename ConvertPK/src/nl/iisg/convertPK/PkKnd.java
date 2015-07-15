@@ -252,7 +252,7 @@ public class PkKnd {
     	
     	String lastName = getAnmperp().trim();
     	
-    	System.out.println("++++> lastName = " + lastName);
+    	//System.out.println("++++> lastName = " + lastName);
     	
     	if(lastName != null){
 			if(lastName.split("%").length > 1){
@@ -319,10 +319,11 @@ public class PkKnd {
 
     	
     	// Prefix
-    	System.out.println("++++> prefix = " + prefix);
+    	//System.out.println("++++> prefix = " + prefix + " standardized: "+ Utils.standardizePrefix(prefix));
+    	//System.out.println("++++> getTusperp() = " + getTusperp() + " length: " +  getTusperp().length());
 
     	
-    	if(getTusperp() == null){
+    	if(getTusperp() == null || getTusperp().trim().length() == 0){
     		if(prefix != null)    	
     	    	b2.setPrefixLastName(Utils.standardizePrefix(prefix));
     		else;
@@ -330,6 +331,8 @@ public class PkKnd {
     	else
         	b2.setPrefixLastName(Utils.standardizePrefix(getTusperp()));
     	
+    	
+    	//System.out.println("XXXXX  " + b2.getFirstName() + "  " + b2.getPrefixLastName() + "  " + b2.getFamilyName());
     	
     	
     	b2.setSex(getGslperp().toLowerCase());
@@ -554,7 +557,7 @@ public class PkKnd {
 
     	// prefix
     	
-    	if(getTusvdrp() == null){
+    	if(getTusvdrp() == null || getTusvdrp().trim().length() == 0){
     		if(prefix != null)    	
     	    	b2.setPrefixLastName(Utils.standardizePrefix(prefix));
     		else;
@@ -688,7 +691,7 @@ public class PkKnd {
 
     	// Prefix
     	
-    	if(getTusmdrp() == null){
+    	if(getTusmdrp() == null || getTusmdrp().trim().length() == 0){
     		if(prefix != null)    	
     	    	b2.setPrefixLastName(Utils.standardizePrefix(prefix));
     		else;
@@ -741,11 +744,9 @@ public class PkKnd {
 		
     	int seqNoCivil = 1;
     	
-    	if(getIdnr() == 71047) System.out.println("  == > " + getIdnr());
     	for(PkHuw pkhuw: getMarriages()){
     		
     		
-    		if(getIdnr() == 71047) System.out.println("  == > " + getIdnr() + " marriage nr " + seqNoPersons);
     		seqNoPersons++;
     		
     		b2 = new B2_ST();
@@ -764,7 +765,7 @@ public class PkKnd {
     		// before the first marriage add an unmarried b32
     		
         	if(seqNoCivil == 1 && Utils.dateIsValid(pkhuw.getHdghuwp(), pkhuw.getHmdhuwp(), pkhuw.getHjrhuwp()) == 0 &&
-        			Common1.dayCount(pkhuw.getHdghuwp(), pkhuw.getHmdhuwp(), pkhuw.getHjrhuwp()) > Common1.dayCount(b2pk.getStartDate())){ // we insert before the first marriage b32 an unmarried b32
+        			Common1.dayCount(pkhuw.getHdghuwp(), pkhuw.getHmdhuwp(), pkhuw.getHjrhuwp()) > Common1.dayCount(b2pk .getStartDate())){ // we insert before the first marriage b32 an unmarried b32
 
         		B32_ST b32 = new B32_ST();
             	b2pk.getCivilStatus().add(b32); // Link B32_ST -> B2_ST
@@ -847,6 +848,7 @@ public class PkKnd {
         	
         	if(pkhuw.getOrdhuwp() >= 1){ // termination including death spouse
         		
+        	       		
         		// new civil status record for PK Holder
         		
         		b32 = new B32_ST();

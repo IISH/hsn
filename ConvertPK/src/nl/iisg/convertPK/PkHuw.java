@@ -90,7 +90,7 @@ public class PkHuw {
     	
     	String lastName = getAnmhuwp().trim();
     	
-    	System.out.println("---> lastName = " + lastName);
+    	//System.out.println("---> lastName = " + lastName);
     	
     	if(lastName != null){
 			if(lastName.split("%").length > 1){
@@ -155,10 +155,10 @@ public class PkHuw {
 
     	// Prefix
     	
-    	System.out.println("---> prefix = " + prefix + " or " + Utils.standardizePrefix(prefix));
+    	//System.out.println("---> prefix = " + prefix + " or " + Utils.standardizePrefix(prefix));
 
     	
-    	if(getTushuwp() == null){
+    	if(getTushuwp() == null || getTushuwp().trim().length() == 0){
     		if(prefix != null)    	
     	    	b2.setPrefixLastName(Utils.standardizePrefix(prefix));
     		else;

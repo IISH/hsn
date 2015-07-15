@@ -425,6 +425,7 @@ public class StandardizeCivilCertificates  implements Runnable {
 	private static boolean loadDBFTables(String inputFiles){
 	
 		
+		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("import");
 		EntityManager em = emf.createEntityManager();
 		
@@ -688,7 +689,7 @@ public class StandardizeCivilCertificates  implements Runnable {
 		Ref.loadPrefix();
 		Ref.loadLocation();
 		Ref.loadProfession();
-		Ref.loadMunicipality();
+		//Ref.loadMunicipality();
 
 	}
 

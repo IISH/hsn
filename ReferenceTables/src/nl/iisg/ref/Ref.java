@@ -11,9 +11,11 @@ package nl.iisg.ref;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Collections;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -47,6 +49,8 @@ public class Ref {
 
 	static    List<Ref_FamilyName>           ref_famName   = null; 
 	static    List<Ref_FamilyName>           ref_famName_x = new ArrayList<Ref_FamilyName>(); 
+	static    HashMap<String, Ref_FamilyName>        ref_famName21  = null; // entries read from the database
+	static    HashMap<String, Ref_FamilyName>        ref_famName22  = null; // new entries  
 
 	static    List<Ref_Prefix>               ref_prefix    = null;
 	static    List<Ref_Prefix>               ref_prefix_x  = new ArrayList<Ref_Prefix>();
@@ -224,7 +228,7 @@ public class Ref {
 
 	}
 
-	public static void loadFamName(){
+	public static void loadFamNameOld(){
 
 		System.out.println("Reading Ref_FamilyName");
 
@@ -258,6 +262,38 @@ public class Ref {
 
 	}
 
+	public static void loadFamName(){
+
+		System.out.println("Reading Ref_FamilyName");
+
+		EntityManager em = getEm_ref_2();	
+		Query q = em.createQuery("select a from Ref_FamilyName a");
+		List<Ref_FamilyName> ref_famName  = q.getResultList();		
+
+		int highest_ID = 0;
+		int count = 0;
+
+		ref_famName21 = new HashMap<String, Ref_FamilyName>();
+		ref_famName22 = new HashMap<String, Ref_FamilyName>();
+		
+		for(Ref_FamilyName f: ref_famName){
+			
+			ref_famName21.put(f.getOriginal().trim().toLowerCase(), f);
+			
+			if(f.getLastNameID() > highest_ID)
+				highest_ID = f.getLastNameID();
+			count++;
+			
+		}
+
+		Ref_FamilyName.setCurrent_ID(highest_ID + 1);
+		
+		
+		System.out.println("Read    Ref_FamilyName " + count + " rows");
+
+	}
+
+	
 	public static void loadFirstName(){
 
 		System.out.println("Reading Ref_FirstName");
@@ -730,8 +766,29 @@ public class Ref {
 
 	}
 
-
 	public static Ref_FamilyName getFamilyName(String name){
+		
+
+		Ref_FamilyName nameStandardized = ref_famName21.get(name.trim().toLowerCase());
+
+		if(nameStandardized != null){
+			return nameStandardized;
+		}
+		else{	
+			nameStandardized = ref_famName22.get(name.trim().toLowerCase());
+
+			if(nameStandardized != null){
+				return nameStandardized;
+			}
+
+		}
+
+		return null;
+		
+		
+	}
+	
+	public static Ref_FamilyName getFamilyNameOld(String name){
 
 		if(name == null || name.trim().length() == 0)
 			return null;
@@ -758,8 +815,21 @@ public class Ref {
 		return null;
 	}
 
-
+	
 	public static void addFamilyName(Ref_FamilyName f){
+		
+		
+		String name = f.getOriginal().trim().toLowerCase();
+		f.setOriginal(f.getOriginal().trim().toLowerCase());
+		
+		if(getFamilyName(name) == null)
+			ref_famName22.put(name, f);
+		
+		
+		
+	}
+
+	public static void addFamilyNameOld(Ref_FamilyName f){
 
 		if(f == null || f.getOriginal() == null || f.getOriginal().trim().length() == 0)
 			return;
@@ -782,7 +852,10 @@ public class Ref {
 			Collections.sort(ref_famName, new Comparator<Ref_FamilyName>()
 					{
 				public int compare(Ref_FamilyName f1, Ref_FamilyName f2){
-					return (f1.getOriginal().compareToIgnoreCase(f2.getOriginal()));
+					
+					String original1 = f1.getOriginal() != null ? f1.getOriginal() : "";
+					String original2 = f2.getOriginal() != null ? f2.getOriginal() : "";
+					return (original1.compareToIgnoreCase(original2));
 				}});
 		}
 	}
@@ -856,7 +929,10 @@ public class Ref {
 			Collections.sort(ref_firstName, new Comparator<Ref_FirstName>()
 					{
 				public int compare(Ref_FirstName f1, Ref_FirstName f2){
-					return (f1.getOriginal().compareToIgnoreCase(f2.getOriginal()));
+					String original1 = f1.getOriginal() != null ? f1.getOriginal() : "";
+					String original2 = f2.getOriginal() != null ? f2.getOriginal() : "";
+					return (original1.compareToIgnoreCase(original2));
+
 				}
 					});
 		}
@@ -914,7 +990,7 @@ public class Ref {
 	public static void addLocation(Ref_Location l){
 		
 		
-		System.out.println("add location " + l.getOriginal());
+		//System.out.println("add location " + l.getOriginal());
 		
 		if(l == null || l.getOriginal() == null || l.getOriginal().trim().length() == 0)
 			return;
@@ -935,7 +1011,9 @@ public class Ref {
 			Collections.sort(ref_location, new Comparator<Ref_Location>()
 					{
 				public int compare(Ref_Location l1, Ref_Location l2){
-					return (l1.getOriginal().compareToIgnoreCase(l2.getOriginal()));
+					String original1 = l1.getOriginal() != null ? l1.getOriginal() : "";
+					String original2 = l2.getOriginal() != null ? l2.getOriginal() : "";
+					return (original1.compareToIgnoreCase(original2));
 				}});
 		}
 	}
@@ -1024,7 +1102,10 @@ public class Ref {
 			 Collections.sort(ref_prefix, new Comparator<Ref_Prefix>()
 			 {
 			  	public int compare(Ref_Prefix p1, Ref_Prefix p2){
-				return (p1.getOriginal().compareToIgnoreCase(p2.getOriginal()));
+					String original1 = p1.getOriginal() != null ? p1.getOriginal() : "";
+					String original2 = p2.getOriginal() != null ? p2.getOriginal() : "";
+					return (original1.compareToIgnoreCase(original2));
+
 			 }});
 			
 
@@ -1100,7 +1181,10 @@ public class Ref {
 			 Collections.sort(ref_profession, new Comparator<Ref_Profession>()
 			 {
 			  	public int compare(Ref_Profession p1, Ref_Profession p2){
-			 	return (p1.getOriginal().compareToIgnoreCase(p2.getOriginal()));
+					String original1 = p1.getOriginal() != null ? p1.getOriginal() : "";
+					String original2 = p2.getOriginal() != null ? p2.getOriginal() : "";
+					return (original1.compareToIgnoreCase(original2));
+
 			 }});
 		}
 	}
@@ -1578,6 +1662,8 @@ public class Ref {
 		for(Ref_FamilyName x: ref_famName_x)
 			Ref.truncateFamilyName(x);
 		
+					
+		
         if(ref_firstName != null)
         	for(Ref_FirstName x: ref_firstName)			
         		Ref.truncateFirstName(x);
@@ -1710,6 +1796,23 @@ public class Ref {
         // FamilyName
 		
 		
+		
+		/* new start */
+		
+		count = 0;
+		
+		for (Ref_FamilyName ref_famname : ref_famName22.values()) {
+		    count++;
+		    em.persist(ref_famname);
+		    
+		}
+		ref_famName22.clear();
+		System.out.println("Saved " + count + " rows to Ref_FamilyName");
+		
+		/* new end */
+		
+		
+		/*
 		if(ref_famName != null)
 			for(Ref_FamilyName x: ref_famName)
 				if(x.getNeedSave() == true){
@@ -1726,6 +1829,9 @@ public class Ref {
 		ref_famName_x.clear();
 		System.out.println("Saved " + count + " rows to Ref_FamilyName");
 
+		*/
+		
+		
 		
 		// FirstName
 
