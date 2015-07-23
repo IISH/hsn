@@ -742,10 +742,56 @@ public class PkKnd {
     	
     	// Marriages of PK-Holder
 		
-    	int seqNoCivil = 1;
+		int seqNoCivil = 1;
+		
+		// If the first marriage is after the start date of the card: before the first marriage add an unmarried b32 	
+   		
+    			
+		PkHuw pkhw = getMarriages().size() > 0 ? getMarriages().get(0) : null;
+		
+		
+		if(pkhw != null && pkhw.getHjrhuwp() > 0 && Common1.dayCount(pkhw.getHdghuwp(), pkhw.getHmdhuwp(), pkhw.getHjrhuwp()) > Common1.dayCount(b2pk.getStartDate())){
+
+
+			B32_ST b32 = new B32_ST();
+			b2pk.getCivilStatus().add(b32); // Link B32_ST -> B2_ST
+			b32.setPerson(b2pk);          // Link B2_ST -> B32_ST
+
+			initialiseB3_ST(b32);
+
+			b32.setKeyToRegistrationPersons(b2pk.getKeyToPersons());        		
+			b32.setDynamicDataType(2);
+			b32.setContentOfDynamicData(1);    // 1 = unmarried
+
+			b32.setStartDate(b2pk.getStartDate());
+			b32.setEndDate(Common1.dateFromDayCount(Common1.dayCount(pkhw.getHdghuwp(), pkhw.getHmdhuwp(), pkhw.getHjrhuwp()) - 1));
+
+			b32.setDynamicDataSequenceNumber(seqNoCivil++);
+		}
+
+
+
+
+		
+    	
     	
     	for(PkHuw pkhuw: getMarriages()){
+
     		
+        	// First check if there already are civil status records
+        	// If so, the end date of the last one must be update to 1 day before the start date of this one
+    		
+        	B32_ST b32Prev = b2.getCivilStatus().size() > 0 ? b2.getCivilStatus().get(b2.getCivilStatus().size() - 1) : null;
+        	
+        	if(pkhuw.getHjrhuwp() > 0 && b32Prev != null){
+        		
+				String endDate  = String.format("%02d-%02d-%04d", pkhuw.getHdghuwp(), pkhuw.getHmdhuwp(), pkhuw.getHjrhuwp());
+				String endDateM = Common1.dateFromDayCount(Common1.dayCount(endDate) - 1);
+
+        		b32Prev.setEndDate(endDateM);
+        		
+        	}
+
     		
     		seqNoPersons++;
     		
@@ -762,32 +808,11 @@ public class PkKnd {
     		
     		//System.out.println("key = " + b2.getKeyToPersons());
 
-    		// before the first marriage add an unmarried b32
-    		
-        	if(seqNoCivil == 1 && Utils.dateIsValid(pkhuw.getHdghuwp(), pkhuw.getHmdhuwp(), pkhuw.getHjrhuwp()) == 0 &&
-        			Common1.dayCount(pkhuw.getHdghuwp(), pkhuw.getHmdhuwp(), pkhuw.getHjrhuwp()) > Common1.dayCount(b2pk .getStartDate())){ // we insert before the first marriage b32 an unmarried b32
-
-        		B32_ST b32 = new B32_ST();
-            	b2pk.getCivilStatus().add(b32); // Link B32_ST -> B2_ST
-            	b32.setPerson(b2pk);          // Link B2_ST -> B32_ST
-
-        		initialiseB3_ST(b32);
-        		
-    			b32.setKeyToRegistrationPersons(b2pk.getKeyToPersons());        		
-        		b32.setDynamicDataType(2);
-        		b32.setContentOfDynamicData(1);    // 1 = unmarried
-        		
-        		b32.setStartDate(b2pk.getStartDate());
-        		b32.setEndDate(Common1.dateFromDayCount(Common1.dayCount(pkhuw.getHdghuwp(), pkhuw.getHmdhuwp(), pkhuw.getHjrhuwp()) - 1));
-
-        		b32.setDynamicDataSequenceNumber(seqNoCivil++);
-
-        		
-        	}
-        	
     		
         	// add Civil Status Marriage row for PK-Holder
-    		
+        	
+
+        	
     		B32_ST b32 = new B32_ST();
         	b2pk.getCivilStatus().add(b32); // Link B32_ST -> B2_ST
         	b32.setPerson(b2pk);          // Link B2_ST -> B32_ST
@@ -808,6 +833,8 @@ public class PkKnd {
             	String marriageDate = String.format("%02d-%02d-%04d", pkhuw.getHdghuwp(), pkhuw.getHmdhuwp(), pkhuw.getHjrhuwp());
             	b32.setDateOfMutation(marriageDate);
             	b32.setStartDate(marriageDate);
+            	
+            	
         		
         	}
         	
@@ -820,6 +847,22 @@ public class PkKnd {
         	// Check if spouse left, this gives a new Civil status record for the PK-Holder (and for the spouse in PkHuw)
         	
         	if(pkhuw.getAjrhuwp() > 0){
+        		
+        		// Update Marriage enddate
+        		
+            	// First check if there already are civil status records
+            	// If so, the end date of the last one must be update to 1 day before the start date of this one
+        		
+        		
+            	
+            		
+   				String endDate  = String.format("%02d-%02d-%04d", pkhuw.getHdghuwp(), pkhuw.getHmdhuwp(), pkhuw.getHjrhuwp());
+   			
+
+           		b32Marriage.setEndDate(endDate);
+            		
+
+
         		
         		// new civil status record for PK-Holder with code = 11
         		
@@ -834,64 +877,77 @@ public class PkKnd {
 
         		b32.setDynamicDataSequenceNumber(seqNoCivil++);
         		
-            	if(pkhuw.getAjrhuwp() != 0){
-                	String departureDate = String.format("%02d-%02d-%04d", pkhuw.getAdghuwp(), pkhuw.getAmdhuwp(), pkhuw.getAjrhuwp());
-                	b32.setDateOfMutation(departureDate);
-                	b32.setStartDate(departureDate);
+            	
+                String departureDate = String.format("%02d-%02d-%04d", pkhuw.getAdghuwp(), pkhuw.getAmdhuwp(), pkhuw.getAjrhuwp());
+                b32.setDateOfMutation(departureDate);
+                b32.setStartDate(departureDate);
             		
-            	}
+            	
 
         	}
 
         	// Check if marriage terminated
         	
         	
-        	if(pkhuw.getOrdhuwp() >= 1){ // termination including death spouse
+        	if(pkhuw.getOrdhuwp() >= 1 || pkhuw.getOjrhuwp() > 0){ // termination including death spouse
         		
+        		      		
+        		
+        		// Update Marriage end date
+            	
+        		if(pkhuw.getOjrhuwp() > 0){
+            		
+        			String endDate  = String.format("%02d-%02d-%04d", pkhuw.getOdghuwp(), pkhuw.getOmdhuwp(), pkhuw.getOjrhuwp());
+
+        			b32Marriage.setEndDate(endDate);
+            		
+        		}
+
+
         	       		
-        		// new civil status record for PK Holder
+        		// new civil status record for PK Holder, but only if the end date of the marriage is known (on his card) . Otherwise, he died, no further status possible 
         		
-        		b32 = new B32_ST();
-            	b2.getCivilStatus().add(b32); // Link B32_ST -> B2_ST
-            	b32.setPerson(b2pk);          // Link B2_ST -> B32_ST
+        		if(pkhuw.getOjrhuwp() > 0){
 
-        		initialiseB3_ST(b32);
-        		b32.setDynamicDataType(2);
-    			b32.setKeyToRegistrationPersons(b2pk.getKeyToPersons());
+        			b32 = new B32_ST();
+        			b2.getCivilStatus().add(b32); // Link B32_ST -> B2_ST
+        			b32.setPerson(b2pk);          // Link B2_ST -> B32_ST
 
-    			// preset the start date of the new status, update end date of marriage record
-    			
-    			b32.setStartDate(Common1.dateFromDayCount((Common1.dayCount(b2pk.getEndDate()) + Common1.dayCount(pkhuw.getHdghuwp(), pkhuw.getHmdhuwp(), pkhuw.getHjrhuwp())) / 2));
-        		b32Marriage.setEndDate(Common1.dateFromDayCount(Common1.dayCount(b32.getStartDate()) - 1));
-    			
-    			
-        		switch(pkhuw.getOrdhuwp()){
-        		
-        		case 1: b32.setContentOfDynamicData(2);  // death
-        		
-        		if(pkhuw.getOjrhuwp() != 0){
-        			
+        			initialiseB3_ST(b32);
+        			b32.setDynamicDataType(2);
+        			b32.setKeyToRegistrationPersons(b2pk.getKeyToPersons());
+ 
+        			// set the start date of the new record
+
         			if(pkhuw.getOjrhuwp() > 0){
-        				deceaseDate = String.format("%02d-%02d-%04d", pkhuw.getOdghuwp(), pkhuw.getOmdhuwp(), pkhuw.getOjrhuwp());
-        				b32.setContentOfDynamicData(2);  // widowed
-        				b32.setDateOfMutation(deceaseDate);
-        				b32.setStartDate(deceaseDate);
-        				b32Marriage.setEndDate(Common1.dateFromDayCount(Common1.dayCount(b32.getStartDate()) - 1));
-        			}
-        		}
 
-        		break;
-        		case 2: b32.setContentOfDynamicData(3);  // divorce
-        		break;
-        		case 3: b32.setContentOfDynamicData(12); // other
-        		break;
-        		case 4: b32.setContentOfDynamicData(3);  // bigamy
-        		break;
-        		case 9: b32.setContentOfDynamicData(12); // no reason
-        		break;
+        				String startDate1  = String.format("%02d-%02d-%04d", pkhuw.getOdghuwp(), pkhuw.getOmdhuwp(), pkhuw.getOjrhuwp());
+        				String startDateP = Common1.dateFromDayCount(Common1.dayCount(startDate1) + 1);
+
+        				b32.setStartDate(startDateP);
+        			}
+
+        			// New civil status 
+
+        			int ordhuwp = pkhuw.getOrdhuwp() >= 1 ? pkhuw.getOrdhuwp() : 1;  // 1 = death spouse
+
+        			switch(ordhuwp){
+
+        			case 1: b32.setContentOfDynamicData(2);  // death
+
+        			break;
+        			case 2: b32.setContentOfDynamicData(3);  // divorce
+        			break;
+        			case 3: b32.setContentOfDynamicData(12); // other
+        			break;
+        			case 4: b32.setContentOfDynamicData(3);  // bigamy
+        			break;
+        			case 9: b32.setContentOfDynamicData(12); // no reason
+        			break;
+        			}
+
+        			b32.setDynamicDataSequenceNumber(seqNoCivil++);
         		}
-        		
-        		b32.setDynamicDataSequenceNumber(seqNoCivil++);
         	}
     	}
     	

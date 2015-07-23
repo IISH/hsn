@@ -40,17 +40,29 @@ public class PkHuw {
 	 @Column(name="HPLHUWP")        private  String   hplhuwp;			// place of marriage
 	 
 	 
-	 @Column(name="ODGHUWP")        private  int	  odghuwp;			// day of decease spouse
-	 @Column(name="OMDHUWP")        private  int      omdhuwp;			// month of decease spouse
-	 @Column(name="OJRHUWP")        private  int      ojrhuwp;          // year of decease spouse
+	 @Column(name="ODGHUWP")        private  int	  odghuwp;			// day of termination marriage
+	 @Column(name="OMDHUWP")        private  int      omdhuwp;			// month of termination marriage
+	 @Column(name="OJRHUWP")        private  int      ojrhuwp;          // year of termination marriage
 	 
-	 @Column(name="ORDHUWP")        private  int      ordhuwp;          // reason divorce
+	 @Column(name="ORDHUWP")        private  int      ordhuwp;          // reason termination marriage (Date of mutation: Death/divorce/other
+
+	 	                                                                    
+	 /*
+	  * 0	To be interpreted as ‘1’ if ojrhuwp is valid ; for the problem see description data herefore
+		1	Death of the spouse: PK_holder becomes widow -> record for PK_holder with code 2 on [b3kode]
+		2	Divorce  									 -> record for PK-holder and for spouse with code  3 on [b3kode]
+		3	Other reason							     -> record for PK-holder and for spouse with code 12 on [b3kode]
+		4	Bigamy                                       -> to be handled as divorce; code 3 on [b3kode]
+		9	Reason not made explicit in source           -> to be handled as divorce; code 12 on [b3kode]
+
+	  */
+	 
 	 
 	 @Column(name="OPLHUWP")        private  String   oplhuwp;          // place decease spouse
+	 
 	 @Column(name="ADGHUWP")        private  int	  adghuwp;		    // day of departure spouse 
 	 @Column(name="AMDHUWP")        private  int      amdhuwp;	    	// month of departure spouse 
-	 @Column(name="AJRHUWP")        private  int      ajrhuwp;          // year of departure spouse
-	 
+	 @Column(name="AJRHUWP")        private  int      ajrhuwp;          // year of departure spouse	 
 	 @Column(name="APLHUWP")        private  String   aplhuwp;          // destination departing spouse
 	 
 	 @Column(name="SRTHUWP")        private  String   srthuwp;          // kind of marriage (geregistreerd partnerschap etc.)
@@ -174,7 +186,9 @@ public class PkHuw {
     		b2.setSex("m");
 
     	String birthDate = String.format("%02d-%02d-%04d", getGdghuwp(), getGmdhuwp(), getGjrhuwp());
-    	b2.setDateOfBirth(birthDate);    	
+    	b2.setDateOfBirth(birthDate); 
+    	
+    	// b2.setStartDate(birthDate); // Not true
     	
     	// Birth date
     	
@@ -202,12 +216,14 @@ public class PkHuw {
     	
     	String deceaseDate = null;
 
-    	if(getOjrhuwp() > 0)
+    	if((getOrdhuwp() == 0 || getOrdhuwp() == 1) && getOjrhuwp() > 0)
     		deceaseDate = String.format("%02d-%02d-%04d", getOdghuwp(), getOmdhuwp(), getOjrhuwp());
     	else
     		deceaseDate = "00-00-0000";
     	b2.setDateOfDecease(deceaseDate); 
     	b2.setDateOfDeceaseFlag(1);
+    	
+    	b2.setEndDate(deceaseDate);
     	
     	// Decease Place
 
@@ -239,22 +255,38 @@ public class PkHuw {
     	}
 
 
-    	if(getOjrhuwp() > 0){
-    		if(Common1.dayCount(getOdghuwp(), getOmdhuwp(), getOjrhuwp()) < Common1.dayCount(b2.getEndDate())){
-    			b2.setEndDate(String.format("%02d-%02d-%04d", getOdghuwp(), getOmdhuwp(), getOjrhuwp()));
-    			b2.setEndFlag(40);
-    		}
+    	
+    	
+    	// Relation to PK-Holder of partner
+    	
+		B313_ST b313 = new B313_ST();
+		b2.getRelationsToPKHolder().add(b313);    // Link B313_ST -> B2_ST
+		b313.setPerson(b2);            			  // Link B2_ST -> B313_ST
+
+		initialiseB3_ST(b313);
+		b313.setDynamicDataType(13);
+		b313.setKeyToRegistrationPersons(b2.getKeyToPersons());
+		
+		b313.setContentOfDynamicData(2);     // Spouse (female or male)
+
+		b313.setDynamicDataSequenceNumber(1);
+
+    	if(getHjrhuwp() != 0){
+        	String marriageDate = String.format("%02d-%02d-%04d", getHdghuwp(), getHmdhuwp(), getHjrhuwp());
+        	b313.setDateOfMutation(marriageDate);        	
+        	b313.setDateOfMutationFlag(10); // original value
+        	b313.setStartDate(marriageDate);
+    		
     	}
-    	
-    	if(getAjrhuwp() > 0){
-    		if(Common1.dayCount(getAdghuwp(), getAmdhuwp(), getAjrhuwp()) < Common1.dayCount(b2.getEndDate())){
-    			b2.setEndDate(String.format("%02d-%02d-%04d", getAdghuwp(), getAmdhuwp(), getAjrhuwp()));
-    			b2.setEndFlag(41);
-    		}
-    	}
+
+		
+		
+
     	
     	
-    	// Marriage Civil Status
+    	
+    	// Marriage Civil Status    	
+    	
     	
 		B32_ST b32 = new B32_ST();
     	b2.getCivilStatus().add(b32); // Link B32_ST -> B2_ST
@@ -266,18 +298,6 @@ public class PkHuw {
 		b32.setDynamicDataType(2);
 		b32.setContentOfDynamicData(5);    // 5 = married
 		
-		// Check if marriage partner is OP
-
-		
-		//if(getIdnr() == getPkHolder().getIdnr()){
-			//b2.setNatureOfPerson(1);
-			//System.out.println("Found OP!, idnr = " + getIdnr());
-		//}
-		//else
-			//b2.setNatureOfPerson(2);
-		
-
-
     	ArrayList b = Utils.standardizeLocation(getHplhuwp());
     	b32.setCivilLocalityStandardized((String)b.get(0));
     	b32.setCivilLocalityID((Integer)b.get(1));
@@ -286,6 +306,7 @@ public class PkHuw {
         	String marriageDate = String.format("%02d-%02d-%04d", getHdghuwp(), getHmdhuwp(), getHjrhuwp());
         	b32.setDateOfMutation(marriageDate);
            	b32.setDateOfMutationFlag(10); // original value 
+           	b32.setStartDate(marriageDate);
     		
     	}
     	b32.setValueOfRelatedPerson(1);  // set row number spouse = Pk-Holder = First Row 
@@ -293,34 +314,126 @@ public class PkHuw {
     	int seqCivil = 1;
 		b32.setDynamicDataSequenceNumber(seqCivil++);
 		
-    	B32_ST b32Marriage = b32; // keep marriage 
-
-    	// Relation to PK-Holder of partner
+    	 
     	
-		B313_ST b313 = new B313_ST();
-		b2.getRelationsToPKHolder().add(b313);    // Link B313_ST -> B2_ST
-		b313.setPerson(b2);            			  // Link B2_ST -> B313_ST
-
-		initialiseB3_ST(b313);
-		b313.setDynamicDataType(13);
-		b313.setKeyToRegistrationPersons(b2.getKeyToPersons());
-		
-		//if(b2.getSex().equalsIgnoreCase("V"))
-			//b313.setContentOfDynamicData(145);   // Spouse (male)
-		//else
-		b313.setContentOfDynamicData(2);     // Spouse (female)
-
-		b313.setDynamicDataSequenceNumber(1);
-
-    	if(getHjrhuwp() != 0){
-        	String marriageDate = String.format("%02d-%02d-%04d", getHdghuwp(), getHmdhuwp(), getHjrhuwp());
-        	b313.setDateOfMutation(marriageDate);
-        	b313.setDateOfMutationFlag(10); // original value 
+    	
+  	
+    	
+    	// Check for termination of marriage
+    	
+    	if(getOrdhuwp() >= 0 || getOjrhuwp() > 0){ // termination including death spouse  		
     		
+    		
+    		String endDate  = String.format("%02d-%02d-%04d", getOdghuwp(), getOmdhuwp(), getOjrhuwp());
+    		
+    		if(endDate != null){
+    			
+    			b313.setEndDate(endDate); // update end date relation to Head
+    		    b32.setEndDate(endDate);  // update end date civil status married
+    		    b2.setEndDate(endDate);   // update end date b2 record
+    		}
+
+    	
+    	   /*
+    		
+    		int ordhuwp = getOrdhuwp() >= 1 ? getOrdhuwp() : 1;  // 1 = death spouse
+    		
+    		// new civil status record for spouse with code = 2, 3 or 12
+    		
+    		String endDate = null;
+    		
+    		if(ordhuwp != 1){ // Not if partner died
+
+    			b32 = new B32_ST();
+    			b2.getCivilStatus().add(b32); // Link B32_ST -> B2_ST
+    			b32.setPerson(b2);            // Link B2_ST -> B32_ST
+
+    			initialiseB3_ST(b32);
+    			b32.setKeyToRegistrationPersons(b2.getKeyToPersons());
+    			b32.setDynamicDataType(2);
+
+
+    			
+    			if(getOjrhuwp() > 0){
+
+    				endDate  = String.format("%02d-%02d-%04d", getOdghuwp(), getOmdhuwp(), getOjrhuwp());
+    				String endDateP = Common1.dateFromDayCount(Common1.dayCount(endDate) + 1);
+
+    				b32.setStartDate(endDateP);
+    				b32Marriage.setEndDate(endDate); //  update endDate previous state
+
+    			}
+    		}
+    		
+    		switch(getOrdhuwp()){
+    		
+    		case 1: b32.setContentOfDynamicData(2);  // widowed
+    		break;
+    		case 2: b32.setContentOfDynamicData(3);  // divorce
+    		break;
+    		case 3: b32.setContentOfDynamicData(12); // other
+    		break;
+    		case 4: b32.setContentOfDynamicData(3);  // bigamy
+    		break;
+    		case 9: b32.setContentOfDynamicData(12); // no reason
+    		break;
+    		}
+    		
+    		b32.setDynamicDataSequenceNumber(seqCivil++);
+    		
+    		*/
+    	
+    	}
+    	
+    	// departure of partner
+    	
+    	if(getAjrhuwp() > 0 && getAplhuwp() != null && getAplhuwp().trim().length() > 0 && !getAplhuwp().trim().equals("-1")){
+    		
+    		//System.out.println("Partner leaving ");
+    		
+    		B37_ST b37 = new B37_ST();
+        	b2.getDestinations().add(b37); // Link B37_ST -> B2_ST
+        	b37.setPerson(b2);             // Link B2_ST -> B37_ST
+
+    		initialiseB3_ST(b37);
+    		b37.setDynamicDataType(7);
+    		b37.setKeyToRegistrationPersons(b2.getKeyToPersons());
+
+        	b = Utils.standardizeLocation(getAplhuwp());
+        	b37.setDestinationStandardized((String)b.get(0));
+        	b37.setDestinationID((Integer)b.get(1));
+        	
+        	
+            String departureDate = String.format("%02d-%02d-%04d", getAdghuwp(), getAmdhuwp(), getAjrhuwp());
+            b37.setDateOfMutation(departureDate);
+        		
+        	
+
+    		
+    		b37.setDynamicDataSequenceNumber(1);
+    		
+    		/*
+    		
+    		// new civil status record for spouse with code = 11
+    		
+    		b32 = new B32_ST();
+        	b2.getCivilStatus().add(b32); // Link B32_ST -> B2_ST
+        	b32.setPerson(b2);            // Link B2_ST -> B32_ST
+
+    		initialiseB3_ST(b32);
+    		b32.setKeyToRegistrationPersons(b2.getKeyToPersons());
+    		b32.setDynamicDataType(2);
+    		b32.setContentOfDynamicData(11);  
+    		b32.setDynamicDataSequenceNumber(seqCivil++);
+    		
+        	
+            b32.setDateOfMutation(departureDate);
+            b32.setStartDate(departureDate);
+        		
+        	*/
     	}
 
-		
-		
+    	
 		// Professions of partner
     	
     	if(getBrphuwp().trim() != null){
@@ -372,85 +485,8 @@ public class PkHuw {
     			}
     		}
     	}
+
     	
-    	// departure of partner
-    	
-    	if(getAjrhuwp() > 0 && getAplhuwp() != null && getAplhuwp().trim().length() > 0 && !getAplhuwp().trim().equals("-1")){
-    		
-    		//System.out.println("Partner leaving ");
-    		
-    		B37_ST b37 = new B37_ST();
-        	b2.getDestinations().add(b37); // Link B37_ST -> B2_ST
-        	b37.setPerson(b2);             // Link B2_ST -> B37_ST
-
-    		initialiseB3_ST(b37);
-    		b37.setDynamicDataType(7);
-    		b37.setKeyToRegistrationPersons(b2.getKeyToPersons());
-
-        	b = Utils.standardizeLocation(getAplhuwp());
-        	b37.setDestinationStandardized((String)b.get(0));
-        	b37.setDestinationID((Integer)b.get(1));
-        	
-        	if(getAjrhuwp() != 0){
-            	String departureDate = String.format("%02d-%02d-%04d", getAdghuwp(), getAmdhuwp(), getAjrhuwp());
-            	b37.setDateOfMutation(departureDate);
-        		
-        	}
-
-    		
-    		b37.setDynamicDataSequenceNumber(1);
-    		
-    		// new civil status record for spouse with code = 11
-    		
-    		b32 = new B32_ST();
-        	b2.getCivilStatus().add(b32); // Link B32_ST -> B2_ST
-        	b32.setPerson(b2);            // Link B2_ST -> B32_ST
-
-    		initialiseB3_ST(b32);
-    		b32.setKeyToRegistrationPersons(b2.getKeyToPersons());
-    		b32.setDynamicDataType(2);
-    		b32.setContentOfDynamicData(11);  
-    		b32.setDynamicDataSequenceNumber(seqCivil++);
-    		
-        	if(getAjrhuwp() != 0){
-            	String departureDate = String.format("%02d-%02d-%04d", getAdghuwp(), getAmdhuwp(), getAjrhuwp());
-            	b32.setDateOfMutation(departureDate);
-            	b32.setStartDate(departureDate);
-        		
-        	}
-    	}
-    	
-    	// Check for termination of marriage: new civil status 
-    	
-    	if(getOrdhuwp() >= 2){ // termination other than death spouse
-    		
-    		// new civil status record for spouse with code = 3 or 12
-    		
-    		b32 = new B32_ST();
-        	b2.getCivilStatus().add(b32); // Link B32_ST -> B2_ST
-        	b32.setPerson(b2);            // Link B2_ST -> B32_ST
-
-    		initialiseB3_ST(b32);
-    		b32.setKeyToRegistrationPersons(b2.getKeyToPersons());
-    		b32.setDynamicDataType(2);
-    		
-			b32.setStartDate(Common1.dateFromDayCount((Common1.dayCount(b2.getEndDate()) + Common1.dayCount(getHdghuwp(), getHmdhuwp(), getHjrhuwp())) / 2));
-    		b32Marriage.setEndDate(Common1.dateFromDayCount(Common1.dayCount(b32.getStartDate()) - 1));
-    		
-    		switch(getOrdhuwp()){
-    		
-    		case 2: b32.setContentOfDynamicData(3);  // divorce
-    		break;
-    		case 3: b32.setContentOfDynamicData(12); // other
-    		break;
-    		case 4: b32.setContentOfDynamicData(3);  // bigamy
-    		break;
-    		case 9: b32.setContentOfDynamicData(12); // no reason
-    		break;
-    		}
-    		
-    		b32.setDynamicDataSequenceNumber(seqCivil++);
-    	}
     }
     
     
