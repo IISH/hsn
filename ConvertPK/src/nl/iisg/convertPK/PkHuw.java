@@ -219,11 +219,11 @@ public class PkHuw {
     	if((getOrdhuwp() == 0 || getOrdhuwp() == 1) && getOjrhuwp() > 0)
     		deceaseDate = String.format("%02d-%02d-%04d", getOdghuwp(), getOmdhuwp(), getOjrhuwp());
     	else
-    		deceaseDate = "00-00-0000";
+    		deceaseDate = null;
     	b2.setDateOfDecease(deceaseDate); 
     	b2.setDateOfDeceaseFlag(1);
     	
-    	b2.setEndDate(deceaseDate);
+    	//b2.setEndDate(deceaseDate);
     	
     	// Decease Place
 
@@ -324,16 +324,18 @@ public class PkHuw {
     	if(getOrdhuwp() >= 0 || getOjrhuwp() > 0){ // termination including death spouse  		
     		
     		
-    		String endDate  = String.format("%02d-%02d-%04d", getOdghuwp(), getOmdhuwp(), getOjrhuwp());
+    		if( getOjrhuwp() > 0){
     		
-    		if(endDate != null){
+    			String endDate  = String.format("%02d-%02d-%04d", getOdghuwp(), getOmdhuwp(), getOjrhuwp());
+    		
+    			if(endDate != null){
     			
-    			b313.setEndDate(endDate); // update end date relation to Head
-    		    b32.setEndDate(endDate);  // update end date civil status married
-    		    b2.setEndDate(endDate);   // update end date b2 record
-    		}
+    				b313.setEndDate(endDate); // update end date relation to Head
+    				b32.setEndDate(endDate);  // update end date civil status married
+    				b2.setEndDate(endDate);   // update end date b2 record
+    			}
 
-    	
+    		}
     	   /*
     		
     		int ordhuwp = getOrdhuwp() >= 1 ? getOrdhuwp() : 1;  // 1 = death spouse
@@ -439,10 +441,11 @@ public class PkHuw {
     	if(getBrphuwp().trim() != null){
 
 
-
+            int increment = 0;
     		int date = Common1.dayCount(b2.getStartDate());
     		String[] professions = getBrphuwp().trim().split("[*]");
-    		int increment = (Common1.dayCount(b2.getEndDate()) - Common1.dayCount(b2.getStartDate())) / professions.length;
+    		if(b2.getEndDate() != null)
+    		  increment = (Common1.dayCount(b2.getEndDate()) - Common1.dayCount(b2.getStartDate())) / professions.length;
 
     		if(increment > 0){ // because sometimes endDate is invalid
 

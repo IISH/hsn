@@ -381,8 +381,8 @@ public class PkKnd {
     	if(getOjrperp() > 0)    	
     		deceaseDate = String.format("%02d-%02d-%04d", getOdgperp(), getOmdperp(), getOjrperp());
     	else
-    		deceaseDate = "00-00-00";
-    		
+    		deceaseDate = null;
+    	
     	b2.setDateOfDecease(deceaseDate);    	
     	b2.setDateOfDeceaseFlag(1);
     	
@@ -745,6 +745,7 @@ public class PkKnd {
 		int seqNoCivil = 1;
 		
 		// If the first marriage is after the start date of the card: before the first marriage add an unmarried b32 	
+		
    		
     			
 		PkHuw pkhw = getMarriages().size() > 0 ? getMarriages().get(0) : null;
@@ -905,7 +906,7 @@ public class PkKnd {
 
 
         	       		
-        		// new civil status record for PK Holder, but only if the end date of the marriage is known (on his card) . Otherwise, he died, no further status possible 
+        		// new civil status record for PK Holder, but only if the end date of the marriage is known (on his card). Otherwise, he died, no further status possible 
         		
         		if(pkhuw.getOjrhuwp() > 0){
 

@@ -193,8 +193,7 @@ public class PkEigknd {
     	String deceaseDate = null;
     	if(getOjrkndp() > 0)
     		deceaseDate = String.format("%02d-%02d-%04d", getOdgkndp(), getOmdkndp(), getOjrkndp());
-    	else
-    		deceaseDate = "00-00-0000";
+    
 
     	b2.setDateOfDecease(deceaseDate);    	
     	b2.setDateOfDeceaseFlag(1);
@@ -283,7 +282,6 @@ public class PkEigknd {
     	if(getHjrkndp() > 0){
     		
     		
-    		
     		B32_ST b32 = new B32_ST();
         	b2.getCivilStatus().add(b32); // Link B32_ST -> B2_ST
         	b32.setPerson(b2);            // Link B2_ST -> B32_ST
@@ -297,6 +295,7 @@ public class PkEigknd {
    			String marriageDate = String.format("%02d-%02d-%04d", getHdgkndp(), getHmdkndp(), getHjrkndp());
    			b32.setDateOfMutation(marriageDate);
    			b32.setStartDate(marriageDate);
+   			b32.setEndDate(marriageDate);  // because child leaves the PK observation by marrying
 
 
         	a = Utils.standardizeLocation(getAplkndp());

@@ -400,6 +400,8 @@ public class StandardizePersonalCards implements Runnable {
         
         // To simplify processing, we create a second list of Pkknd objects, sorted on idnrP 
         
+        /*
+        
         List<PkKnd> pkkndL2 = new ArrayList(); 
         
         pkkndL2.addAll(pkkndL);        
@@ -408,7 +410,7 @@ public class StandardizePersonalCards implements Runnable {
             public int compare(PkKnd pkknd1, PkKnd pkknd2) {
                 if (pkknd1.getIdnrp() > pkknd2.getIdnrp()) return 1;
                 else if (pkknd1.getIdnrp() < pkknd2.getIdnrp()) return -1;
-                return 0;
+                return 0;   
             }
         });
 
@@ -504,7 +506,7 @@ public class StandardizePersonalCards implements Runnable {
         	}
         }
 
-
+*/
         // Relate All to All
 
         for (PkKnd pkknd1 : pkkndL) 
@@ -614,7 +616,7 @@ public class StandardizePersonalCards implements Runnable {
 
     		
     		
-    		case 2:  // The wife as partner of her husband. Leave alone, we have her already as RP
+    		case 2:  // One of the wives, maybe the RP
     			break;
     		
     		default:  // Husbands parents and children
@@ -653,6 +655,7 @@ public class StandardizePersonalCards implements Runnable {
     					String marriageDate = "";
     					for(B32_ST b32: b2Partner.getCivilStatus()){
     						if(b32.getContentOfDynamicData() == 5){ // marriage
+    							
     							marriageDate = b32.getDateOfMutation();
     							break;
     						}

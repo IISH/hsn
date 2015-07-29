@@ -18,52 +18,66 @@ public class Common1 {
 	 * @param EndDate2
 	 * @return
 	 * 
-	 * Calculates the intersection of two intervals, one of which can be null, null
+	 * Calculates the intersection of two intervals, one of which can be [null, null]
+	 * In this case the other interval (providing it does not contain null) is returned
 	 * 
 	 */
 	public static String [] getIntersection(String startDate1, String endDate1, String startDate2, String endDate2){
 		
 		String [] a = new String[2];
 		
-		if(startDate1 != null){
+		if(startDate1 == null && endDate1 == null){
 			
-			if(startDate2 != null){
-
-				int start1 = dayCount(startDate1);
-				int end1   = dayCount(endDate1);
-				int start2 = dayCount(startDate2);
-				int end2   = dayCount(endDate2);
-				
-				int start = Math.max(start1, start2);		
-				int end   = Math.min(end1, end2);
-				
-				if(start <= end){
-					
-					a[0] = dateFromDayCount(start);
-					a[1] = dateFromDayCount(end);
-					
-					return a;
-				}
-				else
-					return null;
+			
+			if(startDate2 != null && endDate2 != null){				
+				a[0] = startDate2;
+				a[1] = endDate2;
+				return a;
 			}
-			else{
+			else 
+				return null;
+			
+			
+		}
+			
+		if(startDate2 == null && endDate2 == null){
+			
+			
+			if(startDate1 != null && endDate1 != null){				
 				a[0] = startDate1;
 				a[1] = endDate1;
 				return a;
 			}
+			else 
+				return null;
+			
+			
 		}
-		else{
-			if(startDate2 != null){
-				a[0] = startDate2;
-				a[1] = endDate2;
+			
+			
+		if(startDate1 != null && endDate1 != null && startDate2 != null && endDate2 != null){
+		
+			int start1 = dayCount(startDate1);
+			int end1   = dayCount(endDate1);
+			int start2 = dayCount(startDate2);
+			int end2   = dayCount(endDate2);
+				
+			int start = Math.max(start1, start2);		
+			int end   = Math.min(end1, end2);
+				
+			if(start <= end){
+					
+				a[0] = dateFromDayCount(start);
+				a[1] = dateFromDayCount(end);
+					
 				return a;
 				
 			}
-			else
-				return null;
 			
+			return null;
 		}
+		
+		return null;
 	}
 
 	/**
