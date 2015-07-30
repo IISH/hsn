@@ -150,8 +150,23 @@ public class B4_ST {
         				if(ConstRelations2.b3kode1_Related[relAB] == null){ // not blood related, so lets try to date
         					if(pdsA.getStartDate() != null || pdsB.getStartDate() != null){
         						String  []  intersection = Common1.getIntersection(pdsA.getStartDate(), pdsA.getEndDate(), pdsB.getStartDate(), pdsB.getEndDate());
+        						//System.out.println(pdsA.getStartDate() + "    " + pdsA.getEndDate());
+        						//System.out.println(pdsB.getStartDate() + "    " + pdsB.getEndDate());
         						if(intersection != null){
+
+
+        							//System.out.println();
+        							//System.out.println("-----");
+        							//System.out.println();
         							
+            						//System.out.println(pdsA.getStartDate() + "    " + pdsA.getEndDate());
+            						//System.out.println(pdsB.getStartDate() + "    " + pdsB.getEndDate());        							
+            						//System.out.println(intersection[0]     + "    " + intersection[1]);
+
+        							//System.out.println();
+        							//System.out.println();
+
+            						
 		        					B34_ST pds = new B34_ST();
 		        					
 		        					// Do not date to and from a parents (b2rngb = 2 or 3), we don't know when they died

@@ -295,7 +295,7 @@ public class PkEigknd {
    			String marriageDate = String.format("%02d-%02d-%04d", getHdgkndp(), getHmdkndp(), getHjrkndp());
    			b32.setDateOfMutation(marriageDate);
    			b32.setStartDate(marriageDate);
-   			b32.setEndDate(marriageDate);  // because child leaves the PK observation by marrying
+   			b32.setEndDate(null);  // because child leaves the PK observation by marrying
 
 
         	a = Utils.standardizeLocation(getAplkndp());
