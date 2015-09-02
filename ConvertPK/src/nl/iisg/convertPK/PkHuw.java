@@ -188,8 +188,7 @@ public class PkHuw {
     	String birthDate = String.format("%02d-%02d-%04d", getGdghuwp(), getGmdhuwp(), getGjrhuwp());
     	b2.setDateOfBirth(birthDate); 
     	
-    	// b2.setStartDate(birthDate); // Not true
-    	
+    	    	
     	// Birth date
     	
 		int[] result = 	Utils.transformDateFields(getGdghuwp(), getGmdhuwp(), getGjrhuwp(), getGdghuwpcr(), getGmdhuwpcr(), getGjrhuwpcr()); 
@@ -254,6 +253,30 @@ public class PkHuw {
     		b2.setStartFlag(21);
     	}
 
+    	if(getOjrhuwp() > 0){
+    		if(Common1.dayCount(getOdghuwp(), getOmdhuwp(), getOjrhuwp()) < Common1.dayCount(b2.getEndDate())){
+    			b2.setEndDate(String.format("%02d-%02d-%04d", getOdghuwp(), getOmdhuwp(), getOjrhuwp()));
+    			b2.setEndFlag(40);
+    		}
+    	}
+    	
+    	if(getAjrhuwp() > 0){
+    		if(Common1.dayCount(getAdghuwp(), getAmdhuwp(), getAjrhuwp()) < Common1.dayCount(b2.getEndDate())){
+    			b2.setEndDate(String.format("%02d-%02d-%04d", getAdghuwp(), getAmdhuwp(), getAjrhuwp()));
+    			b2.setEndFlag(41);
+    		}
+    	}
+
+    	if(b2.getEndDate() != null &&  Common1.dayCount(b2.getEndDate()) < Common1.dayCount(b2.getStartDate())){
+    		
+    		b2.setStartDate(null);
+    		b2.setStartFlag(0);
+			b2.setEndDate(null);
+			b2.setEndFlag(0);
+    		
+    	}
+
+
 
     	
     	
@@ -264,6 +287,10 @@ public class PkHuw {
 		b313.setPerson(b2);            			  // Link B2_ST -> B313_ST
 
 		initialiseB3_ST(b313);
+		
+		
+		
+		
 		b313.setDynamicDataType(13);
 		b313.setKeyToRegistrationPersons(b2.getKeyToPersons());
 		
@@ -276,14 +303,8 @@ public class PkHuw {
         	b313.setDateOfMutation(marriageDate);        	
         	b313.setDateOfMutationFlag(10); // original value
         	b313.setStartDate(marriageDate);
-    		
     	}
 
-		
-		
-
-    	
-    	
     	
     	// Marriage Civil Status    	
     	
@@ -314,78 +335,6 @@ public class PkHuw {
     	int seqCivil = 1;
 		b32.setDynamicDataSequenceNumber(seqCivil++);
 		
-    	 
-    	
-    	
-  	
-    	
-    	// Check for termination of marriage
-    	
-    	if(getOrdhuwp() >= 0 || getOjrhuwp() > 0){ // termination including death spouse  		
-    		
-    		
-    		if( getOjrhuwp() > 0){
-    		
-    			String endDate  = String.format("%02d-%02d-%04d", getOdghuwp(), getOmdhuwp(), getOjrhuwp());
-    		
-    			if(endDate != null){
-    			
-    				b313.setEndDate(endDate); // update end date relation to Head
-    				b32.setEndDate(endDate);  // update end date civil status married
-    				b2.setEndDate(endDate);   // update end date b2 record
-    			}
-
-    		}
-    	   /*
-    		
-    		int ordhuwp = getOrdhuwp() >= 1 ? getOrdhuwp() : 1;  // 1 = death spouse
-    		
-    		// new civil status record for spouse with code = 2, 3 or 12
-    		
-    		String endDate = null;
-    		
-    		if(ordhuwp != 1){ // Not if partner died
-
-    			b32 = new B32_ST();
-    			b2.getCivilStatus().add(b32); // Link B32_ST -> B2_ST
-    			b32.setPerson(b2);            // Link B2_ST -> B32_ST
-
-    			initialiseB3_ST(b32);
-    			b32.setKeyToRegistrationPersons(b2.getKeyToPersons());
-    			b32.setDynamicDataType(2);
-
-
-    			
-    			if(getOjrhuwp() > 0){
-
-    				endDate  = String.format("%02d-%02d-%04d", getOdghuwp(), getOmdhuwp(), getOjrhuwp());
-    				String endDateP = Common1.dateFromDayCount(Common1.dayCount(endDate) + 1);
-
-    				b32.setStartDate(endDateP);
-    				b32Marriage.setEndDate(endDate); //  update endDate previous state
-
-    			}
-    		}
-    		
-    		switch(getOrdhuwp()){
-    		
-    		case 1: b32.setContentOfDynamicData(2);  // widowed
-    		break;
-    		case 2: b32.setContentOfDynamicData(3);  // divorce
-    		break;
-    		case 3: b32.setContentOfDynamicData(12); // other
-    		break;
-    		case 4: b32.setContentOfDynamicData(3);  // bigamy
-    		break;
-    		case 9: b32.setContentOfDynamicData(12); // no reason
-    		break;
-    		}
-    		
-    		b32.setDynamicDataSequenceNumber(seqCivil++);
-    		
-    		*/
-    	
-    	}
     	
     	// departure of partner
     	
@@ -436,60 +385,59 @@ public class PkHuw {
     	}
 
     	
-		// Professions of partner
+		// Professions 
     	
-    	if(getBrphuwp().trim() != null){
+    	if(getBrphuwp() != null){
+
+    		int increment = 0;
+    		if(b2.getStartDate() != null){
+    			int date = Common1.dayCount(b2.getStartDate());
+    			String[] professions = getBrphuwp().trim().split("[*]");
+    			if(b2.getEndDate() != null)
+    				increment = (Common1.dayCount(b2.getEndDate()) - Common1.dayCount(b2.getStartDate())) / professions.length;
+
+    			if(increment > 0){ // because sometimes endDate is invalid
 
 
-            int increment = 0;
-    		int date = Common1.dayCount(b2.getStartDate());
-    		String[] professions = getBrphuwp().trim().split("[*]");
-    		if(b2.getEndDate() != null)
-    		  increment = (Common1.dayCount(b2.getEndDate()) - Common1.dayCount(b2.getStartDate())) / professions.length;
+    				int seqNoPr = 1;
 
-    		if(increment > 0){ // because sometimes endDate is invalid
+    				for(String profession: professions){
 
-    			
-    			int seqNoPr = 1;
+    					if(profession == null || profession.trim().length() == 0)
+    						continue;
 
-    			for(String profession: professions){
+    					profession = profession.trim();
+    					B35_ST b35 = new B35_ST();
+    					b2.getProfessions().add(b35); // Link B35_ST -> B2_ST
+    					b35.setPerson(b2);            // Link B2_ST -> B35_ST
 
-    				if(profession == null || profession.trim().length() == 0)
-    					continue;
+    					initialiseB3_ST(b35);
+    					b35.setKeyToRegistrationPersons(b2.getKeyToPersons());
+    					//System.out.println("key = " + b2.getKeyToPersons());
 
-    				profession = profession.trim();
-    				B35_ST b35 = new B35_ST();
-    				b2.getProfessions().add(b35); // Link B35_ST -> B2_ST
-    				b35.setPerson(b2);            // Link B2_ST -> B35_ST
+    					b35.setDynamicDataType(5);
 
-    				initialiseB3_ST(b35);
-    				b35.setKeyToRegistrationPersons(b2.getKeyToPersons());
-    				//System.out.println("key = " + b2.getKeyToPersons());
+    					b = Utils.standardizeProfession(profession);
+    					b35.setOccupationStandardized((String)b.get(0));
+    					b35.setOccupationID((Integer)b.get(1));
 
-    				b35.setDynamicDataType(5);
+    					b35.setStartDate(Common1.dateFromDayCount(date));
+    					b35.setEndDate(Common1.dateFromDayCount(date + increment - 1));
 
-    				b = Utils.standardizeLocation(profession);
-    				b35.setOccupationStandardized((String)b.get(0));
-    				b35.setOccupationID((Integer)b.get(1));
-
-    				b35.setStartDate(Common1.dateFromDayCount(date));
-    				b35.setEndDate(Common1.dateFromDayCount(date + increment - 1));
-
-    				date += increment;
+    					date += increment;
 
 
-    				b35.setOccupationFlag(3);
+    					b35.setOccupationFlag(3);
 
 
-    				b35.setDynamicDataSequenceNumber(seqNoPr++);
+    					b35.setDynamicDataSequenceNumber(seqNoPr++);
 
 
 
+    				}
     			}
     		}
     	}
-
-    	
     }
     
     

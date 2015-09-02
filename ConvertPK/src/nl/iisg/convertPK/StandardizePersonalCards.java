@@ -14,6 +14,8 @@ import javax.print.attribute.standard.MediaSize.Other;
 import javax.swing.*;
 
 import nl.iisg.hsncommon.Common1;
+import nl.iisg.hsncommon.ConstRelations;
+import nl.iisg.hsncommon.ConstRelations2;
 import nl.iisg.hsncommon.DBFHandler;
 import nl.iisg.ref.Ref;
 
@@ -391,6 +393,68 @@ public class StandardizePersonalCards implements Runnable {
         	}
 
         }
+        
+        // We set the relations we know so far
+        
+        // First set PersonID_FA and PersonID_MO for children 
+        
+        for (PkKnd pkknd1 : pkkndL) {
+        	for (B2_ST b2 : pkknd1.getB4().getPersons()) {
+        		
+        		if(b2.getRelationsToPKHolder().get(0).getContentOfDynamicData() == 3 || b2.getRelationsToPKHolder().get(0).getContentOfDynamicData() == 4 ||
+       			   b2.getRelationsToPKHolder().get(0).getContentOfDynamicData() == 8 || b2.getRelationsToPKHolder().get(0).getContentOfDynamicData() == 9){
+        			
+        			
+        			//System.out.println(b2.getFirstName() + "  " + b2.getFamilyName());
+        			
+        			// Set Parent 1 PersonID
+        			
+        			if(b2.getRegistration().getPersons().get(0).getSex().equalsIgnoreCase("M"))		
+        				b2.setPersonID_FA(b2.getRegistration().getPersons().get(0).getPersonID());
+        			else
+        				b2.setPersonID_MO(b2.getRegistration().getPersons().get(0).getPersonID());
+        			
+        			//System.out.println(b2.getFirstName() + "  " + b2.getFamilyName());
+
+        			
+        			// Set parent 2 PersonID
+        			
+        			for(B2_ST b2_temp: b2.getRegistration().getPersons()){
+        				
+        				if(b2_temp.getRelationsToPKHolder().get(0).getContentOfDynamicData() == 2){   // Spouse
+        					
+        					int marriageStartDays = Common1.dayCount(b2_temp.getRelationsToPKHolder().get(0).getStartDate()); 
+        					int marriageEndDays   = Common1.dayCount(b2_temp.getRelationsToPKHolder().get(0).getStartDate()); 
+        					
+        					if(marriageStartDays < Common1.dayCount(b2.getDateOfBirth()) &&	marriageEndDays > Common1.dayCount(b2.getDateOfBirth())){
+        	               
+        						if(b2.getPersonID_FA() == 0)
+        							b2.setPersonID_FA(b2_temp.getPersonID());
+        						else
+        							b2.setPersonID_MO(b2_temp.getPersonID());
+        						
+        						break;
+        						
+        	                }
+        				}
+        			}
+        		}
+        		
+        	}
+        
+        }
+        
+        
+        // Now set the relations
+        
+        for (PkKnd pkknd1 : pkkndL) 
+        	for (B2_ST b2L : pkknd1.getB4().getPersons()) 
+        		for(B2_ST b2R :  pkknd1.getB4().getPersons())
+        			handleB34(b2L, b2R);    		
+        		
+        	        
+        
+        
 
         //for(B2_ST p: uniquePersons)
         	//System.out.println("PersonID = " + p.getPersonID() + "LastName = " + p.getFamilyName() + "    Firstname = " + p.getFirstName());
@@ -509,8 +573,8 @@ public class StandardizePersonalCards implements Runnable {
 */
         // Relate All to All
 
-        for (PkKnd pkknd1 : pkkndL) 
-        		pkknd1.getB4().relateAllToAll(); 
+        //for (PkKnd pkknd1 : pkkndL) 
+        	//	pkknd1.getB4().relateAllToAll(); 
         	
         
 
@@ -536,7 +600,7 @@ public class StandardizePersonalCards implements Runnable {
             em.getTransaction().commit();
             em.clear();
         } catch (Exception e) {
-            print(e.getMessage());
+        	e.printStackTrace(System.out);
         }
 
 
@@ -931,8 +995,447 @@ public class StandardizePersonalCards implements Runnable {
     	
     }
     
+    private static void handleB34(B2_ST b2L, B2_ST b2R){
+    	
+    	
+    	//if(b2R.getKeyToPersons() >= b2L.getKeyToPersons()) return;
+    	
+    	int relL = b2L.getRelationsToPKHolder().get(0).getContentOfDynamicData();
+    	int relR = b2R.getRelationsToPKHolder().get(0).getContentOfDynamicData();
+    	
+    	int rel = 0;
+    	boolean ti = false;
+    	
+    	switch(relL){
+
+    	case ConstRelations2.HOOFD:                                 // Card Holder    	
+    		
+    		switch(relR){
+    		
+        	case ConstRelations2.ECHTGENOTE_HOOFD: rel = ConstRelations2.HOOFD; break;                                // Spouse        		
+        	case ConstRelations2.ZOON:             rel = ConstRelations2.VADER;               ti = true;      break;  // Son
+        	case ConstRelations2.DOCHTER:          rel = ConstRelations2.VADER;               ti = true;      break;  // Daughter
+        	case ConstRelations2.STIEFZOON:        rel = ConstRelations2.STIEFVADER;                          break;  // Stepson
+        	case ConstRelations2.STIEFDOCHTER:     rel = ConstRelations2.STIEFVADER;                          break;  // Stepdaughter	
+        	case ConstRelations2.VADER:            rel = ConstRelations2.ZOON;                ti = true;      break;  // Father	
+        	case ConstRelations2.MOEDER:           rel = ConstRelations2.ZOON;                ti = true;      break;  // Mother
+
+        		
+    		}
+    		
+    		break;    		
+    		
+    		
+    		
+    	case ConstRelations2.ECHTGENOTE_HOOFD:                      // Spouse can be male or female
+    		
+    		switch(relR){
+    		
+    		case ConstRelations2.HOOFD: rel = ConstRelations2.ECHTGENOTE_HOOFD;   break;                
+    			
+    			
+    		case ConstRelations2.ZOON: 
+    		case ConstRelations2.STIEFZOON: 
+    			if(b2L.getSex().equalsIgnoreCase("M"))
+    				if(getPersonID() == b2R.getPersonID_FA()){
+    					rel= ConstRelations2.ZOON;    				
+    					ti = true;
+    				}
+    				else{
+    					rel= ConstRelations2.STIEFZOON;    				
+    					ti = false;
+    			}
+    			else{
+    				if(b2L.getPersonID() == b2R.getPersonID_MO()){
+        				rel= ConstRelations2.ZOON;    				
+    					ti = true;
+    				}
+    				else{
+        				rel= ConstRelations2.STIEFZOON;    				
+    					ti = true;
+    				}
+    			}
+    			break;
+    				
+    		case ConstRelations2.DOCHTER: 
+    		case ConstRelations2.STIEFDOCHTER: 
+    			if(b2L.getSex().equalsIgnoreCase("M"))
+    				if(getPersonID() == b2R.getPersonID_FA()){
+    					rel= ConstRelations2.DOCHTER;    				
+    					ti = true;
+    				}
+    				else{
+    					rel= ConstRelations2.STIEFDOCHTER;   					
+    			}
+    			else{
+    				if(b2L.getPersonID() == b2R.getPersonID_MO()){
+        				rel= ConstRelations2.DOCHTER;    				
+    					ti = true;
+    				}
+    				else{
+        				rel= ConstRelations2.STIEFDOCHTER;    				
+    				}
+    			}
+    			break;
+    				
+    				
+        		
+        	case ConstRelations2.VADER:            
+
+    			rel = ConstRelations2.SCHOONVADER;
+    			break;
+        		
+        		
+        	case ConstRelations2.MOEDER:            
+
+    			rel = ConstRelations2.SCHOONMOEDER;
+    			break;
+        		
+    		}
+    		
+    		break;
+    		
+    		
+    		
+    		
+    		
+    		
+    	case ConstRelations2.STIEFZOON:                                  // Son
+    	case ConstRelations2.ZOON:                                 
+    		
+    		switch(relR){
+    		
+        	case ConstRelations2.HOOFD:    
+
+        		
+   			 	rel = (relR == ConstRelations2.ZOON) ?  ConstRelations2.ZOON :  ConstRelations2.STIEFZOON;
+   			 	ti = true;        	
+   			 	break;
+        			
+        		
+
+        	case ConstRelations2.ECHTGENOTE_HOOFD: 
+
+        		if(b2R.getSex().equalsIgnoreCase("M")){
+
+        			if(b2R.getPersonID_FA() == b2L.getPersonID()){
+
+        				rel = ConstRelations2.ZOON;
+        				ti = true;
+        			}
+        			else{
+        				rel = ConstRelations2.STIEFZOON;
+        			}
+        		}
+        		else{
+        			if(b2R.getPersonID_MO() == b2L.getPersonID()){
+
+        				rel = ConstRelations2.ZOON;
+        				ti = true;
+        			}
+        			else{
+        				rel = ConstRelations2.STIEFZOON;
+        				ti = false;
+
+        			}
+
+
+        		}
+
+    		   break;
+        	
+    		
+        	
+        	
+        	
+        	case ConstRelations2.ZOON:
+        	case ConstRelations2.DOCHTER:
+        	case ConstRelations2.STIEFZOON:     
+        	case ConstRelations2.STIEFDOCHTER:     
+        		
+        		int r = 0;
+
+        		if(b2L.getPersonID_FA() == b2R.getPersonID_FA()) r++;
+        		if(b2L.getPersonID_MO() == b2R.getPersonID_MO()) r++;
+
+
+        		if(r == 0){        		
+        			rel = ConstRelations2.STIEFBROER;
+        		}
+        		else
+        			if(r ==1){
+        				rel = ConstRelations2.HALFBROER;
+        				ti = true;
+        			}
+        			else{
+        				rel = ConstRelations2.BROER;
+        				ti = true;
+        				}
+
+
+
+        		break;
+        		
+        	case ConstRelations2.VADER:            
+        	case ConstRelations2.MOEDER:           
+        		
+        		rel = ConstRelations2.KLEINZOON;
+        		ti = true;
+
+        		break;
+    		
+    		}
+    		
+    		
+    		
+    		
+    		
+    		
+    	case ConstRelations2.DOCHTER:                               // Daughter
+    	case ConstRelations2.STIEFDOCHTER:                          // Stepdaughter	
+    		
+    		
+    		switch(relR){
+    		
+        	case ConstRelations2.HOOFD:    
+
+        		
+   			 	rel = (relR == ConstRelations2.DOCHTER) ?  ConstRelations2.DOCHTER :  ConstRelations2.STIEFDOCHTER;
+   			 	ti = true;        	
+   			 	break;
+        			
+        		
+
+        	case ConstRelations2.ECHTGENOTE_HOOFD: 
+
+        		if(b2R.getSex().equalsIgnoreCase("M")){
+
+        			if(b2R.getPersonID_FA() == b2L.getPersonID()){
+
+        				rel = ConstRelations2.DOCHTER;
+        				ti = true;
+        			}
+        			else{
+        				rel = ConstRelations2.STIEFDOCHTER;
+        			}
+        		}
+        		else{
+        			if(b2R.getPersonID_MO() == b2L.getPersonID()){
+
+        				rel = ConstRelations2.DOCHTER;
+        				ti = true;
+        			}
+        			else{
+        				rel = ConstRelations2.STIEFDOCHTER;
+
+        			}
+
+
+        		}
+
+    		   break;
+        	
+    		
+        	
+        	
+        	
+        	case ConstRelations2.ZOON:
+        	case ConstRelations2.DOCHTER:
+        	case ConstRelations2.STIEFZOON:     
+        	case ConstRelations2.STIEFDOCHTER:     
+        		
+        		int r = 0;
+
+        		if(b2L.getPersonID_FA() == b2R.getPersonID_FA()) r++;
+        		if(b2L.getPersonID_MO() == b2R.getPersonID_MO()) r++;
+
+
+        		if(r == 0){        		
+        			rel = ConstRelations2.STIEFZUSTER;
+        		}
+        		else
+        			if(r ==1){
+        				rel = ConstRelations2.HALFZUSTER;
+        				ti = true;
+        			}
+        			else{
+        				rel = ConstRelations2.ZUSTER;
+        				ti = true;
+        				}
+
+
+
+        		break;
+        		
+        	case ConstRelations2.VADER:            
+        	case ConstRelations2.MOEDER:           
+        		
+        		rel = ConstRelations2.KLEINDOCHTER;
+        		ti = true;
+
+        		break;
+    		
+
+    		}
+
+    		
+    		
+    		
+    	case ConstRelations2.VADER:                                 // Father	
+    		
+    		
+    		
+    		switch(relR){
+
+
+    		case ConstRelations2.HOOFD:            rel = ConstRelations2.VADER;               ti = true;      break;                                       		
+    		case ConstRelations2.ECHTGENOTE_HOOFD: rel = ConstRelations2.SCHOONVADER;                         break;                                        		
+    		case ConstRelations2.ZOON:             rel = ConstRelations2.GROOTVADER;          ti = true;      break;  
+    		case ConstRelations2.DOCHTER:          rel = ConstRelations2.GROOTVADER;          ti = true;      break;  
+    		case ConstRelations2.STIEFZOON:        rel = ConstRelations2.GROOTVADER;          ti = true;      break;  
+    		case ConstRelations2.STIEFDOCHTER:     rel = ConstRelations2.GROOTVADER;          ti = true;      break;  	
+    		case ConstRelations2.VADER:            rel = 0;                                                   break;  
+    		case ConstRelations2.MOEDER:           rel = 0;                                                   break;  
+
+
+
+    		}
+    		
+    		break;
+    		
+    		
+    	case ConstRelations2.MOEDER:                                // Mother
+    		
+    		switch(relR){
+
+
+    		case ConstRelations2.HOOFD:            rel = ConstRelations2.MOEDER;               ti = true;      break;                                       		
+    		case ConstRelations2.ECHTGENOTE_HOOFD: rel = ConstRelations2.SCHOONMOEDER;                         break;                                        		
+    		case ConstRelations2.ZOON:             rel = ConstRelations2.GROOTMOEDER;          ti = true;      break;  
+    		case ConstRelations2.DOCHTER:          rel = ConstRelations2.GROOTMOEDER;          ti = true;      break;  
+    		case ConstRelations2.STIEFZOON:        rel = ConstRelations2.GROOTMOEDER;          ti = true;      break;  
+    		case ConstRelations2.STIEFDOCHTER:     rel = ConstRelations2.GROOTMOEDER;          ti = true;      break;  	
+    		case ConstRelations2.VADER:            rel = 0;                                                    break;  
+    		case ConstRelations2.MOEDER:           rel = 0;                                                    break;  
+
+
+
+    		}
+    		
+    		
+    		
+    		
+
+    		break;
+
+    		
+    	}
+    		
+    	
+    	if(rel != 0){ 	
+    		B34_ST b34 = allocateB34(b2L, b2R, rel,  ti);
+    		if(b34 != null)
+    			b2L.getRelations().add(b34);
+    		
+    	}
+    	    	
+    	
+    }
+    
+    
+    
+    /**
+     * 
+     * Allocate an B34_ST with keys copied from b4 and the rest copied from b2I
+     * 
+     * @param b2
+     * @param b2I  
+     * @return
+     */
+    
+    private static B34_ST allocateB34(B2_ST b2L, B2_ST b2R, int rel, boolean time_invariant){
+    	
+    	B34_ST b34 = new B34_ST(); 
+    	
+    	// Keys from b2L 
+    	b34.setDynamicDataType(4);
+    	
+    	b34.setVersionLastTimeOfDataEntry(b2L.getVersionLastTimeOfDataEntry());
+    	b34.setResearchCodeOriginal(b2L.getResearchCodeOriginal());
+    	b34.setVersionOriginalDataEntry(b2L.getVersionOriginalDataEntry());
+    	b34.setDate0(b2L.getDate0());
+
+
+        b34.setKeyToRP(b2L.getKeyToRP());
+        b34.setEntryDateHead(b2L.getEntryDateHead());
+        b34.setKeyToSourceRegister(b2L.getKeyToSourceRegister());
+        b34.setKeyToRegistrationPersons(b2L.getKeyToPersons());
+        b34.setDynamicDataSequenceNumber(b2L.getRelations().size() + 1);
+        
+        b34.setContentOfDynamicData(rel);
+        b34.setValueOfRelatedPerson(b2R.getKeyToPersons());
+        
+        
+        int a [] = null;
+        if(time_invariant == true)       	
+        	a = findCommonTime(b2L.getDateOfBirth(), b2L.getDateOfDecease(), b2R.getDateOfBirth(), b2R.getDateOfDecease());
+        else
+        	a = findCommonTime(b2L.getStartDate(), b2L.getEndDate(), b2R.getStartDate(), b2R.getEndDate());
+        
+        
+        if(a != null){
+        	
+        	if(time_invariant == false){
+        		b34.setStartDate(Common1.dateFromDayCount(a[0]));
+            	b34.setEndDate(Common1.dateFromDayCount(a[1]));
+        	}
+        	
+        	
+        }
+        else
+        	return null;
+        	
+        
+    	return b34;
+    }
     
 
+    private static int[] findCommonTime(String b2LL, String b2LR, String b2RL, String b2RR){
+    	
+
+       	
+       	if(b2LL == null || b2LR == null || b2RL == null || b2RR == null) return null;
+       	
+       	
+       	
+       	// Common1.dateFromDayCount(Common1.dayCount(B2dibg) + 1);
+       	
+       	int l = Common1.dayCount(b2LL);
+       	if(Common1.dayCount(b2RL) > l) l = Common1.dayCount(b2RL);
+       	
+       	int r = Common1.dayCount(b2LR);
+       	if(Common1.dayCount(b2RR) < r) r = Common1.dayCount(b2RR);
+
+       	if(l < r){
+       		
+       		int[ ] a = new int[2];
+       		a[0] = l;
+       		a[1] = r;
+       		
+       		System.out.println("l = " + l +  ", r = "+ r);
+       		
+       		return a;
+       		
+       	}
+       	
+       	System.out.println("No common time");
+       	
+    	return null;
+    
+    	
+    }
+    
+    
     /*
       * 
       * This routine compares two persons to see if they are in fact the same person

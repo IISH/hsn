@@ -994,6 +994,21 @@ public class PkKnd {
     				//System.out.println("key = " + b2pk.getKeyToPersons());
 
     				b35.setDynamicDataSequenceNumber(seqNoPr++);
+    				
+    				String profession = pkbrp.getBeroepp();
+    				String position   = pkbrp.getBrpposp();
+    				
+    				if(!position.equalsIgnoreCase("n")){
+    					
+    					if(!profession.endsWith("(o)") && !profession.endsWith("(h)")){
+    						
+    						profession = profession + " (" + position + ")";
+    					}
+    				}
+    				
+    				ArrayList b = Utils.standardizeProfession(pkbrp.getBeroepp());
+    				b35.setOccupationStandardized((String)b.get(0));
+    				b35.setOccupationID((Integer)b.get(1));
 
     				b35.setStartDate(Common1.dateFromDayCount(date));
     				if(seqNoPr <= getProfessions().size())

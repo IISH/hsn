@@ -249,7 +249,15 @@ public class PkEigknd {
     		}
     	}
     	
-    	
+    	if(b2.getEndDate() != null && Common1.dayCount(b2.getEndDate()) < Common1.dayCount(b2.getStartDate())){
+    		
+    		b2.setStartDate(null);
+    		b2.setStartFlag(0);
+			b2.setEndDate(null);
+			b2.setEndFlag(0);
+    		
+    		
+    	}
 
 
     	
