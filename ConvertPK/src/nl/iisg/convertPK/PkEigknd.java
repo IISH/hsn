@@ -181,11 +181,10 @@ public class PkEigknd {
 			}
     	}
 
-    	String countrySuffix = "";
-    	if(getGlnkndp() != null)
-    		countrySuffix = " $ " + getGlnkndp();
+    	if(getGlnkndp() != null && getGlnkndp().trim().length() > 0)
+    		birthPlace = birthPlace + " $ " + getGlnkndp();
     		
-    	ArrayList a = Utils.standardizeLocation(birthPlace + countrySuffix); // Combine place with Country
+    	ArrayList a = Utils.standardizeLocation(birthPlace); // Combine place with Country
     	b2.setPlaceOfBirthStandardized((String)a.get(0));
     	b2.setPlaceOfBirthID((Integer)a.get(1));   	
     	
@@ -204,16 +203,16 @@ public class PkEigknd {
 		
     	if(deceasePlace != null){
 			if(deceasePlace.split("%").length > 1){
-				deceasePlace = birthPlace.split("%")[0].trim();
+				deceasePlace = deceasePlace.split("%")[0].trim();
 				b2.setPlaceOfDeceaseFlag(2);  	
 			}
 			else{
-				deceasePlace = birthPlace.split("%")[0].trim();
+				deceasePlace = deceasePlace.split("%")[0].trim();
 				b2.setPlaceOfDeceaseFlag(1);
 			}
     	}
 
-    	a = Utils.standardizeLocation(deceasePlace + countrySuffix);
+    	a = Utils.standardizeLocation(deceasePlace);
     	b2.setPlaceOfDeceaseStandardized((String)a.get(0));
     	b2.setPlaceOfDeceaseID((Integer)a.get(1));
     	

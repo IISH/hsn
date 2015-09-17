@@ -423,10 +423,17 @@ public class StandardizePersonalCards implements Runnable {
         				
         				if(b2_temp.getRelationsToPKHolder().get(0).getContentOfDynamicData() == 2){   // Spouse
         					
-        					int marriageStartDays = Common1.dayCount(b2_temp.getRelationsToPKHolder().get(0).getStartDate()); 
-        					int marriageEndDays   = Common1.dayCount(b2_temp.getRelationsToPKHolder().get(0).getStartDate()); 
+        							
+        					System.out.println("...");
+        					System.out.println("..." + b2_temp.getFirstName() + "  " + b2_temp.getFamilyName());
+
         					
-        					if(marriageStartDays < Common1.dayCount(b2.getDateOfBirth()) &&	marriageEndDays > Common1.dayCount(b2.getDateOfBirth())){
+        					int marriageStartDays = Common1.dayCount(b2_temp.getRelationsToPKHolder().get(0).getStartDate());
+        					int marriageEndDays   = b2_temp.getRelationsToPKHolder().get(0).getEndDate() != null ?  
+        							Common1.dayCount(b2_temp.getRelationsToPKHolder().get(0).getEndDate()) : 0;
+        					
+        					if(marriageStartDays < Common1.dayCount(b2.getDateOfBirth()) &&	
+        							(marriageEndDays == 0 || marriageEndDays > Common1.dayCount(b2.getDateOfBirth()))){
         	               
         						if(b2.getPersonID_FA() == 0)
         							b2.setPersonID_FA(b2_temp.getPersonID());
@@ -999,292 +1006,257 @@ public class StandardizePersonalCards implements Runnable {
     	
     	
     	//if(b2R.getKeyToPersons() >= b2L.getKeyToPersons()) return;
-    	
+
     	int relL = b2L.getRelationsToPKHolder().get(0).getContentOfDynamicData();
     	int relR = b2R.getRelationsToPKHolder().get(0).getContentOfDynamicData();
-    	
+
     	int rel = 0;
     	boolean ti = false;
-    	
+
     	switch(relL){
 
     	case ConstRelations2.HOOFD:                                 // Card Holder    	
-    		
-    		switch(relR){
-    		
-        	case ConstRelations2.ECHTGENOTE_HOOFD: rel = ConstRelations2.HOOFD; break;                                // Spouse        		
-        	case ConstRelations2.ZOON:             rel = ConstRelations2.VADER;               ti = true;      break;  // Son
-        	case ConstRelations2.DOCHTER:          rel = ConstRelations2.VADER;               ti = true;      break;  // Daughter
-        	case ConstRelations2.STIEFZOON:        rel = ConstRelations2.STIEFVADER;                          break;  // Stepson
-        	case ConstRelations2.STIEFDOCHTER:     rel = ConstRelations2.STIEFVADER;                          break;  // Stepdaughter	
-        	case ConstRelations2.VADER:            rel = ConstRelations2.ZOON;                ti = true;      break;  // Father	
-        	case ConstRelations2.MOEDER:           rel = ConstRelations2.ZOON;                ti = true;      break;  // Mother
 
-        		
-    		}
-    		
-    		break;    		
-    		
-    		
-    		
-    	case ConstRelations2.ECHTGENOTE_HOOFD:                      // Spouse can be male or female
-    		
     		switch(relR){
+
+    		case ConstRelations2.ECHTGENOTE_HOOFD: rel = ConstRelations2.HOOFD;								  break;  // Spouse        		
+    		case ConstRelations2.ZOON:             rel = ConstRelations2.VADER;               ti = true;      break;  // Son
+    		case ConstRelations2.DOCHTER:          rel = ConstRelations2.VADER;               ti = true;      break;  // Daughter
+    		case ConstRelations2.STIEFZOON:        rel = ConstRelations2.STIEFVADER;                          break;  // Stepson
+    		case ConstRelations2.STIEFDOCHTER:     rel = ConstRelations2.STIEFVADER;                          break;  // Stepdaughter	
+    		case ConstRelations2.VADER:           
+    		case ConstRelations2.MOEDER:           
+    			
+    			if(b2L.getSex().equalsIgnoreCase("M"))   			
+    				rel = ConstRelations2.ZOON;
+    			else
+    				rel = ConstRelations2.DOCHTER;
+    			
+    			
+    			ti = true;  
+    			break;  	
     		
+    		
+
+    		}
+    		break;
+
+    	case ConstRelations2.ECHTGENOTE_HOOFD:                      // Spouse can be male or female
+
+    		switch(relR){
+
     		case ConstRelations2.HOOFD: rel = ConstRelations2.ECHTGENOTE_HOOFD;   break;                
-    			
-    			
+
     		case ConstRelations2.ZOON: 
-    		case ConstRelations2.STIEFZOON: 
-    			if(b2L.getSex().equalsIgnoreCase("M"))
-    				if(getPersonID() == b2R.getPersonID_FA()){
-    					rel= ConstRelations2.ZOON;    				
-    					ti = true;
-    				}
-    				else{
-    					rel= ConstRelations2.STIEFZOON;    				
-    					ti = false;
-    			}
-    			else{
-    				if(b2L.getPersonID() == b2R.getPersonID_MO()){
-        				rel= ConstRelations2.ZOON;    				
-    					ti = true;
-    				}
-    				else{
-        				rel= ConstRelations2.STIEFZOON;    				
-    					ti = true;
-    				}
-    			}
-    			break;
-    				
+    		case ConstRelations2.STIEFZOON:
     		case ConstRelations2.DOCHTER: 
     		case ConstRelations2.STIEFDOCHTER: 
-    			if(b2L.getSex().equalsIgnoreCase("M"))
-    				if(getPersonID() == b2R.getPersonID_FA()){
-    					rel= ConstRelations2.DOCHTER;    				
+
+    			if(b2L.getSex().equalsIgnoreCase("M")){
+    				if(b2L.getPersonID() == b2R.getPersonID_FA()){
+    					rel= ConstRelations2.VADER;    				
     					ti = true;
     				}
     				else{
-    					rel= ConstRelations2.STIEFDOCHTER;   					
+    					rel= ConstRelations2.STIEFVADER;    				
+    					ti = false;
+    				}
     			}
     			else{
     				if(b2L.getPersonID() == b2R.getPersonID_MO()){
-        				rel= ConstRelations2.DOCHTER;    				
+    					rel= ConstRelations2.MOEDER;    				
     					ti = true;
     				}
     				else{
-        				rel= ConstRelations2.STIEFDOCHTER;    				
+    					rel= ConstRelations2.STIEFMOEDER;    				
+    					ti = false;
     				}
     			}
+    			
     			break;
-    				
-    				
-        		
-        	case ConstRelations2.VADER:            
 
-    			rel = ConstRelations2.SCHOONVADER;
-    			break;
-        		
-        		
-        	case ConstRelations2.MOEDER:            
 
-    			rel = ConstRelations2.SCHOONMOEDER;
+    		case ConstRelations2.VADER:
+    		case ConstRelations2.MOEDER:            
+
+    			if(b2L.getSex().equalsIgnoreCase("M"))
+    				rel = ConstRelations2.SCHOONZOON;
+    			else
+    				rel = ConstRelations2.SCHOONDOCHTER;
+    			
     			break;
-        		
     		}
-    		
+
     		break;
-    		
-    		
-    		
-    		
-    		
-    		
+
     	case ConstRelations2.STIEFZOON:                                  // Son
     	case ConstRelations2.ZOON:                                 
-    		
+
     		switch(relR){
-    		
-        	case ConstRelations2.HOOFD:    
 
-        		
-   			 	rel = (relR == ConstRelations2.ZOON) ?  ConstRelations2.ZOON :  ConstRelations2.STIEFZOON;
-   			 	ti = true;        	
-   			 	break;
-        			
-        		
-
-        	case ConstRelations2.ECHTGENOTE_HOOFD: 
-
-        		if(b2R.getSex().equalsIgnoreCase("M")){
-
-        			if(b2R.getPersonID_FA() == b2L.getPersonID()){
-
-        				rel = ConstRelations2.ZOON;
-        				ti = true;
-        			}
-        			else{
-        				rel = ConstRelations2.STIEFZOON;
-        			}
-        		}
-        		else{
-        			if(b2R.getPersonID_MO() == b2L.getPersonID()){
-
-        				rel = ConstRelations2.ZOON;
-        				ti = true;
-        			}
-        			else{
-        				rel = ConstRelations2.STIEFZOON;
-        				ti = false;
-
-        			}
+    		case ConstRelations2.HOOFD:    
 
 
-        		}
-
-    		   break;
-        	
-    		
-        	
-        	
-        	
-        	case ConstRelations2.ZOON:
-        	case ConstRelations2.DOCHTER:
-        	case ConstRelations2.STIEFZOON:     
-        	case ConstRelations2.STIEFDOCHTER:     
-        		
-        		int r = 0;
-
-        		if(b2L.getPersonID_FA() == b2R.getPersonID_FA()) r++;
-        		if(b2L.getPersonID_MO() == b2R.getPersonID_MO()) r++;
-
-
-        		if(r == 0){        		
-        			rel = ConstRelations2.STIEFBROER;
-        		}
-        		else
-        			if(r ==1){
-        				rel = ConstRelations2.HALFBROER;
-        				ti = true;
-        			}
-        			else{
-        				rel = ConstRelations2.BROER;
-        				ti = true;
-        				}
+    			rel = (relL == ConstRelations2.ZOON) ?  ConstRelations2.ZOON :  ConstRelations2.STIEFZOON;
+    			ti = true;        	
+    			break;
 
 
 
-        		break;
-        		
-        	case ConstRelations2.VADER:            
-        	case ConstRelations2.MOEDER:           
-        		
-        		rel = ConstRelations2.KLEINZOON;
-        		ti = true;
+    		case ConstRelations2.ECHTGENOTE_HOOFD: 
 
-        		break;
-    		
+    			if(b2R.getSex().equalsIgnoreCase("M")){
+
+    				if(b2L.getPersonID_FA() == b2R.getPersonID()){
+
+    					rel = ConstRelations2.ZOON;
+    					ti = true;
+    				}
+    				else{
+    					rel = ConstRelations2.STIEFZOON;
+    				}
+    			}
+    			else{
+    				if(b2L.getPersonID_MO() == b2R.getPersonID()){
+
+    					rel = ConstRelations2.ZOON;
+    					ti = true;
+    				}
+    				else{
+    					rel = ConstRelations2.STIEFZOON;
+    					ti = false;
+
+    				}
+
+
+    			}
+
+    			break;
+
+
+    		case ConstRelations2.ZOON:
+    		case ConstRelations2.DOCHTER:
+    		case ConstRelations2.STIEFZOON:     
+    		case ConstRelations2.STIEFDOCHTER:     
+
+    			int r = 0;
+
+    			if(b2L.getPersonID_FA() == b2R.getPersonID_FA()) r++;
+    			if(b2L.getPersonID_MO() == b2R.getPersonID_MO()) r++;
+
+
+    			if(r == 0){        		
+    				rel = ConstRelations2.STIEFBROER;
+    			}
+    			else
+    				if(r ==1){
+    					rel = ConstRelations2.HALFBROER;
+    					ti = true;
+    				}
+    				else{
+    					rel = ConstRelations2.BROER;
+    					ti = true;
+    				}
+
+
+
+    			break;
+
+    		case ConstRelations2.VADER:            
+    		case ConstRelations2.MOEDER:           
+
+    			rel = ConstRelations2.KLEINZOON;
+    			ti = true;
+
+
     		}
-    		
-    		
-    		
-    		
-    		
-    		
+
+    		break;
+
     	case ConstRelations2.DOCHTER:                               // Daughter
     	case ConstRelations2.STIEFDOCHTER:                          // Stepdaughter	
-    		
-    		
+
+
     		switch(relR){
-    		
-        	case ConstRelations2.HOOFD:    
 
-        		
-   			 	rel = (relR == ConstRelations2.DOCHTER) ?  ConstRelations2.DOCHTER :  ConstRelations2.STIEFDOCHTER;
-   			 	ti = true;        	
-   			 	break;
-        			
-        		
-
-        	case ConstRelations2.ECHTGENOTE_HOOFD: 
-
-        		if(b2R.getSex().equalsIgnoreCase("M")){
-
-        			if(b2R.getPersonID_FA() == b2L.getPersonID()){
-
-        				rel = ConstRelations2.DOCHTER;
-        				ti = true;
-        			}
-        			else{
-        				rel = ConstRelations2.STIEFDOCHTER;
-        			}
-        		}
-        		else{
-        			if(b2R.getPersonID_MO() == b2L.getPersonID()){
-
-        				rel = ConstRelations2.DOCHTER;
-        				ti = true;
-        			}
-        			else{
-        				rel = ConstRelations2.STIEFDOCHTER;
-
-        			}
+    		case ConstRelations2.HOOFD:    
 
 
-        		}
-
-    		   break;
-        	
-    		
-        	
-        	
-        	
-        	case ConstRelations2.ZOON:
-        	case ConstRelations2.DOCHTER:
-        	case ConstRelations2.STIEFZOON:     
-        	case ConstRelations2.STIEFDOCHTER:     
-        		
-        		int r = 0;
-
-        		if(b2L.getPersonID_FA() == b2R.getPersonID_FA()) r++;
-        		if(b2L.getPersonID_MO() == b2R.getPersonID_MO()) r++;
-
-
-        		if(r == 0){        		
-        			rel = ConstRelations2.STIEFZUSTER;
-        		}
-        		else
-        			if(r ==1){
-        				rel = ConstRelations2.HALFZUSTER;
-        				ti = true;
-        			}
-        			else{
-        				rel = ConstRelations2.ZUSTER;
-        				ti = true;
-        				}
+    			rel = (relL == ConstRelations2.DOCHTER) ?  ConstRelations2.DOCHTER :  ConstRelations2.STIEFDOCHTER;
+    			ti = true;        	
+    			break;
 
 
 
-        		break;
-        		
-        	case ConstRelations2.VADER:            
-        	case ConstRelations2.MOEDER:           
-        		
-        		rel = ConstRelations2.KLEINDOCHTER;
-        		ti = true;
+    		case ConstRelations2.ECHTGENOTE_HOOFD: 
 
-        		break;
-    		
+    			if(b2R.getSex().equalsIgnoreCase("M")){
+
+    				if(b2L.getPersonID_FA() == b2R.getPersonID()){
+
+    					rel = ConstRelations2.DOCHTER;
+    					ti = true;
+    				}
+    				else{
+    					rel = ConstRelations2.STIEFDOCHTER;
+    				}
+    			}
+    			else{
+    				if(b2L.getPersonID_MO() == b2R.getPersonID()){
+
+    					rel = ConstRelations2.DOCHTER;
+    					ti = true;
+    				}
+    				else{
+    					rel = ConstRelations2.STIEFDOCHTER;
+
+    				}
+
+
+    			}
+
+    			break;
+
+    		case ConstRelations2.ZOON:
+    		case ConstRelations2.DOCHTER:
+    		case ConstRelations2.STIEFZOON:     
+    		case ConstRelations2.STIEFDOCHTER:     
+
+    			int r = 0;
+
+    			if(b2L.getPersonID_FA() == b2R.getPersonID_FA()) r++;
+    			if(b2L.getPersonID_MO() == b2R.getPersonID_MO()) r++;
+
+
+    			if(r == 0){        		
+    				rel = ConstRelations2.STIEFZUSTER;
+    			}
+    			else
+    				if(r ==1){
+    					rel = ConstRelations2.HALFZUSTER;
+    					ti = true;
+    				}
+    				else{
+    					rel = ConstRelations2.ZUSTER;
+    					ti = true;
+    				}
+
+
+
+    			break;
+
+    		case ConstRelations2.VADER:            
+    		case ConstRelations2.MOEDER:           
+
+    			rel = ConstRelations2.KLEINDOCHTER;
+    			ti = true;
 
     		}
 
-    		
-    		
-    		
+    		break;
+
     	case ConstRelations2.VADER:                                 // Father	
-    		
-    		
-    		
+
     		switch(relR){
 
 
@@ -1297,15 +1269,13 @@ public class StandardizePersonalCards implements Runnable {
     		case ConstRelations2.VADER:            rel = 0;                                                   break;  
     		case ConstRelations2.MOEDER:           rel = 0;                                                   break;  
 
-
-
     		}
-    		
+
     		break;
-    		
-    		
+
+
     	case ConstRelations2.MOEDER:                                // Mother
-    		
+
     		switch(relR){
 
 
@@ -1319,31 +1289,24 @@ public class StandardizePersonalCards implements Runnable {
     		case ConstRelations2.MOEDER:           rel = 0;                                                    break;  
 
 
-
     		}
     		
-    		
-    		
-    		
-
     		break;
-
-    		
     	}
-    		
-    	
+
+
     	if(rel != 0){ 	
     		B34_ST b34 = allocateB34(b2L, b2R, rel,  ti);
     		if(b34 != null)
     			b2L.getRelations().add(b34);
-    		
+
     	}
-    	    	
-    	
+
+
     }
-    
-    
-    
+
+
+
     /**
      * 
      * Allocate an B34_ST with keys copied from b4 and the rest copied from b2I
@@ -1376,27 +1339,18 @@ public class StandardizePersonalCards implements Runnable {
         b34.setValueOfRelatedPerson(b2R.getKeyToPersons());
         
         
-        int a [] = null;
-        if(time_invariant == true)       	
-        	a = findCommonTime(b2L.getDateOfBirth(), b2L.getDateOfDecease(), b2R.getDateOfBirth(), b2R.getDateOfDecease());
-        else
-        	a = findCommonTime(b2L.getStartDate(), b2L.getEndDate(), b2R.getStartDate(), b2R.getEndDate());
         
-        
-        if(a != null){
-        	
-        	if(time_invariant == false){
+        if(time_invariant == false) {
+        	int [] a = findCommonTime(b2L.getStartDate(), b2L.getEndDate(), b2R.getStartDate(), b2R.getEndDate());
+
+        	if(a != null){
+
         		b34.setStartDate(Common1.dateFromDayCount(a[0]));
-            	b34.setEndDate(Common1.dateFromDayCount(a[1]));
+        		b34.setEndDate(Common1.dateFromDayCount(a[1]));
         	}
-        	
-        	
+        	//else return null;
         }
-        else
-        	return null;
-        	
-        
-    	return b34;
+        return b34;
     }
     
 
