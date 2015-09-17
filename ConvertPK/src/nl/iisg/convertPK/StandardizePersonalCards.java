@@ -421,20 +421,20 @@ public class StandardizePersonalCards implements Runnable {
         			
         			for(B2_ST b2_temp: b2.getRegistration().getPersons()){
         				
-        				if(b2_temp.getRelationsToPKHolder().get(0).getContentOfDynamicData() == 2){   // Spouse
-        					
-        							
+        				if(b2_temp.getRelationsToPKHolder().get(0).getContentOfDynamicData() == 2  || b2_temp.getRelationsToPKHolder().get(0).getContentOfDynamicData() == 145){  // Spouse
+
+
         					System.out.println("...");
         					System.out.println("..." + b2_temp.getFirstName() + "  " + b2_temp.getFamilyName());
 
-        					
+
         					int marriageStartDays = Common1.dayCount(b2_temp.getRelationsToPKHolder().get(0).getStartDate());
         					int marriageEndDays   = b2_temp.getRelationsToPKHolder().get(0).getEndDate() != null ?  
         							Common1.dayCount(b2_temp.getRelationsToPKHolder().get(0).getEndDate()) : 0;
-        					
-        					if(marriageStartDays < Common1.dayCount(b2.getDateOfBirth()) &&	
-        							(marriageEndDays == 0 || marriageEndDays > Common1.dayCount(b2.getDateOfBirth()))){
-        	               
+
+        							if(marriageStartDays < Common1.dayCount(b2.getDateOfBirth()) &&	
+        									(marriageEndDays == 0 || marriageEndDays > Common1.dayCount(b2.getDateOfBirth()))){
+
         						if(b2.getPersonID_FA() == 0)
         							b2.setPersonID_FA(b2_temp.getPersonID());
         						else
@@ -471,7 +471,7 @@ public class StandardizePersonalCards implements Runnable {
         
         // To simplify processing, we create a second list of Pkknd objects, sorted on idnrP 
         
-        /*
+        
         
         List<PkKnd> pkkndL2 = new ArrayList(); 
         
@@ -577,7 +577,7 @@ public class StandardizePersonalCards implements Runnable {
         	}
         }
 
-*/
+
         // Relate All to All
 
         //for (PkKnd pkknd1 : pkkndL) 
@@ -687,7 +687,7 @@ public class StandardizePersonalCards implements Runnable {
 
     		
     		
-    		case 2:  // One of the wives, maybe the RP
+    		case 2:  // One of the wives, maybe the RP No action, we know everything about her already from her own card
     			break;
     		
     		default:  // Husbands parents and children
@@ -720,37 +720,24 @@ public class StandardizePersonalCards implements Runnable {
     				break;
     				case 21: b313.setContentOfDynamicData(71); // Mother (21) -> Mother in Law (71)
     				break; 
-    				case 3: // Son
-    				case 4: // Daughter    					
+    				case 3: // Son of the husband
+    				case 4: // Daughter of the husband    					
     					
-    					String marriageDate = "";
-    					for(B32_ST b32: b2Partner.getCivilStatus()){
-    						if(b32.getContentOfDynamicData() == 5){ // marriage
-    							
-    							marriageDate = b32.getDateOfMutation();
-    							break;
-    						}
-    					}
-    					
-    					if(marriageDate.length() > 0 && b2H.getDateOfBirth() != null && Common1.dayCount(marriageDate) < Common1.dayCount(b2H.getDateOfBirth())){  // could be child
-   								b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()); // pass child or stepchild unchanged
-    						
-    					}
-    					else{  // stepchild
-    						if(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData() == 3 || b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData() == 4)
-								b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData() + 5); // child becomes stepchild
-    						else
-    							b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()); // pass unchanged
-    					}
-    					
+    					if(b2H.getPersonID_MO() == b4Wife.getPersons().get(0).getPersonID())
+    						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()); // also wife's child
+    					else
+    						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData() + 5); // make them wife's stepchild
     					
     					break;
-
-    				case 8: // Stepson
-    				case 9: // Stepdaughter
     					
-						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData());
-						break;
+    				case 8: // Stepson of the husband
+    				case 9: // Stepdaughter of the husband
+	
+    					if(b2H.getPersonID_MO() == b4Wife.getPersons().get(0).getPersonID())
+    						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData() - 5); // wife's child
+    					else
+    						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()); // wife's stepchild
+    					
     				
     				}
     			}
@@ -1019,11 +1006,12 @@ public class StandardizePersonalCards implements Runnable {
 
     		switch(relR){
 
-    		case ConstRelations2.ECHTGENOTE_HOOFD: rel = ConstRelations2.HOOFD;								  break;  // Spouse        		
-    		case ConstRelations2.ZOON:             rel = ConstRelations2.VADER;               ti = true;      break;  // Son
-    		case ConstRelations2.DOCHTER:          rel = ConstRelations2.VADER;               ti = true;      break;  // Daughter
-    		case ConstRelations2.STIEFZOON:        rel = ConstRelations2.STIEFVADER;                          break;  // Stepson
-    		case ConstRelations2.STIEFDOCHTER:     rel = ConstRelations2.STIEFVADER;                          break;  // Stepdaughter	
+    		case ConstRelations2.ECHTGENOTE_HOOFD:          rel = ConstRelations2.HOOFD;								  break;  // Spouse female        		
+    		case ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD: rel = ConstRelations2.HOOFD;								  break;  // Spouse male         		
+    		case ConstRelations2.ZOON:                      rel = ConstRelations2.VADER;               ti = true;      break;  // Son
+    		case ConstRelations2.DOCHTER:                   rel = ConstRelations2.VADER;               ti = true;      break;  // Daughter
+    		case ConstRelations2.STIEFZOON:                 rel = ConstRelations2.STIEFVADER;                          break;  // Stepson
+    		case ConstRelations2.STIEFDOCHTER:              rel = ConstRelations2.STIEFVADER;                          break;  // Stepdaughter	
     		case ConstRelations2.VADER:           
     		case ConstRelations2.MOEDER:           
     			
@@ -1041,11 +1029,19 @@ public class StandardizePersonalCards implements Runnable {
     		}
     		break;
 
-    	case ConstRelations2.ECHTGENOTE_HOOFD:                      // Spouse can be male or female
+    	case ConstRelations2.ECHTGENOTE_HOOFD:                      // Spouse female
+    	case ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD:             // Spouse male
 
     		switch(relR){
-
-    		case ConstRelations2.HOOFD: rel = ConstRelations2.ECHTGENOTE_HOOFD;   break;                
+    		
+    		case ConstRelations2.HOOFD: 
+    			
+    			if(b2R.getSex().equalsIgnoreCase("M"))    			
+    				rel = ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD;
+    			else
+    				rel = ConstRelations2.ECHTGENOTE_HOOFD;
+    			
+    			break;                
 
     		case ConstRelations2.ZOON: 
     		case ConstRelations2.STIEFZOON:
@@ -1104,6 +1100,7 @@ public class StandardizePersonalCards implements Runnable {
 
 
     		case ConstRelations2.ECHTGENOTE_HOOFD: 
+    		case ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD: 
 
     			if(b2R.getSex().equalsIgnoreCase("M")){
 
@@ -1189,6 +1186,7 @@ public class StandardizePersonalCards implements Runnable {
 
 
     		case ConstRelations2.ECHTGENOTE_HOOFD: 
+    		case ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD: 
 
     			if(b2R.getSex().equalsIgnoreCase("M")){
 
@@ -1260,14 +1258,15 @@ public class StandardizePersonalCards implements Runnable {
     		switch(relR){
 
 
-    		case ConstRelations2.HOOFD:            rel = ConstRelations2.VADER;               ti = true;      break;                                       		
-    		case ConstRelations2.ECHTGENOTE_HOOFD: rel = ConstRelations2.SCHOONVADER;                         break;                                        		
-    		case ConstRelations2.ZOON:             rel = ConstRelations2.GROOTVADER;          ti = true;      break;  
-    		case ConstRelations2.DOCHTER:          rel = ConstRelations2.GROOTVADER;          ti = true;      break;  
-    		case ConstRelations2.STIEFZOON:        rel = ConstRelations2.GROOTVADER;          ti = true;      break;  
-    		case ConstRelations2.STIEFDOCHTER:     rel = ConstRelations2.GROOTVADER;          ti = true;      break;  	
-    		case ConstRelations2.VADER:            rel = 0;                                                   break;  
-    		case ConstRelations2.MOEDER:           rel = 0;                                                   break;  
+    		case ConstRelations2.HOOFD:            			rel = ConstRelations2.VADER;               ti = true;      break;                                       		
+    		case ConstRelations2.ECHTGENOTE_HOOFD: 			rel = ConstRelations2.SCHOONVADER;                         break;                                        		
+    		case ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD: rel = ConstRelations2.SCHOONVADER;                         break;                                        		
+    		case ConstRelations2.ZOON:             			rel = ConstRelations2.GROOTVADER;          ti = true;      break;  
+    		case ConstRelations2.DOCHTER:          			rel = ConstRelations2.GROOTVADER;          ti = true;      break;  
+    		case ConstRelations2.STIEFZOON:        			rel = ConstRelations2.GROOTVADER;          ti = true;      break;  
+    		case ConstRelations2.STIEFDOCHTER:     			rel = ConstRelations2.GROOTVADER;          ti = true;      break;  	
+    		case ConstRelations2.VADER:            			rel = 0;                                                   break;  
+    		case ConstRelations2.MOEDER:           			rel = 0;                                                   break;  
 
     		}
 
@@ -1279,13 +1278,14 @@ public class StandardizePersonalCards implements Runnable {
     		switch(relR){
 
 
-    		case ConstRelations2.HOOFD:            rel = ConstRelations2.MOEDER;               ti = true;      break;                                       		
-    		case ConstRelations2.ECHTGENOTE_HOOFD: rel = ConstRelations2.SCHOONMOEDER;                         break;                                        		
-    		case ConstRelations2.ZOON:             rel = ConstRelations2.GROOTMOEDER;          ti = true;      break;  
-    		case ConstRelations2.DOCHTER:          rel = ConstRelations2.GROOTMOEDER;          ti = true;      break;  
-    		case ConstRelations2.STIEFZOON:        rel = ConstRelations2.GROOTMOEDER;          ti = true;      break;  
-    		case ConstRelations2.STIEFDOCHTER:     rel = ConstRelations2.GROOTMOEDER;          ti = true;      break;  	
-    		case ConstRelations2.VADER:            rel = 0;                                                    break;  
+    		case ConstRelations2.HOOFD:			            rel = ConstRelations2.MOEDER;               ti = true;      break;                                       		
+    		case ConstRelations2.ECHTGENOTE_HOOFD:			rel = ConstRelations2.SCHOONMOEDER;                         break;
+    		case ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD: rel = ConstRelations2.SCHOONVADER;                         break;                                        		
+    		case ConstRelations2.ZOON:            		    rel = ConstRelations2.GROOTMOEDER;          ti = true;      break;  
+    		case ConstRelations2.DOCHTER:          			rel = ConstRelations2.GROOTMOEDER;          ti = true;      break;  
+    		case ConstRelations2.STIEFZOON:        			rel = ConstRelations2.GROOTMOEDER;          ti = true;      break;  
+    		case ConstRelations2.STIEFDOCHTER:     			rel = ConstRelations2.GROOTMOEDER;          ti = true;      break;  	
+    		case ConstRelations2.VADER:            			rel = 0;                                                    break;  
     		case ConstRelations2.MOEDER:           rel = 0;                                                    break;  
 
 

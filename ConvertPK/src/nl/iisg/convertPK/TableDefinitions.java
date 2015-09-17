@@ -370,14 +370,14 @@ public class TableDefinitions {
 	 " END_PK_FG SMALLINT, " +
 
 
-	 " B2FDBG CHAR(10), " + 
+//	 " B2FDBG CHAR(10), " + 
 	 " IDNR_SPOUSE INT, " + 
 	 " PK_HOLDER VARCHAR(" + XBigstring + "), " + 
 
-	 " REGISTER_PAGE VARCHAR(" + Smallstring + "), " + 
-	 " REGISTER_LINE TINYINT, " + 
-	 " NAME_HEAD_GK VARCHAR(" + XBigstring + "), " + 
-	 " SPECIAL_CODE VARCHAR(" + XBigstring + "), " + 
+//	 " REGISTER_PAGE VARCHAR(" + Smallstring + "), " + 
+//	 " REGISTER_LINE TINYINT, " + 
+//	 " NAME_HEAD_GK VARCHAR(" + XBigstring + "), " + 
+//	 " SPECIAL_CODE VARCHAR(" + XBigstring + "), " + 
 	 " REMARKS VARCHAR(" + XBigstring + "), " + 
 
 	 " VERSIE VARCHAR(8), " +

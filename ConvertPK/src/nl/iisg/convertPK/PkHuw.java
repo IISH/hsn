@@ -294,7 +294,10 @@ public class PkHuw {
 		b313.setDynamicDataType(13);
 		b313.setKeyToRegistrationPersons(b2.getKeyToPersons());
 		
-		b313.setContentOfDynamicData(2);     // Spouse (female or male)
+		if(b2.getSex().equalsIgnoreCase("M"))		
+			b313.setContentOfDynamicData(145);   // Spouse male
+		else
+			b313.setContentOfDynamicData(2);     // Spouse female
 
 		b313.setDynamicDataSequenceNumber(1);
 
