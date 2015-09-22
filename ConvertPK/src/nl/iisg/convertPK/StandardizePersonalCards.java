@@ -692,20 +692,29 @@ public class StandardizePersonalCards implements Runnable {
     		
     		default:  // Husbands parents and children
 
-    			// See if PersonID already exists in Wife Registration
-    			
-    			for(B2_ST b2W: b4Wife.getPersons()){
-    				if(b2W.getPersonID() == b2H.getPersonID())
-    					continue A; // skip this b2H person
-    			}
-    			
     			
     			if(b2Partner != null){
         			
-    				B2_ST  b2 = allocateB2(b4Wife, b2H);  // Allocate new person
-    				b2.setKeyToPersons(b4Wife.getPersons().size() + 1);  // keep together    				
-    				b4Wife.getPersons().add(b2);                         // keep together
+    				
+    				B2_ST b2 = null;
+    			
+    				// See if PersonID already exists in Wife Registration
+        			for(B2_ST b2W: b4Wife.getPersons()){
+        				if(b2W.getPersonID() == b2H.getPersonID()){
+        					b2 = b2W;
+        					break;
+        				}
+        			}
+        			
+    				
+        			
+        			if(b2 == null){
 
+        				b2 = allocateB2(b4Wife, b2H);  // Allocate new person
+        				b2.setKeyToPersons(b4Wife.getPersons().size() + 1);  // keep together    				
+        				b4Wife.getPersons().add(b2);                         // keep together
+
+        			}
     				
     				B313_ST b313 = allocateB313(b4Wife, b2Partner); // relation new person to PK-Holder Wife
     				b313.setPerson(b2);
@@ -716,10 +725,16 @@ public class StandardizePersonalCards implements Runnable {
     				
     				switch(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()){ // relation to PK-Holder husband
     				
-    				case 11: b313.setContentOfDynamicData(61); // Father (11) -> Father in Law (61)
-    				break;
-    				case 21: b313.setContentOfDynamicData(71); // Mother (21) -> Mother in Law (71)
-    				break; 
+    				case 11: 
+    					b313.setContentOfDynamicData(61); // Father (11) -> Father in Law (61)
+    					setRelations(b2);
+    					break;
+    					
+    				case 21:
+    					b313.setContentOfDynamicData(71); // Mother (21) -> Mother in Law (71)
+    					setRelations(b2);
+    					break; 
+    					
     				case 3: // Son of the husband
     				case 4: // Daughter of the husband    					
     					
@@ -727,6 +742,8 @@ public class StandardizePersonalCards implements Runnable {
     						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()); // also wife's child
     					else
     						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData() + 5); // make them wife's stepchild
+    					
+    					 setRelations(b2);
     					
     					break;
     					
@@ -738,6 +755,10 @@ public class StandardizePersonalCards implements Runnable {
     					else
     						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()); // wife's stepchild
     					
+    					setRelations(b2);
+    					
+
+    				default:
     				
     				}
     			}
@@ -851,6 +872,198 @@ public class StandardizePersonalCards implements Runnable {
 			b2.getAddressess().add(b6);
         
     	return b2;
+    	
+    }
+    
+    /*
+     *  This routine sets new relations (b34) for persons who are copied to the wife's registration
+     * 
+     */
+    private static void setRelations(B2_ST b2){
+    	
+    	int relation = b2.getRelationsToPKHolder().get(0).getContentOfDynamicData();  // child relation to head (= wife)
+    	
+    	
+    	for(B2_ST b2i: b2.getRegistration().getPersons()){
+    		
+    		
+    		int rel  = 0;
+    		int reli = 0;
+    		int strength = 0;
+    		
+    		if(b2i.getPersonID_FA() == b2.getPersonID_FA()) strength++;
+    		if(b2i.getPersonID_MO() == b2.getPersonID_MO()) strength++;
+    		
+    		
+    		switch(b2i.getRelationsToPKHolder().get(0).getContentOfDynamicData()){
+    		
+    		
+    		case ConstRelations2.ZOON:
+    		case ConstRelations2.STIEFZOON:
+    			
+    			switch(relation){
+    			
+    			case  ConstRelations2.HOOFD:
+    			
+    			case ConstRelations2.ZOON:
+        		case ConstRelations2.STIEFZOON:
+
+    				
+    				if(strength == 2){
+    					rel = ConstRelations2.BROER;
+    					reli = ConstRelations2.BROER;    					
+    				}
+    				else{
+        				if(strength == 1){
+        					rel = ConstRelations2.HALFBROER;
+        					reli = ConstRelations2.HALFBROER;    					
+        				}
+        				else{
+        					rel = ConstRelations2.STIEFBROER;
+        					reli = ConstRelations2.STIEFBROER;    					
+        				}
+    					
+    				}
+    				
+    				break;
+    				
+        		case ConstRelations2.DOCHTER:
+        		case ConstRelations2.STIEFDOCHTER:
+        			
+    				if(strength == 2){
+    					rel = ConstRelations2.BROER;
+    					reli = ConstRelations2.ZUSTER;    					
+    				}
+    				else{
+        				if(strength == 1){
+        					rel = ConstRelations2.HALFBROER;
+        					reli = ConstRelations2.HALFZUSTER;    					
+        				}
+        				else{
+        					rel = ConstRelations2.STIEFBROER;
+        					reli = ConstRelations2.STIEFZUSTER;    					
+        				}
+    					
+    				}
+    				
+    				break;	
+    				
+        		case ConstRelations2.VADER:
+        			
+        			rel = ConstRelations2.KLEINZOON;
+        			reli = ConstRelations2.GROOTVADER;
+        			
+        			break;
+    			
+        		case ConstRelations2.MOEDER:
+        			
+        			rel = ConstRelations2.KLEINZOON;
+        			reli = ConstRelations2.GROOTMOEDER;
+        			
+        			break;
+    			
+    			
+    			}
+    			
+    			
+    			break;
+    			
+    		case ConstRelations2.DOCHTER:
+    		case ConstRelations2.STIEFDOCHTER:
+    			
+    			switch(relation){
+    			
+    			case ConstRelations2.ZOON:
+        		case ConstRelations2.STIEFZOON:
+
+    				
+    				if(strength == 2){
+    					rel = ConstRelations2.ZUSTER;
+    					reli = ConstRelations2.BROER;    					
+    				}
+    				else{
+        				if(strength == 1){
+        					rel = ConstRelations2.HALFZUSTER;
+        					reli = ConstRelations2.HALFBROER;    					
+        				}
+        				else{
+        					rel = ConstRelations2.STIEFZUSTER;
+        					reli = ConstRelations2.STIEFBROER;    					
+        				}
+    					
+    				}
+    				
+    				break;
+    				
+        		case ConstRelations2.DOCHTER:
+        		case ConstRelations2.STIEFDOCHTER:
+        			
+    				if(strength == 2){
+    					rel = ConstRelations2.ZUSTER;
+    					reli = ConstRelations2.ZUSTER;    					
+    				}
+    				else{
+        				if(strength == 1){
+        					rel = ConstRelations2.HALFZUSTER;
+        					reli = ConstRelations2.HALFZUSTER;    					
+        				}
+        				else{
+        					rel = ConstRelations2.STIEFZUSTER;
+        					reli = ConstRelations2.STIEFZUSTER;    					
+        				}
+    					
+    				}
+    				
+    				break;	
+    				
+        		case ConstRelations2.VADER:
+        			
+        			rel = ConstRelations2.KLEINDOCHTER;
+        			reli = ConstRelations2.GROOTVADER;
+        			
+        			break;
+    			
+        		case ConstRelations2.MOEDER:
+        			
+        			rel = ConstRelations2.KLEINDOCHTER;
+        			reli = ConstRelations2.GROOTMOEDER;
+        			
+        			break;
+    			
+    			
+    			}
+    			
+    			
+    			break;
+
+    			
+    			
+    			
+    		
+
+    	    	}
+
+    		
+	    	if(rel != 0){ 	
+	    		B34_ST b34 = allocateB34(b2, b2i, rel,  true);
+	    		if(b34 != null)
+	    			b2.getRelations().add(b34);
+	    		
+	    		b34 = allocateB34(b2i, b2, reli,  true);
+	    		if(b34 != null)
+	    			b2i.getRelations().add(b34);
+	    		
+
+    		
+    		}
+    		
+    		
+    		
+    		
+    	}
+    	
+    	
+    	
     	
     }
     
