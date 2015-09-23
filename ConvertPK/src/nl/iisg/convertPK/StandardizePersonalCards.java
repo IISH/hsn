@@ -454,10 +454,10 @@ public class StandardizePersonalCards implements Runnable {
         
         // Now set the relations
         
-        for (PkKnd pkknd1 : pkkndL) 
-        	for (B2_ST b2L : pkknd1.getB4().getPersons()) 
-        		for(B2_ST b2R :  pkknd1.getB4().getPersons())
-        			handleB34(b2L, b2R);    		
+        //for (PkKnd pkknd1 : pkkndL) 
+        	//for (B2_ST b2L : pkknd1.getB4().getPersons()) 
+        		//for(B2_ST b2R :  pkknd1.getB4().getPersons())
+        			//handleB34(b2L, b2R);    		
         		
         	        
         
@@ -504,9 +504,19 @@ public class StandardizePersonalCards implements Runnable {
 
         			System.out.println("found " + pkknd1.getIdnr() + " " + pkknd2.getIdnr());
 
-        			
+
         			copyPartnerInfo(pkknd2.getB4(), pkknd1.getB4());
 
+        			//   Set relations in Husband's family 
+        			
+        			System.out.println("1 pkknd1.getB4().getPersons.size() = " + pkknd1.getB4().getPersons().size());
+        			
+        			for (B2_ST b2L : pkknd2.getB4().getPersons()) 
+        				for(B2_ST b2R :  pkknd2.getB4().getPersons())
+        					handleB34(b2L, b2R);
+        					//System.out.println("YYYY " + b2L.getKeyToPersons() + " YYYY " + b2R.getKeyToPersons() );
+        			
+        			System.out.println("2 pkknd1.getB4().getPersons.size() = " + pkknd1.getB4().getPersons().size());
 
 
         			// Now we must change the key of pkknd2.getB4():
@@ -572,9 +582,29 @@ public class StandardizePersonalCards implements Runnable {
 
         			}
 
+        			System.out.println("3 pkknd1.getB4().getPersons.size() = " + pkknd1.getB4().getPersons().size());
 
         		}
+        		
+        		
         	}
+        	
+        	
+        	if(pkknd1.getIdnr() > 500000) break; // because wives are below 500000
+        	
+			//   Set relations in Wife's family 
+        	
+			System.out.println("4 pkknd1.getB4().size() = " + pkknd1.getB4().getPersons().size());
+
+			
+			for (B2_ST b2L : pkknd1.getB4().getPersons()) 
+				for(B2_ST b2R :  pkknd1.getB4().getPersons())
+					handleB34(b2L, b2R);
+					//System.out.println("XXXX " + b2L.getKeyToPersons() + " XXXX " + b2R.getKeyToPersons() );
+
+        	
+        	
+        	
         }
 
 
@@ -690,7 +720,7 @@ public class StandardizePersonalCards implements Runnable {
     		case 2:  // One of the wives, maybe the RP No action, we know everything about her already from her own card
     			break;
     		
-    		default:  // Husbands parents and children
+    		default:  // Husband's parents and children
 
     			
     			if(b2Partner != null){
@@ -709,6 +739,8 @@ public class StandardizePersonalCards implements Runnable {
     				
         			
         			if(b2 == null){
+        				
+        				System.out.println("allocating person: b4Wife = " + b4Wife + "b4H = " + b2H);
 
         				b2 = allocateB2(b4Wife, b2H);  // Allocate new person
         				b2.setKeyToPersons(b4Wife.getPersons().size() + 1);  // keep together    				
@@ -727,12 +759,12 @@ public class StandardizePersonalCards implements Runnable {
     				
     				case 11: 
     					b313.setContentOfDynamicData(61); // Father (11) -> Father in Law (61)
-    					setRelations(b2);
+    					//setRelations(b2);
     					break;
     					
     				case 21:
     					b313.setContentOfDynamicData(71); // Mother (21) -> Mother in Law (71)
-    					setRelations(b2);
+    					//setRelations(b2);
     					break; 
     					
     				case 3: // Son of the husband
@@ -743,7 +775,7 @@ public class StandardizePersonalCards implements Runnable {
     					else
     						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData() + 5); // make them wife's stepchild
     					
-    					 setRelations(b2);
+    					 //setRelations(b2);
     					
     					break;
     					
@@ -755,7 +787,7 @@ public class StandardizePersonalCards implements Runnable {
     					else
     						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()); // wife's stepchild
     					
-    					setRelations(b2);
+    					//setRelations(b2);
     					
 
     				default:
@@ -849,27 +881,10 @@ public class StandardizePersonalCards implements Runnable {
 		
 		// Registration
 		
-		b2.setRegistration(b2I.getRegistration());
+		b2.setRegistration(b4);
 
-        // Dynamic data
+        // Dynamic data No!
 		
-		for(B32_ST b32: b2I.getCivilStatus())
-			b2.getCivilStatus().add(b32);
-        
-		for(B33_ST b33: b2I.getReligions())
-			b2.getReligions().add(b33);
-        
-		for(B35_ST b35: b2I.getProfessions())
-			b2.getProfessions().add(b35);
-        
-		for(B36_ST b36: b2I.getOrigins())
-			b2.getOrigins().add(b36);
-        
-		for(B37_ST b37: b2I.getDestinations())
-			b2.getDestinations().add(b37);
-        
-		for(B6_ST b6: b2I.getAddressess())
-			b2.getAddressess().add(b6);
         
     	return b2;
     	
@@ -877,6 +892,7 @@ public class StandardizePersonalCards implements Runnable {
     
     /*
      *  This routine sets new relations (b34) for persons who are copied to the wife's registration
+     *  Not used anymore
      * 
      */
     private static void setRelations(B2_ST b2){
@@ -1205,7 +1221,7 @@ public class StandardizePersonalCards implements Runnable {
     private static void handleB34(B2_ST b2L, B2_ST b2R){
     	
     	
-    	//if(b2R.getKeyToPersons() >= b2L.getKeyToPersons()) return;
+    	if(b2R.getKeyToPersons() == b2L.getKeyToPersons()) return;
 
     	int relL = b2L.getRelationsToPKHolder().get(0).getContentOfDynamicData();
     	int relR = b2R.getRelationsToPKHolder().get(0).getContentOfDynamicData();
