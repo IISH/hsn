@@ -229,20 +229,6 @@ public class PkKnd {
     	initialiseB2_ST(b2);
     	setStartAndEndDate(b2);
     	
-    	
-    	// Handle idnr/idnrp
-    	
-    	//if(getIdnr() > 500000 && getIdnrp() != 0)
-    	//	b2.setKeyToRP(getIdnrp());
-
-    	// Check if PK-Holder is research person
-    	// Change:  PK-Holder is research person
-    	//if(getIdnr() == getIdnrp() || getIdnrp() == 0)
-    		b2.setNatureOfPerson(1);
-    	//else
-    		//b2.setNatureOfPerson(2);
-    	
-    	
     	// Registration data - not needed
 
     	//String registrationDate = String.format("%02d-%02d-%04d", getCtrdgp(), getCtrmdp(), getCtrjrp());
@@ -486,8 +472,6 @@ public class PkKnd {
 
     	initialiseB2_ST(b2);
     	b2.setKeyToPersons(seqNoPersons);
-		b2.setNatureOfPerson(2);
-
     	
     	// Last name     	
 		
@@ -618,8 +602,6 @@ public class PkKnd {
 
     	initialiseB2_ST(b2);
     	b2.setKeyToPersons(seqNoPersons);
-		b2.setNatureOfPerson(2);
-
     	
     	// Last name 
 
@@ -803,7 +785,6 @@ public class PkKnd {
     		initialiseB2_ST(b2);
     		b2.setKeyToPersons(seqNoPersons);
     		setStartAndEndDate(b2);
-    		b2.setNatureOfPerson(2);
     		pkhuw.convert(b2);
 
     		
@@ -966,7 +947,6 @@ public class PkKnd {
     		initialiseB2_ST(b2);
     		setStartAndEndDate(b2);
         	b2.setKeyToPersons(seqNoPersons);
-        	b2.setNatureOfPerson(2);
     		pkeigknd.convert(b2);
         	
 

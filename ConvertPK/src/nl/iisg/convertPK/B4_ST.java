@@ -187,7 +187,6 @@ public class B4_ST {
 		        					pds.setContentOfDynamicData(relAB); 
 
 		        					pds.setValueOfRelatedPerson(psB.getKeyToPersons()); 
-		        					pds.setNatureOfPerson(psA.getNatureOfPerson());
 
 		        					pds.setDateOfMutation("00-00-0000");
 		        					
@@ -228,7 +227,6 @@ public class B4_ST {
 	        					pds.setContentOfDynamicData(relAB); 
 
 	        					pds.setValueOfRelatedPerson(psB.getKeyToPersons()); 
-	        					pds.setNatureOfPerson(psA.getNatureOfPerson());
 
 	        					pds.setDateOfMutation("00-00-0000");
 	        					pds.setDateOfMutationFlag(0);
@@ -257,7 +255,6 @@ public class B4_ST {
 	        				pds.setContentOfDynamicData(relAB); 
 
 	        				pds.setValueOfRelatedPerson(psB.getKeyToPersons()); 
-	        				pds.setNatureOfPerson(psA.getNatureOfPerson());
 
 	        				pds.setDateOfMutation("00-00-0000");
 	        				pds.setDateOfMutationFlag(0);

@@ -26,7 +26,7 @@ public class B2_ST {
 	@Id	@Column(name = "IDNR")    				private int       keyToRP;   
 	@Id @Column(name = "B2RNBG")  				private int       keyToPersons;
 
-	@Column(name = "B2FCBG")      				private int       natureOfPerson;
+	//@Column(name = "B2FCBG")      				private int       natureOfPerson;
 
 	@Column(name = "B2RDNR")   	  				private String    dateOfRegistration;
 	@Column(name = "B2RDFG")   	  				private int       dateOfRegistrationFlag;
@@ -272,7 +272,6 @@ public class B2_ST {
 		//m.setYearEntryRP((new Integer(getRegistration().getEntryDateRP().substring(6,10)).intValue()));
 		
 		m.setKeyToRegistrationPersons(getKeyToPersons());
-		m.setNatureOfPerson(getNatureOfPerson());
 		
 		m.save(fills); 
 		
@@ -317,16 +316,6 @@ public class B2_ST {
 
 	public void setKeyToPersons(int keyToPersons) {
 		this.keyToPersons = keyToPersons;
-	}
-
-
-	public int getNatureOfPerson() {
-		return natureOfPerson;
-	}
-
-
-	public void setNatureOfPerson(int natureOfPerson) {
-		this.natureOfPerson = natureOfPerson;
 	}
 
 

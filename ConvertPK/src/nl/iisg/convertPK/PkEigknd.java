@@ -216,7 +216,6 @@ public class PkEigknd {
     	b2.setPlaceOfDeceaseStandardized((String)a.get(0));
     	b2.setPlaceOfDeceaseID((Integer)a.get(1));
     	
-		b2.setNatureOfPerson(2); // child is not OP
 		
     	// dating
     	

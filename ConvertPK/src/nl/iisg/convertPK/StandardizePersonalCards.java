@@ -394,9 +394,8 @@ public class StandardizePersonalCards implements Runnable {
 
         }
         
-        // We set the relations we know so far
-        
-        // First set PersonID_FA and PersonID_MO for children 
+               
+        // Set PersonID_FA and PersonID_MO for children and OP
         
         for (PkKnd pkknd1 : pkkndL) {
         	for (B2_ST b2 : pkknd1.getB4().getPersons()) {
@@ -446,6 +445,13 @@ public class StandardizePersonalCards implements Runnable {
         				}
         			}
         		}
+        		else
+        			if(b2.getRelationsToPKHolder().get(0).getContentOfDynamicData() == 1){ // OP
+        				
+        				b2.setPersonID_FA(pkknd1.getB4().getPersons().get(1).getPersonID()); // Father is 2nd
+        				b2.setPersonID_MO(pkknd1.getB4().getPersons().get(2).getPersonID()); // Mother is 3rd
+        				
+        			}
         		
         	}
         
@@ -757,7 +763,8 @@ public class StandardizePersonalCards implements Runnable {
     				
     				switch(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()){ // relation to PK-Holder husband
     				
-    				case 11: 
+    				case 11:
+    					
     					b313.setContentOfDynamicData(61); // Father (11) -> Father in Law (61)
     					//setRelations(b2);
     					break;
@@ -772,8 +779,13 @@ public class StandardizePersonalCards implements Runnable {
     					
     					if(b2H.getPersonID_MO() == b4Wife.getPersons().get(0).getPersonID())
     						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()); // also wife's child
-    					else
+    					else{
     						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData() + 5); // make them wife's stepchild
+    						b313.setStartDate(b2H.getStartDate());
+    						b313.setStartFlag(b2H.getStartFlag());
+    						b313.setEndDate(b4Wife.getPersons().get(0).getEndDate());  // For step-children, we assume the relation lasts until endPK of Wife 
+    						b313.setEndFlag(b4Wife.getPersons().get(0).getEndFlag());
+    					}
     					
     					 //setRelations(b2);
     					
@@ -784,8 +796,14 @@ public class StandardizePersonalCards implements Runnable {
 	
     					if(b2H.getPersonID_MO() == b4Wife.getPersons().get(0).getPersonID())
     						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData() - 5); // wife's child
-    					else
+    					else{
     						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()); // wife's stepchild
+    						b313.setStartDate(b2H.getStartDate());
+    						b313.setStartFlag(b2H.getStartFlag());
+    						b313.setEndDate(b4Wife.getPersons().get(0).getEndDate());  // For step-children, we assume the relation lasts until endPK of Wife 
+    						b313.setEndFlag(b4Wife.getPersons().get(0).getEndFlag());
+
+    					}
     					
     					//setRelations(b2);
     					
@@ -820,8 +838,6 @@ public class StandardizePersonalCards implements Runnable {
         b2.setKeyToRP(b4.getKeyToRP());
         
         // Rest from b2I
-        
-        b2.setNatureOfPerson(2); 
 
         //b2.setDateOfRegistration(b2I.getDateOfRegistration());
         //b2.setDateOfRegistrationFlag(b2I.getDateOfRegistrationFlag());
@@ -890,198 +906,6 @@ public class StandardizePersonalCards implements Runnable {
     	
     }
     
-    /*
-     *  This routine sets new relations (b34) for persons who are copied to the wife's registration
-     *  Not used anymore
-     * 
-     */
-    private static void setRelations(B2_ST b2){
-    	
-    	int relation = b2.getRelationsToPKHolder().get(0).getContentOfDynamicData();  // child relation to head (= wife)
-    	
-    	
-    	for(B2_ST b2i: b2.getRegistration().getPersons()){
-    		
-    		
-    		int rel  = 0;
-    		int reli = 0;
-    		int strength = 0;
-    		
-    		if(b2i.getPersonID_FA() == b2.getPersonID_FA()) strength++;
-    		if(b2i.getPersonID_MO() == b2.getPersonID_MO()) strength++;
-    		
-    		
-    		switch(b2i.getRelationsToPKHolder().get(0).getContentOfDynamicData()){
-    		
-    		
-    		case ConstRelations2.ZOON:
-    		case ConstRelations2.STIEFZOON:
-    			
-    			switch(relation){
-    			
-    			case  ConstRelations2.HOOFD:
-    			
-    			case ConstRelations2.ZOON:
-        		case ConstRelations2.STIEFZOON:
-
-    				
-    				if(strength == 2){
-    					rel = ConstRelations2.BROER;
-    					reli = ConstRelations2.BROER;    					
-    				}
-    				else{
-        				if(strength == 1){
-        					rel = ConstRelations2.HALFBROER;
-        					reli = ConstRelations2.HALFBROER;    					
-        				}
-        				else{
-        					rel = ConstRelations2.STIEFBROER;
-        					reli = ConstRelations2.STIEFBROER;    					
-        				}
-    					
-    				}
-    				
-    				break;
-    				
-        		case ConstRelations2.DOCHTER:
-        		case ConstRelations2.STIEFDOCHTER:
-        			
-    				if(strength == 2){
-    					rel = ConstRelations2.BROER;
-    					reli = ConstRelations2.ZUSTER;    					
-    				}
-    				else{
-        				if(strength == 1){
-        					rel = ConstRelations2.HALFBROER;
-        					reli = ConstRelations2.HALFZUSTER;    					
-        				}
-        				else{
-        					rel = ConstRelations2.STIEFBROER;
-        					reli = ConstRelations2.STIEFZUSTER;    					
-        				}
-    					
-    				}
-    				
-    				break;	
-    				
-        		case ConstRelations2.VADER:
-        			
-        			rel = ConstRelations2.KLEINZOON;
-        			reli = ConstRelations2.GROOTVADER;
-        			
-        			break;
-    			
-        		case ConstRelations2.MOEDER:
-        			
-        			rel = ConstRelations2.KLEINZOON;
-        			reli = ConstRelations2.GROOTMOEDER;
-        			
-        			break;
-    			
-    			
-    			}
-    			
-    			
-    			break;
-    			
-    		case ConstRelations2.DOCHTER:
-    		case ConstRelations2.STIEFDOCHTER:
-    			
-    			switch(relation){
-    			
-    			case ConstRelations2.ZOON:
-        		case ConstRelations2.STIEFZOON:
-
-    				
-    				if(strength == 2){
-    					rel = ConstRelations2.ZUSTER;
-    					reli = ConstRelations2.BROER;    					
-    				}
-    				else{
-        				if(strength == 1){
-        					rel = ConstRelations2.HALFZUSTER;
-        					reli = ConstRelations2.HALFBROER;    					
-        				}
-        				else{
-        					rel = ConstRelations2.STIEFZUSTER;
-        					reli = ConstRelations2.STIEFBROER;    					
-        				}
-    					
-    				}
-    				
-    				break;
-    				
-        		case ConstRelations2.DOCHTER:
-        		case ConstRelations2.STIEFDOCHTER:
-        			
-    				if(strength == 2){
-    					rel = ConstRelations2.ZUSTER;
-    					reli = ConstRelations2.ZUSTER;    					
-    				}
-    				else{
-        				if(strength == 1){
-        					rel = ConstRelations2.HALFZUSTER;
-        					reli = ConstRelations2.HALFZUSTER;    					
-        				}
-        				else{
-        					rel = ConstRelations2.STIEFZUSTER;
-        					reli = ConstRelations2.STIEFZUSTER;    					
-        				}
-    					
-    				}
-    				
-    				break;	
-    				
-        		case ConstRelations2.VADER:
-        			
-        			rel = ConstRelations2.KLEINDOCHTER;
-        			reli = ConstRelations2.GROOTVADER;
-        			
-        			break;
-    			
-        		case ConstRelations2.MOEDER:
-        			
-        			rel = ConstRelations2.KLEINDOCHTER;
-        			reli = ConstRelations2.GROOTMOEDER;
-        			
-        			break;
-    			
-    			
-    			}
-    			
-    			
-    			break;
-
-    			
-    			
-    			
-    		
-
-    	    	}
-
-    		
-	    	if(rel != 0){ 	
-	    		B34_ST b34 = allocateB34(b2, b2i, rel,  true);
-	    		if(b34 != null)
-	    			b2.getRelations().add(b34);
-	    		
-	    		b34 = allocateB34(b2i, b2, reli,  true);
-	    		if(b34 != null)
-	    			b2i.getRelations().add(b34);
-	    		
-
-    		
-    		}
-    		
-    		
-    		
-    		
-    	}
-    	
-    	
-    	
-    	
-    }
     
     /**
      * 
@@ -1105,12 +929,12 @@ public class StandardizePersonalCards implements Runnable {
         
         // rest from b2I
         
-        b313.setStartDate(b2I.getStartDate());
-        b313.setStartFlag(b2I.getStartFlag());
-        b313.setStartEst(b2I.getStartEst());
-        b313.setEndDate(b2I.getEndDate());
-        b313.setEndFlag(b2I.getEndFlag());
-        b313.setEndEst(b2I.getEndEst());
+        //b313.setStartDate(b2I.getStartDate());
+        //b313.setStartFlag(b2I.getStartFlag());
+        //b313.setStartEst(b2I.getStartEst());
+        //b313.setEndDate(b2I.getEndDate());
+        //b313.setEndFlag(b2I.getEndFlag());
+        //b313.setEndEst(b2I.getEndEst());
 
 		b313.setVersionLastTimeOfDataEntry(b2I.getVersionLastTimeOfDataEntry());
 		b313.setResearchCodeOriginal(b2I.getResearchCodeOriginal());
@@ -1525,7 +1349,7 @@ public class StandardizePersonalCards implements Runnable {
 
 
     	if(rel != 0){ 	
-    		B34_ST b34 = allocateB34(b2L, b2R, rel,  ti);
+    		B34_ST b34 = allocateB34(b2L.getRelationsToPKHolder().get(0), b2R.getRelationsToPKHolder().get(0), rel,  ti);
     		if(b34 != null)
     			b2L.getRelations().add(b34);
 
@@ -1538,39 +1362,39 @@ public class StandardizePersonalCards implements Runnable {
 
     /**
      * 
-     * Allocate an B34_ST with keys copied from b4 and the rest copied from b2I
+     * Allocate an B34_ST with keys copied from b4 and the rest copied from b311
      * 
      * @param b2
      * @param b2I  
      * @return
      */
     
-    private static B34_ST allocateB34(B2_ST b2L, B2_ST b2R, int rel, boolean time_invariant){
+    private static B34_ST allocateB34(B313_ST b313L, B313_ST b313R, int rel, boolean time_invariant){
     	
     	B34_ST b34 = new B34_ST(); 
     	
-    	// Keys from b2L 
+    	// Keys from b313L 
     	b34.setDynamicDataType(4);
     	
-    	b34.setVersionLastTimeOfDataEntry(b2L.getVersionLastTimeOfDataEntry());
-    	b34.setResearchCodeOriginal(b2L.getResearchCodeOriginal());
-    	b34.setVersionOriginalDataEntry(b2L.getVersionOriginalDataEntry());
-    	b34.setDate0(b2L.getDate0());
+    	b34.setVersionLastTimeOfDataEntry(b313L.getVersionLastTimeOfDataEntry());
+    	b34.setResearchCodeOriginal(b313L.getResearchCodeOriginal());
+    	b34.setVersionOriginalDataEntry(b313L.getVersionOriginalDataEntry());
+    	b34.setDate0(b313L.getDate0());
 
 
-        b34.setKeyToRP(b2L.getKeyToRP());
-        b34.setEntryDateHead(b2L.getEntryDateHead());
-        b34.setKeyToSourceRegister(b2L.getKeyToSourceRegister());
-        b34.setKeyToRegistrationPersons(b2L.getKeyToPersons());
-        b34.setDynamicDataSequenceNumber(b2L.getRelations().size() + 1);
+        b34.setKeyToRP(b313L.getKeyToRP());
+        b34.setEntryDateHead(b313L.getEntryDateHead());
+        b34.setKeyToSourceRegister(b313L.getKeyToSourceRegister());
+        b34.setKeyToRegistrationPersons(b313L.getKeyToRegistrationPersons());
+        b34.setDynamicDataSequenceNumber(b313L.getPerson().getRelations().size() + 1);
         
         b34.setContentOfDynamicData(rel);
-        b34.setValueOfRelatedPerson(b2R.getKeyToPersons());
+        b34.setValueOfRelatedPerson(b313R.getKeyToRegistrationPersons());
         
         
         
         if(time_invariant == false) {
-        	int [] a = findCommonTime(b2L.getStartDate(), b2L.getEndDate(), b2R.getStartDate(), b2R.getEndDate());
+        	int [] a = findCommonTime(b313L.getStartDate(), b313L.getEndDate(), b313R.getStartDate(), b313R.getEndDate());
 
         	if(a != null){
 
