@@ -110,7 +110,7 @@ public class TableDefinitions {
 
 		 " B3KODE SMALLINT, " +
 		 " B3RGLN SMALLINT, " +
-		 " B2FCBG SMALLINT, " +
+	//	 " B2FCBG SMALLINT, " +
 		 " B3MDNR CHAR(10), " +
 		 " B3MDFG TINYINT, " + 
 
@@ -145,7 +145,7 @@ public class TableDefinitions {
 	 " B3KODE SMALLINT, " +
 	 " B3RGLN SMALLINT, " +
 	 " CIVIL_STATUS_FG TINYINT, " + 
-	 " B2FCBG SMALLINT, " +
+//	 " B2FCBG SMALLINT, " +
 	 " B3MDNR CHAR(10), " +
 	 " B3MDFG TINYINT, " + 
 	 " CIVIL_LOCALITY_ID INT, " +
@@ -180,7 +180,7 @@ public class TableDefinitions {
 	 " END_EST  SMALLINT, " +
 
 	 " B3RGLN SMALLINT, " +
-	 " B2FCBG SMALLINT, " +
+//	 " B2FCBG SMALLINT, " +
 	 " B3MDNR CHAR(10), " +
 	 " B3MDFG TINYINT, " + 
 
@@ -218,7 +218,7 @@ public class TableDefinitions {
 
 	 " B3KODE SMALLINT, " +
 	 " B3RGLN SMALLINT, " +
-	 " B2FCBG SMALLINT, " +
+//	 " B2FCBG SMALLINT, " +
 	 " B3MDNR CHAR(10), " +
 	 " B3MDFG TINYINT, " + 
 
@@ -252,7 +252,7 @@ public class TableDefinitions {
 	 " END_EST  SMALLINT, " +
 
 	 " B3RGLN SMALLINT, " +
-	 " B2FCBG SMALLINT, " +
+//	 " B2FCBG SMALLINT, " +
 	 " B3MDNR CHAR(10), " +
 	 " B3MDFG TINYINT, " + 
 
@@ -289,7 +289,7 @@ public class TableDefinitions {
 	 " END_EST  SMALLINT, " +
 
 	 " B3RGLN SMALLINT, " +
-	 " B2FCBG SMALLINT, " +
+//	 " B2FCBG SMALLINT, " +
 	 " B3MDNR CHAR(10), " +
 	 " B3MDFG TINYINT, " + 
 
@@ -333,7 +333,7 @@ public class TableDefinitions {
 
 	 " B3KODE SMALLINT, " +
 	 " B3RGLN SMALLINT, " +
-	 " B2FCBG SMALLINT, " +
+//	 " B2FCBG SMALLINT, " +
 	 " B3MDNR CHAR(10), " +
 	 " B3MDFG TINYINT, " + 
 
