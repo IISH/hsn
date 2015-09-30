@@ -187,6 +187,12 @@ public class ConstRelations2 {
 	public static final int VADER_OF_STIEFVADER =                 148;
 	public static final int MOEDER_OF_STIEFMOEDER =               149;
 	public static final int ECHTGENOOT_VROUWELIJKE_OP =           150;
+	public static final int STIEFGROOTVADER =                     151;
+	public static final int STIEFGROOTMOEDER =                    152;
+	public static final int STIEFKLEINZOON =                      153;
+	public static final int STIEFKLEINDOCHTER =                   154;
+	public static final int STIEFKLEINKIND    =                   155;
+
 
 	// B3TYPE = 2
 	 

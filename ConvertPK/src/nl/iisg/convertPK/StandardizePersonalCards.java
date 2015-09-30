@@ -272,8 +272,6 @@ public class StandardizePersonalCards implements Runnable {
 
         for (PkKnd pkknd : pkkndL) {
         	
-        	System.out.println("knd idnr = " + pkknd.getIdnr());
-
             while (i_br < pkbrpL.size() && pkbrpL.get(i_br).getIdnr() == pkknd.getIdnr()) {
 
             	//System.out.println("    i_br =  " + i_br + " idnr = " + pkbrpL.get(i_br).getIdnr());
@@ -423,8 +421,8 @@ public class StandardizePersonalCards implements Runnable {
         				if(b2_temp.getRelationsToPKHolder().get(0).getContentOfDynamicData() == 2  || b2_temp.getRelationsToPKHolder().get(0).getContentOfDynamicData() == 145){  // Spouse
 
 
-        					System.out.println("...");
-        					System.out.println("..." + b2_temp.getFirstName() + "  " + b2_temp.getFamilyName());
+        					//System.out.println("...");
+        					//System.out.println("..." + b2_temp.getFirstName() + "  " + b2_temp.getFamilyName());
 
 
         					int marriageStartDays = Common1.dayCount(b2_temp.getRelationsToPKHolder().get(0).getStartDate());
@@ -508,21 +506,21 @@ public class StandardizePersonalCards implements Runnable {
 
         		if(pkknd1 != pkknd2 && pkknd2.getIdnrp() == pkknd1.getIdnr()){  // Wife-pkknd1 was married to husband-pkknd2
 
-        			System.out.println("found " + pkknd1.getIdnr() + " " + pkknd2.getIdnr());
+        			//System.out.println("found " + pkknd1.getIdnr() + " " + pkknd2.getIdnr());
 
 
         			copyPartnerInfo(pkknd2.getB4(), pkknd1.getB4());
 
         			//   Set relations in Husband's family 
         			
-        			System.out.println("1 pkknd1.getB4().getPersons.size() = " + pkknd1.getB4().getPersons().size());
+        			//System.out.println("1 pkknd1.getB4().getPersons.size() = " + pkknd1.getB4().getPersons().size());
         			
         			for (B2_ST b2L : pkknd2.getB4().getPersons()) 
         				for(B2_ST b2R :  pkknd2.getB4().getPersons())
         					handleB34(b2L, b2R);
         					//System.out.println("YYYY " + b2L.getKeyToPersons() + " YYYY " + b2R.getKeyToPersons() );
         			
-        			System.out.println("2 pkknd1.getB4().getPersons.size() = " + pkknd1.getB4().getPersons().size());
+        			//System.out.println("2 pkknd1.getB4().getPersons.size() = " + pkknd1.getB4().getPersons().size());
 
 
         			// Now we must change the key of pkknd2.getB4():
@@ -534,7 +532,7 @@ public class StandardizePersonalCards implements Runnable {
         			// Determine b2dibg
 
         			String b2dibg = String.format("%02d-%02d-%04d", ++i, 1, 1940);
-        			System.out.println("i = " + i);
+        			//System.out.println("i = " + i);
 
         			//System.out.println("b2dibg = " + b2dibg);
 
@@ -588,7 +586,7 @@ public class StandardizePersonalCards implements Runnable {
 
         			}
 
-        			System.out.println("3 pkknd1.getB4().getPersons.size() = " + pkknd1.getB4().getPersons().size());
+        			//System.out.println("3 pkknd1.getB4().getPersons.size() = " + pkknd1.getB4().getPersons().size());
 
         		}
         		
@@ -600,7 +598,7 @@ public class StandardizePersonalCards implements Runnable {
         	
 			//   Set relations in Wife's family 
         	
-			System.out.println("4 pkknd1.getB4().size() = " + pkknd1.getB4().getPersons().size());
+			//System.out.println("4 pkknd1.getB4().size() = " + pkknd1.getB4().getPersons().size());
 
 			
 			for (B2_ST b2L : pkknd1.getB4().getPersons()) 
@@ -672,7 +670,7 @@ public class StandardizePersonalCards implements Runnable {
     private static void copyPartnerInfo(B4_ST b4Husband, B4_ST b4Wife){
     	
     	
-    	System.out.println("Husband = " + b4Husband + "wife = "+ b4Wife);
+    	//System.out.println("Husband = " + b4Husband + "wife = "+ b4Wife);
     	
     	//System.out.println("Copy Partner Info"); 
     	
@@ -751,7 +749,7 @@ public class StandardizePersonalCards implements Runnable {
         			
         			if(b2 == null){
         				
-        				System.out.println("allocating person: b4Wife = " + b4Wife + "b4H = " + b2H);
+        				//System.out.println("allocating person: b4Wife = " + b4Wife + "b4H = " + b2H);
 
         				b2 = allocateB2(b4Wife, b2H);  // Allocate new person
         				b2.setKeyToPersons(b4Wife.getPersons().size() + 1);  // keep together    				
@@ -1281,14 +1279,18 @@ public class StandardizePersonalCards implements Runnable {
     		case ConstRelations2.VADER:            
     		case ConstRelations2.MOEDER:           
     		case ConstRelations2.SCHOONVADER:            
-    		case ConstRelations2.SCHOONMOEDER:           
+    		case ConstRelations2.SCHOONMOEDER:        
+    			
+    			if(testBlood(b2L, b2R)){
+    				rel = ConstRelations2.KLEINZOON;
+    				ti = true;
+    			}
+    			else 
+    				rel = ConstRelations2.STIEFKLEINZOON;
 
-    			rel = ConstRelations2.KLEINZOON;
-    			ti = true;
-
-
+    			break;
     		}
-
+    		
     		break;
 
     	case ConstRelations2.DOCHTER:                               // Daughter
@@ -1369,8 +1371,14 @@ public class StandardizePersonalCards implements Runnable {
     		case ConstRelations2.STIEFVADER:            
     		case ConstRelations2.STIEFMOEDER:           
 
-    			rel = ConstRelations2.KLEINDOCHTER;
-    			ti = true;
+    			if(testBlood(b2L, b2R)){
+    				rel = ConstRelations2.KLEINDOCHTER;
+    				ti = true;
+    			}
+    			else 
+    				rel = ConstRelations2.STIEFKLEINDOCHTER;
+    			
+    			break;
 
     		}
 
@@ -1383,12 +1391,25 @@ public class StandardizePersonalCards implements Runnable {
 
     		case ConstRelations2.HOOFD:            			rel = ConstRelations2.VADER;               ti = true;      break;                                       		
     		case ConstRelations2.ECHTGENOTE_HOOFD: 			rel = ConstRelations2.SCHOONVADER;                         break;                                        		
-    		case ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD: rel = ConstRelations2.SCHOONVADER;                         break;                                        		
-    		case ConstRelations2.ZOON:             			rel = ConstRelations2.GROOTVADER;          ti = true;      break;  
-    		case ConstRelations2.DOCHTER:          			rel = ConstRelations2.GROOTVADER;          ti = true;      break;  
-    		case ConstRelations2.STIEFZOON:        			rel = ConstRelations2.GROOTVADER;          ti = true;      break;  
-    		case ConstRelations2.STIEFDOCHTER:     			rel = ConstRelations2.GROOTVADER;          ti = true;      break;  	
+    		case ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD: rel = ConstRelations2.SCHOONVADER;                         break;  
+    		
+    		
+    		case ConstRelations2.ZOON:             			 
+    		case ConstRelations2.DOCHTER:          			
+    		case ConstRelations2.STIEFZOON:        			  
+    		case ConstRelations2.STIEFDOCHTER:     			
+    			
+    			if(testBlood(b2R, b2L)){
+    				
+    				rel = ConstRelations2.GROOTVADER;
+    				ti = true;
+    			}
+    			else 
+    				rel = ConstRelations2.STIEFGROOTVADER;
 
+    			break;
+	
+    			
     		}
 
     		break;
@@ -1401,11 +1422,22 @@ public class StandardizePersonalCards implements Runnable {
 
     		case ConstRelations2.HOOFD:			            rel = ConstRelations2.MOEDER;               ti = true;      break;                                       		
     		case ConstRelations2.ECHTGENOTE_HOOFD:			rel = ConstRelations2.SCHOONMOEDER;                         break;
-    		case ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD: rel = ConstRelations2.SCHOONVADER;                          break;                                        		
-    		case ConstRelations2.ZOON:            		    rel = ConstRelations2.GROOTMOEDER;          ti = true;      break;  
-    		case ConstRelations2.DOCHTER:          			rel = ConstRelations2.GROOTMOEDER;          ti = true;      break;  
-    		case ConstRelations2.STIEFZOON:        			rel = ConstRelations2.GROOTMOEDER;          ti = true;      break;  
-    		case ConstRelations2.STIEFDOCHTER:     			rel = ConstRelations2.GROOTMOEDER;          ti = true;      break;  	
+    		case ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD: rel = ConstRelations2.SCHOONVADER;                          break;
+    		
+    		case ConstRelations2.ZOON:            		    
+    		case ConstRelations2.DOCHTER:          			
+    		case ConstRelations2.STIEFZOON:        			
+    		case ConstRelations2.STIEFDOCHTER:     
+    			
+    			if(testBlood(b2R, b2L)){
+    				
+    				rel = ConstRelations2.GROOTMOEDER;
+    				ti = true;
+    			}
+    			else 
+    				rel = ConstRelations2.STIEFGROOTMOEDER;
+
+    			break;
 
     		}
     		
@@ -1427,10 +1459,22 @@ public class StandardizePersonalCards implements Runnable {
     			}
     			
     			
-    		case ConstRelations2.ZOON:            		    rel = ConstRelations2.GROOTMOEDER;          ti = true;      break;  
-    		case ConstRelations2.DOCHTER:          			rel = ConstRelations2.GROOTMOEDER;          ti = true;      break;  
-    		case ConstRelations2.STIEFZOON:        			rel = ConstRelations2.GROOTMOEDER;          ti = true;      break;  
-    		case ConstRelations2.STIEFDOCHTER:     			rel = ConstRelations2.GROOTMOEDER;          ti = true;      break;  	
+    		case ConstRelations2.ZOON:            		   
+    		case ConstRelations2.DOCHTER:          			
+    		case ConstRelations2.STIEFZOON:        			
+    		case ConstRelations2.STIEFDOCHTER:     		
+    			
+    			if(testBlood(b2R, b2L)){
+    				
+    				rel = ConstRelations2.GROOTMOEDER;
+    				ti = true;
+    			}
+    			else 
+    				rel = ConstRelations2.STIEFGROOTMOEDER;
+
+    			break;
+	
+
 
 
     		}
@@ -1453,12 +1497,20 @@ public class StandardizePersonalCards implements Runnable {
     			}
     			
     			
-    		case ConstRelations2.ZOON:            		    rel = ConstRelations2.GROOTVADER;          ti = true;      break;  
-    		case ConstRelations2.DOCHTER:          			rel = ConstRelations2.GROOTVADER;          ti = true;      break;  
-    		case ConstRelations2.STIEFZOON:        			rel = ConstRelations2.GROOTVADER;          ti = true;      break;  
-    		case ConstRelations2.STIEFDOCHTER:     			rel = ConstRelations2.GROOTVADER;          ti = true;      break;  	
+    		case ConstRelations2.ZOON:            		    
+    		case ConstRelations2.DOCHTER:          			 
+    		case ConstRelations2.STIEFZOON:        			
+    		case ConstRelations2.STIEFDOCHTER:     				
 
+    			if(testBlood(b2R, b2L)){    				
+    				rel = ConstRelations2.GROOTVADER;
+    				ti = true;
+    			}
+    			else 
+    				rel = ConstRelations2.STIEFGROOTVADER;
 
+    			break;
+	
     		}
     		
     		break;
@@ -1480,7 +1532,43 @@ public class StandardizePersonalCards implements Runnable {
 
     }
 
+    /*
+     * 
+     *  Check if a (stepgrandchild or grandchild) actually is grandchild or stepgrandchild
+     * 
+     */
 
+    
+    static boolean testBlood(B2_ST b2lower, B2_ST b2_higher){
+    	
+    	// Try to find parent B2_ST of lower
+    	
+    	B2_ST b2Father = null;
+    	B2_ST b2Mother = null;
+    	
+    	for(B2_ST b2: b2lower.getRegistration().getPersons()){
+    		
+    		if(b2.getPersonID() == b2lower.getPersonID_FA())
+    			b2Father = b2;
+    		if(b2.getPersonID() == b2lower.getPersonID_MO())
+    			b2Mother = b2;
+    		
+    		
+    	}
+    	
+    	if(b2Mother != null && b2Mother.getPersonID_MO() == b2_higher.getPersonID()) return true;
+    	if(b2Mother != null && b2Mother.getPersonID_FA() == b2_higher.getPersonID()) return true;
+    	if(b2Father != null && b2Father.getPersonID_MO() == b2_higher.getPersonID()) return true;
+    	if(b2Father != null && b2Father.getPersonID_FA() == b2_higher.getPersonID()) return true;
+    		
+    	return false;
+    	
+    	}
+    	
+    	
+    	
+    	
+    
 
     /**
      * 
@@ -1551,13 +1639,13 @@ public class StandardizePersonalCards implements Runnable {
        		a[0] = l;
        		a[1] = r;
        		
-       		System.out.println("l = " + l +  ", r = "+ r);
+       		//System.out.println("l = " + l +  ", r = "+ r);
        		
        		return a;
        		
        	}
        	
-       	System.out.println("No common time");
+       	//System.out.println("No common time");
        	
     	return null;
     
