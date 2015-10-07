@@ -174,6 +174,7 @@ public class ConstRelations2 {
 	public static final int KIND_PK =                             133;
 	public static final int STIEFKIND_PK =                        134;
 	public static final int KIND_OF_STIEFKIND =                   135;
+	public static final int KLEINKIND       =                     136;
 	public static final int HALFBROER_OF_NEEF =                   138;
 	public static final int HALFZUSTER_OF_NICHT =                 139;
 	
@@ -197,9 +198,11 @@ public class ConstRelations2 {
 	public static final int OUDER      =                          158;
 	public static final int STIEFOUDER      =                     159;
 	public static final int SCHOONKIND      =                     160;
-	public static final int ECHTGENOOT_OF_ECHTGENOTE_VAN_HOOFD  = 161;
+	public static final int PARTNER							    = 161;
 	public static final int HALFSIBLING     =                     162;
-	public static final int KLEINKIND       =                     163;
+	public static final int GROOTOUDER     =                      164;
+	public static final int STIEFGROOTOUDER =                     165;
+	public static final int SCHOONOUDER =                         166;
 	
 
 	// B3TYPE = 2
