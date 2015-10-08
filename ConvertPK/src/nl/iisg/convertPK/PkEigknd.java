@@ -156,7 +156,11 @@ public class PkEigknd {
     			getRelkndp().trim().equalsIgnoreCase("SZ"))
     		b2.setSex("m");
     	else
-    		b2.setSex("v");
+        	if(getRelkndp().trim().equalsIgnoreCase("DOCHTER") || 
+        			getRelkndp().trim().equalsIgnoreCase("D") ||
+        			getRelkndp().trim().equalsIgnoreCase("STIEFDOCHTER") ||
+        			getRelkndp().trim().equalsIgnoreCase("SD"))
+        		b2.setSex("v");
 
     	
     	// Birth date

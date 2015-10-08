@@ -371,9 +371,31 @@ public class StandardizePersonalCards implements Runnable {
         	pkknd1.convert(B2dibg);
         }
 
+        // Give persons unique person number
+        // But compare only within idnr 
+        
+        // We create a second list of Pkknd objects, sorted on idnrP 
+        
+        List<PkKnd> pkkndL2 = new ArrayList(); 
+        
+        pkkndL2.addAll(pkkndL);        
+        
+        Collections.sort(pkkndL2, new Comparator<PkKnd>() {
+            public int compare(PkKnd pkknd1, PkKnd pkknd2) {
+                if (pkknd1.getIdnrp() > pkknd2.getIdnrp()) return 1;
+                else if (pkknd1.getIdnrp() < pkknd2.getIdnrp()) return -1;
+                return 0;   
+            }
+        });
+        
         ArrayList<B2_ST> uniquePersons = new ArrayList<B2_ST>();
-
-        for (PkKnd pkknd1 : pkkndL) {
+        
+        int idnrPrev = 0;
+        for (PkKnd pkknd1 : pkkndL2) {
+        	if(pkknd1.getB4().getIdnrSpouse() != idnrPrev){
+        		uniquePersons.clear(); // This assures we link in the context of an IDNR, not 'globally'
+        		idnrPrev = pkknd1.getB4().getKeyToRP();
+        	}
         	for (B2_ST b2 : pkknd1.getB4().getPersons()) {
         		boolean found = false;
         		for (B2_ST b2unique : uniquePersons) {
@@ -456,42 +478,7 @@ public class StandardizePersonalCards implements Runnable {
         }
         
         
-        // Now set the relations
-        
-        //for (PkKnd pkknd1 : pkkndL) 
-        	//for (B2_ST b2L : pkknd1.getB4().getPersons()) 
-        		//for(B2_ST b2R :  pkknd1.getB4().getPersons())
-        			//handleB34(b2L, b2R);    		
-        		
-        	        
-        
-        
-
-        //for(B2_ST p: uniquePersons)
-        	//System.out.println("PersonID = " + p.getPersonID() + "LastName = " + p.getFamilyName() + "    Firstname = " + p.getFirstName());
-        
-        // update partner info
-        //if(1==1) return;
-        
-        // To simplify processing, we create a second list of Pkknd objects, sorted on idnrP 
-        
-        
-        
-        List<PkKnd> pkkndL2 = new ArrayList(); 
-        
-        pkkndL2.addAll(pkkndL);        
-        
-        Collections.sort(pkkndL2, new Comparator<PkKnd>() {
-            public int compare(PkKnd pkknd1, PkKnd pkknd2) {
-                if (pkknd1.getIdnrp() > pkknd2.getIdnrp()) return 1;
-                else if (pkknd1.getIdnrp() < pkknd2.getIdnrp()) return -1;
-                return 0;   
-            }
-        });
-
-        
-        
-        
+        // Integrate cards
         
         for (PkKnd pkknd1 : pkkndL) { // the Wives are selected from this list
 
@@ -502,26 +489,14 @@ public class StandardizePersonalCards implements Runnable {
 
         	for (PkKnd pkknd2 : pkkndL2) { // The husbands are selected from this list
 
-        		//System.out.println("pkknd1.idnr = " + pkknd1.getIdnr() + " pkknd1.idnrp = " + pkknd1.getIdnrp() + " pkknd2.idnr = " + pkknd2.getIdnr());
-
         		if(pkknd1 != pkknd2 && pkknd2.getIdnrp() == pkknd1.getIdnr()){  // Wife-pkknd1 was married to husband-pkknd2
 
-        			//System.out.println("found " + pkknd1.getIdnr() + " " + pkknd2.getIdnr());
-
-
         			copyPartnerInfo(pkknd2.getB4(), pkknd1.getB4());
-
-        			//   Set relations in Husband's family 
-        			
-        			//System.out.println("1 pkknd1.getB4().getPersons.size() = " + pkknd1.getB4().getPersons().size());
         			
         			for (B2_ST b2L : pkknd2.getB4().getPersons()) 
         				for(B2_ST b2R :  pkknd2.getB4().getPersons())
-        					handleB34(b2L, b2R);
-        					//System.out.println("YYYY " + b2L.getKeyToPersons() + " YYYY " + b2R.getKeyToPersons() );
+        					handleB34_new(b2L, b2R);
         			
-        			//System.out.println("2 pkknd1.getB4().getPersons.size() = " + pkknd1.getB4().getPersons().size());
-
 
         			// Now we must change the key of pkknd2.getB4():
         			// It must be registered under the IDNR of the wife
@@ -1279,11 +1254,10 @@ public class StandardizePersonalCards implements Runnable {
     
     private static int handlePARTNER(B2_ST b2L, B2_ST b2R){
     	
-    	int relL = b2L.getRelationsToPKHolder().get(0).getContentOfDynamicData();
     	int relR = b2R.getRelationsToPKHolder().get(0).getContentOfDynamicData();
     	int rel = 0;
 
-    	
+   	
 		switch(relR){
 
 		case ConstRelations2.HOOFD:                                 rel = relR;                                                   break;  
@@ -2362,6 +2336,42 @@ public class StandardizePersonalCards implements Runnable {
       */
 
     private static int comparePersons(B2_ST p, B2_ST pu) {
+    	
+    	// First Check if the persons are from different generations
+    	
+    	int [] Generation0 = {ConstRelations2.VADER,       ConstRelations2.MOEDER,           ConstRelations2.OUDER,
+    			              ConstRelations2.SCHOONVADER, ConstRelations2.SCHOONMOEDER,     ConstRelations2.SCHOONOUDER};
+    	
+    	int [] Generation1 = {ConstRelations2.HOOFD,       ConstRelations2.ECHTGENOTE_HOOFD, ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD};
+    	
+    	int [] Generation2 = {ConstRelations2.ZOON,        ConstRelations2.DOCHTER,          ConstRelations2.KIND_PK,
+    			              ConstRelations2.STIEFZOON,   ConstRelations2.STIEFDOCHTER,     ConstRelations2.STIEFKIND_PK}; 
+    	
+    	
+    	int p_gen = -1;
+    	int pu_gen = -1;
+    	
+    	for(int i = 0; i < Generation0.length; i++){    		
+    		if(p.getRelationsToPKHolder().get(0).getContentOfDynamicData()  == Generation0[i]) p_gen = 0;
+    		if(pu.getRelationsToPKHolder().get(0).getContentOfDynamicData() == Generation0[i]) pu_gen = 0;  		
+    	}
+    	
+    	for(int i = 0; i < Generation1.length; i++){    		
+    		if(p.getRelationsToPKHolder().get(0).getContentOfDynamicData()  == Generation1[i]) p_gen = 1;
+    		if(pu.getRelationsToPKHolder().get(0).getContentOfDynamicData() == Generation1[i]) pu_gen = 1;  		
+    	}
+    	
+    	for(int i = 0; i < Generation2.length; i++){    		
+    		if(p.getRelationsToPKHolder().get(0).getContentOfDynamicData()  == Generation2[i]) p_gen = 2;
+    		if(pu.getRelationsToPKHolder().get(0).getContentOfDynamicData() == Generation2[i]) pu_gen = 2;  		
+    	}
+
+    	
+    	// If persons are from different generations, they cannot be the same person
+    	
+    	//if(p_gen != pu_gen)
+    		//return -1;
+    	
 
         //
         // Test if different family name
@@ -2379,40 +2389,30 @@ public class StandardizePersonalCards implements Runnable {
         //
         boolean birthDateOK = CheckBirthDate(p, pu);
 
-        //
-        // Test if different sex
-        //
-
-        boolean sexOK = true;
-        if ((p.getSex().equalsIgnoreCase("m") == true && pu.getSex().equalsIgnoreCase("v") == true) ||
-                (p.getSex().equalsIgnoreCase("v") == true && pu.getSex().equalsIgnoreCase("m") == true)) {
-            sexOK = false;
-        }
-
 
         // Extra checks
 
 
-        if (familyNameOK == true && firstNameOK == true && birthDateOK == true && sexOK == true) {
+        if (familyNameOK && firstNameOK  && birthDateOK) {
+        	
+
 
             // Check if all first names are equal
 
             String[] names1 = p.getFirstName().split(" ");
             String[] names2 = pu.getFirstName().split(" ");
 
-            if (names1.length >= 2 && names2.length >= 2) {
-                if (!names1[1].equalsIgnoreCase(names2[1])) {
+            if (!names1[0].equalsIgnoreCase(names2[0])){
+                message(p.getKeyToRP(), "3101", names1[0], names2[0]);
+            }
+          
+            if (names1.length >= 2 && names2.length >= 2) 
+                if (!names1[1].equalsIgnoreCase(names2[1])) 
                     message(p.getKeyToRP(), "4119", names1[1], names2[1]);
-                    return 0;
-                }
-            }
 
-            if (names1.length >= 3 && names2.length >= 3) {
-                if (!names1[2].equalsIgnoreCase(names2[2])) {
+            if (names1.length >= 3 && names2.length >= 3) 
+                if (!names1[2].equalsIgnoreCase(names2[2])) 
                     message(p.getKeyToRP(), "4120", names1[2], names2[2]);
-                    return 0;
-                }
-            }
 
             return 0;
 
@@ -2420,17 +2420,17 @@ public class StandardizePersonalCards implements Runnable {
 
         // Perform some checks 
 
-        if (familyNameOK != true && firstNameOK == true && birthDateOK == true && sexOK == true) {
+        if (familyNameOK != true && firstNameOK == true && birthDateOK == true) {
             message(p.getKeyToRP(), "4121", p.getFamilyName(), pu.getFamilyName());
             return -1;
         }
 
-        if (familyNameOK == true && firstNameOK == true && birthDateOK == true && sexOK != true) {
-            message(p.getKeyToRP(), "4122", new Integer(pu.getKeyToPersons()).toString());
-            return -1;
-        }
+        //if (familyNameOK == true && firstNameOK == true && birthDateOK == true && sexOK != true) {
+         //   message(p.getKeyToRP(), "4122", new Integer(pu.getKeyToPersons()).toString());
+          //  return -1;
+        //}
 
-        if (familyNameOK == true && firstNameOK == true && birthDateOK != true && sexOK == true) {
+        if (familyNameOK == true && firstNameOK == true && birthDateOK != true) {
             message(p.getKeyToRP(), "4126", p.getFamilyName(), p.getFirstName(), p.getDateOfBirth(), pu.getDateOfBirth());
             return -1;
         }
@@ -2577,10 +2577,6 @@ public class StandardizePersonalCards implements Runnable {
             return false;
 
 
-        if (!name1.equals(name2)){
-            message(p.getKeyToRP(), "3101", name1, name2);
-            }
-
 
         return true;
 
@@ -2634,11 +2630,6 @@ public class StandardizePersonalCards implements Runnable {
 
         } else
             return false;
-
-
-        if (!name1.equals(name2))
-            message(p.getKeyToRP(), "3103", name1, name2);
-
 
         return true;
 

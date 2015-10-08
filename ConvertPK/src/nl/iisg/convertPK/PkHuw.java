@@ -183,7 +183,8 @@ public class PkHuw {
     	if(getPkHolder().getGslperp().equalsIgnoreCase("M"))
     		b2.setSex("v");
     	else
-    		b2.setSex("m");
+    		if(getPkHolder().getGslperp().equalsIgnoreCase("V"))
+    			b2.setSex("m");
 
     	String birthDate = String.format("%02d-%02d-%04d", getGdghuwp(), getGmdhuwp(), getGjrhuwp());
     	b2.setDateOfBirth(birthDate); 
