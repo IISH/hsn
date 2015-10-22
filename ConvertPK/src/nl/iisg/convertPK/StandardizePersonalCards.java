@@ -573,8 +573,6 @@ public class StandardizePersonalCards implements Runnable {
         	
 			//   Set relations in Wife's family 
         	
-			//System.out.println("4 pkknd1.getB4().size() = " + pkknd1.getB4().getPersons().size());
-
 			
 			for (B2_ST b2L : pkknd1.getB4().getPersons()) 
 				for(B2_ST b2R :  pkknd1.getB4().getPersons())
@@ -2199,7 +2197,7 @@ public class StandardizePersonalCards implements Runnable {
 
     	}
     	else{
-    		System.out.println("No relation " + b2L.getKeyToRP() + "  " + b2L.getEntryDateHead() + "   " + b2L.getKeyToPersons() + "  " + b2R.getKeyToPersons());
+    		;//System.out.println("No relation " + b2L.getKeyToRP() + "  " + b2L.getEntryDateHead() + "   " + b2L.getKeyToPersons() + "  " + b2R.getKeyToPersons());
     	}
 
 
@@ -2314,13 +2312,13 @@ public class StandardizePersonalCards implements Runnable {
        		
        		//System.out.println("l = " + l +  ", r = "+ r);
        		
-       		System.out.println(b + "   [" +  Common1.dateFromDayCount(l) + ", " +Common1.dateFromDayCount(r) + "]");
+       		//System.out.println(b + "   [" +  Common1.dateFromDayCount(l) + ", " +Common1.dateFromDayCount(r) + "]");
        		
        		return a;
        		
        	}
        	
-       	System.out.println(b + "   No common time");
+       	//System.out.println(b + "   No common time");
        	
     	return null;
     
@@ -2369,8 +2367,8 @@ public class StandardizePersonalCards implements Runnable {
     	
     	// If persons are from different generations, they cannot be the same person
     	
-    	//if(p_gen != pu_gen)
-    		//return -1;
+    	if(p_gen != pu_gen)
+    		return -1;
     	
 
         //
@@ -2389,11 +2387,19 @@ public class StandardizePersonalCards implements Runnable {
         //
         boolean birthDateOK = CheckBirthDate(p, pu);
 
+    	//
+    	// Test if different sex
+    	//
+    	
+    	boolean sexOK = true;
+    	if((p.getSex().equals("m") == true && pu.getSex().equals("v") == true) || (p.getSex().equals("v") == true && pu.getSex().equals("m") == true))
+    		sexOK = false;
+
 
         // Extra checks
 
 
-        if (familyNameOK && firstNameOK  && birthDateOK) {
+        if (familyNameOK && firstNameOK  && birthDateOK && sexOK) {
         	
 
 
@@ -2425,10 +2431,10 @@ public class StandardizePersonalCards implements Runnable {
             return -1;
         }
 
-        //if (familyNameOK == true && firstNameOK == true && birthDateOK == true && sexOK != true) {
-         //   message(p.getKeyToRP(), "4122", new Integer(pu.getKeyToPersons()).toString());
-          //  return -1;
-        //}
+        if (familyNameOK == true && firstNameOK == true && birthDateOK == true && sexOK != true) {
+           message(p.getKeyToRP(), "4122", new Integer(pu.getKeyToPersons()).toString());
+            return -1;
+        }
 
         if (familyNameOK == true && firstNameOK == true && birthDateOK != true) {
             message(p.getKeyToRP(), "4126", p.getFamilyName(), p.getFirstName(), p.getDateOfBirth(), pu.getDateOfBirth());

@@ -1027,25 +1027,67 @@ public class PkKnd {
 
     		int nrOfAddresses = getAddresses().size();
     		int [] addressDates = new int[nrOfAddresses]; 
+    		int [] addressDateFlags = new int[nrOfAddresses]; 
+    		
+    		
+    		// Find oldest date
+    		
+    		int oldestDate = Common1.dayCount("01-01-2100");
+    		for(int k = 0; k < nrOfAddresses; k++){
+    			if(Utils.dateIsValid(getAddresses().get(k).getDgadrp(), getAddresses().get(k).getMdadrp(), getAddresses().get(k).getJradrp()) == 0)
+    				if(Common1.dayCount(getAddresses().get(k).getDgadrp(), getAddresses().get(k).getMdadrp(), getAddresses().get(k).getJradrp()) < oldestDate)
+    					oldestDate = Common1.dayCount(getAddresses().get(k).getDgadrp(), getAddresses().get(k).getMdadrp(), getAddresses().get(k).getJradrp());
+    			
+    			
+    		}
+    		
+    		if(oldestDate == Common1.dayCount("01-01-2100"))
+    			oldestDate = Common1.dayCount(b2pk.getStartDate());
+    		
+    		//System.out.println("Oldest date= "+ Common1.dateFromDayCount(oldestDate));
+    		
+    		
+    		// Allow 2 invalid dates at the head of the addresses
+    		
+    		int offset = 0;
+    		if(Utils.dateIsValid(getAddresses().get(0).getDgadrp(), getAddresses().get(0).getMdadrp(), getAddresses().get(0).getJradrp()) != 0){
+    	    		if(nrOfAddresses > 1 && Utils.dateIsValid(getAddresses().get(1).getDgadrp(), getAddresses().get(1).getMdadrp(), getAddresses().get(1).getJradrp()) != 0){
+    	    			addressDates[0] = oldestDate - (8 * 365) - 2; // 8 years before start PK
+    	    			addressDateFlags[0] = 4;
+    	    			addressDates[1] = oldestDate - (4 * 365) - 1; // 8 years before start PK
+    	    			addressDateFlags[1] = 3;
+    	    			offset = 2;
+    	    		}
+    	    		else{
+    	    			addressDates[0] = oldestDate - (4 * 365) - 1; // 8 years before start PK
+    	    			addressDateFlags[0] = 3;
+    	    			offset = 1;
+    	    		}
+    		}
 
-    		addressDates[0] = Utils.dateIsValid(getAddresses().get(0).getDgadrp(), getAddresses().get(0).getMdadrp(), getAddresses().get(0).getJradrp()) == 0 ? 
-    				Common1.dayCount(getAddresses().get(0).getDgadrp(), getAddresses().get(0).getMdadrp(), getAddresses().get(0).getJradrp()) :
-    				Common1.dayCount(b2pk.getStartDate());
+    		//System.out.println("1 1st element date= "+ Common1.dateFromDayCount(addressDates[0]));
 
-
+    		
     		// copy address dates to array
     		
-    		for(int j = 1; j < nrOfAddresses; j++){
+    		for(int j = offset; j < nrOfAddresses; j++){
     			if(Utils.dateIsValid(getAddresses().get(j).getDgadrp(), getAddresses().get(j).getMdadrp(), getAddresses().get(j).getJradrp()) == 0){
     				addressDates[j] =  Common1.dayCount(getAddresses().get(j).getDgadrp(), getAddresses().get(j).getMdadrp(), getAddresses().get(j).getJradrp());
+    				addressDateFlags[j] = 1;
 
     			}
     			else{
-    				addressDates[j] =  0;
+    				if(j >= 2){ // because the first 2 addresses have been made valid above already
+    					addressDates[j] =  0;
+    					addressDateFlags[j] =  5;  // will be estimated
+    				}
 
     			}
     		}
 
+    		//System.out.println("2 1st element date= "+ Common1.dateFromDayCount(addressDates[0]));
+
+    		
     		// estimate address dates which are 0
 
     		int cnt = 0;
@@ -1078,10 +1120,19 @@ public class PkKnd {
     			}
     		}
 
+    		
+    		//System.out.println("Adressen Idnr = " + getIdnr());
+    		//for(int l = 0; l < addressDates.length; l++){
+    		//	System.out.println("add_date = " + addressDates[l]);
+    		//	
+    		//}
+    		
     		int seqNoAdr = 1;
     		String street = null;
 
+    		//System.out.println("3 1st element date= "+ Common1.dateFromDayCount(addressDates[0]));
 
+    		
     		for(PkAdres pkadr: getAddresses()){
 
     			if(pkadr.getLndadrp() == null || pkadr.getLndadrp().trim().equalsIgnoreCase("NL")){
@@ -1092,11 +1143,15 @@ public class PkKnd {
     				initialiseB6_ST(b6);
     				b6.setSequenceNumberToAddresses(seqNoAdr);
     				b6.setStartDate(Common1.dateFromDayCount(addressDates[seqNoAdr - 1]));
+    				b6.setStartFlag(addressDateFlags[seqNoAdr - 1]);
     				if(seqNoAdr < nrOfAddresses){
     					b6.setEndDate(Common1.dateFromDayCount(addressDates[seqNoAdr] - 1)); // xxx
+    					b6.setEndFlag(2);
     				}
-    				else
+    				else{
     					b6.setEndDate(b2pk.getEndDate());
+    					b6.setEndFlag(1);
+    				}
 
     				if(pkadr.convert(b6, street)){  // street is passed to be used if there is a * in the address
     					if(b6.getStreet() != null)  
@@ -1105,13 +1160,15 @@ public class PkKnd {
     						if(b6.getQuarter() != null)
     							street = b6.getQuarter();
     				}
-    				else
-    					b6.setMunicipality("Unknown address");
+    				//else
+    					//b6.setMunicipality("Unknown address");
     			}
 
     			seqNoAdr++;  
     		}
     	}
+    	
+    	
     	// addresses of the PK-Holder in P8
 
     	int seqNoAdr = 1;

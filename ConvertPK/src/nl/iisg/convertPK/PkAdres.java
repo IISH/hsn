@@ -67,6 +67,26 @@ public class PkAdres {
 		if(getJradrp() > 0)
 			b6.setDateOfAddress(String.format("%02d-%02d-%04d", getDgadrp(), getMdadrp(), getJradrp()));
 		
+		
+    	// municipality
+    	
+		String municipality = getPladrp();
+		
+		String [] b = municipality.split("!");
+		
+		if(b.length > 1)
+			municipality = b[b.length -1];
+			
+		// Combine place with country
+		
+		if(getLndadrp() != null)
+			municipality = municipality + " $" + getLndadrp();
+
+    	ArrayList a = Utils.standardizeLocation(municipality);
+    	b6.setMunicipality((String)a.get(0));
+    	
+    	// Address
+		
 	
 		if(getStradrp() == null || getStradrp().trim().length() == 0)
 			return false;
@@ -129,8 +149,8 @@ public class PkAdres {
 		}
 		else{
 			if(index > 0){  // B3
-				String [] a = address.split("[/]+"); // split on "/"
-				for(String s: a){
+				String [] aa = address.split("[/]+"); // split on "/"
+				for(String s: aa){
 					s = s.replaceAll("~K26~", ""); // remove the separator between number and addition
 					s = tryLocalityInfo(b6, s);  // C1
 					if(s != null){
@@ -476,22 +496,6 @@ public class PkAdres {
 
 	public void convertAddress(B6_ST b6){
 		
-    	// municipality
-    	
-		String locality = getPladrp();
-		
-		String [] b = locality.split("!");
-		
-		if(b.length > 1)
-			locality = b[b.length -1];
-			
-		// Combine place with country
-		
-		if(getLndadrp() != null)
-			locality = locality + " $ " + getLndadrp();
-
-    	ArrayList a = Utils.standardizeLocation(locality);
-    	b6.setMunicipality((String)a.get(0));
 				
 		Ref_Address  refAdd = Ref.getAddress(b6.getStreet(), b6.getQuarter(), b6.getPlace(), b6.getBoat(), b6.getBerth(), b6.getInstitution(), b6.getLandlord(), b6.getOther());
 		if(refAdd != null && refAdd.getCode() != null && (refAdd.getCode().equalsIgnoreCase("y") || refAdd.getCode().equalsIgnoreCase("u"))){

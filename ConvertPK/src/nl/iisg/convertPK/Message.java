@@ -89,10 +89,13 @@ public class Message {
 		for (String s : fills) 
 			errorFills.add(s);		
 	
+		
+		boolean found = false;
 		for(MessageSkeleton ermes: messageSkeletons){
 
 			int errorN = new Integer(ermes.getErrorNumber()).intValue();			
 			if(getErrorNumber() == errorN){
+				found = true;
 				setErrorType(ermes.getErrorType());
 				String errortxt = ermes.getErrorText();
 				
@@ -137,6 +140,11 @@ public class Message {
 				//em.close();
 				break;
 			}
+		}
+		if(!found){
+			int x = 0;
+			int y = 1 / x; // force exception
+			
 		}
 	}
 
