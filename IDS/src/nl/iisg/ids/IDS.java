@@ -76,7 +76,7 @@ public class IDS implements Runnable {
     
     
     
-    print("Creating or resetting IDS tables");
+   // print("Creating or resetting IDS tables");
 
 	
 	createIDSTables();

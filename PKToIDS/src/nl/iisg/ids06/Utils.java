@@ -29,6 +29,9 @@ public class Utils {
 			
 		}
 		
+		else
+			iiUp.setMissing("Time Invariant");
+		
 		em.persist(iiUp);
 		
 		
@@ -59,6 +62,8 @@ public class Utils {
 			iiUp.setEnd_year(endYear);
 			
 		}
+		else
+			iiUp.setMissing("Time Invariant");
 		
 		em.persist(iiUp);
 		
@@ -86,6 +91,10 @@ public class Utils {
 		ic.setDay(day);
 		ic.setMonth(month);
 		ic.setYear(year);
+		
+		if(year == 0)
+			ic.setMissing("Time Invariant");
+
 
 		em.persist(ic);
 		
@@ -117,6 +126,10 @@ public class Utils {
 		ic.setEnd_month(endMonth);
 		ic.setEnd_year(endYear);
 
+		if(startYear == 0)
+			ic.setMissing("Time Invariant");
+
+		
 		em.persist(ic);
 		
 	}
@@ -144,6 +157,10 @@ public class Utils {
 		i.setMonth(month);
 		i.setYear(year);
 
+		if(year == 0)
+			i.setMissing("Time Invariant");
+
+		
 		em.persist(i);
 
 		
@@ -169,6 +186,9 @@ public class Utils {
 		i.setDay(day);
 		i.setMonth(month);
 		i.setYear(year);
+
+		if(year == 0)
+			i.setMissing("Time Invariant");
 		
 		em.persist(i);
 		
@@ -196,6 +216,10 @@ public class Utils {
 		i.setEnd_day(endDay);
 		i.setEnd_month(endMonth);
 		i.setEnd_year(endYear);
+
+		if(startYear == 0)
+			i.setMissing("Time Invariant");
+
 		
 		em.persist(i);
 		

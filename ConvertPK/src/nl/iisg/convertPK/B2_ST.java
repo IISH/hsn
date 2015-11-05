@@ -26,7 +26,7 @@ public class B2_ST {
 	@Id	@Column(name = "IDNR")    				private int       keyToRP;   
 	@Id @Column(name = "B2RNBG")  				private int       keyToPersons;
 
-	//@Column(name = "B2FCBG")      				private int       natureOfPerson;
+	@Column(name = "B2FCBG")      				private int       natureOfPerson;
 
 	@Column(name = "B2RDNR")   	  				private String    dateOfRegistration;
 	@Column(name = "B2RDFG")   	  				private int       dateOfRegistrationFlag;
@@ -837,6 +837,16 @@ public class B2_ST {
 
 	public void setRelations(ArrayList<B34_ST> relations) {
 		this.relations = relations;
+	}
+
+
+	public int getNatureOfPerson() {
+		return natureOfPerson;
+	}
+
+
+	public void setNatureOfPerson(int natureOfPerson) {
+		this.natureOfPerson = natureOfPerson;
 	}
 
 

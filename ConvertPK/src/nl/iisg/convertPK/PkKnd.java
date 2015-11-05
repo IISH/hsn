@@ -232,6 +232,12 @@ public class PkKnd {
     	//String registrationDate = String.format("%02d-%02d-%04d", getCtrdgp(), getCtrmdp(), getCtrjrp());
     	//b2.setDateOfRegistration(registrationDate);
     	
+    	// RP
+    	
+    	if(getIdnr() < 500000)
+    		b2.setNatureOfPerson(1);
+    	
+    	
     	// Last name
     	
     	String lastName = getAnmperp().trim();

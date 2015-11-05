@@ -1801,12 +1801,15 @@ public class Ref {
 		
 		count = 0;
 		
-		for (Ref_FamilyName ref_famname : ref_famName22.values()) {
-		    count++;
-		    em.persist(ref_famname);
-		    
+		
+		if(ref_famName22 != null){
+			for (Ref_FamilyName ref_famname : ref_famName22.values()) {
+				count++;
+				em.persist(ref_famname);
+
+			}
+			ref_famName22.clear();
 		}
-		ref_famName22.clear();
 		System.out.println("Saved " + count + " rows to Ref_FamilyName");
 		
 		/* new end */

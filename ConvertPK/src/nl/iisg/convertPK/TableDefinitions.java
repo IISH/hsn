@@ -21,7 +21,7 @@ public class TableDefinitions {
 		 " B2DIBG CHAR(10), " + 
 		 " IDNR INT, " +
 		 " B2RNBG SMALLINT, " + 
-	//	 " B2FCBG SMALLINT, " +
+		 " B2FCBG SMALLINT, " +
 
 		 " B2RDNR CHAR(10), " +
 		 " B2RDFG TINYINT, " + 

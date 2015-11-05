@@ -31,7 +31,7 @@ public class B3_ST {
 
 	
 	@Column(name = "B3RGLN")        private int          valueOfRelatedPerson;
-	@Column(name = "B2FCBG")        private int          natureOfPerson;
+//	@Column(name = "B2FCBG")        private int          natureOfPerson;
 	@Column(name = "B3MDNR")        private String       dateOfMutation;
 	@Column(name = "B3MDFG")        private int          dateOfMutationFlag;
 
@@ -150,14 +150,6 @@ public class B3_ST {
 
 	public void setValueOfRelatedPerson(int valueOfRelatedPerson) {
 		this.valueOfRelatedPerson = valueOfRelatedPerson;
-	}
-
-	public int getNatureOfPerson() {
-		return natureOfPerson;
-	}
-
-	public void setNatureOfPerson(int natureOfPerson) {
-		this.natureOfPerson = natureOfPerson;
 	}
 
 	public String getDateOfMutation() {

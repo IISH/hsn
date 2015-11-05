@@ -783,10 +783,34 @@ public class StandardizePersonalCards implements Runnable {
     					
     					//setRelations(b2);
     					
+    					
+    					
 
     				default:
     				
     				}
+    				
+    				
+    				// Children may have a civil status (married) in their original registration
+    				// Test for this and copy if needed
+    				
+    				int rel = b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData();
+    				if(rel == 3 || rel == 4 || rel == 8 || rel == 9){
+    					if(b2H.getCivilStatus().size() > 0){
+    						B32_ST b32 = allocateB32(b2, b2H.getCivilStatus().get(0));
+    						
+    	    				b32.setPerson(b2);
+    	    				b32.setKeyToRegistrationPersons(b2.getKeyToPersons());
+    	    				b32.setDynamicDataSequenceNumber(1);
+    	    				b32.setContentOfDynamicData(b2H.getCivilStatus().get(0).getContentOfDynamicData());
+    	    				
+    	    				
+    	    				b2.getCivilStatus().add(b32); 
+    						
+    					}
+    				}
+    				
+    				
     			}
     			break;
     		}
@@ -921,6 +945,58 @@ public class StandardizePersonalCards implements Runnable {
     	return b313;
     	
     }
+    
+    /**
+     * 
+     * Allocate an B32_ST with keys copied from b2 and the rest copied from b32
+     * 
+     * @param b2
+     * @param b32
+     * @return
+     */
+    
+    private static B32_ST allocateB32(B2_ST b2, B32_ST b32I){
+    	
+    	B32_ST b32 = new B32_ST(); 
+    	
+    	// Keys from b2
+    	
+    	b32.setDynamicDataType(3);
+        b32.setKeyToRP(b2.getKeyToRP());
+        b32.setEntryDateHead(b2.getEntryDateHead());
+        b32.setKeyToSourceRegister(b2.getKeyToSourceRegister());
+        b32.setKeyToRegistrationPersons(b2.getKeyToPersons());
+        
+        // rest from b33I
+        
+        b32.setStartDate(b32I.getStartDate());
+        b32.setStartFlag(b32I.getStartFlag());
+        b32.setStartEst(b32I.getStartEst());
+        b32.setEndDate(b32I.getEndDate());
+        b32.setEndFlag(b32I.getEndFlag());
+        b32.setEndEst(b32I.getEndEst());
+        
+        b32.setCivilLocalityFlag(b32I.getCivilLocalityFlag());
+        b32.setCivilLocalityID(b32I.getCivilLocalityID());
+        b32.setCivilLocalityStandardized(b32I.getCivilLocalityStandardized());
+        b32.setCivilStatusFlag(b32I.getCivilStatusFlag());
+        
+        
+		b32.setVersionLastTimeOfDataEntry(b32I.getVersionLastTimeOfDataEntry());
+		b32.setResearchCodeOriginal(b32I.getResearchCodeOriginal());
+		b32.setVersionOriginalDataEntry(b32I.getVersionOriginalDataEntry());
+		b32.setDate0(b32I.getDate0());
+		
+		// Person from b2
+		
+		b32.setPerson(b2);
+
+    	
+    	return b32;
+    	
+    }
+    
+
     
     /**
      * 
@@ -2060,7 +2136,7 @@ public class StandardizePersonalCards implements Runnable {
 
     		case ConstRelations2.HOOFD:			            rel = ConstRelations2.MOEDER;               			    break;                                       		
     		case ConstRelations2.ECHTGENOTE_HOOFD:			rel = ConstRelations2.SCHOONMOEDER;                         break;
-    		case ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD: rel = ConstRelations2.SCHOONVADER;                          break;
+    		case ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD: rel = ConstRelations2.SCHOONMOEDER;                          break;
 
     		case ConstRelations2.ZOON:            		    
     		case ConstRelations2.DOCHTER:          			
@@ -2392,7 +2468,8 @@ public class StandardizePersonalCards implements Runnable {
     	//
     	
     	boolean sexOK = true;
-    	if((p.getSex().equals("m") == true && pu.getSex().equals("v") == true) || (p.getSex().equals("v") == true && pu.getSex().equals("m") == true))
+    	if((p.getSex() != null && p.getSex().equals("m") && pu.getSex() != null && pu.getSex().equals("v")) ||
+    	   (p.getSex() != null && p.getSex().equals("v") && pu.getSex() != null && pu.getSex().equals("m")))
     		sexOK = false;
 
 

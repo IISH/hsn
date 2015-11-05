@@ -91,19 +91,27 @@ public class IDS_INIT implements Runnable {
 
 		 
 		 em_context.getTransaction().begin();
-		 
+
 		 Query query = em_context.createNativeQuery(CreateIDSTables.CONTEXT);  
 		 query.executeUpdate();
 
-		       query = em_context.createNativeQuery(CreateIDSTables.CONTEXT_CONTEXT);  
+		 query = em_context.createNativeQuery(CreateIDSTables.CONTEXT_CONTEXT);  
 		 query.executeUpdate();
 
 
-		       query = em_context.createNativeQuery("TRUNCATE TABLE context");  
+		 query = em_context.createNativeQuery("TRUNCATE TABLE context");  
 		 query.executeUpdate();
-		       query = em_context.createNativeQuery("TRUNCATE TABLE context_context");  
+		 query = em_context.createNativeQuery("TRUNCATE TABLE context_context");  
 		 query.executeUpdate();
-		 
+
+
+		 query = em_context.createNativeQuery("TRUNCATE TABLE individual");  
+		 query.executeUpdate();
+		 query = em_context.createNativeQuery("TRUNCATE TABLE indiv_indiv");  
+		 query.executeUpdate();
+		 query = em_context.createNativeQuery("TRUNCATE TABLE indiv_context");  
+		 query.executeUpdate();
+
 		 
 		 query = em_ref.createQuery("select a from Ref_Location a");
 	     ref_location =  query.getResultList();

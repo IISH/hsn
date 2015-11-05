@@ -128,11 +128,15 @@ public class PKToIDS implements Runnable{
 	    	for(B4_ST r: op.getRegistrationsStandardizedOfOP()){
 		    	System.out.println(r.getKeyToRP());
 
+		    	if(!r.getEntryDateHead().equals("01-01-1940")) continue; // because the RP is under this number 
+		    	
+		    	idCount++;
+		    	
 	    		for(B2_ST p: r.getPersons()){
 	    			p.convert(em);
 	    		}
 	    	}
-	    	if(++idCount % 100 == 0)
+	    	if(idCount % 100 == 0)
 	    		print("Processed " + idCount + " IDNRs");
 	    }
 	    System.out.print("Processed " + idCount + " IDNRs");

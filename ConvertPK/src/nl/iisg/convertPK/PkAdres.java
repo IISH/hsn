@@ -49,6 +49,11 @@ public class PkAdres {
 	 
     public boolean convert(B6_ST b6, String streetName){
     	
+    	// temp
+    	
+    	b6.setInstitution(getPladrp());
+    	b6.setLandlord(getStradrp());
+    	
     	// handle renumbering
     	
     	if(getVernum().equalsIgnoreCase("n"))
@@ -130,7 +135,7 @@ public class PkAdres {
     	
 	// B: Check for "/"
 		
-		address = checkForSlashes(address); // this removes slashes that are not adress separators
+		address = checkForSlashes(address); // this removes slashes that are not address separators
 		
 		index = address.indexOf("/");  // find the address separator
 		
@@ -152,7 +157,7 @@ public class PkAdres {
 				String [] aa = address.split("[/]+"); // split on "/"
 				for(String s: aa){
 					s = s.replaceAll("~K26~", ""); // remove the separator between number and addition
-					s = tryLocalityInfo(b6, s);  // C1
+					//s = tryLocalityInfo(b6, s);  // C1 No locality info
 					if(s != null){
 						s = tryQuarterInfo(b6, s); // C2
 						if(s != null)
@@ -241,6 +246,21 @@ public class PkAdres {
 
 		String rt = null; 
 		String [] a = address.split("[ ]+");
+		
+		if(a != null && a.length > 0){
+			if(a[0].equalsIgnoreCase("Wijk")){
+				if(a.length > 1){
+					b6.setQuarter(a[1]);
+					if(a.length > 2){
+						b6.setNumber(a[2]);
+						if(a.length > 3)
+							b6.setAddition(a[3]);
+					}
+				}
+				return null;
+			}
+			
+		}
 
 		switch(a.length){
 

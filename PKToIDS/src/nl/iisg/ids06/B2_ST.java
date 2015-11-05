@@ -357,16 +357,6 @@ public class B2_ST {
 	}
 
 
-	public int getNatureOfPerson() {
-		return natureOfPerson;
-	}
-
-
-	public void setNatureOfPerson(int natureOfPerson) {
-		this.natureOfPerson = natureOfPerson;
-	}
-
-
 	public String getDateOfRegistration() {
 		return dateOfRegistration;
 	}
@@ -883,6 +873,14 @@ public class B2_ST {
 
 	public void setRelations(ArrayList<B34_ST> relations) {
 		this.relations = relations;
+	}
+
+	public int getNatureOfPerson() {
+		return natureOfPerson;
+	}
+
+	public void setNatureOfPerson(int natureOfPerson) {
+		this.natureOfPerson = natureOfPerson;
 	}
 
 
