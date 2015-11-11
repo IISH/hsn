@@ -144,7 +144,7 @@ public class PkKnd {
     
     public void convert(String B2dibg){
     	
-    	System.out.println("Pkknd: idnr = " +  getIdnr());
+    	//System.out.println("Pkknd: idnr = " +  getIdnr());
     	
     	// New Family
     	
@@ -1159,15 +1159,7 @@ public class PkKnd {
     					b6.setEndFlag(1);
     				}
 
-    				if(pkadr.convert(b6, street)){  // street is passed to be used if there is a * in the address
-    					if(b6.getStreet() != null)  
-    						street = b6.getStreet();
-    					else
-    						if(b6.getQuarter() != null)
-    							street = b6.getQuarter();
-    				}
-    				//else
-    					//b6.setMunicipality("Unknown address");
+    				pkadr.convert(b6);
     			}
 
     			seqNoAdr++;  

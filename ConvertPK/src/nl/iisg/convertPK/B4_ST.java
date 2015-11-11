@@ -54,7 +54,7 @@ public class B4_ST {
 		
 		
 		
-		System.out.println("B4_ST: idnr = " + getKeyToRP());
+		//System.out.println("B4_ST: idnr = " + getKeyToRP());
 		
 		em.persist(this);
 		

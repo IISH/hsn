@@ -411,6 +411,7 @@ public class TableDefinitions {
 	 " END_EST  SMALLINT, " +
 	 
 	 " MUNICIPALITY_ST VARCHAR(" + Bigstring + "), " + 
+	 " MUNICIPALITY_NO INT, " + 
 	 " POSTAL_CODE CHAR(6), " +
 	 " RENUMBERING TINYINT, " +
 

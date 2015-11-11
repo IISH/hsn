@@ -32,6 +32,7 @@ public class B6_ST {
 	@Column(name = "END_EST")     private int       endEst;
 	
 	@Column(name = "MUNICIPALITY_ST")  private String  municipality;
+	@Column(name = "MUNICIPALITY_NO")  private int municipalityNumber;
 	@Column(name = "POSTAL_CODE") private String     zipCode;
 	@Column(name = "RENUMBERING") private int	     renumbering;
 	
@@ -335,6 +336,16 @@ public class B6_ST {
 
 	public void setRegistration(B4_ST registration) {
 		this.registration = registration;
+	}
+
+
+	public int getMunicipalityNumber() {
+		return municipalityNumber;
+	}
+
+
+	public void setMunicipalityNumber(int municipalityNumber) {
+		this.municipalityNumber = municipalityNumber;
 	}
 
 	

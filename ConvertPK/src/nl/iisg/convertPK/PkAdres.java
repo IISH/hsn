@@ -47,12 +47,18 @@ public class PkAdres {
 	    	
     }
 	 
-    public boolean convert(B6_ST b6, String streetName){
+    public void convert(B6_ST b6){
     	
     	// temp
     	
     	b6.setInstitution(getPladrp());
     	b6.setLandlord(getStradrp());
+    	
+    	// temp
+    	
+    	
+    	
+    	
     	
     	// handle renumbering
     	
@@ -73,108 +79,68 @@ public class PkAdres {
 			b6.setDateOfAddress(String.format("%02d-%02d-%04d", getDgadrp(), getMdadrp(), getJradrp()));
 		
 		
+		
+    	
+    	// Address
+		
+		String address = getStradrp();
+		if(address == null) return;
+		
+		// A2: See if address starts with an "&"
+		
+		if(address.length() > 1 &&  address.substring(0,1).equals("&")) return;
+		
+		// Try Locality
+		
+		address = tryLocalityInfo(b6, address);  // this sets place
+		if(address == null) return;
+
+		
+		// Try Quarter
+		
+		address = tryQuarterInfo(b6, address);  // this sets quarter
+		if(address == null) return;
+
+				
+		// Try NumberAndAddition
+		
+		address = tryNumberAndAdditionInfo(b6, address);  // this sets number and addition
+		if(address == null) return;
+
+				
+		// Try Street
+		
+		address = tryStreetInfo(b6, address);  // this sets street
+				
+				
+				
     	// municipality
     	
 		String municipality = getPladrp();
+		
+		if(municipality == null) return;
 		
 		String [] b = municipality.split("!");
 		
 		if(b.length > 1)
 			municipality = b[b.length -1];
 			
-		// Combine place with country
 		
-		if(getLndadrp() != null)
+		// Combine municipality with place
+		
+		if(b6.getPlace() != null)
+			municipality = municipality + "!" + b6.getPlace();		
+		
+		// Combine municipality with country
+		
+		if(getLndadrp() != null && !getLndadrp().equalsIgnoreCase("NL"))
 			municipality = municipality + " $" + getLndadrp();
 
     	ArrayList a = Utils.standardizeLocation(municipality);
     	b6.setMunicipality((String)a.get(0));
-    	
-    	// Address
-		
-	
-		if(getStradrp() == null || getStradrp().trim().length() == 0)
-			return false;
-		
-    	
-		// A1: See if we have a "*" in the record, replace it by the street/quarter name of the previous record
-
-		String address = "";
-		
-		int index = getStradrp().indexOf("*");		
-		if(index >= 0){
-			if(streetName != null){
-				address = getStradrp().substring(0, index);
-				address += " ";
-				address += (streetName != null ? streetName.trim() : ""); 
-				address += " ";
-				if(getStradrp().length() > index +1)
-					address += getStradrp().substring(index +1).trim();
-			}
-			else
-				address = getStradrp().trim();
-		}	
-		else
-			address = getStradrp().trim();
-		
-		// A2: See if address starts with an "&"
-		
-		if(address.substring(0,1).equals("&")){
-			int index1 = getStradrp().indexOf("/");		
-			if(index1 >= 0){
-				if(address.length() > index1 + 1)
-					address = address.substring(index1 + 1);
-				else
-					address = "";
-			}
-			else
-				address = "";
-		}
-		if(address.length() == 0)
-			return false;
-    	
-	// B: Check for "/"
-		
-		address = checkForSlashes(address); // this removes slashes that are not address separators
-		
-		index = address.indexOf("/");  // find the address separator
-		
-		if(index < 0){
-			
-			// B1: No "/"
-			
-			// C1: Try to find Quarter information
-			// C2: Try to find Street information 
-			
-			
-			address = address.replaceAll("~K26~", "/"); // replace the separator between number and addition by a slash again
-			address = tryQuarterInfo(b6, address);
-			if(address != null)
-				address = tryStreetInfo(b6, address);
-		}
-		else{
-			if(index > 0){  // B3
-				String [] aa = address.split("[/]+"); // split on "/"
-				for(String s: aa){
-					s = s.replaceAll("~K26~", ""); // remove the separator between number and addition
-					//s = tryLocalityInfo(b6, s);  // C1 No locality info
-					if(s != null){
-						s = tryQuarterInfo(b6, s); // C2
-						if(s != null)
-							s = tryStreetInfo(b6, s); // D
-					}
-				}
-			}
-			else // index == 0: B2
-				address = tryStreetInfo(b6, address);
-		}
-		
-		convertAddress(b6);
-		if(b6.getMunicipality() != null){
-			return true;
-		}
-		else
-			return false;
+    	b6.setMunicipalityNumber((Integer)a.get(1));
+				
+				
     }	    
     
 
@@ -185,45 +151,35 @@ public class PkAdres {
 	 * If it finds it, it sets the appropriate fields in the ras
 	 * A locality may be one element only that does not contain digits
 	 * 
-	 * Example: (!)Bakkum (deelgemeente van Castricum)
+	 * Example: Bakkum/Straatweg 2 
 	 * 
 	 */
 
 
 	
 	private String tryLocalityInfo(B6_ST b6, String address){
-
 		
-		int index = address.indexOf("!");
-		if(index > 0){
+		
+		String [] a = address.split("[/]");
+		
+		//System.out.println(a);
+		
+		if(a.length > 0){
 			
-			b6.setPlace(address.substring(index + 1));
-			return null;
-		}
-		
-		
-		
-		
-		String [] a = address.split("[ ]+");
+			String [] b = a[0].split("[ ]+");
+			
+			
+			//System.out.println(b);
 
-		boolean locality = true;
-
-		if(a.length == 1){
-
-			for(int i = 0; i < a[0].length(); i++){
-				if(Character.isDigit(a[0].charAt(i))){
-					locality = false;
-					break;
-				}
+			if(b.length == 1 && b[0].length() > 2){ // We have LOCALITY/ADDRESS 				
+				b6.setPlace(b[0]);
+				
+				address = "";
+				for(int i = 1; i < a.length; i++)
+					address = address + a[i] + " ";
+				return address.trim();
 			}
-		}
-		else
-			locality = false;
-		
-		
-		if(locality == true){ 
-			b6.setPlace(address);
-			return null;
+			
 		}
 		
 		return address;
@@ -244,226 +200,102 @@ public class PkAdres {
 	private String tryQuarterInfo(B6_ST b6, String address){
 
 
-		String rt = null; 
 		String [] a = address.split("[ ]+");
-		
+
+
 		if(a != null && a.length > 0){
 			if(a[0].equalsIgnoreCase("Wijk")){
 				if(a.length > 1){
 					b6.setQuarter(a[1]);
-					if(a.length > 2){
-						b6.setNumber(a[2]);
-						if(a.length > 3)
-							b6.setAddition(a[3]);
-					}
+					address = "";
+					for (int i = 2; i < a.length; i++)
+						address = address + a[i] + " ";
 				}
-				return null;
+				return address.trim();
 			}
-			
-		}
-
-		switch(a.length){
-
-		case 0: break;
-		case 1: break;
-
-
-		case 2:
-			
-			if(Character.isDigit(a[a.length - 1].charAt(0)) == true && a[a.length - 1].length() <= 6){
-				if((a[0].length() == 1 && Character.isUpperCase(a[0].charAt(0)) == true) ||
-						(a[0].length() == 2 && Character.isUpperCase(a[0].charAt(0)) == true &&  Character.isUpperCase(a[0].charAt(1))) &&
-						!a[0].equalsIgnoreCase("GK") && !a[0].equalsIgnoreCase("ZF")){
-
-				
-					String number = "";
-					String addition = "";
-				
-					for(int i = 0; i < a[a.length - 1].length(); i++){
-						if(Character.isDigit(a[a.length - 1].charAt(i)) && addition.length() == 0)
-							number += a[a.length - 1].charAt(i);
-						else
-							addition += a[a.length - 1].charAt(i);
-					
-					}
-				
-					if(number.length() > 0)
-						b6.setNumber(number);
-				
-					if(addition.length() > 0)
-						b6.setAddition(addition);
-				
-					b6.setQuarter(a[0]);
-				
-					rt = null;
-				}
-				else 
-					rt = address;
-			}
-			else
-				rt = address;
-			break;
-
-		default: rt = address;
 
 		}
 
-		return rt;
+
+		if((a[0].length() == 1 &&   Character.isUpperCase(a[0].charAt(0)) == true) ||		
+				(a[0].length() == 2 &&   Character.isUpperCase(a[0].charAt(0)) == true  && Character.isUpperCase(a[0].charAt(1)) == true)){
+			b6.setQuarter(a[0]);
+
+			address = "";
+			for (int i = 1; i < a.length; i++)
+				address = address + a[i] + " ";
+
+
+			return address.trim();
+
+
+		}
+
+		return address;
 	}
+	
+	/**
+	 * 
+	 * This routine tries to find the number and the number addition
+	 * 
+	 */
+	private String tryNumberAndAdditionInfo(B6_ST b6, String address){
+		
+		
+		
+		String [] a = address.split("[ ]+");
+		
+		System.out.println(address +  "  " + a.length);
+
+		
+		for(int i = a.length  ; i > 0; i--){
+			
+			if(a[i-1].length() == 0) break;
+			
+			if(Character.isDigit(a[i-1].charAt(0)) == true){
+				
+				b6.setNumber(a[i-1]);
+				a[i-1] = "";
+				
+				String addition = new String();
+				for(int j = i-1 ; j < a.length; j++){
+					addition += a[j];
+					a[j] = "";
+				}
+				b6.setAddition(addition);	
+				
+				address = "";
+				for (int j = 0; j < a.length; j++)
+					address = address + a[j] + " ";
+
+
+				return address.trim();
+
+				
+				
+				
+			}
+			
+		}
+		
+		return address;
+		
+	}
+	
 	/**
 	 * 
 	 * This routine tries to find Street (=Straat) or Boat information from the string address
 	 * If it finds it, it sets the appropriate fields in the ras
-	 * The field must have at least 2 elements, a street name and a number
-	 * 
 	 * 
 	 */
 	
 	
 	private String tryStreetInfo(B6_ST b6, String address){
 		
+		b6.setStreet(address);
 		
-		String rt = null;
+		return null;
 		
-		boolean boat = false;
-		
-		if(address.indexOf("~K25~") >= 0){  // remove ~K25~ = a/b = aan boord
-			address = address.replaceAll("~K25~", "");
-			boat = true;
-		}
-
-		String [] a = address.trim().split("[ ]+");
-		
-		
-		switch(a.length){
-		
-		case 0: break;
-		case 1: break;
-			
-		
-		case 2:
-		
-			if(Character.isDigit(a[a.length - 1].charAt(0)) == true && a[a.length - 1].length() <= 6){
-				
-				String number = "";
-				String addition = "";
-				
-				for(int i = 0; i < a[a.length - 1].length(); i++){
-					if(Character.isDigit(a[a.length - 1].charAt(i)) && addition.length() == 0)
-							number += a[a.length - 1].charAt(i);
-					else{
-						addition +=  a[a.length - 1].charAt(i);
-					}
-				}
-				
-				if(addition.length() > 0 && addition.substring(0,1).equals("/"))
-					addition = addition.substring(1);
-				
-				
-				if(number.length() > 0)
-					b6.setNumber(number);
-				
-				if(addition.length() > 0)
-					b6.setAddition(addition);
-				
-				
-				if(boat == true)
-					b6.setBoat(a[a.length - 2]);
-				else
-					b6.setStreet(a[a.length - 2]);
-				
-				rt = null;
-				
-			}
-			else
-				rt = address;
-			break;
-
-			
-		default: // minimal 3 words
-			
-			if(Character.isDigit(a[a.length - 1].charAt(0)) == true && a[a.length - 1].length() <= 6){
-				
-				String number = "";
-				String addition = "";
-				
-				for(int i = 0; i < a[a.length - 1].length(); i++){
-					if(Character.isDigit(a[a.length - 1].charAt(i)) && addition.length() == 0)
-							number += a[a.length - 1].charAt(i);
-					else{
-						addition +=  a[a.length - 1].charAt(i);
-					}
-				}
-				
-				if(addition.length() > 0 && addition.substring(0,1).equals("/"))
-					addition = addition.substring(1);
-				
-				if(number.length() > 0)
-					b6.setNumber(number);
-				
-				if(addition.length() > 0)
-					b6.setAddition(addition); 
-
-				String street = "";
-				for(int i = 0; i < a.length - 1; i++){ // all preceding words constitute street
-					street += a[i]; 
-					street += " " ;
-				}		
-				
-				if(boat == true)
-					b6.setBoat(street);
-				else
-					b6.setStreet(street);
-				
-				rt = null;
-			}
-			else{ // minimal 3 words, start at one but last
-				if(Character.isDigit(a[a.length - 2].charAt(0)) == true && a[a.length - 2].length() <= 6){
-					
-					String number = "";
-					String addition = "";
-					
-					for(int i = 0; i < a[a.length - 2].length(); i++){
-						if(Character.isDigit(a[a.length - 2].charAt(i)) && addition.length() == 0)
-								number += a[a.length - 2].charAt(i);
-						else{
-							addition +=  a[a.length - 2].charAt(i);
-						}
-					}
-					
-					if(addition.length() > 0 && addition.substring(0,1).equals("/"))
-						addition = addition.substring(1);
-					
-
-					if(number.length() > 0)
-						b6.setNumber(number);
-					
-					b6.setAddition((addition + " " + a[a.length - 1]).trim()); // add the last element to the addition 
-
-					
-					
-					String street = "";
-					for(int i = 0; i < a.length - 2; i++){
-						street += a[i]; 
-						street += " " ;
-					}		
-					
-					if(boat == true)
-						b6.setBoat(street);
-					else
-						b6.setStreet(street);
-					
-					
-					rt = null;
-					
-				}
-				else{
-					rt = address;
-				}
-			}
-		}				
-
-		return rt;
 		
 	}
 	/**
