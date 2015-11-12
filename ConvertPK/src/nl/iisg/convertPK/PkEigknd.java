@@ -251,6 +251,9 @@ public class PkEigknd {
     		}
     	}
     	
+    	
+    	String endDateSave = b2.getEndDate();
+    	
     	if(b2.getEndDate() != null && Common1.dayCount(b2.getEndDate()) < Common1.dayCount(b2.getStartDate())){
     		
     		b2.setStartDate(null);
@@ -278,12 +281,15 @@ public class PkEigknd {
 		else
 			if(getRelkndp().trim().equalsIgnoreCase("DOCHTER") || getRelkndp().trim().equalsIgnoreCase("D"))
 				b313.setContentOfDynamicData(4); // Daughter
-			else
+			else{
 				if(getRelkndp().trim().equalsIgnoreCase("STIEFZOON") || getRelkndp().trim().equalsIgnoreCase("SZ"))
 					b313.setContentOfDynamicData(8); // Stepson
 				else
 					b313.setContentOfDynamicData(9); // Stepdaughter
-
+				
+				b313.setStartDate(b2.getDateOfBirth());
+				b313.setEndDate(endDateSave);
+			}
 				
 		b313.setDynamicDataSequenceNumber(1);
 
@@ -308,12 +314,12 @@ public class PkEigknd {
    			b32.setEndDate(null);  // because child leaves the PK observation by marrying
 
 
-        	a = Utils.standardizeLocation(getAplkndp());
+        	//a = Utils.standardizeLocation(getAplkndp());
         	
         	if(getHplkndp() != null && getHplkndp().trim().length() != 0){
-            	ArrayList b = Utils.standardizeLocation(getAplkndp());
-            	b32.setCivilLocalityStandardized((String)a.get(0));
-            	b32.setCivilLocalityID((Integer)a.get(1));
+            	ArrayList b = Utils.standardizeLocation(getHplkndp());
+            	b32.setCivilLocalityStandardized((String)b.get(0));
+            	b32.setCivilLocalityID((Integer)b.get(1));
         	}
     		
     		b32.setDynamicDataSequenceNumber(1);
@@ -361,7 +367,8 @@ public class PkEigknd {
     	
     	b3.setKeyToRP(getIdnr());
     	b3.setEntryDateHead((b3.getPerson().getEntryDateHead()));
-    	b3.setKeyToSourceRegister(getPkHolder().getPktype());
+    	b3.setKeyToSourceRegister(getPkHolder().getPktype());  	
+    	
     	
     	b3.setVersionLastTimeOfDataEntry(getVersie());
     	b3.setResearchCodeOriginal(getOnderzko());

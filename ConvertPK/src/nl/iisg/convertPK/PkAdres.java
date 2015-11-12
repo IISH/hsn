@@ -254,10 +254,30 @@ public class PkAdres {
 			
 			if(Character.isDigit(a[i-1].charAt(0)) == true){
 				
-				b6.setNumber(a[i-1]);
+				//b6.setNumber(a[i-1]);
+				
+				boolean setNumber = true;
+				String number = "";
+				String addition = "";
+				for(int j = 0; j < a[i-1].length(); j++){
+					
+					if(Character.isDigit(a[i-1].charAt(j)) == false) setNumber = false;
+					
+					if(setNumber)
+						number += a[i-1].charAt(j);
+					else	
+						addition += a[i-1].charAt(j);
+						
+					
+				}
+				
+				b6.setNumber(number);
+				
+				
 				a[i-1] = "";
 				
-				String addition = new String();
+				// All elements after this addition are also addition
+				
 				for(int j = i-1 ; j < a.length; j++){
 					addition += a[j];
 					a[j] = "";

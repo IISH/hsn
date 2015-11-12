@@ -790,6 +790,13 @@ public class StandardizePersonalCards implements Runnable {
     				
     				}
     				
+    				if(ConstRelations2.b3kode1_Related[b313.getContentOfDynamicData()] == null) {  
+    					b313.setStartDate(b2H.getStartDate());
+    					b313.setStartFlag(b2H.getStartFlag());
+    					b313.setEndDate(b4Wife.getPersons().get(0).getEndDate());  
+    					b313.setEndFlag(b4Wife.getPersons().get(0).getEndFlag());
+    				}
+    			
     				
     				// Children may have a civil status (married) in their original registration
     				// Test for this and copy if needed
@@ -1139,40 +1146,10 @@ public class StandardizePersonalCards implements Runnable {
     		    	
     	}
     	
-    	boolean ti = false; 
-    	switch(rel){
-
-    	case ConstRelations2.ZOON:            		    
-    	case ConstRelations2.DOCHTER:          			 
-    	case ConstRelations2.KLEINZOON:            		    
-    	case ConstRelations2.KLEINDOCHTER:          			 
-    	case ConstRelations2.KLEINKIND:          			 
-    	case ConstRelations2.GROOTVADER:
-    	case ConstRelations2.VADER:
-    	case ConstRelations2.MOEDER:
-    	case ConstRelations2.GROOTMOEDER:
-    	case ConstRelations2.GROOTOUDER:
-    	case ConstRelations2.BROER:
-    	case ConstRelations2.HALFBROER:
-    	case ConstRelations2.HALFZUSTER:
-    	case ConstRelations2.ZUSTER:
-    	case ConstRelations2.SIBLING:
-    	case ConstRelations2.HALFSIBLING:
-    	case ConstRelations2.OUDER:
-    	case ConstRelations2.KIND_PK:
-
-
-    		ti = true;
-    		break;
-
-    	default: 
-    		ti = false;
-				
-    	}
     	
     	
     	if(rel != 0){ 	
-    		B34_ST b34 = allocateB34(b2L.getRelationsToPKHolder().get(0), b2R.getRelationsToPKHolder().get(0), rel,  ti);
+    		B34_ST b34 = allocateB34(b2L.getRelationsToPKHolder().get(0), b2R.getRelationsToPKHolder().get(0), rel);
     		if(b34 != null)
     			b2L.getRelations().add(b34);
 
@@ -2236,7 +2213,6 @@ public class StandardizePersonalCards implements Runnable {
     	}
 
 
-    	boolean ti = false; 
     	switch(rel){
 
     	case ConstRelations2.ZOON:            		    
@@ -2257,17 +2233,15 @@ public class StandardizePersonalCards implements Runnable {
     	case ConstRelations2.KIND_PK:
 
 
-    		ti = true;
     		break;
 
     	default: 
-    		ti = false;
 				
     	}
     	
     	
     	if(rel != 0){ 	
-    		B34_ST b34 = allocateB34(b2L.getRelationsToPKHolder().get(0), b2R.getRelationsToPKHolder().get(0), rel,  ti);
+    		B34_ST b34 = allocateB34(b2L.getRelationsToPKHolder().get(0), b2R.getRelationsToPKHolder().get(0), rel);
     		if(b34 != null)
     			b2L.getRelations().add(b34);
 
@@ -2326,7 +2300,7 @@ public class StandardizePersonalCards implements Runnable {
      * @return
      */
     
-    private static B34_ST allocateB34(B313_ST b313L, B313_ST b313R, int rel, boolean time_invariant){
+    private static B34_ST allocateB34(B313_ST b313L, B313_ST b313R, int rel){
     	
     	B34_ST b34 = new B34_ST(); 
     	
@@ -2348,9 +2322,7 @@ public class StandardizePersonalCards implements Runnable {
         b34.setContentOfDynamicData(rel);
         b34.setValueOfRelatedPerson(b313R.getKeyToRegistrationPersons());
         
-        
-        
-        if(time_invariant == false) {
+        if(ConstRelations2.b3kode1_Related[rel] == null) {  
         	int [] a = findCommonTime(b313L.getStartDate(), b313L.getEndDate(), b313R.getStartDate(), b313R.getEndDate());
 
         	if(a != null){
