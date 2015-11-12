@@ -288,7 +288,7 @@ public class PkEigknd {
 					b313.setContentOfDynamicData(9); // Stepdaughter
 				
 				b313.setStartDate(b2.getDateOfBirth());
-				b313.setEndDate(endDateSave);
+				b313.setEndDate(endDateSave );
 			}
 				
 		b313.setDynamicDataSequenceNumber(1);
