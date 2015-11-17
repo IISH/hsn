@@ -421,7 +421,8 @@ public class PkKnd {
     		
     		
     		int date = Common1.dayCount(b2.getStartDate());
-    		int increment = (Common1.dayCount(b2.getEndDate()) - Common1.dayCount(b2.getStartDate())) / s.length;
+    		String endDate = b2.getEndDate() != null ? b2.getEndDate() : "01-01-2015";
+    		int increment = (Common1.dayCount(endDate) - Common1.dayCount(b2.getStartDate())) / s.length;
     		
     		int seqRel = 1;
     		for(String rel: s){
@@ -770,7 +771,7 @@ public class PkKnd {
     		
         	B32_ST b32Prev = b2.getCivilStatus().size() > 0 ? b2.getCivilStatus().get(b2.getCivilStatus().size() - 1) : null;
         	
-        	if(pkhuw.getHjrhuwp() > 0 && b32Prev != null){
+        	if(pkhuw.getHjrhuwp() > 0 && Common1.dateIsValid(pkhuw.getHdghuwp(), pkhuw.getHmdhuwp(), pkhuw.getHjrhuwp()) == 0  && b32Prev != null){
         		
 				String endDate  = String.format("%02d-%02d-%04d", pkhuw.getHdghuwp(), pkhuw.getHmdhuwp(), pkhuw.getHjrhuwp());
 				String endDateM = Common1.dateFromDayCount(Common1.dayCount(endDate) - 1);
@@ -893,7 +894,7 @@ public class PkKnd {
         	       		
         		// new civil status record for PK Holder, but only if the end date of the marriage is known (on his card). Otherwise, he died, no further status possible 
         		
-        		if(pkhuw.getOjrhuwp() > 0){
+        		if(pkhuw.getOjrhuwp() > 0 && Common1.dateIsValid(pkhuw.getOdghuwp(), pkhuw.getOmdhuwp(), pkhuw.getOjrhuwp()) == 0){  // because sometimes like "00-00-1932"
 
         			b32 = new B32_ST();
         			b2.getCivilStatus().add(b32); // Link B32_ST -> B2_ST
@@ -908,6 +909,7 @@ public class PkKnd {
         			if(pkhuw.getOjrhuwp() > 0){
 
         				String startDate1  = String.format("%02d-%02d-%04d", pkhuw.getOdghuwp(), pkhuw.getOmdhuwp(), pkhuw.getOjrhuwp());
+        				System.out.println("startDate1 = " + startDate1);
         				String startDateP = Common1.dateFromDayCount(Common1.dayCount(startDate1) + 1);
 
         				b32.setStartDate(startDateP);
@@ -963,7 +965,9 @@ public class PkKnd {
     	if(getProfessions().size() > 0){
 
     		int date = Common1.dayCount(b2pk.getStartDate());
-    		int increment = (Common1.dayCount(b2pk.getEndDate()) - Common1.dayCount(b2pk.getStartDate())) / getProfessions().size();
+    		String endDate = b2pk.getEndDate() != null ? b2pk.getEndDate() : "01-01-2015";
+    			
+    		int increment = (Common1.dayCount(endDate) - Common1.dayCount(b2pk.getStartDate())) / getProfessions().size();
 
     		if(increment > 0){ // because sometimes endDate is invalid
 

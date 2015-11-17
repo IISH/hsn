@@ -315,7 +315,7 @@ static{
     b3kode1[79]	= "Aangetrouwde Oudtante";
     b3kode1[80]	= "Verwant";
     b3kode1[81]	= "Stiefvader";
-    b3kode1[82]	= "Stiefmoder";
+    b3kode1[82]	= "Stiefmoeder";
     b3kode1[83]	= "Stiefschoonzoon";
     b3kode1[84]	= "Stiefschoondochter";
     b3kode1[85]	= "Stiefbroer";

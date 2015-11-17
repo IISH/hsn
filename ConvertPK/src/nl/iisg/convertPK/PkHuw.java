@@ -295,11 +295,14 @@ public class PkHuw {
 		b313.setDynamicDataType(13);
 		b313.setKeyToRegistrationPersons(b2.getKeyToPersons());
 		
-		if(b2.getSex().equalsIgnoreCase("M"))		
-			b313.setContentOfDynamicData(145);   // Spouse male
+		if(b2.getSex() != null){
+			if(b2.getSex().equalsIgnoreCase("M"))		
+				b313.setContentOfDynamicData(145);   // Spouse male
 		else
-			b313.setContentOfDynamicData(2);     // Spouse female
+			if((b2.getSex().equalsIgnoreCase("V")))
+				b313.setContentOfDynamicData(2);     // Spouse female
 
+		}
 		b313.setDynamicDataSequenceNumber(1);
 
     	if(getHjrhuwp() != 0){

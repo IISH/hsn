@@ -1177,14 +1177,18 @@ public class StandardizePersonalCards implements Runnable {
 		case ConstRelations2.ZOON:
 		case ConstRelations2.DOCHTER:
 		case ConstRelations2.KIND_PK:
-
-			if(b2L.getSex().equalsIgnoreCase("M"))   			
-				rel = ConstRelations2.VADER;
-			else
-				if(b2L.getSex().equalsIgnoreCase("V"))
-					rel = ConstRelations2.MOEDER;
+			
+			if(b2L.getSex() != null){
+				if(b2L.getSex().equalsIgnoreCase("M"))   			
+					rel = ConstRelations2.VADER;
 				else
-					rel = ConstRelations2.OUDER;
+					if(b2L.getSex().equalsIgnoreCase("V"))
+						rel = ConstRelations2.MOEDER;
+					else
+						rel = ConstRelations2.OUDER;
+			}
+			else
+				rel = ConstRelations2.OUDER;
 
 			break;  
 
@@ -1192,33 +1196,45 @@ public class StandardizePersonalCards implements Runnable {
 		case ConstRelations2.STIEFDOCHTER:
 		case ConstRelations2.STIEFKIND_PK:
 
-			if(b2L.getSex().equalsIgnoreCase("M"))   			
-				rel = ConstRelations2.STIEFVADER;
-			else
-				if(b2L.getSex().equalsIgnoreCase("V"))
-					rel = ConstRelations2.STIEFMOEDER;
-				else
-					rel = ConstRelations2.STIEFOUDER;
+			if(b2L.getSex() != null){
 
+				if(b2L.getSex().equalsIgnoreCase("M"))   			
+					rel = ConstRelations2.STIEFVADER;
+				else
+					if(b2L.getSex().equalsIgnoreCase("V"))
+						rel = ConstRelations2.STIEFMOEDER;
+					else
+						rel = ConstRelations2.STIEFOUDER;
+
+			}
+			else
+				rel = ConstRelations2.STIEFOUDER;
 			break;  
 
 		case ConstRelations2.VADER:           
 		case ConstRelations2.MOEDER:           
 		case ConstRelations2.OUDER:           
 
-			if(b2L.getSex().equalsIgnoreCase("M"))   			
-				rel = ConstRelations2.ZOON;
-			else
-				if(b2L.getSex().equalsIgnoreCase("V"))
-					rel = ConstRelations2.DOCHTER;
-				else
-					rel = ConstRelations2.KIND_PK;
+			if(b2L.getSex() != null){
 
+				if(b2L.getSex().equalsIgnoreCase("M"))   			
+					rel = ConstRelations2.ZOON;
+				else
+					if(b2L.getSex().equalsIgnoreCase("V"))
+						rel = ConstRelations2.DOCHTER;
+					else
+						rel = ConstRelations2.KIND_PK;
+			}
+			else
+				rel = ConstRelations2.KIND_PK;
 			break;  	
 
 		case ConstRelations2.SCHOONOUDER:           
 		case ConstRelations2.SCHOONVADER:           
-		case ConstRelations2.SCHOONMOEDER:           
+		case ConstRelations2.SCHOONMOEDER:         
+			
+			if(b2L.getSex() != null){
+
 
 			if(b2L.getSex().equalsIgnoreCase("M"))   			
 				rel = ConstRelations2.SCHOONZOON;
@@ -1228,6 +1244,10 @@ public class StandardizePersonalCards implements Runnable {
 				else
 					rel = ConstRelations2.SCHOONKIND;
 
+			}
+			else
+				rel = ConstRelations2.SCHOONKIND;
+			
 			break;  	
 
 
@@ -1253,13 +1273,18 @@ public class StandardizePersonalCards implements Runnable {
 		case ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD:                    
 		case ConstRelations2.PARTNER:                 
 
-			if(b2L.getSex().equalsIgnoreCase("M"))   			
-				rel = ConstRelations2.SCHOONVADER;
-			else
-				if(b2L.getSex().equalsIgnoreCase("V"))
-					rel = ConstRelations2.SCHOONMOEDER;
+			if(b2L.getSex() != null){
+
+				if(b2L.getSex().equalsIgnoreCase("M"))   			
+					rel = ConstRelations2.SCHOONVADER;
 				else
-					rel = ConstRelations2.SCHOONOUDER;
+					if(b2L.getSex().equalsIgnoreCase("V"))
+						rel = ConstRelations2.SCHOONMOEDER;
+					else
+						rel = ConstRelations2.SCHOONOUDER;
+			}
+			else
+				rel = ConstRelations2.SCHOONOUDER;
 
 			break;  
 
@@ -1271,23 +1296,35 @@ public class StandardizePersonalCards implements Runnable {
 		case ConstRelations2.STIEFKIND_PK:
 
 			if(testBlood(b2R, b2L)){
-				if(b2L.getSex().equalsIgnoreCase("M"))   			
-					rel = ConstRelations2.GROOTVADER;
-				else{
-					if(b2L.getSex().equalsIgnoreCase("V"))
-						rel = ConstRelations2.GROOTMOEDER;
-					else
-						rel = ConstRelations2.GROOTOUDER;
+				if(b2L.getSex() != null){
+
+					if(b2L.getSex().equalsIgnoreCase("M"))   			
+						rel = ConstRelations2.GROOTVADER;
+					else{
+						if(b2L.getSex().equalsIgnoreCase("V"))
+							rel = ConstRelations2.GROOTMOEDER;
+						else
+							rel = ConstRelations2.GROOTOUDER;
+					}
 				}
+				else
+					rel = ConstRelations2.GROOTOUDER;
+
 			}
 			else{
-				if(b2L.getSex().equalsIgnoreCase("M"))   			
-					rel = ConstRelations2.STIEFGROOTVADER;
-				else
-					if(b2L.getSex().equalsIgnoreCase("V"))
-						rel = ConstRelations2.STIEFGROOTMOEDER;
+				
+				if(b2L.getSex() != null){
+
+					if(b2L.getSex().equalsIgnoreCase("M"))   			
+						rel = ConstRelations2.STIEFGROOTVADER;
 					else
-						rel = ConstRelations2.STIEFGROOTOUDER;
+						if(b2L.getSex().equalsIgnoreCase("V"))
+							rel = ConstRelations2.STIEFGROOTMOEDER;
+						else
+							rel = ConstRelations2.STIEFGROOTOUDER;
+				}
+				else
+					rel = ConstRelations2.STIEFGROOTOUDER;
 
 			}
 
@@ -1320,32 +1357,44 @@ public class StandardizePersonalCards implements Runnable {
 		case ConstRelations2.STIEFKIND_PK: 
 		case ConstRelations2.KIND_PK: 
 
-			if(b2L.getSex().equalsIgnoreCase("M")){
-				if(b2L.getPersonID() == b2R.getPersonID_FA()){
-					rel= ConstRelations2.VADER;    				
+			if(b2L.getSex() != null){
+
+				if(b2L.getSex().equalsIgnoreCase("M")){
+					if(b2L.getPersonID() == b2R.getPersonID_FA()){
+						rel= ConstRelations2.VADER;    				
+					}
+					else{
+						rel= ConstRelations2.STIEFVADER;    				
+					}
 				}
 				else{
-					rel= ConstRelations2.STIEFVADER;    				
+					if(b2L.getSex().equalsIgnoreCase("V")){
+
+						if(b2L.getPersonID() == b2R.getPersonID_MO()){
+							rel= ConstRelations2.MOEDER;    				
+						}
+						else{
+							rel= ConstRelations2.STIEFMOEDER;    				
+						}
+					}
+					else{
+
+						if(b2L.getPersonID() == b2R.getPersonID_FA() || b2L.getPersonID() == b2R.getPersonID_MO())
+							rel = ConstRelations2.OUDER;
+						else
+							rel = ConstRelations2.STIEFOUDER;
+					}
+
 				}
 			}
 			else{
-				if(b2L.getSex().equalsIgnoreCase("V")){
-
-					if(b2L.getPersonID() == b2R.getPersonID_MO()){
-						rel= ConstRelations2.MOEDER;    				
-					}
-					else{
-						rel= ConstRelations2.STIEFMOEDER;    				
-					}
-				}
-				else{
-
-					if(b2L.getPersonID() == b2R.getPersonID_FA() || b2L.getPersonID() == b2R.getPersonID_MO())
-						rel = ConstRelations2.OUDER;
-					else
-						rel = ConstRelations2.STIEFOUDER;
-				}
-
+				
+				if(b2L.getPersonID() == b2R.getPersonID_FA() || b2L.getPersonID() == b2R.getPersonID_MO())
+					rel = ConstRelations2.OUDER;
+				else
+					rel = ConstRelations2.STIEFOUDER;
+				
+				
 			}
 
 			break;
@@ -1354,27 +1403,39 @@ public class StandardizePersonalCards implements Runnable {
 		case ConstRelations2.VADER:
 		case ConstRelations2.MOEDER:            
 		case ConstRelations2.OUDER:            
+			
+			if(b2L.getSex() != null){
 
-			if(b2L.getSex().equalsIgnoreCase("M"))
-				rel = ConstRelations2.SCHOONZOON;
-			else
-				if(b2L.getSex().equalsIgnoreCase("V"))
-					rel = ConstRelations2.SCHOONDOCHTER;
+
+				if(b2L.getSex().equalsIgnoreCase("M"))
+					rel = ConstRelations2.SCHOONZOON;
 				else
-					rel = ConstRelations2.SCHOONKIND;
+					if(b2L.getSex().equalsIgnoreCase("V"))
+						rel = ConstRelations2.SCHOONDOCHTER;
+					else
+						rel = ConstRelations2.SCHOONKIND;
 
+			}
+			else rel = ConstRelations2.SCHOONKIND;
+			
+			
 			break;
 
 		case ConstRelations2.SCHOONVADER:
 
 			if(b2L.getPersonID_FA() == b2R.getPersonID()){
-				if(b2L.getSex().equalsIgnoreCase("M"))
-					rel = ConstRelations2.ZOON;
-				else
-					if(b2L.getSex().equalsIgnoreCase("V"))
-						rel = ConstRelations2.DOCHTER;
+				if(b2L.getSex() != null){
+
+					if(b2L.getSex().equalsIgnoreCase("M"))
+						rel = ConstRelations2.ZOON;
 					else
-						rel= ConstRelations2.SCHOONKIND;
+						if(b2L.getSex().equalsIgnoreCase("V"))
+							rel = ConstRelations2.DOCHTER;
+						else
+							rel= ConstRelations2.SCHOONKIND;
+				}
+				else
+					rel = ConstRelations2.SCHOONKIND;
 
 			}
 
@@ -1383,13 +1444,18 @@ public class StandardizePersonalCards implements Runnable {
 		case ConstRelations2.SCHOONMOEDER:            
 
 			if(b2L.getPersonID_MO() == b2R.getPersonID()){
-				if(b2L.getSex().equalsIgnoreCase("M"))
-					rel = ConstRelations2.ZOON;
-				else
-					if(b2L.getSex().equalsIgnoreCase("V"))
-						rel = ConstRelations2.DOCHTER;
+				if(b2L.getSex() != null){
+
+					if(b2L.getSex().equalsIgnoreCase("M"))
+						rel = ConstRelations2.ZOON;
 					else
-						rel= ConstRelations2.SCHOONKIND;
+						if(b2L.getSex().equalsIgnoreCase("V"))
+							rel = ConstRelations2.DOCHTER;
+						else
+							rel= ConstRelations2.SCHOONKIND;
+				}
+				else
+					rel = ConstRelations2.SCHOONKIND;
 
 			}
 			break;
@@ -1398,13 +1464,19 @@ public class StandardizePersonalCards implements Runnable {
 
 			if(b2L.getPersonID_MO() == b2R.getPersonID() || b2L.getPersonID_FA() == b2R.getPersonID()){
 
-				if(b2L.getSex().equalsIgnoreCase("M"))
-					rel = ConstRelations2.ZOON;
-				else
-					if(b2L.getSex().equalsIgnoreCase("V"))
-						rel = ConstRelations2.DOCHTER;
+				if(b2L.getSex() != null){
+
+
+					if(b2L.getSex().equalsIgnoreCase("M"))
+						rel = ConstRelations2.ZOON;
 					else
-						rel= ConstRelations2.SCHOONKIND;
+						if(b2L.getSex().equalsIgnoreCase("V"))
+							rel = ConstRelations2.DOCHTER;
+						else
+							rel= ConstRelations2.SCHOONKIND;
+				}
+				else
+					rel = ConstRelations2.SCHOONKIND;
 
 			}
 
@@ -1433,12 +1505,15 @@ public class StandardizePersonalCards implements Runnable {
 		case ConstRelations2.PARTNER:                 
 			
 			int ksex = 0;
-			if(b2L.getSex().equalsIgnoreCase("M"))				
-				ksex = 1;
-			else
-				if(b2L.getSex().equalsIgnoreCase("V"))
-					ksex = 2;
-			
+			if(b2L.getSex() != null){
+
+				if(b2L.getSex().equalsIgnoreCase("M"))				
+					ksex = 1;
+				else
+					if(b2L.getSex().equalsIgnoreCase("V"))
+						ksex = 2;
+
+			}
 			boolean bloodRelated = false;
 			if(b2L.getPersonID_MO() == b2R.getPersonID() || b2L.getPersonID_FA() == b2R.getPersonID())
 				bloodRelated = true;
@@ -1467,12 +1542,14 @@ public class StandardizePersonalCards implements Runnable {
 		case ConstRelations2.STIEFKIND_PK:     
 
 			int lsex = 0;
-			if(b2L.getSex().equalsIgnoreCase("M"))				
-				lsex = 1;
-			else
-				if(b2L.getSex().equalsIgnoreCase("V"))
-					lsex = 2;
+			if(b2L.getSex() != null){
 
+				if(b2L.getSex().equalsIgnoreCase("M"))				
+					lsex = 1;
+				else
+					if(b2L.getSex().equalsIgnoreCase("V"))
+						lsex = 2;
+			}
 			
 			int r = 0;
 
@@ -1526,12 +1603,13 @@ public class StandardizePersonalCards implements Runnable {
 		case ConstRelations2.SCHOONMOEDER:        
 			
 			lsex = 0;
-			if(b2L.getSex().equalsIgnoreCase("M"))				
-				lsex = 1;
-			else
-				if(b2L.getSex().equalsIgnoreCase("V"))
-					lsex = 2;
-
+			if(b2L.getSex() != null){
+				if(b2L.getSex().equalsIgnoreCase("M"))				
+					lsex = 1;
+				else
+					if(b2L.getSex().equalsIgnoreCase("V"))
+						lsex = 2;
+			}
 			
 			bloodRelated = testBlood(b2L, b2R);
 			
@@ -1559,11 +1637,14 @@ public class StandardizePersonalCards implements Runnable {
     	int rel = 0;
     	
 		int lsex = 0;
-		if(b2L.getSex().equalsIgnoreCase("M"))				
-			lsex = 1;
-		else
-			if(b2L.getSex().equalsIgnoreCase("V"))
-				lsex = 2;
+		if(b2L.getSex() != null){
+
+			if(b2L.getSex().equalsIgnoreCase("M"))				
+				lsex = 1;
+			else
+				if(b2L.getSex().equalsIgnoreCase("V"))
+					lsex = 2;
+		}
 		
 		boolean bloodRelated = false;
 		if(b2L.getPersonID_MO() == b2R.getPersonID() || b2L.getPersonID_FA() == b2R.getPersonID())
