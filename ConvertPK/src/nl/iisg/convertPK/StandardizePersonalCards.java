@@ -2404,22 +2404,75 @@ public class StandardizePersonalCards implements Runnable {
         b34.setValueOfRelatedPerson(b313R.getKeyToRegistrationPersons());
         
         if(ConstRelations2.b3kode1_Related[rel] == null) {  
+        	
+        	
+        	if(b313L.getStartDate() == null &&  b313L.getEndDate() == null && b313R.getStartDate() != null &&  b313R.getEndDate() != null){
+        		
+        		b34.setStartDate(b313R.getStartDate());
+        		b34.setEndDate(b313R.getEndDate());
+        		b34.setStartFlag(11);
+        		b34.setStartEst(1);
+        		b34.setEndFlag(11);
+        		b34.setEndEst(1);
+        		return b34;
+        		
+        	}
+        	
+        	if(b313L.getStartDate() != null &&  b313L.getEndDate() != null && b313R.getStartDate() == null &&  b313R.getEndDate() == null){
+        		
+        		b34.setStartDate(b313L.getStartDate());
+        		b34.setEndDate(b313L.getEndDate());
+        		b34.setStartFlag(11);
+        		b34.setStartEst(2);
+        		b34.setEndFlag(11);
+        		b34.setEndEst(2);
+        		return b34;
+        		
+        	}
+        	
         	int [] a = findCommonTime(b313L.getStartDate(), b313L.getEndDate(), b313R.getStartDate(), b313R.getEndDate());
 
         	if(a != null){
 
         		b34.setStartDate(Common1.dateFromDayCount(a[0]));
         		b34.setEndDate(Common1.dateFromDayCount(a[1]));
+        		
         	}
-        	//else return null;
+        		
         }
+    	else{
+    		b34.setStartFlag(88);
+    		b34.setEndFlag(88);
+    		
+    	}
+
         return b34;
     }
     
 
+    
+    
+    /**
+     * 
+     * 
+     * 
+     * @param b2LL 
+     * @param b2LR
+     * @param b2RL
+     * @param b2RR
+     * 
+     * Routine to calculate the intersection of two intervals
+     * 
+     * If the intersection is not empty, an array of 2 integers is returned specifying the left and right boundaries of the intersection
+     * Otherwise null is returned
+     * 
+     * 
+     * 
+     * 
+     * @return
+     */
     private static int[] findCommonTime(String b2LL, String b2LR, String b2RL, String b2RR){
     	
-
        	
        	if(b2LL == null || b2LR == null || b2RL == null || b2RR == null) return null;
        	

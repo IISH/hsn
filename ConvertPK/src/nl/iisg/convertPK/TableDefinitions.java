@@ -808,7 +808,7 @@ public class TableDefinitions {
 	     "P8OPIM    	 tinyint," +          
 	     "P8OPID    	 smallint," +           
 	     "P8OPAG    	 varchar(" + Smallstring + ")," +   
-	     "P8OPZJ    	 tinyint," +       
+	     "P8OPZJ    	 smallint," +       
 	     "P8OPZM    	 tinyint," +      
 	     "P8OPZD    	 smallint," +      
 	     "P8OPIO    	 varchar(" + Smallstring + ")," +

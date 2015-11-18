@@ -69,7 +69,7 @@ public class P8 {
 
     	String place = getPladrp();
     	
-		if(getP8opil() != null)
+		if(getP8opil() != null && getP8opil().trim().length() != 0)
 			place = place + " $ " + getP8opil();
 
 		

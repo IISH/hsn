@@ -1171,7 +1171,7 @@ public class PkKnd {
     	}
     	
     	
-    	// addresses of the PK-Holder in P8
+    	// addresses of the PK-Holder in P8 (person lists)
 
     	int seqNoAdr = 1;
     	for(P8 p8: getP8()){
@@ -1179,7 +1179,7 @@ public class PkKnd {
     		if(p8.getP8opwf().equalsIgnoreCase("BRIEFADRES"))
     			continue;
 
-    		if(p8.getP8opil() != null && p8.getP8opil().trim().equalsIgnoreCase("NL")){
+    		if(p8.getP8opil() != null && p8.getP8opil().trim().equalsIgnoreCase("NL") || p8.getP8opil().trim().length() == 0){
 
     			B6_ST b6 = new B6_ST();
 
