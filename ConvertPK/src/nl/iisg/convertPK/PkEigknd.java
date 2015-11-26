@@ -285,7 +285,12 @@ public class PkEigknd {
 				if(getRelkndp().trim().equalsIgnoreCase("STIEFZOON") || getRelkndp().trim().equalsIgnoreCase("SZ"))
 					b313.setContentOfDynamicData(8); // Stepson
 				else
-					b313.setContentOfDynamicData(9); // Stepdaughter
+					if(getRelkndp().trim().equalsIgnoreCase("STIEFDOCHTER") || getRelkndp().trim().equalsIgnoreCase("SD"))
+						b313.setContentOfDynamicData(9); // Stepdaughter
+					else
+						if(getRelkndp().trim().equalsIgnoreCase("KIND")) 
+							b313.setContentOfDynamicData(133); // Kind PK
+
 				
 				b313.setStartDate(b2.getDateOfBirth());
 				b313.setEndDate(endDateSave );

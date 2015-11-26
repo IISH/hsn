@@ -664,7 +664,12 @@ static{
 	b3kode1_Related[30]	= "Kleinzoon";                         
 	b3kode1_Related[40]	= "Kleindochter";                      
 	b3kode1_Related[51]	= "Achterkleinzoon";
-	b3kode1_Related[52]	= "Achterkleindochter";
+	b3kode1_Related[87]	= "Halfbroer";
+	b3kode1_Related[88]	= "Halfzuster";
+	b3kode1_Related[133] = "Kind (PK)";	
+	b3kode1_Related[136] = "Kleinkind";	
+	b3kode1_Related[138] = "Halfbroer of neef";	
+	b3kode1_Related[139] = "Halfzuster of nicht";	
 	b3kode1_Related[156] = "Sibling";
 	b3kode1_Related[158] = "Ouder";
 	b3kode1_Related[162] = "Halfsibling";

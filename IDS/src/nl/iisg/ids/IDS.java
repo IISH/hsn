@@ -1720,8 +1720,11 @@ private static String standardizeRelation(String relation){
 			//System.out.println("Found numeric " + "  " + r.getIds());
 			return r.getIds();
 		}
-		else
+		else{
+			System.out.println("1 Relation = " + relation);
+
 			return null;
+		}
 	}
 	
 	r = Ref.getRelation_B(relation);
@@ -1740,7 +1743,8 @@ private static String standardizeRelation(String relation){
 			Ref.addRelation_B(r1);
 		}	
 	}
-	
+	System.out.println("2 Relation = " + relation);
+
 	return null;	
 }
 

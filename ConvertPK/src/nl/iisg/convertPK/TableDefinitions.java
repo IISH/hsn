@@ -428,7 +428,7 @@ public class TableDefinitions {
 	 " ADDRESS_FG TINYINT, " + 
 
 	 " NUMBER_ST VARCHAR(" + Smallstring + "), " +
-	 " ADDITION_ST VARCHAR(" + Smallstring + "), " +
+	 " ADDITION_ST VARCHAR(" + Bigstring + "), " +
 	 
 	 " VERSIE VARCHAR(8), " +
 	 " ONDRZKO VARCHAR(8), " +

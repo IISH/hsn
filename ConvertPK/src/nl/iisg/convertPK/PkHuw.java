@@ -298,11 +298,19 @@ public class PkHuw {
 		if(b2.getSex() != null){
 			if(b2.getSex().equalsIgnoreCase("M"))		
 				b313.setContentOfDynamicData(145);   // Spouse male
-		else
-			if((b2.getSex().equalsIgnoreCase("V")))
-				b313.setContentOfDynamicData(2);     // Spouse female
-
+		
+			else{
+				if((b2.getSex().equalsIgnoreCase("V")))
+					b313.setContentOfDynamicData(2);     // Spouse female
+				else
+					b313.setContentOfDynamicData(161);     // Echtgenoot(e)
+			}
 		}
+		else	
+			b313.setContentOfDynamicData(161);     // Echtgenoot(e)
+			
+
+		
 		b313.setDynamicDataSequenceNumber(1);
 
     	if(getHjrhuwp() != 0){
