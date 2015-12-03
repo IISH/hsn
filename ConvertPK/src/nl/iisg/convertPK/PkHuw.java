@@ -255,14 +255,14 @@ public class PkHuw {
     	}
 
     	if(getOjrhuwp() > 0){
-    		if(Common1.dayCount(getOdghuwp(), getOmdhuwp(), getOjrhuwp()) < Common1.dayCount(b2.getEndDate())){
+    		if(b2.getEndDate() == null || Common1.dayCount(getOdghuwp(), getOmdhuwp(), getOjrhuwp()) < Common1.dayCount(b2.getEndDate())){
     			b2.setEndDate(String.format("%02d-%02d-%04d", getOdghuwp(), getOmdhuwp(), getOjrhuwp()));
     			b2.setEndFlag(40);
     		}
     	}
     	
     	if(getAjrhuwp() > 0){
-    		if(Common1.dayCount(getAdghuwp(), getAmdhuwp(), getAjrhuwp()) < Common1.dayCount(b2.getEndDate())){
+    		if(b2.getEndDate() == null || Common1.dayCount(getAdghuwp(), getAmdhuwp(), getAjrhuwp()) < Common1.dayCount(b2.getEndDate())){
     			b2.setEndDate(String.format("%02d-%02d-%04d", getAdghuwp(), getAmdhuwp(), getAjrhuwp()));
     			b2.setEndFlag(41);
     		}

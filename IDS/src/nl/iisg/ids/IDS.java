@@ -303,7 +303,7 @@ public class IDS implements Runnable {
     								ii.setId_I_2(new Integer(p1.getId_I_new()));
     							}
     						}
-    					}
+    					}   
     				}
     			}
     		}
@@ -329,7 +329,7 @@ public class IDS implements Runnable {
     				}
     				relatives.add(ii.getId_I_2());
     			} 
-    			if(ii.getId_I_1() > 1000 * 1000 * 1000 && ii.getId_I_2() > 1000 * 1000 * 1000){ // It was processed twice
+    			if(ii.getId_I_1() > 1000 * 1000 * 1000 && ii.getId_I_2() > 1000 * 1000 * 1000){ // it has both id_i_1 and Id_i_2 updated to the new values
     				
     				if(ii.getRelation() != null && ii.getRelation().trim().length() > 0)
     					ii.setRelation(standardizeRelation(ii.getRelation()));
@@ -959,8 +959,8 @@ private static ArrayList<Person> handleMothers(ArrayList<Person> family){
 	ArrayList<Person> group = new ArrayList<Person>();
 	for(Person p: family){
 		if(p.getRelationRP() != null && 
-				(p.getRelationRP().equalsIgnoreCase("Moeder") || p.getRelationRP().equals("21") ||
-						p.getRelationRP().equalsIgnoreCase("Stiefmoeder") || p.getRelationRP().equals("82"))){
+				(p.getRelationRP().equalsIgnoreCase("Moeder") || p.getRelationRP().equals("" + ConstRelations2.MOEDER) ||
+						p.getRelationRP().equalsIgnoreCase("Stiefmoeder") || p.getRelationRP().equals("" + ConstRelations2.STIEFMOEDER))){
 			group.add(p);
 		}
 	}
@@ -1025,8 +1025,8 @@ private static ArrayList<Person> handleFathers(ArrayList<Person> family){
 	ArrayList<Person> group = new ArrayList<Person>();
 	for(Person p: family){
 		if(p.getRelationRP() != null && 
-				(p.getRelationRP().equalsIgnoreCase("Vader") || p.getRelationRP().equals("11") ||
-						p.getRelationRP().equalsIgnoreCase("Stiefvader") || p.getRelationRP().equals("81"))){
+				(p.getRelationRP().equalsIgnoreCase("Vader") || p.getRelationRP().equals("" + ConstRelations2.VADER) ||
+						p.getRelationRP().equalsIgnoreCase("Stiefvader") || p.getRelationRP().equals("" + ConstRelations2.STIEFVADER))){
 			group.add(p);
 		}
 	}
@@ -1088,11 +1088,14 @@ private static ArrayList<Person> handleSpouses(ArrayList<Person> family){
 		if(p.getRelationRP() != null && 
 				(p.getRelationRP().equalsIgnoreCase("Echtgenoot") || 
 					 	 p.getRelationRP().equalsIgnoreCase("Echtgenote") || 
-					 	 p.getRelationRP().equals("2") || 
-					 	 p.getRelationRP().equals("147") 
+					 	 p.getRelationRP().equals("" + ConstRelations2.ECHTGENOTE_HOOFD) || 
+					 	 p.getRelationRP().equals("" + ConstRelations2.ECHTGENOOT_EXPLICIET_HOOFD) ||
+					 	 p.getRelationRP().equals("" + ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD) ||
+					 	 p.getRelationRP().equals("" + ConstRelations2.PARTNER) 
 			 	 )){
 			group.add(p);
 		}
+		
 	}
 	
 	setIDWithinGroup(group, false);
@@ -1135,10 +1138,11 @@ private static ArrayList<Person> handleChildren(ArrayList<Person> family){
 	ArrayList<Person> group = new ArrayList<Person>();
 	for(Person p: family){
 		if(p.getRelationRP() != null && 
-				(p.getRelationRP().equalsIgnoreCase("Zoon") || p.getRelationRP().equals("3") ||
-						p.getRelationRP().equalsIgnoreCase("Stiefzoon") || p.getRelationRP().equals("8") ||
-						p.getRelationRP().equalsIgnoreCase("Dochter") || p.getRelationRP().equals("4") ||
-						p.getRelationRP().equalsIgnoreCase("Stiefdochter") || p.getRelationRP().equals("9"))){
+				(p.getRelationRP().equalsIgnoreCase("Zoon") || p.getRelationRP().equals("" + ConstRelations2.ZOON) ||
+						p.getRelationRP().equalsIgnoreCase("Stiefzoon") || p.getRelationRP().equals("" + ConstRelations2.STIEFZOON) ||
+						p.getRelationRP().equalsIgnoreCase("Dochter") || p.getRelationRP().equals("" + ConstRelations2.DOCHTER) ||
+						p.getRelationRP().equalsIgnoreCase("Kind") || p.getRelationRP().equals("" + ConstRelations2.KIND_PK) ||
+						p.getRelationRP().equalsIgnoreCase("Stiefdochter") || p.getRelationRP().equals("" + ConstRelations2.STIEFDOCHTER))){
 			group.add(p);
 		}
 	}
@@ -1183,10 +1187,12 @@ private static ArrayList<Person> handleSiblings(ArrayList<Person> family){
 	ArrayList<Person> group = new ArrayList<Person>();
 	for(Person p: family){
 		if(p.getRelationRP() != null && 
-				(p.getRelationRP().equalsIgnoreCase("Broer") || p.getRelationRP().equals("12") ||
-						p.getRelationRP().equalsIgnoreCase("Stiefbroer") || p.getRelationRP().equals("85") ||
-						p.getRelationRP().equalsIgnoreCase("Zuster") || p.getRelationRP().equals("22") ||
-						p.getRelationRP().equalsIgnoreCase("Stiefzuster") || p.getRelationRP().equals("86"))){
+				(p.getRelationRP().equalsIgnoreCase("Broer") || p.getRelationRP().equals("" + ConstRelations2.BROER) ||
+						p.getRelationRP().equalsIgnoreCase("Stiefbroer") || p.getRelationRP().equals("" + ConstRelations2.STIEFBROER) ||
+						p.getRelationRP().equalsIgnoreCase("Zuster") || p.getRelationRP().equals("" + ConstRelations2.ZUSTER) ||
+						p.getRelationRP().equalsIgnoreCase("Sibling") || p.getRelationRP().equals("" + ConstRelations2.SIBLING) ||
+						p.getRelationRP().equalsIgnoreCase("Stiefsibling") || p.getRelationRP().equals("" + ConstRelations2.STIEFSIBLING) ||
+						p.getRelationRP().equalsIgnoreCase("Stiefzuster") || p.getRelationRP().equals("" + ConstRelations2.STIEFZUSTER))){
 			group.add(p);
 		}
 	}
@@ -1231,8 +1237,8 @@ private static ArrayList<Person> handleParentsInLaw(ArrayList<Person> family){
 	ArrayList<Person> group = new ArrayList<Person>();
 	for(Person p: family){
 		if(p.getRelationRP() != null && 
-				(p.getRelationRP().equalsIgnoreCase("Schoonvader") || p.getRelationRP().equals("61") ||
-						p.getRelationRP().equalsIgnoreCase("Schoonmoeder") || p.getRelationRP().equals("71"))){
+				(p.getRelationRP().equalsIgnoreCase("Schoonvader") || p.getRelationRP().equals("" + ConstRelations2.SCHOONVADER) ||
+						p.getRelationRP().equalsIgnoreCase("Schoonmoeder") || p.getRelationRP().equals("" + ConstRelations2.SCHOONMOEDER))){
 			group.add(p);
 		}
 	}

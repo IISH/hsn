@@ -1723,7 +1723,7 @@ public class StandardizePersonalCards implements Runnable {
 		}
 		
 		boolean bloodRelated = false;
-		if(b2L.getPersonID_MO() == b2R.getPersonID() || b2L.getPersonID_FA() == b2R.getPersonID())
+		if(b2L.getPersonID() == b2R.getPersonID_MO() || b2L.getPersonID() == b2R.getPersonID_FA())
 			bloodRelated = true;
 		else
 			if(testBlood(b2R, b2L))

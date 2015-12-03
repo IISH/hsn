@@ -740,21 +740,27 @@ public class PkKnd {
 		
 		if(pkhw != null && pkhw.getHjrhuwp() > 0 && Common1.dayCount(pkhw.getHdghuwp(), pkhw.getHmdhuwp(), pkhw.getHjrhuwp()) > Common1.dayCount(b2pk.getStartDate())){
 
+			if(pkhw.getAnmhuwp().trim().length() == 0)
+				System.out.println("PKHUW: IDNR = " + pkhw.getIdnr() + " Sequence Number " + pkhw.getVnrhuwp() + " heeft geen achternaam, skipped");
+			
+			
+			else{
 
-			B32_ST b32 = new B32_ST();
-			b2pk.getCivilStatus().add(b32); // Link B32_ST -> B2_ST
-			b32.setPerson(b2pk);          // Link B2_ST -> B32_ST
+				B32_ST b32 = new B32_ST();
+				b2pk.getCivilStatus().add(b32); // Link B32_ST -> B2_ST
+				b32.setPerson(b2pk);          // Link B2_ST -> B32_ST
 
-			initialiseB3_ST(b32);
+				initialiseB3_ST(b32);
 
-			b32.setKeyToRegistrationPersons(b2pk.getKeyToPersons());        		
-			b32.setDynamicDataType(2);
-			b32.setContentOfDynamicData(1);    // 1 = unmarried
+				b32.setKeyToRegistrationPersons(b2pk.getKeyToPersons());        		
+				b32.setDynamicDataType(2);
+				b32.setContentOfDynamicData(1);    // 1 = unmarried
 
-			b32.setStartDate(b2pk.getStartDate());
-			b32.setEndDate(Common1.dateFromDayCount(Common1.dayCount(pkhw.getHdghuwp(), pkhw.getHmdhuwp(), pkhw.getHjrhuwp()) - 1));
+				b32.setStartDate(b2pk.getStartDate());
+				b32.setEndDate(Common1.dateFromDayCount(Common1.dayCount(pkhw.getHdghuwp(), pkhw.getHmdhuwp(), pkhw.getHjrhuwp()) - 1));
 
-			b32.setDynamicDataSequenceNumber(seqNoCivil++);
+				b32.setDynamicDataSequenceNumber(seqNoCivil++);
+			}
 		}
 
 
@@ -765,6 +771,8 @@ public class PkKnd {
     	
     	for(PkHuw pkhuw: getMarriages()){
 
+    		if(pkhw.getAnmhuwp().trim().length() == 0) continue;
+    		
     		
         	// First check if there already are civil status records
         	// If so, the end date of the last one must be update to 1 day before the start date of this one
