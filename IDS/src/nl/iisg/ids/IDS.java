@@ -182,7 +182,7 @@ public class IDS implements Runnable {
     			int id_i_new_2 = new Integer(p2.getId_I_new());
     			
     			if(id_i_new_1 < id_i_new_2)
-    				return -1;
+    				return -1;  
     			if(id_i_new_1 > id_i_new_2)
     				return  1;
     			
@@ -1727,7 +1727,7 @@ private static String standardizeRelation(String relation){
 			return r.getIds();
 		}
 		else{
-			System.out.println("1 Relation = " + relation);
+			//System.out.println("1 Relation = " + relation);
 
 			return null;
 		}
@@ -1749,7 +1749,7 @@ private static String standardizeRelation(String relation){
 			Ref.addRelation_B(r1);
 		}	
 	}
-	System.out.println("2 Relation = " + relation);
+	//System.out.println("2 Relation = " + relation);
 
 	return null;	
 }

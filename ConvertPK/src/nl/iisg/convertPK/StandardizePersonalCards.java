@@ -515,16 +515,21 @@ public class StandardizePersonalCards implements Runnable {
         				}
         			}
         		}
+        	
         		else
         			if(b2.getRelationsToPKHolder().get(0).getContentOfDynamicData() == 1){ // OP
-        				
-        				b2.setPersonID_FA(pkknd1.getB4().getPersons().get(1).getPersonID()); // Father is 2nd
-        				b2.setPersonID_MO(pkknd1.getB4().getPersons().get(2).getPersonID()); // Mother is 3rd
-        				
+
+        				for(B2_ST b2_temp: b2.getRegistration().getPersons()){
+        					if(b2_temp.getRelationsToPKHolder().get(0).getContentOfDynamicData() == ConstRelations2.VADER)
+        						b2.setPersonID_FA(b2_temp.getPersonID());
+        					else
+            					if(b2_temp.getRelationsToPKHolder().get(0).getContentOfDynamicData() == ConstRelations2.MOEDER)
+            						b2.setPersonID_MO(b2_temp.getPersonID());
+        					
+        				}
         			}
-        		
         	}
-        
+
         }
         
         
@@ -614,8 +619,6 @@ public class StandardizePersonalCards implements Runnable {
         			//System.out.println("3 pkknd1.getB4().getPersons.size() = " + pkknd1.getB4().getPersons().size());
 
         		}
-        		
-        		
         	}
         	
         	
@@ -2049,7 +2052,7 @@ public class StandardizePersonalCards implements Runnable {
             String[] names2 = pu.getFirstName().split(" ");
 
             if (!names1[0].equalsIgnoreCase(names2[0])){
-                message(p.getKeyToRP(), "3101", names1[0], names2[0]);
+                message(p.getKeyToRP(), "3103", names1[0], names2[0]);
             }
           
             if (names1.length >= 2 && names2.length >= 2) 

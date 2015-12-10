@@ -245,7 +245,7 @@ public class PkAdres {
 		
 		String [] a = address.split("[ ]+");
 		
-		System.out.println(address +  "  " + a.length);
+		//System.out.println(address +  "  " + a.length);
 
 		
 		for(int i = a.length  ; i > 0; i--){
@@ -479,7 +479,7 @@ public class PkAdres {
     
     public void destination(B2_ST b2){
     	
-    	System.out.println("   PkAddress destination country = " + getLndadrp() + " place = " + getPladrp());
+    	//System.out.println("   PkAddress destination country = " + getLndadrp() + " place = " + getPladrp());
 
 		B37_ST b37 = new B37_ST();
     	b2.getDestinations().add(b37); // Link B37_ST -> B2_ST

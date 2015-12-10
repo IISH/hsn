@@ -118,51 +118,51 @@ public class PKToIDS implements Runnable{
     
     // test 
     
-	try{
-		print("Converting...");
-		
-		em.getTransaction().begin();
+    print("Converting...");
 
-		int idCount = 0;
-	    for(OP op: ops){
-	    	for(B4_ST r: op.getRegistrationsStandardizedOfOP()){
-		    	System.out.println(r.getKeyToRP());
+    em.getTransaction().begin();
 
-		    	if(!r.getEntryDateHead().equals("01-01-1940")) continue; // because the RP is under this number 
-		    	
-		    	idCount++;
-		    	
-	    		for(B2_ST p: r.getPersons()){
-	    			p.convert(em);
-	    		}
-	    	}
-	    	if(idCount % 100 == 0)
-	    		print("Processed " + idCount + " IDNRs");
-	    }
-	    System.out.print("Processed " + idCount + " IDNRs");
-	    
-	    System.out.println("Start saving");
-	    
-	    //Contxt.printTopList();
-		print("Saving Context System...");
+    int idCount = 0;
+    for(OP op: ops){
+    	for(B4_ST r: op.getRegistrationsStandardizedOfOP()){
+    		//System.out.println(r.getKeyToRP());
 
-	    
-	    Contxt.save();
+    		//if(!r.getEntryDateHead().equals("01-01-1940")) continue; // because the RP is under this number 
+    		if(r.getKeyToRP() > 500000) continue;
+    		
+    		idCount++;
 
-		print("Saving IDS Tables...");
+    		int person_number = -1;
+    		for(B2_ST p: r.getPersons()){
+    			if(person_number != p.getPersonID()){
+    				p.convert(em);
+    				person_number = p.getPersonID();
+    			}
+    		}
+    	}
+    	if(idCount % 100 == 0)
+    		print("Processed " + idCount + " IDNRs");
+    }
+    System.out.print("Processed " + idCount + " IDNRs");
 
-		em.getTransaction().commit();
-		em.clear();
+    System.out.println("Start saving");
 
-	    System.out.println("Finished saving");
+    //Contxt.printTopList();
+    print("Saving Context System...");
 
-		
-		System.out.println("Finished converting");
 
-	}
-	catch(Exception e) {
-		System.out.println(e.getMessage());
-	}
+    Contxt.save();
+
+    print("Saving IDS Tables...");
+
+    em.getTransaction().commit();
+    em.clear();
+
+    System.out.println("Finished saving");
+
+
+    System.out.println("Finished converting");
+
 
 
     Date endTime = new Date();

@@ -472,7 +472,7 @@ public class PkKnd {
     	seqNoPersons++;
     	
     	b2 = new B2_ST();
-    	b4.getPersons().add(b2); // Link B4_ST -> B2_ST
+    	
     	b2.setRegistration(b4);  // Link B2_ST -> B4_ST
 
     	initialiseB2_ST(b2);
@@ -482,7 +482,7 @@ public class PkKnd {
 		
     	lastName = getAnmvdrp().trim();
     	
-    	if(lastName != null){
+    	if(lastName != null && lastName.trim().length() > 0){
 			if(lastName.split("%").length > 1){
 				lastName = lastName.split("%")[0].trim();
 				b2.setFamilyNameInterpreted(2);  	
@@ -595,14 +595,18 @@ public class PkKnd {
 
 		b313.setKeyToRegistrationPersons(b2.getKeyToPersons());
 
+		// Only add this b2 if key fields are specified
     	
+		if(b2.getFamilyName() != null && b2.getFirstName() != null)
+			b4.getPersons().add(b2); // Link B4_ST -> B2_ST
+		else
+			seqNoPersons--;
     	
     	// New person Mother PK-Holder
     	
 		seqNoPersons++;
 		
     	b2 = new B2_ST();
-    	b4.getPersons().add(b2); // Link B4_ST -> B2_ST
     	b2.setRegistration(b4);  // Link B2_ST -> B4_ST
 
     	initialiseB2_ST(b2);
@@ -726,6 +730,13 @@ public class PkKnd {
 		b313.setKeyToRegistrationPersons(b2.getKeyToPersons());
 
 
+		// Only add this b2 if key fields are specified
+    	
+		if(b2.getFamilyName() != null && b2.getFirstName() != null)
+			b4.getPersons().add(b2); // Link B4_ST -> B2_ST
+		else
+			seqNoPersons--;
+
     	
     	// Marriages of PK-Holder
 		
@@ -771,7 +782,10 @@ public class PkKnd {
     	
     	for(PkHuw pkhuw: getMarriages()){
 
-    		if(pkhw.getAnmhuwp().trim().length() == 0) continue;
+    		if(pkhuw.getAnmhuwp().trim().length() == 0){
+    			System.out.println("Partner without last name skipped for idnr = " + pkhw.getIdnr());
+    			continue;
+    		}
     		
     		
         	// First check if there already are civil status records
@@ -917,7 +931,7 @@ public class PkKnd {
         			if(pkhuw.getOjrhuwp() > 0){
 
         				String startDate1  = String.format("%02d-%02d-%04d", pkhuw.getOdghuwp(), pkhuw.getOmdhuwp(), pkhuw.getOjrhuwp());
-        				System.out.println("startDate1 = " + startDate1);
+        				//System.out.println("startDate1 = " + startDate1);
         				String startDateP = Common1.dateFromDayCount(Common1.dayCount(startDate1) + 1);
 
         				b32.setStartDate(startDateP);
@@ -1221,7 +1235,7 @@ public class PkKnd {
     			if(!(adres[j].getLndadrp() == null || adres[j].getLndadrp().trim().length() == 0 || adres[j].getLndadrp().trim().equalsIgnoreCase("NL"))){
     				if(j < adres.length - 1){
     					if(!(adres[j + 1].getLndadrp() == null || adres[j + 1].getLndadrp().trim().length() == 0 || adres[j + 1].getLndadrp().trim().equalsIgnoreCase("NL"))){
-        					System.out.println("PkAddress 1 destination country = " + adres[j].getLndadrp() + " locality = " + adres[j].getPladrp());
+        					//System.out.println("PkAddress 1 destination country = " + adres[j].getLndadrp() + " locality = " + adres[j].getPladrp());
     						adres[j].destination(b2pk);
     					}
     					else{
@@ -1229,7 +1243,7 @@ public class PkKnd {
     					}
     				}
     				else{
-    					System.out.println("PkAddress 2 destination country = " + adres[j].getLndadrp() + " locality = " + adres[j].getPladrp());
+    					//System.out.println("PkAddress 2 destination country = " + adres[j].getLndadrp() + " locality = " + adres[j].getPladrp());
     					adres[j].destination(b2pk);
     				}
     			}
@@ -1253,14 +1267,14 @@ public class PkKnd {
         		if(!(p8[k].getP8opil() != null || p8[k].getP8opil().trim().length() == 0 || p8[k].getP8opil().trim().equalsIgnoreCase("NL"))){
     				if(k < p8.length - 1){
     		    		if(!(p8[k].getP8opil() != null || p8[k].getP8opil().trim().length() == 0 || p8[k].getP8opil().trim().equalsIgnoreCase("NL"))){
-        					System.out.println("P8        1 destination country = " + p8[k].getP8opil() + " locality = " + p8[k].getPladrp());
+        					//System.out.println("P8        1 destination country = " + p8[k].getP8opil() + " locality = " + p8[k].getPladrp());
     						p8[k].destination(b2pk);
     		    		}
     					else
     						p8[k].origin(b2pk);
     				}
     				else{
-    					System.out.println("P8        2 destination country = " + p8[k].getP8opil() + " locality = " + p8[k].getPladrp());
+    					//System.out.println("P8        2 destination country = " + p8[k].getP8opil() + " locality = " + p8[k].getPladrp());
     					p8[k].destination(b2pk);
     					
     				}

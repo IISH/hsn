@@ -62,7 +62,10 @@ public class Ref {
 
 	static    List<Ref_Location>             ref_location  = null;
 	static    List<Ref_Location>             ref_location_x = new ArrayList<Ref_Location>();
-
+	static    HashMap<String, Ref_Location>  ref_location21 = null; // entries read from db 
+	static    HashMap<String, Ref_Location>  ref_location22 = null; // new entries  
+	
+	
 	static    List<Ref_KG>                   ref_KG    = new ArrayList<Ref_KG>();
 	static    List<Ref_KG>                   ref_KG_x  = new ArrayList<Ref_KG>();
 
@@ -277,15 +280,18 @@ public class Ref {
 		ref_famName22 = new HashMap<String, Ref_FamilyName>();
 		
 		for(Ref_FamilyName f: ref_famName){
-			
-			ref_famName21.put(f.getOriginal().trim().toLowerCase(), f);
-			
-			if(f.getLastNameID() > highest_ID)
-				highest_ID = f.getLastNameID();
-			count++;
-			
-		}
 
+			if(f.getOriginal() != null){
+				ref_famName21.put(f.getOriginal().trim().toLowerCase(), f);
+
+				if(f.getLastNameID() > highest_ID)
+					highest_ID = f.getLastNameID();
+				count++;
+
+			}
+
+		}
+			
 		Ref_FamilyName.setCurrent_ID(highest_ID + 1);
 		
 		
@@ -359,7 +365,7 @@ public class Ref {
 	}
 
 
-	public static void loadLocation(){
+	public static void loadLocationOld(){
 
 		System.out.println("Reading Ref_Location");
 
@@ -387,6 +393,40 @@ public class Ref {
 				return (loc1.compareToIgnoreCase(loc2));
 			}
 				});
+		
+	}
+
+	public static void loadLocation(){
+
+		System.out.println("Reading Ref_Location");
+
+		EntityManager em = getEm_ref_2();	
+		Query q = em.createQuery("select a from Ref_Location a");
+		ref_location  = q.getResultList();		
+
+		ref_location21 = new HashMap<String, Ref_Location>();
+		ref_location22 = new HashMap<String, Ref_Location>();
+
+		int highest_ID = 0;
+		int count = 0;
+
+		for(Ref_Location f: ref_location){
+			
+			if(f.getOriginal() != null){
+			
+				ref_location21.put(f.getOriginal().trim().toLowerCase(), f);
+			
+				if(f.getLocationID() > highest_ID)
+					highest_ID = f.getLocationID();
+				count++;
+			}
+			
+		}
+
+		Ref_Location.setCurrent_ID(highest_ID + 1);
+		
+		
+		System.out.println("Read    Ref_Location " + count + " rows");
 		
 	}
 
@@ -954,7 +994,7 @@ public class Ref {
 
 
 
-	public static Ref_Location getLocation(String location){
+	public static Ref_Location getLocationOld(String location){
 
 		if(location == null || location.trim().length() == 0)
 			return null;
@@ -981,13 +1021,34 @@ public class Ref {
 		}
 		return null;		
 	}
+	
+	public static Ref_Location getLocation(String location){
+		
+		Ref_Location locationStandardized = ref_location21.get(location.trim().toLowerCase());
+
+		if(locationStandardized != null){
+			return locationStandardized;
+		}
+		else{	
+			locationStandardized = ref_location22.get(location.trim().toLowerCase());
+
+			if(locationStandardized != null){
+				return locationStandardized;
+			}
+
+		}
+
+		return null;
+
+
+	}
 
 	public static List<Ref_Location>  getLocations(){
 		return ref_location;
 	}
 
 
-	public static void addLocation(Ref_Location l){
+	public static void addLocationOld(Ref_Location l){
 		
 		
 		//System.out.println("add location " + l.getOriginal());
@@ -1017,6 +1078,20 @@ public class Ref {
 				}});
 		}
 	}
+
+	public static void addLocation(Ref_Location f){
+		
+		
+		String name = f.getOriginal().trim().toLowerCase();
+		f.setOriginal(f.getOriginal().trim().toLowerCase());
+		
+		if(getFamilyName(name) == null)
+			ref_location22.put(name, f);
+		
+		
+		
+	}
+
 
 
 	public static void truncateLocation(Ref_Location l){
@@ -1656,12 +1731,10 @@ public class Ref {
 
 	public static void truncate(){
 
-		if(ref_famName != null)
-			for(Ref_FamilyName x: ref_famName)
-				Ref.truncateFamilyName(x);
-		for(Ref_FamilyName x: ref_famName_x)
-			Ref.truncateFamilyName(x);
 		
+		if(ref_famName22 != null)
+			for(Ref_FamilyName x: ref_famName22.values())
+				Ref.truncateFamilyName(x);
 					
 		
         if(ref_firstName != null)
@@ -1676,10 +1749,10 @@ public class Ref {
 		for(Ref_Prefix x: ref_prefix_x)			
 			Ref.truncatePrefix(x);
 
-		if(ref_location != null)
-			for(Ref_Location x: ref_location)
+		if(ref_location21 != null)
+			for(Ref_Location x: ref_location21.values())
 				Ref.truncateLocation(x);
-		for(Ref_Location x: ref_location_x)
+		for(Ref_Location x: ref_location22.values())
 			Ref.truncateLocation(x);
 
 		if(ref_profession != null)
@@ -1940,25 +2013,42 @@ public class Ref {
 
 		// Location
 
-		count = 0;
-		if(ref_location != null)
-			for(Ref_Location x: ref_location)
-				if(x.getNeedSave() == true){
-					em.persist(x); 
-					count++;
-				}
-		
-		for(Ref_Location x: ref_location_x){
-			if(x.getNeedSave() == true){
-				em.persist(x); 
-				count++;
-			}
-		}
-		ref_location_x.clear();
-		
-		System.out.println("Saved " + count + " rows to Ref_Location");
+		//count = 0;
+		//if(ref_location != null)
+		//	for(Ref_Location x: ref_location)
+		//		if(x.getNeedSave() == true){
+		//			em.persist(x); 
+		//			count++;
+		//		}
+		//
+		//for(Ref_Location x: ref_location_x){
+		//	if(x.getNeedSave() == true){
+		//		em.persist(x); 
+		//		count++;
+		//	}
+		//}
+		//ref_location_x.clear();
+		//
+		//System.out.println("Saved " + count + " rows to Ref_Location");
 
+		/* new start */
 		
+		count = 0;
+		
+		
+		if(ref_location22 != null){
+			for (Ref_Location ref_location : ref_location22.values()) {
+				count++;
+				em.persist(ref_location);
+
+			}
+			ref_location22.clear();
+		}
+		System.out.println("Saved " + count + " rows to Ref_Location");
+		
+		/* new end */
+		
+
 
 
 		
