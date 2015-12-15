@@ -376,6 +376,13 @@ public class PkKnd {
     	b2.setDateOfDecease(deceaseDate);    	
     	b2.setDateOfDeceaseFlag(1);
     	
+    	
+    	if(b2.getDateOfDecease() != null && b2.getDateOfBirth() != null &&
+    			Common1.dayCount(b2.getDateOfBirth()) > Common1.dayCount(b2.getDateOfDecease()))
+    			message(b2.getKeyToRP(), "4124");
+    		
+    	
+    	
     	// Decease place 
     	
     	String deceasePlace = getOplperp();
@@ -1376,6 +1383,17 @@ public class PkKnd {
   		for(PkEigknd pkeigknd: getChildren())
   			pkeigknd.print();
    	}
+   	
+    private static void message(int idnr, String number, String... fills) {
+
+        //print("Messagenr: " + number);
+
+        Message m = new Message(number);
+
+        m.setKeyToRP(idnr);
+        m.save(fills);
+    }
+
 
 
 	public int getIdnr() {

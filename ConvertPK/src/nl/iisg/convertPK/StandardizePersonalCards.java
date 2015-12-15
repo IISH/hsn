@@ -2052,7 +2052,7 @@ public class StandardizePersonalCards implements Runnable {
             String[] names2 = pu.getFirstName().split(" ");
 
             if (!names1[0].equalsIgnoreCase(names2[0])){
-                message(p.getKeyToRP(), "3103", names1[0], names2[0]);
+                message(p.getKeyToRP(), "4103", names1[0], names2[0]);
             }
           
             if (names1.length >= 2 && names2.length >= 2) 
@@ -2235,7 +2235,7 @@ public class StandardizePersonalCards implements Runnable {
      * This routine checks if the first names match
      * The following message numbers can be issued:
      * <p/>
-     * 3103
+     * 
      *
      * @param p
      * @param pu
