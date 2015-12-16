@@ -216,6 +216,8 @@ public class PkKnd {
     	
     	// New Person PK-Holder
     	
+    	Utils.checkKeyFields(getIdnr() , "PkKnd.DBF", getVnm1perp(), getAnmperp(), "" + getGjrperp());
+    	
     	int seqNoPersons = 1; 
     	
     	B2_ST b2 = new B2_ST();
@@ -324,8 +326,10 @@ public class PkKnd {
     	
     	//System.out.println("XXXXX  " + b2.getFirstName() + "  " + b2.getPrefixLastName() + "  " + b2.getFamilyName());
     	
-    	
-    	b2.setSex(getGslperp().toLowerCase());
+    	if(getGslperp() == null || getGslperp().trim().length() == 0)
+    		message(b2.getKeyToRP(), "7106");
+    	else
+    		b2.setSex(getGslperp().toLowerCase());
     	
     	// Birth date
     	
@@ -476,6 +480,9 @@ public class PkKnd {
     	
     	// New person Father PK-Holder
     	
+    	Utils.checkKeyFields(getIdnr() , "PkKnd.DBF", getVnm1vdrp(), getAnmvdrp()); // No birthdate check
+
+    	
     	seqNoPersons++;
     	
     	b2 = new B2_ST();
@@ -610,7 +617,9 @@ public class PkKnd {
 			seqNoPersons--;
     	
     	// New person Mother PK-Holder
-    	
+		
+    	Utils.checkKeyFields(getIdnr() , "PkKnd.DBF", getVnm1mdrp(), getAnmmdrp()); // No birthdate check
+
 		seqNoPersons++;
 		
     	b2 = new B2_ST();

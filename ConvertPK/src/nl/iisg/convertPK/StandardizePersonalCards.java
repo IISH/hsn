@@ -363,7 +363,13 @@ public class StandardizePersonalCards implements Runnable {
         int idnr = -1;
         String B2dibg = null;  // this is secondary key for to distinguish PkKnd rows with equal IDNR
         for (PkKnd pkknd1 : pkkndL) {
+        	int cnt = 1;
         	if (pkknd1.getIdnr() == idnr) {
+        		cnt++;
+        		if(cnt > 3){
+        			cnt = -11111;
+        			message(pkknd1.getIdnr(), "7108");
+        		}
         		B2dibg = Common1.dateFromDayCount(Common1.dayCount(B2dibg) + 1);
         	} else
         		B2dibg = "01-01-1940";
@@ -2371,6 +2377,26 @@ public class StandardizePersonalCards implements Runnable {
 			if (Collections.binarySearch(pkkndL, pkn, cpk) < 0) {
 				message(b.getIdnr(), "7116", "" + b.getIdnr());
 				return false;
+			}
+			;
+		}
+		
+		// Extra tests op Idnrp
+		
+		for (PkKnd PkKnd1 : pkkndL) {
+			if(PkKnd1.getIdnr() > 500000){
+				if(PkKnd1.getIdnrp() == 0){
+					message(PkKnd1.getIdnr(), "7119");
+					return false;
+				}
+				else{
+					PkKnd pkn = new PkKnd();
+					pkn.setIdnr(PkKnd1.getIdnrp());
+					if (Collections.binarySearch(pkkndL, pkn, cpk) < 0) {
+						message(PkKnd1.getIdnr(), "7120");
+						return false;
+					}
+				}
 			}
 			;
 		}

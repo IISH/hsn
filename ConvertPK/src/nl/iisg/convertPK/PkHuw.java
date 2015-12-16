@@ -97,6 +97,7 @@ public class PkHuw {
 	 
     public void convert(B2_ST b2){
     	
+    	Utils.checkKeyFields(getIdnr() , "PkHuw.DBF", getVn1huwp(), getAnmhuwp(), "" + getGjrhuwp()); 
     	
     	// Last name may still contain prefix, remove it
     	

@@ -68,6 +68,8 @@ public class PkEigknd {
 	    
     public void convert(B2_ST b2){
     	
+    	Utils.checkKeyFields(getIdnr() , "PkEigknd.DBF", getVn1kndp(), getAnmkndp(), "" + getGjrkndp()); 
+    	
     	// Last name 
     	
     	String lastName = getAnmkndp().trim();

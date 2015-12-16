@@ -760,6 +760,28 @@ public class Utils {
 		
 	}
 
+	static void checkKeyFields(int IDNR, String fileName, String...strings){
+		
+		//System.out.println("strings has dimension " + strings.length);
+		
+		if( strings.length > 0 && (strings[0] == null || strings[0].trim().length() == 0)) message(IDNR, "4127", fileName);
+		if( strings.length > 1 && (strings[1] == null || strings[1].trim().length() == 0)) message(IDNR, "4128", fileName);
+		if( strings.length > 2 && (strings[2] == null || strings[2].trim().length() == 0)) message(IDNR, "4129", fileName);
+		
+		
+	}
+	
+    private static void message(int idnr, String number, String... fills) {
+
+        //print("Messagenr: " + number);
+
+        Message m = new Message(number);
+
+        m.setKeyToRP(idnr);
+        m.save(fills);
+    }
+
+
     
 }
 
