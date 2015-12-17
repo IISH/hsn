@@ -383,9 +383,12 @@ public class PkKnd {
     	
     	if(b2.getDateOfDecease() != null && b2.getDateOfBirth() != null &&
     			Common1.dayCount(b2.getDateOfBirth()) > Common1.dayCount(b2.getDateOfDecease()))
-    			message(b2.getKeyToRP(), "4124");
+    			message(b2.getKeyToRP(), "4124", "" + b2.getFirstName() + " " + b2.getFamilyName());
     		
-    	
+    	if(b2.getStartDate() != null && b2.getEndDate() != null && 
+    			Common1.dayCount(b2.getStartDate()) > Common1.dayCount(b2.getEndDate()))
+				message(b2.getKeyToRP(), "7136", "" + b2.getFirstName() + " " + b2.getFamilyName());
+    		
     	
     	// Decease place 
     	

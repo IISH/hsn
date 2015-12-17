@@ -269,18 +269,22 @@ public class PkHuw {
     		}
     	}
 
-    	if(b2.getEndDate() != null &&  Common1.dayCount(b2.getEndDate()) < Common1.dayCount(b2.getStartDate())){
+    	if(b2.getDateOfDecease() != null && b2.getDateOfBirth() != null &&
+    			Common1.dayCount(b2.getDateOfBirth()) > Common1.dayCount(b2.getDateOfDecease()))
+    			message(b2.getKeyToRP(), "4124", "" + b2.getFirstName() + " " + b2.getFamilyName());
     		
-    		b2.setStartDate(null);
-    		b2.setStartFlag(0);
-			b2.setEndDate(null);
-			b2.setEndFlag(0);
-    		
+    	if(b2.getStartDate() != null && b2.getEndDate() != null && 
+    			Common1.dayCount(b2.getStartDate()) > Common1.dayCount(b2.getEndDate())){
+				message(b2.getKeyToRP(), "7136", "" + b2.getFirstName() + " " + b2.getFamilyName());
+
+	    //		b2.setStartDate(null);
+	    //		b2.setStartFlag(0);
+		//		b2.setEndDate(null);
+		//		b2.setEndFlag(0);
+
     	}
-
-
-
-    	
+    		
+  	
     	
     	// Relation to PK-Holder of partner
     	
@@ -461,6 +465,17 @@ public class PkHuw {
 		
   		System.out.println("    In PkHuw, idnr = " + getIdnr());
    	}
+   	
+    private static void message(int idnr, String number, String... fills) {
+
+        //print("Messagenr: " + number);
+
+        Message m = new Message(number);
+
+        m.setKeyToRP(idnr);
+        m.save(fills);
+    }
+
 
 	    
     private void initialiseB3_ST(B3_ST b3){

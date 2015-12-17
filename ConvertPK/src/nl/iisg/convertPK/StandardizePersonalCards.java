@@ -258,7 +258,9 @@ public class StandardizePersonalCards implements Runnable {
         	print("Fatal error has occurred. Check bfout7t and repair");
         	print("\nPersonal Cards - Standardize      finished\n");
         	//System.out.println("\nPopulation Register - Standardize      finished\n");
-        	return;
+        	print("\nPersonal Cards - Standardize dev mode continues\n");
+
+        	//return;
         }
         // Link the PK* objects
 
@@ -2301,6 +2303,7 @@ public class StandardizePersonalCards implements Runnable {
     		List<P8> p8L
     		){
     	
+    	boolean rc = true;
     	Comparator<PkKnd> cpk = new Comparator<PkKnd>() {
 			public int compare(PkKnd pkknd1, PkKnd pkknd2) {
 				if (pkknd1.getIdnr() > pkknd2.getIdnr())
@@ -2316,7 +2319,7 @@ public class StandardizePersonalCards implements Runnable {
 			pkn.setIdnr(b.getIdnr());
 			if (Collections.binarySearch(pkkndL, pkn, cpk) < 0) {
 				message(b.getIdnr(), "7110", "" + b.getIdnr());
-				return false;
+				rc = false;
 			}
 			;
 		}
@@ -2326,7 +2329,7 @@ public class StandardizePersonalCards implements Runnable {
 			pkn.setIdnr(b.getIdnr());
 			if (Collections.binarySearch(pkkndL, pkn, cpk) < 0) {
 				message(b.getIdnr(), "7111", "" + b.getIdnr());
-				return false;
+				rc = false;
 			}
 			;
 		}
@@ -2336,7 +2339,7 @@ public class StandardizePersonalCards implements Runnable {
 			pkn.setIdnr(b.getIdnr());
 			if (Collections.binarySearch(pkkndL, pkn, cpk) < 0) {
 				message(b.getIdnr(), "7112", "" + b.getIdnr());
-				return false;
+				rc = false;
 			}
 			;
 		}
@@ -2346,7 +2349,7 @@ public class StandardizePersonalCards implements Runnable {
 			pkn.setIdnr(b.getIdnr());
 			if (Collections.binarySearch(pkkndL, pkn, cpk) < 0) {
 				message(b.getIdnr(), "7113", "" + b.getIdnr());
-				return false;
+				rc = false;
 			}
 			;
 		}
@@ -2356,7 +2359,7 @@ public class StandardizePersonalCards implements Runnable {
 			pkn.setIdnr(b.getIdnr());
 			if (Collections.binarySearch(pkkndL, pkn, cpk) < 0) {
 				message(b.getIdnr(), "7114", "" + b.getIdnr());
-				return false;
+				rc = false;
 			}
 			;
 		}
@@ -2366,7 +2369,7 @@ public class StandardizePersonalCards implements Runnable {
 			pkn.setIdnr(b.getIdnr());
 			if (Collections.binarySearch(pkkndL, pkn, cpk) < 0) {
 				message(b.getIdnr(), "7115", "" + b.getIdnr());
-				return false;
+				rc = false;
 			}
 			;
 		}
@@ -2376,7 +2379,7 @@ public class StandardizePersonalCards implements Runnable {
 			pkn.setIdnr(b.getIdnr());
 			if (Collections.binarySearch(pkkndL, pkn, cpk) < 0) {
 				message(b.getIdnr(), "7116", "" + b.getIdnr());
-				return false;
+				rc = false;
 			}
 			;
 		}
@@ -2387,49 +2390,21 @@ public class StandardizePersonalCards implements Runnable {
 			if(PkKnd1.getIdnr() > 500000){
 				if(PkKnd1.getIdnrp() == 0){
 					message(PkKnd1.getIdnr(), "7119");
-					return false;
+					rc = false;
 				}
 				else{
 					PkKnd pkn = new PkKnd();
 					pkn.setIdnr(PkKnd1.getIdnrp());
 					if (Collections.binarySearch(pkkndL, pkn, cpk) < 0) {
 						message(PkKnd1.getIdnr(), "7120");
-						return false;
+						rc = false;
 					}
 				}
 			}
 			;
 		}
 		
-
-		
-		
-		
-		
-		
-		
-    	
-    	/*
-    	 * List<PkKnd> pkkndL = Utils.createObjects("nl.iisg.convertPK.PkKnd", inputDirectory);
-        print("Read PKKND.DBF, " + pkkndL.size() + " rows");
-        List<PkBrp> pkbrpL = Utils.createObjects("nl.iisg.convertPK.PkBrp", inputDirectory);
-        print("Read PKBRP.DBF, " + pkbrpL.size() + " rows");
-        List<PkHuw> pkhuwL = Utils.createObjects("nl.iisg.convertPK.PkHuw", inputDirectory);
-        print("Read PKHUW.DBF, " + pkhuwL.size() + " rows");
-        List<PkEigknd> pkeigkndL = Utils.createObjects("nl.iisg.convertPK.PkEigknd", inputDirectory);
-        print("Read PKEIGKND.DBF, " + pkeigkndL.size() + " rows");
-        List<PkAdres> pkadresL = Utils.createObjects("nl.iisg.convertPK.PkAdres", inputDirectory);
-        print("Read PKADRES.DBF, " + pkadresL.size() + " rows");
-        List<PkByz> pkbyzL = Utils.createObjects("nl.iisg.convertPK.PkByz", inputDirectory);
-        print("Read PKBYZ.DBF, " + pkbyzL.size() + " rows");
-        List<P7> p7L = Utils.createObjects("nl.iisg.convertPK.P7", inputDirectory);
-        print("Read P7.DBF, " + p7L.size() + " rows");
-        List<P8> p8L = Utils.createObjects("nl.iisg.convertPK.P8", inputDirectory);
-        print("Read P8.DBF, " + p8L.size() + " rows");
-    	 * 
-    	 */
-    	
-    	return true;
+    	return rc;
     }
     
     
