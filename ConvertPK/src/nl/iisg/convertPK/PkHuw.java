@@ -250,38 +250,46 @@ public class PkHuw {
     	
     	// dating
     	
-    	if(getHjrhuwp() > 0 && Common1.dayCount(getHdghuwp(), getHmdhuwp(), getHjrhuwp()) > Common1.dayCount(b2.getRegistration().getStartDate())){
-    		b2.setStartDate(String.format("%02d-%02d-%04d", getHdghuwp(), getHmdhuwp(), getHjrhuwp()));
-    		b2.setStartFlag(21);
-    	}
-
-    	if(getOjrhuwp() > 0){
-    		if(b2.getEndDate() == null || Common1.dayCount(getOdghuwp(), getOmdhuwp(), getOjrhuwp()) < Common1.dayCount(b2.getEndDate())){
-    			b2.setEndDate(String.format("%02d-%02d-%04d", getOdghuwp(), getOmdhuwp(), getOjrhuwp()));
-    			b2.setEndFlag(40);
-    		}
-    	}
     	
-    	if(getAjrhuwp() > 0){
-    		if(b2.getEndDate() == null || Common1.dayCount(getAdghuwp(), getAmdhuwp(), getAjrhuwp()) < Common1.dayCount(b2.getEndDate())){
-    			b2.setEndDate(String.format("%02d-%02d-%04d", getAdghuwp(), getAmdhuwp(), getAjrhuwp()));
-    			b2.setEndFlag(41);
-    		}
-    	}
-
-    	if(b2.getDateOfDecease() != null && b2.getDateOfBirth() != null &&
-    			Common1.dayCount(b2.getDateOfBirth()) > Common1.dayCount(b2.getDateOfDecease()))
-    			message(b2.getKeyToRP(), "4124", "" + b2.getFirstName() + " " + b2.getFamilyName());
+    	// No start and end dates for partners that are terminated before the PK start date 1-7-1938
+    	
+    	if((Common1.dateIsValid(getAdghuwp(), getAmdhuwp(), getAjrhuwp()) == 0 && Common1.dayCount(getAdghuwp(), getAmdhuwp(), getAjrhuwp()) < Common1.dayCount(b2.getRegistration().getStartDate())) || 
+    	   (Common1.dateIsValid(getOdghuwp(), getOmdhuwp(), getOjrhuwp()) == 0 && Common1.dayCount(getOdghuwp(), getOmdhuwp(), getOjrhuwp()) < Common1.dayCount(b2.getRegistration().getStartDate()))){ 
     		
-    	if(b2.getStartDate() != null && b2.getEndDate() != null && 
-    			Common1.dayCount(b2.getStartDate()) > Common1.dayCount(b2.getEndDate())){
-				message(b2.getKeyToRP(), "7136", "" + b2.getFirstName() + " " + b2.getFamilyName());
+    	    b2.setStartDate(null);
+    		b2.setStartFlag(0);
+			b2.setEndDate(null);
+			b2.setEndFlag(0);
+    		
+    	}
+    	else{
+    		if(getHjrhuwp() > 0 && Common1.dayCount(getHdghuwp(), getHmdhuwp(), getHjrhuwp()) > Common1.dayCount(b2.getRegistration().getStartDate())){
+    			b2.setStartDate(String.format("%02d-%02d-%04d", getHdghuwp(), getHmdhuwp(), getHjrhuwp()));
+    			b2.setStartFlag(21);
+    		}
 
-	    //		b2.setStartDate(null);
-	    //		b2.setStartFlag(0);
-		//		b2.setEndDate(null);
-		//		b2.setEndFlag(0);
+    		if(getOjrhuwp() > 0){
+    			if(b2.getEndDate() == null || Common1.dayCount(getOdghuwp(), getOmdhuwp(), getOjrhuwp()) < Common1.dayCount(b2.getEndDate())){
+    				b2.setEndDate(String.format("%02d-%02d-%04d", getOdghuwp(), getOmdhuwp(), getOjrhuwp()));
+    				b2.setEndFlag(40);
+    			}
+    		}
 
+    		if(getAjrhuwp() > 0){
+    			if(b2.getEndDate() == null || Common1.dayCount(getAdghuwp(), getAmdhuwp(), getAjrhuwp()) < Common1.dayCount(b2.getEndDate())){
+    				b2.setEndDate(String.format("%02d-%02d-%04d", getAdghuwp(), getAmdhuwp(), getAjrhuwp()));
+    				b2.setEndFlag(41);
+    			}
+    		}
+
+    		if(b2.getDateOfDecease() != null && b2.getDateOfBirth() != null &&
+    				Common1.dayCount(b2.getDateOfBirth()) > Common1.dayCount(b2.getDateOfDecease()))
+    			message(b2.getKeyToRP(), "4124", "" + b2.getFirstName() + " " + b2.getFamilyName());
+
+    		if(b2.getStartDate() != null && b2.getEndDate() != null && 
+    				Common1.dayCount(b2.getStartDate()) > Common1.dayCount(b2.getEndDate())){
+    			message(b2.getKeyToRP(), "7136", "" + b2.getFirstName() + " " + b2.getFamilyName());
+    		}
     	}
     		
   	

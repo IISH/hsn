@@ -229,54 +229,68 @@ public class PkEigknd {
 		
     	// dating
     	
-    	if(Common1.dayCount(b2.getDateOfBirth()) > Common1.dayCount(b2.getRegistration().getStartDate())){
-    		
-    		b2.setStartDate(b2.getDateOfBirth());
-    		b2.setStartFlag(22);
-    		
-    	}
-
-    	if(getOjrkndp() > 0){
-    		if(Common1.dayCount(getOdgkndp(), getOmdkndp(), getOjrkndp()) < Common1.dayCount(b2.getEndDate())){
-    			b2.setEndDate(String.format("%02d-%02d-%04d", getOdgkndp(), getOmdkndp(), getOjrkndp()));
-    			b2.setEndFlag(40);
-    		}
-    	}
-    	
-    	if(getAjrkndp() > 0){
-    		if(Common1.dayCount(getAdgkndp(), getAmdkndp(), getAjrkndp()) < Common1.dayCount(b2.getEndDate())){
-    			b2.setEndDate(String.format("%02d-%02d-%04d", getAdgkndp(), getAmdkndp(), getAjrkndp()));
-    			b2.setEndFlag(41);
-    		}
-    	}
-    	
-    	if(getHjrkndp() > 0){
-    		if(Common1.dayCount(getHdgkndp(), getHmdkndp(), getHjrkndp()) < Common1.dayCount(b2.getEndDate())){
-    			b2.setEndDate(String.format("%02d-%02d-%04d",getHdgkndp(), getHmdkndp(), getHjrkndp()));
-    			b2.setEndFlag(42);
-    		}
-    	}
-    	
-    	
     	String endDateSave = b2.getEndDate();
     	
-
-    	if(b2.getDateOfDecease() != null && b2.getDateOfBirth() != null &&
-    			Common1.dayCount(b2.getDateOfBirth()) > Common1.dayCount(b2.getDateOfDecease()))
-    			message(b2.getKeyToRP(), "4124", "" + b2.getFirstName() + " " + b2.getFamilyName());
+    	// No start and end dates for children that are terminated before the PK start date 1-7-1938
+    	
+    	
+    	if((Common1.dateIsValid(getAdgkndp(), getAmdkndp(), getAjrkndp()) == 0 && Common1.dayCount(getAdgkndp(), getAmdkndp(), getAjrkndp()) < Common1.dayCount(b2.getRegistration().getStartDate())) || 
+       	   (Common1.dateIsValid(getOdgkndp(), getOmdkndp(), getOjrkndp()) == 0 && Common1.dayCount(getOdgkndp(), getOmdkndp(), getOjrkndp()) < Common1.dayCount(b2.getRegistration().getStartDate())) || 
+    	   (Common1.dateIsValid(getHdgkndp(), getHmdkndp(), getHjrkndp()) == 0 && Common1.dayCount(getHdgkndp(), getHmdkndp(), getHjrkndp()) < Common1.dayCount(b2.getRegistration().getStartDate()))){ 
     		
-    	if(b2.getStartDate() != null && b2.getEndDate() != null && 
-    			Common1.dayCount(b2.getStartDate()) > Common1.dayCount(b2.getEndDate())){
-				message(b2.getKeyToRP(), "7136", "" + b2.getFirstName() + " " + b2.getFamilyName());
+    	    b2.setStartDate(null);
+    		b2.setStartFlag(0);
+			b2.setEndDate(null);
+			b2.setEndFlag(0);
+    		
+    	}
+    	else{
 
-	    	//	b2.setStartDate(null);
-	    	//	b2.setStartFlag(0);
-			//	b2.setEndDate(null);
-				b2.setEndFlag(0);
+    		if(Common1.dayCount(b2.getDateOfBirth()) > Common1.dayCount(b2.getRegistration().getStartDate())){
+
+    			b2.setStartDate(b2.getDateOfBirth());
+    			b2.setStartFlag(22);
+
+    		}
+
+    		if(getOjrkndp() > 0){
+    			if(Common1.dayCount(getOdgkndp(), getOmdkndp(), getOjrkndp()) < Common1.dayCount(b2.getEndDate())){
+    				b2.setEndDate(String.format("%02d-%02d-%04d", getOdgkndp(), getOmdkndp(), getOjrkndp()));
+    				b2.setEndFlag(40);
+    			}
+    		}
+
+    		if(getAjrkndp() > 0){
+    			if(Common1.dayCount(getAdgkndp(), getAmdkndp(), getAjrkndp()) < Common1.dayCount(b2.getEndDate())){
+    				b2.setEndDate(String.format("%02d-%02d-%04d", getAdgkndp(), getAmdkndp(), getAjrkndp()));
+    				b2.setEndFlag(41);
+    			}
+    		}
+
+    		if(getHjrkndp() > 0){
+    			if(Common1.dayCount(getHdgkndp(), getHmdkndp(), getHjrkndp()) < Common1.dayCount(b2.getEndDate())){
+    				b2.setEndDate(String.format("%02d-%02d-%04d",getHdgkndp(), getHmdkndp(), getHjrkndp()));
+    				b2.setEndFlag(42);
+    			}
+    		}
+
+
+    		if(b2.getDateOfDecease() != null && b2.getDateOfBirth() != null &&
+    				Common1.dayCount(b2.getDateOfBirth()) > Common1.dayCount(b2.getDateOfDecease()))
+    			message(b2.getKeyToRP(), "4124", "" + b2.getFirstName() + " " + b2.getFamilyName());
+
+    		if(b2.getStartDate() != null && b2.getEndDate() != null && 
+    				Common1.dayCount(b2.getStartDate()) > Common1.dayCount(b2.getEndDate())){
+    			message(b2.getKeyToRP(), "7136", "" + b2.getFirstName() + " " + b2.getFamilyName());
+
+    			//	b2.setStartDate(null);
+    			//	b2.setStartFlag(0);
+    			//	b2.setEndDate(null);
+    			b2.setEndFlag(0);
+
+    		}
 
     	}
-
-
     	
     	// Relation to PK-Holder
     	

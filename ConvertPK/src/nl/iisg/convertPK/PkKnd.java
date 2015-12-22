@@ -402,7 +402,7 @@ public class PkKnd {
 			}
 			else{
 				deceasePlace = deceasePlace.split("%")[0].trim();
-				b2.setPlaceOfDeceaseFlag(1);
+				b2.setPlaceOfDeceaseFlag(1);  
 			}
     	}
     	else{  // Decease Place via P7 (for PL)
