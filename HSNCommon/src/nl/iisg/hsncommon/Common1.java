@@ -409,7 +409,6 @@ public class Common1 {
 		
 		if(year <= 0 || month <= 0 || day <= 0) return -1;
 		
-		if(!(year  > 1750 && year  <  1941))   return 1;
 		if(!(month > 0    && month <= 12))     return 1;
 		if(!(day   > 0    && (day  <=  monthLength[month] || (day <= monthLength[2] + 1 && month == 2 && year % 4 == 0 && (year % 100 != 0 || year % 400 == 0))))) return 1;
 		

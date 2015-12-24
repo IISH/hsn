@@ -171,11 +171,18 @@ public class PkEigknd {
     	
     	// Birth date
     	
-		int[] result = 	Utils.transformDateFields(getGdgkndp(), getGmdkndp(), getGjrkndp(), getGdgkndpcr(), getGmdkndpcr(), getGjrkndpcr()); 
+    	if(Common1.dateIsValid(getGdgkndp(), getGmdkndp(), getGjrkndp()) != 0)
+			message(b2.getKeyToRP(), "4129", "PkEigknd.dbf");
 
-		b2.setDateOfBirth(String.format("%02d-%02d-%04d", result[0], result[1], result[2]));
-		b2.setDateOfBirthFlag(result[3]);
+    	else{
 
+    		int[] result = 	Utils.transformDateFields(getGdgkndp(), getGmdkndp(), getGjrkndp(), getGdgkndpcr(), getGmdkndpcr(), getGjrkndpcr()); 
+
+    		b2.setDateOfBirth(String.format("%02d-%02d-%04d", result[0], result[1], result[2]));
+    		b2.setDateOfBirthFlag(result[3]);
+
+    	}
+    	
 		// Birth place
 		
 		String birthPlace = getGplkndp();
@@ -206,6 +213,13 @@ public class PkEigknd {
 
     	b2.setDateOfDecease(deceaseDate);    	
     	b2.setDateOfDeceaseFlag(1);
+    	
+    	// Test
+    	
+		if(b2.getDateOfDecease() != null && b2.getDateOfBirth() != null &&
+				Common1.dayCount(b2.getDateOfBirth()) > Common1.dayCount(b2.getDateOfDecease()))
+			message(b2.getKeyToRP(), "4124", "" + b2.getFirstName() + " " + b2.getFamilyName());
+
     	
     	// Decease Place
 
@@ -253,31 +267,22 @@ public class PkEigknd {
 
     		}
 
-    		if(getOjrkndp() > 0){
-    			if(Common1.dayCount(getOdgkndp(), getOmdkndp(), getOjrkndp()) < Common1.dayCount(b2.getEndDate())){
+    		if(Common1.dateIsValid(getOdgkndp(), getOmdkndp(), getOjrkndp()) == 0){
     				b2.setEndDate(String.format("%02d-%02d-%04d", getOdgkndp(), getOmdkndp(), getOjrkndp()));
     				b2.setEndFlag(40);
-    			}
     		}
-
-    		if(getAjrkndp() > 0){
-    			if(Common1.dayCount(getAdgkndp(), getAmdkndp(), getAjrkndp()) < Common1.dayCount(b2.getEndDate())){
+    		else
+    		if(Common1.dateIsValid(getAdgkndp(), getAmdkndp(), getAjrkndp()) == 0){
     				b2.setEndDate(String.format("%02d-%02d-%04d", getAdgkndp(), getAmdkndp(), getAjrkndp()));
     				b2.setEndFlag(41);
-    			}
     		}
-
-    		if(getHjrkndp() > 0){
-    			if(Common1.dayCount(getHdgkndp(), getHmdkndp(), getHjrkndp()) < Common1.dayCount(b2.getEndDate())){
+    		else
+    		if(Common1.dateIsValid(getHdgkndp(), getHmdkndp(), getHjrkndp()) == 0){
     				b2.setEndDate(String.format("%02d-%02d-%04d",getHdgkndp(), getHmdkndp(), getHjrkndp()));
     				b2.setEndFlag(42);
-    			}
     		}
 
 
-    		if(b2.getDateOfDecease() != null && b2.getDateOfBirth() != null &&
-    				Common1.dayCount(b2.getDateOfBirth()) > Common1.dayCount(b2.getDateOfDecease()))
-    			message(b2.getKeyToRP(), "4124", "" + b2.getFirstName() + " " + b2.getFamilyName());
 
     		if(b2.getStartDate() != null && b2.getEndDate() != null && 
     				Common1.dayCount(b2.getStartDate()) > Common1.dayCount(b2.getEndDate())){

@@ -171,28 +171,30 @@ public class PkKnd {
     	String startDate = "01-07-1938";
     	int    startFlag = 1;
     	
-    	if(getGjrperp() > 0 && Common1.dayCount(getGdgperp(), getGmdperp(), getGjrperp()) > Common1.dayCount(startDate)){
+    	if(Common1.dateIsValid(getGdgperp(), getGmdperp(), getGjrperp()) == 0){
+    		if(Common1.dayCount(getGdgperp(), getGmdperp(), getGjrperp()) > Common1.dayCount(startDate)){
+        		startDate = String.format("%02d-%02d-%04d", getGdgperp(), getGmdperp(), getGjrperp());
+        		startFlag = 2;
+    		}
+    		else{
+    			
+        	//	startDate = Common1.dateFromDayCount(Common1.dayCount(getGdgperp(), getGmdperp(), getGjrperp()) - (3 * 365));
+        	//	System.out.println("" + getGdgperp() +  getGmdperp() +   getGjrperp() + "--------->" + startDate);
+        	//	startFlag = 3;
+    		}
     		
-    		startDate = String.format("%02d-%02d-%04d", getGdgperp(), getGmdperp(), getGjrperp());
-    		startFlag = 2;
     		
     	}
-    	else
-        	if(getOjrperp() > 0 && Common1.dayCount(getOdgperp(), getOmdperp(), getOjrperp()) < Common1.dayCount(startDate)){
-        		//System.out.println(""+ getOdgperp()+ getOmdperp()+ getOjrperp());
-        		startDate = Common1.dateFromDayCount(Common1.dayCount(getOdgperp(), getOmdperp(), getOjrperp()) - 3 * 365);
-        		startFlag = 3;
-        	}
     	
     	b4.setStartDate(startDate);
     	b4.setStartFlag(startFlag);
     	
-    	if(getEinjarpk() > 0){
+    	if(Utils.dateIsValid(getEindagpk(), getEinmndpk(), getEinjarpk()) == 0){
     		b4.setEndDate(String.format("%02d-%02d-%04d",  getEindagpk(), getEinmndpk(), getEinjarpk()));
     		b4.setEndFlag(31);
     	}
     	else{
-    		if(getOjrperp() > 0){
+    		if(Utils.dateIsValid(getOdgperp(), getOmdperp(), getOjrperp()) == 0){
     			b4.setEndDate(String.format("%02d-%02d-%04d",  getOdgperp(), getOmdperp(), getOjrperp()));
     			b4.setEndFlag(10);
     		}
@@ -335,8 +337,14 @@ public class PkKnd {
     	
 		int[] result = 	Utils.transformDateFields(getGdgperp(), getGmdperp(), getGjrperp(), getGdgperpcr(), getGmdperpcr(), getGjrperpcr()); 
 
-		b2.setDateOfBirth(String.format("%02d-%02d-%04d", result[0], result[1], result[2]));
-		b2.setDateOfBirthFlag(result[3]);
+		if(Common1.dateIsValid(result[0], result[1], result[2]) == 0){
+		
+			b2.setDateOfBirth(String.format("%02d-%02d-%04d", result[0], result[1], result[2]));
+			b2.setDateOfBirthFlag(result[3]);
+		}
+		else
+			message(b2.getKeyToRP(), "4129", "PkKnd.dbf");
+
     	
     	
     	// Now we can set PK_Holder in B4
@@ -483,7 +491,7 @@ public class PkKnd {
     	
     	// New person Father PK-Holder
     	
-    	Utils.checkKeyFields(getIdnr() , "PkKnd.DBF", getVnm1vdrp(), getAnmvdrp()); // No birthdate check
+    	Utils.checkKeyFields(getIdnr() , "PkKnd.DBF", getVnm1vdrp(), getAnmvdrp(), "" + getGjrvdrp());
 
     	
     	seqNoPersons++;
@@ -577,11 +585,16 @@ public class PkKnd {
     	
     	// Birth date
     	
-		result = Utils.transformDateFields(getGdgvdrp(), getGmdvdrp(), getGjrvdrp(), getGdgvdrpcr(), getGmdvdrpcr(), getGjrvdrpcr()); 
+    	if((getGjrvdrpcr() > 0 &&  Common1.dateIsValid(getGdgvdrpcr(), getGmdvdrpcr(), getGjrmdrpcr()) != 0) || Common1.dateIsValid(getGdgvdrp(), getGmdvdrp(), getGjrvdrp()) != 0)
+			message(b2.getKeyToRP(), "4129", "PkKnd.dbf");
 
-		b2.setDateOfBirth(String.format("%02d-%02d-%04d", result[0], result[1], result[2]));
-		b2.setDateOfBirthFlag(result[3]);
-		
+    	else{				
+    		result = Utils.transformDateFields(getGdgvdrp(), getGmdvdrp(), getGjrvdrp(), getGdgvdrpcr(), getGmdvdrpcr(), getGjrvdrpcr()); 
+
+    		b2.setDateOfBirth(String.format("%02d-%02d-%04d", result[0], result[1], result[2]));
+    		b2.setDateOfBirthFlag(result[3]);
+
+    	}
 		// Birth place
 		
     	birthPlace = getGplvdrp();
@@ -621,7 +634,7 @@ public class PkKnd {
     	
     	// New person Mother PK-Holder
 		
-    	Utils.checkKeyFields(getIdnr() , "PkKnd.DBF", getVnm1mdrp(), getAnmmdrp()); // No birthdate check
+    	Utils.checkKeyFields(getIdnr() , "PkKnd.DBF", getVnm1mdrp(), getAnmmdrp(), "" + getGjrmdrp());
 
 		seqNoPersons++;
 		
@@ -713,10 +726,16 @@ public class PkKnd {
     	
     	// Birth date
     	
-		result = Utils.transformDateFields(getGdgmdrp(), getGmdmdrp(), getGjrmdrp(), getGdgmdrpcr(), getGmdmdrpcr(), getGjrvdrpcr()); 
+    	if((getGjrmdrpcr() > 0 &&  Common1.dateIsValid(getGdgmdrpcr(), getGmdmdrpcr(), getGjrmdrpcr()) != 0) || Common1.dateIsValid(getGdgmdrp(), getGmdmdrp(), getGjrmdrp()) != 0)
+			message(b2.getKeyToRP(), "4129", "PkKnd.dbf");
 
-		b2.setDateOfBirth(String.format("%02d-%02d-%04d", result[0], result[1], result[2]));
-		b2.setDateOfBirthFlag(result[3]);
+    	else{				
+    		result = Utils.transformDateFields(getGdgmdrp(), getGmdmdrp(), getGjrmdrp(), getGdgmdrpcr(), getGmdmdrpcr(), getGjrmdrpcr()); 
+
+    		b2.setDateOfBirth(String.format("%02d-%02d-%04d", result[0], result[1], result[2]));
+    		b2.setDateOfBirthFlag(result[3]);
+
+    	}
     	
 		// Birth Place
 
@@ -830,7 +849,7 @@ public class PkKnd {
 
     		initialiseB2_ST(b2);
     		b2.setKeyToPersons(seqNoPersons);
-    		setStartAndEndDate(b2);
+    		//setStartAndEndDate(b2);
     		pkhuw.convert(b2);
 
     		

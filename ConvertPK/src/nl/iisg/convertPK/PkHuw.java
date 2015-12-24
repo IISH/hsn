@@ -193,10 +193,16 @@ public class PkHuw {
     	    	
     	// Birth date
     	
-		int[] result = 	Utils.transformDateFields(getGdghuwp(), getGmdhuwp(), getGjrhuwp(), getGdghuwpcr(), getGmdhuwpcr(), getGjrhuwpcr()); 
+    	if(Common1.dateIsValid(getGdghuwp(), getGmdhuwp(), getGjrhuwp()) != 0)
+			message(b2.getKeyToRP(), "4129", "PkHuw.dbf");
 
-		b2.setDateOfBirth(String.format("%02d-%02d-%04d", result[0], result[1], result[2]));
-		b2.setDateOfBirthFlag(result[3]);
+    	else{
+
+    		int[] result = 	Utils.transformDateFields(getGdghuwp(), getGmdhuwp(), getGjrhuwp(), getGdghuwpcr(), getGmdhuwpcr(), getGjrhuwpcr()); 
+
+    		b2.setDateOfBirth(String.format("%02d-%02d-%04d", result[0], result[1], result[2]));
+    		b2.setDateOfBirthFlag(result[3]);
+    	}
 		
 		// Birth Place
 
@@ -223,26 +229,36 @@ public class PkHuw {
     		deceaseDate = null;
     	b2.setDateOfDecease(deceaseDate); 
     	b2.setDateOfDeceaseFlag(1);
+
+    	// Test
+    	
+		if(b2.getDateOfDecease() != null && b2.getDateOfBirth() != null &&
+				Common1.dayCount(b2.getDateOfBirth()) > Common1.dayCount(b2.getDateOfDecease()))
+			message(b2.getKeyToRP(), "4124", "" + b2.getFirstName() + " " + b2.getFamilyName());
+
     	
     	//b2.setEndDate(deceaseDate);
     	
     	// Decease Place
 
-		String deceasePlace = getOplhuwp();
-		
-    	if(deceasePlace != null){
-			if(deceasePlace.split("%").length > 1){
-				deceasePlace = deceasePlace.split("%")[0].trim();
-				b2.setPlaceOfDeceaseFlag(2);  	
+		if(deceaseDate != null){
+
+			String deceasePlace = getOplhuwp();
+
+			if(deceasePlace != null){
+				if(deceasePlace.split("%").length > 1){
+					deceasePlace = deceasePlace.split("%")[0].trim();
+					b2.setPlaceOfDeceaseFlag(2);  	
+				}
+				else
+					b2.setPlaceOfDeceaseFlag(1);  	
 			}
-			else
-				b2.setPlaceOfDeceaseFlag(1);  	
-    	}
-    	
-    	a = Utils.standardizeLocation(deceasePlace);
-    	b2.setPlaceOfDeceaseStandardized((String)a.get(0));
-    	b2.setPlaceOfDeceaseID((Integer)a.get(1)); 
-    	
+
+			a = Utils.standardizeLocation(deceasePlace);
+			b2.setPlaceOfDeceaseStandardized((String)a.get(0));
+			b2.setPlaceOfDeceaseID((Integer)a.get(1)); 
+
+		}
     	// Registration date - not needed
     	
     	//String registrationDate = String.format("%02d-%02d-%04d", getDdghuwp(), getDmdhuwp(), getDjrhuwp());
@@ -263,28 +279,26 @@ public class PkHuw {
     		
     	}
     	else{
-    		if(getHjrhuwp() > 0 && Common1.dayCount(getHdghuwp(), getHmdhuwp(), getHjrhuwp()) > Common1.dayCount(b2.getRegistration().getStartDate())){
+    		if(Common1.dateIsValid(getHdghuwp(), getHmdhuwp(), getHjrhuwp()) == 0){
     			b2.setStartDate(String.format("%02d-%02d-%04d", getHdghuwp(), getHmdhuwp(), getHjrhuwp()));
     			b2.setStartFlag(21);
     		}
 
-    		if(getOjrhuwp() > 0){
-    			if(b2.getEndDate() == null || Common1.dayCount(getOdghuwp(), getOmdhuwp(), getOjrhuwp()) < Common1.dayCount(b2.getEndDate())){
-    				b2.setEndDate(String.format("%02d-%02d-%04d", getOdghuwp(), getOmdhuwp(), getOjrhuwp()));
-    				b2.setEndFlag(40);
-    			}
+    		//if(getIdnr() == 345456) System.out.println("---> "+ getOdghuwp() + getOmdhuwp()+  getOjrhuwp());
+    		
+    		if(Common1.dateIsValid(getOdghuwp(), getOmdhuwp(), getOjrhuwp()) == 0){
+    			
+    			//if(getIdnr() == 345456) System.out.println("++++> "+ getOdghuwp() + getOmdhuwp()+  getOjrhuwp());
+    			
+   				b2.setEndDate(String.format("%02d-%02d-%04d", getOdghuwp(), getOmdhuwp(), getOjrhuwp()));
+   				b2.setEndFlag(40);
     		}
-
-    		if(getAjrhuwp() > 0){
-    			if(b2.getEndDate() == null || Common1.dayCount(getAdghuwp(), getAmdhuwp(), getAjrhuwp()) < Common1.dayCount(b2.getEndDate())){
+    		else
+    			if(Common1.dateIsValid(getAdghuwp(), getAmdhuwp(), getAjrhuwp()) == 0){
     				b2.setEndDate(String.format("%02d-%02d-%04d", getAdghuwp(), getAmdhuwp(), getAjrhuwp()));
     				b2.setEndFlag(41);
     			}
-    		}
 
-    		if(b2.getDateOfDecease() != null && b2.getDateOfBirth() != null &&
-    				Common1.dayCount(b2.getDateOfBirth()) > Common1.dayCount(b2.getDateOfDecease()))
-    			message(b2.getKeyToRP(), "4124", "" + b2.getFirstName() + " " + b2.getFamilyName());
 
     		if(b2.getStartDate() != null && b2.getEndDate() != null && 
     				Common1.dayCount(b2.getStartDate()) > Common1.dayCount(b2.getEndDate())){

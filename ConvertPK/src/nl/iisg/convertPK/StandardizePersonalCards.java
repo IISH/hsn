@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -365,6 +366,8 @@ public class StandardizePersonalCards implements Runnable {
         int idnr = -1;
         String B2dibg = null;  // this is secondary key for to distinguish PkKnd rows with equal IDNR
         for (PkKnd pkknd1 : pkkndL) {
+        	if(pkknd1.getMarriages().size() == 0 && pkknd1.getChildren().size() > 0)
+        		message(pkknd1.getIdnr(), "7143");  // Child(ren) but no marriages
         	int cnt = 1;
         	if (pkknd1.getIdnr() == idnr) {
         		cnt++;
@@ -541,6 +544,9 @@ public class StandardizePersonalCards implements Runnable {
         }
         
         
+       
+        
+        
         // Integrate cards
         
         for (PkKnd pkknd1 : pkkndL) { // the Wives (and the male OPs) are selected from this list
@@ -640,18 +646,35 @@ public class StandardizePersonalCards implements Runnable {
 					handleB34_new(b2L, b2R);
 					//System.out.println("XXXX " + b2L.getKeyToPersons() + " XXXX " + b2R.getKeyToPersons() );
 
-        	
+        
+			
+			
         	
         	
         }
 
-
-        // Relate All to All
-
-        //for (PkKnd pkknd1 : pkkndL) 
-        	//	pkknd1.getB4().relateAllToAll(); 
-        	
         
+        // Test if OP is married to same persons twice 
+        
+        
+        HashSet<Integer> h = new HashSet<Integer>();
+        for (PkKnd pkknd1 : pkkndL) { 
+        	
+        	h.clear();
+
+        	for(B2_ST b2 : pkknd1.getB4().getPersons()){
+        		
+        		for(B313_ST b313: b2.getRelationsToPKHolder())
+        			if(b313.getContentOfDynamicData() == ConstRelations2.ECHTGENOTE_HOOFD || 
+        					b313.getContentOfDynamicData() == ConstRelations2.PARTNER)
+        				
+        				if(!h.add(b2.getPersonID()))
+        		                message(b2.getKeyToRP(), "7144");
+        		
+        	}
+        	
+        }
+
 
 
         for (PkKnd pkknd1 : pkkndL)
@@ -2110,7 +2133,16 @@ public class StandardizePersonalCards implements Runnable {
      * @return
      */
     private static boolean CheckBirthDate(B2_ST p, B2_ST pu) {
+    	
+    	if(p.getDateOfBirth() == null  || p.getDateOfBirth().trim().length()  == 0) return false;
+    	if(pu.getDateOfBirth() == null || pu.getDateOfBirth().trim().length() == 0) return false;
+    	
+    	//if(Common1.dateIsValid(day, month, year))
 
+        if (p.getDateOfBirth().equals("00-00-0000") == true || pu.getDateOfBirth().equals("00-00-0000") == true) // invalid dates
+            return false;
+
+        System.out.println("" + p.getDateOfBirth() + "  " + p.getDateOfBirth().length());
 
         String date1 = p.getDateOfBirth();
         int day1 = (new Integer(date1.split("-")[0])).intValue();
@@ -2123,8 +2155,6 @@ public class StandardizePersonalCards implements Runnable {
         int year2 = (new Integer(date2.split("-")[2])).intValue();
 
 
-        if (date1.equals("00-00-0000") == true || date2.equals("00-00-0000") == true) // invalid dates
-            return false;
 
         if (year1 == 0 || year2 == 0)
             return false;
