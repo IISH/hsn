@@ -380,18 +380,22 @@ public class Contxt {
 	
 	public static ContextElement get2(String municipality){
 		
+		System.out.println("Input " + municipality);
+		
+		int cnt = 0;
 		for(ContextElement ce: ceList){
+			cnt++;
 			String name = null;
 			String level = null;
 			for(int i = 0; i < ce.getTypes().size(); i++){
-				//System.out.println("Type = " + ce.getTypes().get(i));
 				if(ce.getTypes().get(i).equals("NAME"))
 				   name = ce.getValues().get(i);
 				if(ce.getTypes().get(i).equals("LEVEL"))
 				   level = ce.getValues().get(i);
 			}
 
-			//System.out.println("    Name = " + name);
+			if(municipality.equalsIgnoreCase("Amsterdam"))
+				System.out.println(cnt + "    Name = " + name + " Level = " + level );
 			if(level.equalsIgnoreCase("Municipality")){ 
 					if(name.trim().equalsIgnoreCase(municipality.trim()))
 						return ce;
@@ -399,7 +403,9 @@ public class Contxt {
 		}
 		
 		System.out.println("Municipality " + municipality +  " not found");
-		
+
+		if(municipality.equalsIgnoreCase("Amsterdam"))
+			System.exit(9);
 		// We add the municipality to the context system
 		ContextElement ceNew = new ContextElement();
 		ceNew.getTypes().add("LEVEL");

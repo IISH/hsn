@@ -105,10 +105,17 @@ public class B2_ST {
 	public void convert(EntityManager em){
 		
 		//System.out.println("Enter B2");
-		
-		int day   = (new Integer(getDateOfBirth().substring(0,2))).intValue();
-		int month = (new Integer(getDateOfBirth().substring(3,5))).intValue();
-		int year  = (new Integer(getDateOfBirth().substring(6,10))).intValue();
+
+		int day   = 0;
+		int month = 0;
+		int year  = 0;
+
+		if(getDateOfBirth() != null){
+			
+		    day   = (new Integer(getDateOfBirth().substring(0,2))).intValue();
+		    month = (new Integer(getDateOfBirth().substring(3,5))).intValue();
+		    year  = (new Integer(getDateOfBirth().substring(6,10))).intValue();
+		}
 		
 		if(getFamilyName() != null && getFamilyName().trim().length() > 0 && !getFamilyName().trim().equalsIgnoreCase("N"))
 			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "LAST_NAME", getFamilyName().trim(), "Reported", "Exact", day, month, year);

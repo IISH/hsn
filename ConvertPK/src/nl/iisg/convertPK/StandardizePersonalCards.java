@@ -497,36 +497,38 @@ public class StandardizePersonalCards implements Runnable {
         			
         			// Set parent 2 PersonID
         			
-        			for(B2_ST b2_temp: b2.getRegistration().getPersons()){
-        				
-        				if(b2_temp.getRelationsToPKHolder().get(0).getContentOfDynamicData() == 2  || 
-        						b2_temp.getRelationsToPKHolder().get(0).getContentOfDynamicData() == 145 ||
-        							b2_temp.getRelationsToPKHolder().get(0).getContentOfDynamicData() == 161){  // Spouse
+					for(B2_ST b2_temp: b2.getRegistration().getPersons()){
+
+						if(b2_temp.getRelationsToPKHolder().get(0).getContentOfDynamicData() == 2  || 
+								b2_temp.getRelationsToPKHolder().get(0).getContentOfDynamicData() == 145 ||
+								b2_temp.getRelationsToPKHolder().get(0).getContentOfDynamicData() == 161){  // Spouse
 
 
-        					//System.out.println("...");
-        					//System.out.println("..." + b2_temp.getFirstName() + "  " + b2_temp.getFamilyName());
+							//System.out.println("...");
+							//System.out.println(b2_temp.getKeyToRP() + "..." + b2_temp.getRelationsToPKHolder().get(0).getContentOfDynamicData());
+							//System.out.println(b2_temp.getKeyToRP() + "..." + b2_temp.getRelationsToPKHolder().get(0).getStartDate());
 
+							if(b2_temp.getRelationsToPKHolder().get(0).getStartDate() != null && b2_temp.getRelationsToPKHolder().get(0).getStartDate() != null){
 
-        					int marriageStartDays = Common1.dayCount(b2_temp.getRelationsToPKHolder().get(0).getStartDate());
-        					int marriageEndDays   = b2_temp.getRelationsToPKHolder().get(0).getEndDate() != null ?  
-        							Common1.dayCount(b2_temp.getRelationsToPKHolder().get(0).getEndDate()) : 0;
+								int marriageStartDays = Common1.dayCount(b2_temp.getRelationsToPKHolder().get(0).getStartDate());
+								int marriageEndDays   = b2_temp.getRelationsToPKHolder().get(0).getEndDate() != null ?  
+								Common1.dayCount(b2_temp.getRelationsToPKHolder().get(0).getEndDate()) : 0;
 
-        							if(marriageStartDays < Common1.dayCount(b2.getDateOfBirth()) &&	
-        									(marriageEndDays == 0 || marriageEndDays > Common1.dayCount(b2.getDateOfBirth()))){
+								if(marriageStartDays < Common1.dayCount(b2.getDateOfBirth()) &&	
+										(marriageEndDays == 0 || marriageEndDays > Common1.dayCount(b2.getDateOfBirth()))){
 
-        						if(b2.getPersonID_FA() == 0)
-        							b2.setPersonID_FA(b2_temp.getPersonID());
-        						else
-        							b2.setPersonID_MO(b2_temp.getPersonID());
-        						
-        						break;
-        						
-        	                }
-        				}
-        			}
+										if(b2.getPersonID_FA() == 0)
+											b2.setPersonID_FA(b2_temp.getPersonID());
+										else
+											b2.setPersonID_MO(b2_temp.getPersonID());
+
+										break;
+								}
+							}
+						}
+					}
         		}
-        	
+
         		else
         			if(b2.getRelationsToPKHolder().get(0).getContentOfDynamicData() == 1){ // OP
 
@@ -2142,7 +2144,7 @@ public class StandardizePersonalCards implements Runnable {
         if (p.getDateOfBirth().equals("00-00-0000") == true || pu.getDateOfBirth().equals("00-00-0000") == true) // invalid dates
             return false;
 
-        System.out.println("" + p.getDateOfBirth() + "  " + p.getDateOfBirth().length());
+        //System.out.println(p.getKeyToRP() + "   " + p.getDateOfBirth() + "  " + p.getDateOfBirth().length());
 
         String date1 = p.getDateOfBirth();
         int day1 = (new Integer(date1.split("-")[0])).intValue();
@@ -2171,6 +2173,9 @@ public class StandardizePersonalCards implements Runnable {
                 return false;
         }
 
+        
+        
+        
         if (day1 != 0 && month1 != 0 && day2 != 0 && month2 != 0) {
 
             if (Math.abs(day1 - day2) > 1) // days differ significantly
@@ -2192,8 +2197,10 @@ public class StandardizePersonalCards implements Runnable {
                             ; // ok
                         else
                             return false;
-                    } else
-                        return false;
+                    } else{
+                    	
+                    	if(day1 == day2 && month1 == month2 && Math.abs(year1 - year2) == 100) ; // OK
+                    }
                 }
             }
         }
@@ -2207,8 +2214,13 @@ public class StandardizePersonalCards implements Runnable {
             if (Math.abs(year1 - year2) <= 2)
                 message(p.getKeyToRP(), "4008", (new Integer(year1).toString()), (new Integer(year2).toString()));
             else
-                message(p.getKeyToRP(), "4010", (new Integer(year1).toString()), (new Integer(year2).toString()));
-
+            	if(date1.substring(9, 10).equals(date2.substring(9, 10)))
+            		message(p.getKeyToRP(), "4010", (new Integer(year1).toString()), (new Integer(year2).toString()));
+            	else{
+            		if(day1 == day2 && month1 == month2 && Math.abs(year1 - year2) == 100)
+                		message(p.getKeyToRP(), "4011", (new Integer(year1).toString()), (new Integer(year2).toString()));
+            		
+            	}
         }
 
         return true;

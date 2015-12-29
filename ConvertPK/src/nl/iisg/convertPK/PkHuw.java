@@ -187,10 +187,6 @@ public class PkHuw {
     		if(getPkHolder().getGslperp().equalsIgnoreCase("V"))
     			b2.setSex("m");
 
-    	String birthDate = String.format("%02d-%02d-%04d", getGdghuwp(), getGmdhuwp(), getGjrhuwp());
-    	b2.setDateOfBirth(birthDate); 
-    	
-    	    	
     	// Birth date
     	
     	if(Common1.dateIsValid(getGdghuwp(), getGmdhuwp(), getGjrhuwp()) != 0)
@@ -223,7 +219,7 @@ public class PkHuw {
     	
     	String deceaseDate = null;
 
-    	if((getOrdhuwp() == 0 || getOrdhuwp() == 1) && getOjrhuwp() > 0)
+    	if((getOrdhuwp() == 0 || getOrdhuwp() == 1) && Common1.dateIsValid(getOdghuwp(), getOmdhuwp(), getOjrhuwp()) == 0)
     		deceaseDate = String.format("%02d-%02d-%04d", getOdghuwp(), getOmdhuwp(), getOjrhuwp());
     	else
     		deceaseDate = null;
@@ -340,7 +336,7 @@ public class PkHuw {
 		
 		b313.setDynamicDataSequenceNumber(1);
 
-    	if(getHjrhuwp() != 0){
+    	if(getHjrhuwp() != 0 && Common1.dateIsValid(getHdghuwp(), getHmdhuwp(), getHjrhuwp()) == 0){
         	String marriageDate = String.format("%02d-%02d-%04d", getHdghuwp(), getHmdhuwp(), getHjrhuwp());
         	b313.setDateOfMutation(marriageDate);        	
         	b313.setDateOfMutationFlag(10); // original value
@@ -365,7 +361,7 @@ public class PkHuw {
     	b32.setCivilLocalityStandardized((String)b.get(0));
     	b32.setCivilLocalityID((Integer)b.get(1));
     	
-    	if(getHjrhuwp() != 0){
+    	if(getHjrhuwp() != 0 && Common1.dateIsValid(getHdghuwp(), getHmdhuwp(), getHjrhuwp()) == 0){
         	String marriageDate = String.format("%02d-%02d-%04d", getHdghuwp(), getHmdhuwp(), getHjrhuwp());
         	b32.setDateOfMutation(marriageDate);
            	b32.setDateOfMutationFlag(10); // original value 
@@ -380,7 +376,7 @@ public class PkHuw {
     	
     	// departure of partner
     	
-    	if(getAjrhuwp() > 0 && getAplhuwp() != null && getAplhuwp().trim().length() > 0 && !getAplhuwp().trim().equals("-1")){
+    	if(getAjrhuwp() > 0 && Common1.dateIsValid(getAdghuwp(), getAmdhuwp(), getAjrhuwp()) == 0){
     		
     		//System.out.println("Partner leaving ");
     		

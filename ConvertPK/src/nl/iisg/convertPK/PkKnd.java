@@ -154,18 +154,6 @@ public class PkKnd {
     	b4.setEntryDateHead(B2dibg);
     	b4.setKeyToSourceRegister(getPktype());
     	
-    	// Handle idnr/idnrpr
-    	
-    	/*
-    	 if(getIdnrp() != 0 && getIdnrp() != getIdnr()){
-
-      		b4.setKeyToRP(getIdnrp());
-    		b4.setIdnrSpouse(getIdnr());
-
-    		// We must determine how many B4 objects there are with this idnrp
-    		
-    	 }
-    	*/
     	// dating
     	
     	String startDate = "01-07-1938";
@@ -380,7 +368,8 @@ public class PkKnd {
     	
     	String deceaseDate = null;
 
-    	if(getOjrperp() > 0)    	
+    	
+    	if(Common1.dateIsValid(getOdgperp(), getOmdperp(), getOjrperp()) == 0)    	
     		deceaseDate = String.format("%02d-%02d-%04d", getOdgperp(), getOmdperp(), getOjrperp());
     	else
     		deceaseDate = null;
