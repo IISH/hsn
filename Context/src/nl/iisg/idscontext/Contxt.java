@@ -380,7 +380,10 @@ public class Contxt {
 	
 	public static ContextElement get2(String municipality){
 		
-		System.out.println("Input " + municipality);
+		//System.out.println("Input " + municipality);
+		
+		ArrayList<String> municipalities  = new ArrayList<String>();
+		ArrayList<String> levels          = new ArrayList<String>();
 		
 		int cnt = 0;
 		for(ContextElement ce: ceList){
@@ -388,14 +391,16 @@ public class Contxt {
 			String name = null;
 			String level = null;
 			for(int i = 0; i < ce.getTypes().size(); i++){
-				if(ce.getTypes().get(i).equals("NAME"))
+				if(ce.getTypes().get(i).equals("NAME")){
 				   name = ce.getValues().get(i);
-				if(ce.getTypes().get(i).equals("LEVEL"))
+				   municipalities.add(name);
+				}
+				if(ce.getTypes().get(i).equals("LEVEL")){
 				   level = ce.getValues().get(i);
+				   levels.add(level);
+				}
 			}
 
-			if(municipality.equalsIgnoreCase("Amsterdam"))
-				System.out.println(cnt + "    Name = " + name + " Level = " + level );
 			if(level.equalsIgnoreCase("Municipality")){ 
 					if(name.trim().equalsIgnoreCase(municipality.trim()))
 						return ce;
@@ -403,9 +408,21 @@ public class Contxt {
 		}
 		
 		System.out.println("Municipality " + municipality +  " not found");
-
-		if(municipality.equalsIgnoreCase("Amsterdam"))
-			System.exit(9);
+		
+		/*
+		
+		if(municipalities.size() != levels.size()) System.out.println("Count mismatch");
+		else{
+			if(municipality.equalsIgnoreCase("Amsterdam"))
+				System.out.println("+++> Adding" + municipality);
+				
+				//for(int i = 0; i < municipalities.size(); i++)
+					//System.out.println(municipalities.get(i) + "    " + levels.get(i));
+		}
+		
+		if(municipality.length() > 3 && municipality.substring(0, 4).equalsIgnoreCase("AMS"))
+			System.out.println("+++> Adding" + municipality);
+		//System.exit(9);
 		// We add the municipality to the context system
 		ContextElement ceNew = new ContextElement();
 		ceNew.getTypes().add("LEVEL");
@@ -445,7 +462,9 @@ public class Contxt {
 		}
 		//System.out.println("    Name = " + municipality);// we left the municipality section
 		
+		*/
 		return null;
+		
 		
 	}
 	
