@@ -427,7 +427,7 @@ public class Utils {
 		if(location != null){                                        // If it is...
 			if(location.getStandardCode().equalsIgnoreCase("Y") || location.getStandardCode().equalsIgnoreCase("U")){    // .. See if it has been validated (by HSN Staff)
 				a.add(location.getLocation()); 	    				 // Use the standardized value
-				a.add(location.getLocationID());
+				a.add(location.getLocationNo());
 				//System.out.println("1");
 			}
 			else{                                                    // It is there, but not validated    

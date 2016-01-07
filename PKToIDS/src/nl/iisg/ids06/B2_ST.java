@@ -169,8 +169,8 @@ public class B2_ST {
 			}
 		}
 		
-		if(getPlaceOfBirthStandardized() != null){
-			ContextElement ce = Contxt.get2(getPlaceOfBirthStandardized());		
+		if(getPlaceOfBirthID() > 0){
+			ContextElement ce = Contxt.get(getPlaceOfBirthID());		
 			if(ce != null){
 				Utils.addIndivAndContext(null, null, null, null, ce, em, getKeyToRP(), getPersonID(), "B2_ST",  "BIRTH_LOCATION", "Reported", "Exact", day, month, year);
 			}
@@ -193,8 +193,8 @@ public class B2_ST {
 			//System.out.println("B2 3");
 
 			
-			if(getPlaceOfDeceaseStandardized() != null){
-				ContextElement ce = Contxt.get2(getPlaceOfDeceaseStandardized());		
+			if(getPlaceOfDeceaseID() > 0){
+				ContextElement ce = Contxt.get(getPlaceOfDeceaseID());		
 				if(ce != null){
 					Utils.addIndivAndContext(null, null, null, null, ce, em, getKeyToRP(), getPersonID(), "B2_ST", "DEATH_LOCATION", "Reported", "Exact", day, month, year);
 				}
@@ -267,8 +267,8 @@ public class B2_ST {
 
 						ContextElement ce = null;
 						String address = "";
-						if(b6.getMunicipality() != null){
-							ce = Contxt.get2(b6.getMunicipality().trim());
+						if(b6.getMunicipalityNumber() > 0){
+							ce = Contxt.get(b6.getMunicipalityNumber());
 							if(ce != null){
 									Utils.addIndivContextAndContext(b6.getQuarter(), b6.getStreet(), b6.getNumber(), b6.getAddition(),
 											ce, em, getKeyToRP(), getPersonID(), "B6_ST ",  "LIVING_LOCATION", "Reported", "Exact",  startDay1, startMonth1, startYear1, endDay1, endMonth1, endYear1);

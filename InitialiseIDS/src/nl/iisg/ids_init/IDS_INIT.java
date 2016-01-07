@@ -182,11 +182,12 @@ public class IDS_INIT implements Runnable {
 	     
 			for(Ref_Location rl: ref_location){
 				
-				if(rl.getCountry() != null && !rl.getCountry().equals(country) && !rl.getCountry().equals("Onbekend")){
+				if(rl.getCountry() != null && !rl.getCountry().equals(country) && !rl.getCountry().equals("Unknown")){
 					
 					country = rl.getCountry();
 					addContext(++Id_C, "NAME", country);
 					addContext(  Id_C, "LEVEL", "Country");
+					addContext(  Id_C, "HSN_MUNICIPALITY_CODE", "" + rl.getLocationNo());
 					
 					Id_C_CurrentCountry = Id_C;
 					Id_C_CurrentRegion       = -1;
@@ -195,18 +196,19 @@ public class IDS_INIT implements Runnable {
 					Id_C_CurrentLocality     = -1;	
 				}
 				else
-					if(rl.getCountry() != null && rl.getCountry().equals("Onbekend")) continue;
+					if(rl.getCountry() != null && rl.getCountry().equals("Unknown")) continue;
 
 				
 				
 				
 					
 				
-				if(rl.getRegion() != null && !rl.getRegion().equals(region) && !rl.getRegion().equals("Onbekend")){
+				if(rl.getRegion() != null && !rl.getRegion().equals(region) && !rl.getRegion().equals("Unknown")){
 					
 					region = rl.getRegion();
 					addContext(++Id_C, "NAME", region);
 					addContext(  Id_C, "LEVEL", "Region");
+					addContext(  Id_C, "HSN_MUNICIPALITY_CODE", "" + rl.getLocationNo());
 					
 					Id_C_CurrentRegion       = Id_C;
 					Id_C_CurrentProvince     = -1;
@@ -217,7 +219,7 @@ public class IDS_INIT implements Runnable {
 						addContextContext(Id_C, Id_C_CurrentCountry, "Region and Country");
 				}
 				else
-					if(rl.getRegion() != null && rl.getRegion().equals("Onbekend")){
+					if(rl.getRegion() != null && rl.getRegion().equals("Unknown")){
 						
 						region = "";
 						Id_C_CurrentRegion = -1;
@@ -227,11 +229,12 @@ public class IDS_INIT implements Runnable {
 				
 				
 
-				if(rl.getProvince() != null && !rl.getProvince().equals(province) && !rl.getProvince().equals("Onbekend")){
+				if(rl.getProvince() != null && !rl.getProvince().equals(province) && !rl.getProvince().equals("Unknown")){
 					
 					province = rl.getProvince();
 					addContext(++Id_C, "NAME", province);
 					addContext(  Id_C, "LEVEL", "Province");
+					addContext(  Id_C, "HSN_MUNICIPALITY_CODE", "" + rl.getLocationNo());
 					
 					Id_C_CurrentProvince     = Id_C;
 					Id_C_CurrentMunicipality = -1;
@@ -248,18 +251,19 @@ public class IDS_INIT implements Runnable {
 					
 				}
 				else
-					if(rl.getProvince() != null && rl.getProvince().equals("Onbekend")){
+					if(rl.getProvince() != null && rl.getProvince().equals("Unknown")){
 						
 						province = "";
 						Id_C_CurrentProvince = -1;
 						
 					}
 				
-				if(rl.getMunicipality() != null && !rl.getMunicipality().equals(municipality) && !rl.getMunicipality().equals("Onbekend")){
+				if(rl.getMunicipality() != null && !rl.getMunicipality().equals(municipality) && !rl.getMunicipality().equals("Unknown")){
 					
 					municipality = rl.getMunicipality();
 					addContext(++Id_C, "NAME", municipality);
 					addContext(  Id_C, "LEVEL", "municipality");
+					addContext(  Id_C, "HSN_MUNICIPALITY_CODE", "" + rl.getLocationNo());
 					
 					Id_C_CurrentMunicipality = Id_C;
 					Id_C_CurrentLocality     = -1;	
@@ -279,18 +283,19 @@ public class IDS_INIT implements Runnable {
 					
 				}
 				else
-					if(rl.getMunicipality() != null && rl.getMunicipality().equals("Onbekend")){
+					if(rl.getMunicipality() != null && rl.getMunicipality().equals("Unknown")){
 						
 						municipality = "";
 						Id_C_CurrentMunicipality = -1;
 						
 					}
 				
-				if(rl.getLocation() != null && !rl.getLocation().equals(locality) && !rl.getLocation().equals("Onbekend")){
+				if(rl.getLocation() != null && !rl.getLocation().equals(locality) && !rl.getLocation().equals("Unknown")){
 					
 					locality = rl.getLocation();
 					addContext(++Id_C, "NAME", locality);
 					addContext(  Id_C, "LEVEL", "locality");
+					addContext(  Id_C, "HSN_MUNICIPALITY_CODE", "" + rl.getLocationNo());
 					
 					Id_C_CurrentLocality     = Id_C;	
 					
@@ -313,7 +318,7 @@ public class IDS_INIT implements Runnable {
 					
 				}
 				else
-					if(rl.getLocation() != null && rl.getLocation().equals("Onbekend")){
+					if(rl.getLocation() != null && rl.getLocation().equals("Unknown")){
 						
 						locality = "";
 						Id_C_CurrentLocality = -1;

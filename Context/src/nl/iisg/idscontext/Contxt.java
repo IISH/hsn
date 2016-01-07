@@ -108,8 +108,8 @@ public class Contxt {
 		
 		//for(ContextElement ce1: ceList){
 		//	for(int i = 0; i < ce1.types.size(); i++){
-		//		if(ce1.types.get(i).equals("Level")){
-		//			if(ce1.values.get(i).equals("Province")){
+		//		if(ce1.types.get(i).equalsIgnoreCase("Level")){
+		//			if(ce1.values.get(i).equalsIgnoreCase("Province")){
 		//				//System.out.println("Adding province!!!");
 		//				ce.getChildren().add(ce1);
 		//				ce1.setParent(ce);
@@ -133,8 +133,8 @@ public class Contxt {
 		
 		for(ContextElement ce1: ceList){
 			for(int i = 0; i < ce1.types.size(); i++){
-				if(ce1.types.get(i).equals("LEVEL")){
-					if(ce1.values.get(i).equals("Country")){
+				if(ce1.types.get(i).equalsIgnoreCase("LEVEL")){
+					if(ce1.values.get(i).equalsIgnoreCase("Country")){
 						ce.getChildren().add(ce1);
 						
 					}
@@ -159,19 +159,19 @@ public class Contxt {
 		String period   = null;
 
 		for(int i = 0; i < ce.types.size(); i++){
-			if(ce.types.get(i).equals("LEVEL"))
+			if(ce.types.get(i).equalsIgnoreCase("LEVEL"))
 				level = ce.values.get(i);
-			if(ce.types.get(i).equals("NAME"))
+			if(ce.types.get(i).equalsIgnoreCase("NAME"))
 				name = ce.values.get(i);
-			if(ce.types.get(i).equals("STREET"))
+			if(ce.types.get(i).equalsIgnoreCase("STREET"))
 				street = ce.values.get(i);
-			if(ce.types.get(i).equals("QUARTER"))
+			if(ce.types.get(i).equalsIgnoreCase("QUARTER"))
 				street = ce.values.get(i);
-			if(ce.types.get(i).equals("HOUSE_NUMBER"))
+			if(ce.types.get(i).equalsIgnoreCase("HOUSE_NUMBER"))
 				num = ce.values.get(i);
-			if(ce.types.get(i).equals("PERIOD"))
+			if(ce.types.get(i).equalsIgnoreCase("PERIOD"))
 				period = ce.values.get(i);
-			if(ce.types.get(i).equals("SEQUENCE_NUMBER"))
+			if(ce.types.get(i).equalsIgnoreCase("SEQUENCE_NUMBER"))
 				seqno = ce.values.get(i);
 			
 		}
@@ -186,7 +186,7 @@ public class Contxt {
 			}
 		}
 		
-		if(level.equals("Source")){
+		if(level.equalsIgnoreCase("Source")){
 			if(seqno != null)
 				name = name + " " + seqno;
 			if(period != null)
@@ -202,15 +202,15 @@ public class Contxt {
 		
 		String indent = "     ";
 		String prefix = null;
-		if(level.equals("Top"))          prefix  = "";
-		if(level.equals("Country"))      prefix  = indent;
-		if(level.equals("Province"))     prefix  = indent + indent;
-		if(level.equals("Municipality")) prefix  = indent + indent + indent;
-		if(level.equals("Locality"))     prefix  = indent + indent + indent + indent;
-		if(level.equals("Quarter"))      prefix  = indent + indent + indent + indent + indent;
-		if(level.equals("Address"))      prefix  = indent + indent + indent + indent + indent;
-		if(level.equals("Source"))       prefix  = indent + indent + indent + indent + indent;
-		if(level.equals("Name"))         prefix  = indent + indent + indent + indent + indent + indent + indent;
+		if(level.equalsIgnoreCase("Top"))          prefix  = "";
+		if(level.equalsIgnoreCase("Country"))      prefix  = indent;
+		if(level.equalsIgnoreCase("Province"))     prefix  = indent + indent;
+		if(level.equalsIgnoreCase("Municipality")) prefix  = indent + indent + indent;
+		if(level.equalsIgnoreCase("Locality"))     prefix  = indent + indent + indent + indent;
+		if(level.equalsIgnoreCase("Quarter"))      prefix  = indent + indent + indent + indent + indent;
+		if(level.equalsIgnoreCase("Address"))      prefix  = indent + indent + indent + indent + indent;
+		if(level.equalsIgnoreCase("Source"))       prefix  = indent + indent + indent + indent + indent;
+		if(level.equalsIgnoreCase("Name"))         prefix  = indent + indent + indent + indent + indent + indent + indent;
 		
 		System.out.println(prefix + name);
 		
@@ -342,14 +342,14 @@ public class Contxt {
 
 	public static ContextElement get(int municipalityCode){
 		
-		//System.out.println("Municipality Code = " + municipalityCode);
+		
 		
 		//System.out.println("CEList size = " + ceList.size());
 		
 		for(ContextElement ce: ceList){
 			for(int i = 0; i < ce.getTypes().size(); i++){
 				//System.out.println("Type = " + ce.getTypes().get(i));
-				if(ce.getTypes().get(i).equals("HSN MUNICIPALITY CODE")){
+				if(ce.getTypes().get(i).equalsIgnoreCase("HSN_MUNICIPALITY_CODE")){
 					int x = new Integer(ce.getValues().get(i));
 					//System.out.println("code = " + x);
 					if(x == municipalityCode)
@@ -358,6 +358,7 @@ public class Contxt {
 			}
 		}
 
+		System.out.println("1 Municipality Code = " + municipalityCode + " not found");
 		return null;
 		
 		
@@ -382,8 +383,8 @@ public class Contxt {
 		
 		//System.out.println("Input " + municipality);
 		
-		ArrayList<String> municipalities  = new ArrayList<String>();
-		ArrayList<String> levels          = new ArrayList<String>();
+		//ArrayList<String> municipalities  = new ArrayList<String>();
+		//ArrayList<String> levels          = new ArrayList<String>();
 		
 		int cnt = 0;
 		for(ContextElement ce: ceList){
@@ -391,14 +392,16 @@ public class Contxt {
 			String name = null;
 			String level = null;
 			for(int i = 0; i < ce.getTypes().size(); i++){
-				if(ce.getTypes().get(i).equals("NAME")){
+				if(ce.getTypes().get(i).equalsIgnoreCase("NAME")){
 				   name = ce.getValues().get(i);
-				   municipalities.add(name);
+				   //municipalities.add(name);
 				}
-				if(ce.getTypes().get(i).equals("LEVEL")){
+				if(ce.getTypes().get(i).equalsIgnoreCase("LEVEL")){
 				   level = ce.getValues().get(i);
-				   levels.add(level);
+				   //levels.add(level);
 				}
+				
+				//System.out.println("name = " + name + " level = "+ level);
 			}
 
 			if(level.equalsIgnoreCase("Municipality")){ 
@@ -407,7 +410,9 @@ public class Contxt {
 			}
 		}
 		
-		System.out.println("Municipality " + municipality +  " not found");
+		System.out.println("2 Municipality " + municipality +  " not found");
+		//if(1/0==1);
+		//System.exit(0); 
 		
 		/*
 		
@@ -438,9 +443,9 @@ public class Contxt {
 			String name = null;
 			String level = null;
 			for(int i = 0; i < ce1.getTypes().size(); i++){
-				if(ce1.getTypes().get(i).equals("NAME"))
+				if(ce1.getTypes().get(i).equalsIgnoreCase("NAME"))
 					   name = ce1.getValues().get(i);
-				if(ce1.getTypes().get(i).equals("LEVEL"))
+				if(ce1.getTypes().get(i).equalsIgnoreCase("LEVEL"))
 					   level = ce1.getValues().get(i);
 			}
 			if(level.equalsIgnoreCase("Country") && name.equalsIgnoreCase("Unknown")){
@@ -545,7 +550,7 @@ public class Contxt {
 		
 		for(int i = 0; i < ce1.getTypes().size(); i++){
 			//System.out.println(ce1.getTypes().get(i) + " = " + ce1.getValues().get(i));
-			if(ce1.getTypes().get(i).equals("LEVEL")){
+			if(ce1.getTypes().get(i).equalsIgnoreCase("LEVEL")){
 				level1 = ce1.getValues().get(i);
 				break;
 			}
@@ -554,7 +559,7 @@ public class Contxt {
 		String level2 = null;
 		
 		for(int i = 0; i < ce2.getTypes().size(); i++){
-			if(ce2.getTypes().get(i).equals("LEVEL")){
+			if(ce2.getTypes().get(i).equalsIgnoreCase("LEVEL")){
 				level2 = ce2.getValues().get(i);
 				break;
 			}
@@ -739,7 +744,8 @@ public class Contxt {
 	
 	public static ContextElement locate(String s, ContextElement ce1, String   level){
 				
-		// System.out.println("Locate " + s + " in " + level);
+		//System.out.println("Locate " + s   + " in " + level);
+		//System.out.println(s.length() +  "  " + level.length());
 
 		for(ContextElement ce: ce1.getChildren()){
 			
@@ -754,8 +760,9 @@ public class Contxt {
 					lvl = ce.values.get(i);
 			}
 
+			//System.out.println("name = " + name + "level = " + level);
 
-			if(name != null && lvl != null && name.equalsIgnoreCase(s) && level.equals(lvl)){
+			if(name != null && lvl != null && name.equalsIgnoreCase(s) && level.equalsIgnoreCase(lvl)){
 				//System.out.println("Found, level = " + level + " name = " + s);
 
 				return ce;
@@ -763,6 +770,10 @@ public class Contxt {
 
 
 		}
+		
+		//System.out.println("Not found");
+		//if(1/0 > 0); 
+
 		
 		//System.out.println("Not Found, level = " + level + " name = " + s);
 
@@ -837,6 +848,8 @@ public class Contxt {
 	
 	public static int add(String Country, String Province, String Municipality, String Locality, String Quarter, String Street, String Number, String Addition, String  Name){
 		
+		
+		
 		Country      = normalize(Country);     
 		Province     = normalize(Province);     
 		Municipality = normalize(Municipality);     
@@ -847,7 +860,9 @@ public class Contxt {
 		Addition     = normalize(Addition);     
 		Name         = normalize(Name);    
 
+		//System.out.println("Country = " + Country + " Province = " + Province + " Municipality = " +  Municipality + " Locality = " + Locality + " Street " + Street);
 
+		
 		
 		if(Country != null){
 			ContextElement contextCountry = locate(Country, top, "Country");
