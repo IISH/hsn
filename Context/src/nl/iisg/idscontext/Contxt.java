@@ -3,6 +3,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -16,6 +17,8 @@ public class Contxt {
 	static List<ContextElement> topList = null;
 	static List<ContextElement> ceList = null;
 	static ContextElement top = null;
+	
+	static HashMap<Integer, ContextElement>  LocationID_2_Id_C = new HashMap<Integer, ContextElement>();
 
 	public static void main(String args[]) {
 
@@ -254,6 +257,8 @@ public class Contxt {
 		
 		int curr_Id_C = -1;
 		
+		LocationID_2_Id_C = new HashMap<Integer, ContextElement>();
+		
 		ContextElement ce = null;
 		for(int i = 0; i < cList.size(); i++){			
 			
@@ -264,10 +269,22 @@ public class Contxt {
 					ceList.add(ce);
 				ce = new ContextElement();
 				ce.setId_C(cList.get(i).getId_C());
+				
+				//int location_no = 
+				
+				//LocationID_2_Id_C.put(arg0, arg1)
+				
 			}
 			
 			ce.types.add(cList.get(i).getType());
 			ce.values.add(cList.get(i).getValue());
+			
+			if(cList.get(i).getType().equalsIgnoreCase("HSN_MUNICIPALITY_CODE")){
+				
+				int hsn_municipality_code = new Integer(cList.get(i).getValue());
+				LocationID_2_Id_C.put(hsn_municipality_code, ce);
+				
+			}
 			
 		}
 		if(ce != null)
@@ -342,24 +359,25 @@ public class Contxt {
 
 	public static ContextElement get(int municipalityCode){
 		
+		return(LocationID_2_Id_C.get(municipalityCode));
 		
 		
 		//System.out.println("CEList size = " + ceList.size());
 		
-		for(ContextElement ce: ceList){
-			for(int i = 0; i < ce.getTypes().size(); i++){
-				//System.out.println("Type = " + ce.getTypes().get(i));
-				if(ce.getTypes().get(i).equalsIgnoreCase("HSN_MUNICIPALITY_CODE")){
-					int x = new Integer(ce.getValues().get(i));
-					//System.out.println("code = " + x);
-					if(x == municipalityCode)
-						return ce;
-				}
-			}
-		}
+		//for(ContextElement ce: ceList){
+		//	for(int i = 0; i < ce.getTypes().size(); i++){
+		//		//System.out.println("Type = " + ce.getTypes().get(i));
+		//		if(ce.getTypes().get(i).equalsIgnoreCase("HSN_MUNICIPALITY_CODE")){
+		//			int x = new Integer(ce.getValues().get(i));
+		//			//System.out.println("code = " + x);
+		//			if(x == municipalityCode)
+		//				return ce;
+		//		}
+		//	}
+		//}
 
-		System.out.println("1 Municipality Code = " + municipalityCode + " not found");
-		return null;
+		//System.out.println("1 Municipality Code = " + municipalityCode + " not found");
+		//return null;
 		
 		
 		//ContextElement ce = new ContextElement();
@@ -385,6 +403,7 @@ public class Contxt {
 		
 		//ArrayList<String> municipalities  = new ArrayList<String>();
 		//ArrayList<String> levels          = new ArrayList<String>();
+			
 		
 		int cnt = 0;
 		for(ContextElement ce: ceList){

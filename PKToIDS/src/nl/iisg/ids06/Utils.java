@@ -74,8 +74,20 @@ public class Utils {
 	public static void addIndivContextAndContext(String quarter, String street, String number, String addition, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String relation, 
 			String dateType, String estimation, int day, int month, int year){
 
-		String [] s = Utils.getLocationHierarchy(ce);
-		int Id_C = Contxt.add(s[0], s[1], s[2], null, quarter, street, number, addition, null);
+		
+		ContextElement context1 = null;
+		if(street != null && street.trim().length() > 0)
+			context1 = Contxt.locateAddress(street, number, addition, ce, "Address");
+		else
+			if(quarter != null && quarter.trim().length() > 0)
+				context1 = Contxt.locateQuarter(street, number, addition, ce, "Quarter");
+
+		
+		if(context1 == null)
+			return;
+		
+		int Id_C = context1.getId_C();
+		
 		
 		INDIV_CONTEXT ic = new INDIV_CONTEXT();
 		ic.setId_D((new Integer(IDNR).toString()));
@@ -105,8 +117,23 @@ public class Utils {
 		
 		//System.out.println("In addIndivContextAndContext");
 
-		String [] s = Utils.getLocationHierarchy(ce);
-		int Id_C = Contxt.add(s[0], s[1], s[2], null, quarter, street, number, addition, null);
+		//String [] s = Utils.getLocationHierarchy(ce);
+		//int Id_C = Contxt.add(s[0], s[1], s[2], null, quarter, street, number, addition, null);
+		
+		ContextElement context1 = null;
+		if(street != null && street.trim().length() > 0)
+			context1 = Contxt.locateAddress(street, number, addition, ce, "Address");
+		else
+			if(quarter != null && quarter.trim().length() > 0)
+				context1 = Contxt.locateQuarter(street, number, addition, ce, "Quarter");
+
+		
+		if(context1 == null)
+			return;
+		
+		int Id_C = context1.getId_C();
+		
+
 		
 		INDIV_CONTEXT ic = new INDIV_CONTEXT();
 		ic.setId_D((new Integer(IDNR).toString()));
@@ -137,8 +164,23 @@ public class Utils {
 	public static void addIndivAndContext(String quarter, String street, String number, String addition, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String type, 
 			String dateType, String estimation, int day, int month, int year){
 
-		String [] s = Utils.getLocationHierarchy(ce);
-		int Id_C = Contxt.add(s[0], s[1], s[2], null, quarter, street, number, addition, null);
+		//String [] s = Utils.getLocationHierarchy(ce);
+		//int Id_C = Contxt.add(s[0], s[1], s[2], null, quarter, street, number, addition, null);
+		
+		ContextElement context1 = null;
+		if(street != null && street.trim().length() > 0)
+			context1 = Contxt.locateAddress(street, number, addition, ce, "Address");
+		else
+			if(quarter != null && quarter.trim().length() > 0)
+				context1 = Contxt.locateQuarter(street, number, addition, ce, "Quarter");
+
+		
+		if(context1 == null)
+			return;
+		
+		int Id_C = context1.getId_C();
+		
+
 		
 		INDIVIDUAL i = new INDIVIDUAL();
 
