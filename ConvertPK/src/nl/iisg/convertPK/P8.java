@@ -61,6 +61,8 @@ public class P8 {
 	P8(){   }
 	
 	public void convert(B6_ST b6){
+		
+		
     	
 		b6.setRenumbering(6); // no code, address from PL-List
     	b6.setAddressFlag(5); // PL-version
@@ -75,6 +77,9 @@ public class P8 {
 		
     	ArrayList a = Utils.standardizeLocation(place);
     	b6.setMunicipality((String)a.get(0));
+    	b6.setMunicipalityNumber((Integer)a.get(1));
+				
+
     	
     	// address
     	

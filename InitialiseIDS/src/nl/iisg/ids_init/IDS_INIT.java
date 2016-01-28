@@ -182,7 +182,7 @@ public class IDS_INIT implements Runnable {
 	     
 			for(Ref_Location rl: ref_location){
 				
-				System.out.println("Looping!!!");
+				//System.out.println("Looping!!!");
 				
 				boolean no_country = false;
 				boolean no_region = false;
@@ -198,7 +198,7 @@ public class IDS_INIT implements Runnable {
 				
 				if(no_country && no_region && no_province && no_municipality && no_location) continue;
 				
-				System.out.println("C= " + country + ", R= " + region + ", P=" + province + ", M= " + municipality + ", L=" + location);
+				//System.out.println("C= " + country + ", R= " + region + ", P=" + province + ", M= " + municipality + ", L=" + location);
 				
 				if(rl.getCountry() != null && !rl.getCountry().equals(country) && !rl.getCountry().equals("Unknown")){
 					

@@ -641,7 +641,7 @@ public class Contxt {
 	public static ContextElement locateAddress(String street, String number, String addition, ContextElement ce1, String   level){
 		
 		
-		if(street == null)
+		if(street == null || street.trim().length() == 0)
 			return null;
 		
 		//System.out.println("street: " + street + " number: " + number + " addition: " + addition + "level = " + level);
@@ -678,13 +678,13 @@ public class Contxt {
 		ContextElement ce = new ContextElement();
 		ce.types.add("LEVEL");
 		ce.values.add(level);
-		ce.types.add("STREET");
+		ce.types.add("NAME");
 		ce.values.add(street);
-		if(number != null){
+		if(number != null && number.length() > 0){
 			ce.types.add("HOUSE_NUMBER");
 			ce.values.add(number);
 		}
-		if(addition != null){
+		if(addition != null && addition.length() > 0){
 			ce.types.add("HOUSE_NUMBER_EXTENSION");
 			ce.values.add(addition);
 		}
@@ -702,7 +702,7 @@ public class Contxt {
 	public static ContextElement locateQuarter(String quarter, String number, String addition, ContextElement ce1, String   level){
 		
 		
-		if(quarter == null)
+		if(quarter == null || quarter.trim().length() == 0)
 			return null;
 		
 		//System.out.println("street: " + street + " number: " + number + " addition: " + addition + "level = " + level);
@@ -741,11 +741,11 @@ public class Contxt {
 		ce.values.add(level);
 		ce.types.add("NAME");
 		ce.values.add(quarter);
-		if(number != null){
+		if(number != null && number.length() > 0){
 			ce.types.add("HOUSE_NUMBER");
 			ce.values.add(number);
 		}
-		if(addition != null){
+		if(addition != null && addition.length() > 0){
 			ce.types.add("HOUSE_NUMBER_EXTENSION");
 			ce.values.add(addition);
 		}

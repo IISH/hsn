@@ -80,6 +80,29 @@ public class PkAdres {
 		
 		
 		
+		// First cut of municipality, can be overwritten later
+		
+		String municipality = getPladrp();
+		
+		if(municipality == null) return;
+		
+		String [] b = municipality.split("!");
+		
+		if(b.length > 1)
+			municipality = b[b.length -1];
+			
+		
+		// Combine municipality with country
+		
+		if(getLndadrp() != null && !getLndadrp().equalsIgnoreCase("NL"))
+			municipality = municipality + " $" + getLndadrp();
+
+    	ArrayList a = Utils.standardizeLocation(municipality);
+    	b6.setMunicipality((String)a.get(0));
+    	b6.setMunicipalityNumber((Integer)a.get(1));
+				
+
+		
     	
     	// Address
 		
@@ -89,6 +112,12 @@ public class PkAdres {
 		// A2: See if address starts with an "&"
 		
 		if(address.length() > 1 &&  address.substring(0,1).equals("&")) return;
+		
+		// Try Boat
+		
+		address = tryBoatInfo(b6, address);  // this sets boat
+		if(address == null) return;
+		
 		
 		// Try Locality
 		
@@ -116,11 +145,11 @@ public class PkAdres {
 				
     	// municipality
     	
-		String municipality = getPladrp();
+		municipality = getPladrp();
 		
 		if(municipality == null) return;
 		
-		String [] b = municipality.split("!");
+		b = municipality.split("!");
 		
 		if(b.length > 1)
 			municipality = b[b.length -1];
@@ -136,14 +165,97 @@ public class PkAdres {
 		if(getLndadrp() != null && !getLndadrp().equalsIgnoreCase("NL"))
 			municipality = municipality + " $" + getLndadrp();
 
-    	ArrayList a = Utils.standardizeLocation(municipality);
+    	a = Utils.standardizeLocation(municipality);
     	b6.setMunicipality((String)a.get(0));
     	b6.setMunicipalityNumber((Integer)a.get(1));
 				
 				
-    }	    
+    }	   
     
+    private String tryBoatInfo(B6_ST b6, String address){
+    	
+    	if(address.length() >= 3 && address.substring(0, 3).equalsIgnoreCase("A/b")){ 
+    		address = address.substring(3).trim();
 
+    		String boat = "";
+    		String rest = "";
+    		
+    		int quoteCount = 0;
+    		for(int i = 0; i < address.length(); i++){    			
+    			
+    			if(address.substring(i, i + 1).equals("\"")) quoteCount++;
+    			else{
+    				if(quoteCount == 1)
+    					boat += address.substring(i, i + 1);
+    				else
+    					if(quoteCount > 1)
+    						rest += address.substring(i, i + 1); 	
+    			}	
+    		}
+
+    		b6.setBoat(boat);
+    		
+    		
+    		rest = rest.trim();
+    		if(rest.length() > 0 && rest.substring(0, 1).equals("/")) 
+    			rest = rest.substring(1); // remove slash
+    		return rest.trim();
+    		
+    	}
+    	
+    	return address;
+    
+    }
+    
+    
+	private String tryBoatInfo2(B6_ST b6, String address){
+		
+		// A/b "Rival"/Plantsoen 7
+
+		String [] a = address.split("[ ]+");
+		
+		for(int i = 0; i < a.length; i++){
+			
+			if(a[i].equalsIgnoreCase("A/b")){				
+				a[i] = "";				
+				if(i + 1 < a.length){
+					
+					String name = a[i + 1];
+					
+					if(name.substring(0,1).equals("\"")){
+						
+						for(int j = 1; j < name.length(); j++){
+							
+							System.out.println("0 " + name);
+							if(j + 1 < name.length() &&  name.substring(j, j+1).equals("\"")){ // closing quote
+								b6.setBoat(name.substring(0, j + 1));
+								System.out.println("1 " + name.substring(j+1));
+								System.out.println("2 " + name.substring(j+1));
+								if(j + 2 < name.length() &&  name.substring(j + 1, j + 2).equals("/")) // separator slash
+									a[i + 1] =  name.substring(j + 2);  // skip it
+								else
+									a[i + 1] = name.substring(j + 1);
+								break;
+								
+							}
+						}
+					}
+				}
+			}
+		}
+	
+		
+		address = "";
+		for (int i = 1; i < a.length; i++)
+			address = address + a[i] + " ";
+
+
+		return address.trim();
+
+	}
+
+
+	
 
 	/**
 	 * 
@@ -204,7 +316,7 @@ public class PkAdres {
 
 
 		if(a != null && a.length > 0){
-			if(a[0].equalsIgnoreCase("Wijk")){
+			if(a[0].equalsIgnoreCase("Wijk") || a[0].equalsIgnoreCase("Wk")){
 				if(a.length > 1){
 					b6.setQuarter(a[1]);
 					address = "";
@@ -217,16 +329,20 @@ public class PkAdres {
 		}
 
 
-		if((a[0].length() == 1 &&   Character.isUpperCase(a[0].charAt(0)) == true) ||		
-				(a[0].length() == 2 &&   Character.isUpperCase(a[0].charAt(0)) == true  && Character.isUpperCase(a[0].charAt(1)) == true)){
-			b6.setQuarter(a[0]);
+		if((a[0].length() == 1 &&   Character.isUpperCase(a[0].charAt(0)) == true) || (a[0].length() == 2 &&   Character.isUpperCase(a[0].charAt(0)) == true  && Character.isUpperCase(a[0].charAt(1)) == true)){
+			
+			
+			if(!(a.length > 1 && Character.isAlphabetic(a[1].charAt(0)))){ // Not followed by text, eg Q van Uffelenstraat
+			
+				b6.setQuarter(a[0]);
 
-			address = "";
-			for (int i = 1; i < a.length; i++)
-				address = address + a[i] + " ";
+				address = "";
+				for (int i = 1; i < a.length; i++)
+					address = address + a[i] + " ";
 
 
-			return address.trim();
+				return address.trim();
+			}
 
 
 		}
