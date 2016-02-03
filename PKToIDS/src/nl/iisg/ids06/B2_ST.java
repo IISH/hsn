@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import nl.iisg.hsncommon.ConstRelations2;
 import nl.iisg.idscontext.ContextElement;
 import nl.iisg.idscontext.Contxt;
 
@@ -240,45 +241,51 @@ public class B2_ST {
 		}
 		
 		// See which addresses this person can be bound to
+		// Check relation to RP, only spouses and children live with RP
+		// For now, only RP
 		
+		//int r = getRelationsToPKHolder().get(0).getContentOfDynamicData();
+		//if(r == 1 || r == ConstRelations2.ECHTGENOTE_HOOFD || r == ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD || r == ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD)
 		
-		if(getStartDate() != null && getEndDate() != null){
-			
+		if(getRelationsToPKHolder().get(0).getContentOfDynamicData() == 1){  // RP
 
-			for(B6_ST b6: getRegistration().getAddresses()){ // via B4_ST to B6_ST
+			if(getStartDate() != null && getEndDate() != null){
 
-				if(b6.getStartDate() != null && b6.getEndDate() != null){
 
-					int start = Math.max(Utils.dayCount(getStartDate()), Utils.dayCount(b6.getStartDate()));
-					int end   = Math.min(Utils.dayCount(getEndDate()),   Utils.dayCount(b6.getEndDate()));
+				for(B6_ST b6: getRegistration().getAddresses()){ // via B4_ST to B6_ST
 
-					if(start <= end){						
+					if(b6.getStartDate() != null && b6.getEndDate() != null){
 
-						String startDate = Utils.dateFromDayCount(start);
-						String endDate   = Utils.dateFromDayCount(end);
+						int start = Math.max(Utils.dayCount(getStartDate()), Utils.dayCount(b6.getStartDate()));
+						int end   = Math.min(Utils.dayCount(getEndDate()),   Utils.dayCount(b6.getEndDate()));
 
-						int startDay1   = (new Integer(startDate.substring(0,2))).intValue();
-						int startMonth1 = (new Integer(startDate.substring(3,5))).intValue();
-						int startYear1  = (new Integer(startDate.substring(6,10))).intValue();
+						if(start <= end){						
 
-						int endDay1   = (new Integer(endDate.substring(0,2))).intValue();
-						int endMonth1 = (new Integer(endDate.substring(3,5))).intValue();
-						int endYear1  = (new Integer(endDate.substring(6,10))).intValue();
+							String startDate = Utils.dateFromDayCount(start);
+							String endDate   = Utils.dateFromDayCount(end);
 
-						ContextElement ce = null;
-						String address = "";
-						if(b6.getMunicipalityNumber() > 0){
-							ce = Contxt.get(b6.getMunicipalityNumber());
-							if(ce != null){
-									Utils.addIndivContextAndContext(b6.getQuarter(), b6.getStreet(), b6.getNumber(), b6.getAddition(),
+							int startDay1   = (new Integer(startDate.substring(0,2))).intValue();
+							int startMonth1 = (new Integer(startDate.substring(3,5))).intValue();
+							int startYear1  = (new Integer(startDate.substring(6,10))).intValue();
+
+							int endDay1   = (new Integer(endDate.substring(0,2))).intValue();
+							int endMonth1 = (new Integer(endDate.substring(3,5))).intValue();
+							int endYear1  = (new Integer(endDate.substring(6,10))).intValue();
+
+							ContextElement ce = null;
+							String address = "";
+							if(b6.getMunicipalityNumber() > 0){
+								ce = Contxt.get(b6.getMunicipalityNumber());
+								if(ce != null){
+									Utils.addIndivContextAndContext(b6.getBoat(), b6.getQuarter(), b6.getStreet(), b6.getNumber(), b6.getAddition(),
 											ce, em, getKeyToRP(), getPersonID(), "B6_ST ",  "LIVING_LOCATION", "Reported", "Exact",  startDay1, startMonth1, startYear1, endDay1, endMonth1, endYear1);
+								}
 							}
 						}
 					}
 				}
 			}
 		}
-
 		
 		// down the tree
 		

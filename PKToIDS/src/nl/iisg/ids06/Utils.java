@@ -71,16 +71,21 @@ public class Utils {
 		
 	}
 	
-	public static void addIndivContextAndContext(String quarter, String street, String number, String addition, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String relation, 
+	public static void addIndivContextAndContext(String boat, String quarter, String street, String number, String addition, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String relation, 
 			String dateType, String estimation, int day, int month, int year){
 
 		
 		ContextElement context1 = null;
-		if(street != null && street.trim().length() > 0)
-			context1 = Contxt.locateAddress(street, number, addition, ce, "Address");
+
+		
+		if(boat != null && boat.trim().length() > 0)
+			context1 = Contxt.locateBoat(boat, street, number, addition, ce, "Boat");
 		else
-			if(quarter != null && quarter.trim().length() > 0)
-				context1 = Contxt.locateQuarter(street, number, addition, ce, "Quarter");
+			if(street != null && street.trim().length() > 0)
+				context1 = Contxt.locateAddress(street, number, addition, ce, "Address");
+			else
+				if(quarter != null && quarter.trim().length() > 0)
+					context1 = Contxt.locateQuarter(quarter, number, addition, ce, "Quarter");
 
 		
 		if(context1 == null)
@@ -112,20 +117,22 @@ public class Utils {
 		
 	}
 	
-	public static void addIndivContextAndContext(String quarter, String street, String number, String addition, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String relation, 
+	public static void addIndivContextAndContext(String boat, String quarter, String street, String number, String addition, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String relation, 
 			String dateType, String estimation, int startDay, int startMonth, int startYear, int endDay, int endMonth, int endYear){
 		
 		//System.out.println("In addIndivContextAndContext");
-
-		//String [] s = Utils.getLocationHierarchy(ce);
-		//int Id_C = Contxt.add(s[0], s[1], s[2], null, quarter, street, number, addition, null);
 		
 		ContextElement context1 = null;
-		if(street != null && street.trim().length() > 0)
-			context1 = Contxt.locateAddress(street, number, addition, ce, "Address");
+
+		//String [] s = Utils.getLocationHierarchy(ce);
+		if(boat != null && boat.trim().length() > 0)
+			context1 = Contxt.locateBoat(boat, street, number, addition, ce, "Boat");
 		else
-			if(quarter != null && quarter.trim().length() > 0)
-				context1 = Contxt.locateQuarter(street, number, addition, ce, "Quarter");
+			if(street != null && street.trim().length() > 0)
+				context1 = Contxt.locateAddress(street, number, addition, ce, "Address");
+			else
+				if(quarter != null && quarter.trim().length() > 0)
+					context1 = Contxt.locateQuarter(quarter, number, addition, ce, "Quarter");
 
 		
 		if(context1 == null)

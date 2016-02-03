@@ -36,6 +36,7 @@ public class Contxt {
 				printContextElement(ce2);
 				for(ContextElement ce3: ce2.getChildren()){			
 					printContextElement(ce3);
+					
 					for(ContextElement ce4: ce3.getChildren()){			
 						printContextElement(ce4);
 						for(ContextElement ce5: ce4.getChildren()){			
@@ -637,7 +638,22 @@ public class Contxt {
 
 		
 	}
-	
+
+	public static ContextElement locateBoat(String boat, String street, String number, String addition, ContextElement ce1, String   level){
+		
+		
+		// locate address
+		
+		ContextElement ce = locateAddress(street, number, addition, ce1, level);
+		if(ce != null){
+			ce.types.add("BOAT");
+			ce.values.add(boat);
+			return ce;
+		}
+			
+		return null;
+	}
+
 	public static ContextElement locateAddress(String street, String number, String addition, ContextElement ce1, String   level){
 		
 		
@@ -681,7 +697,8 @@ public class Contxt {
 		ce.types.add("NAME");
 		ce.values.add(street);
 		if(number != null && number.length() > 0){
-			ce.types.add("HOUSE_NUMBER");
+			ce.types
+			.add("HOUSE_NUMBER");
 			ce.values.add(number);
 		}
 		if(addition != null && addition.length() > 0){

@@ -328,9 +328,13 @@ public class Utils {
 	public static void addIndivContextAndContextCertificate(int yearCertificate, int sequenceNumberCertificate, ContextElement ceCertificate, EntityManager em, int IDNR, int Id_I, String source, String relation, 
 			String dateType, String estimation, int day, int month, int year){
 
-		String [] s = Utils.getLocationHierarchy(ceCertificate);
-		int Id_C = Contxt.addCertificate(s[0], s[1], s[2], source, yearCertificate, sequenceNumberCertificate);
+		//String [] s = Utils.getLocationHierarchy(ceCertificate);
+		//int Id_C = Contxt.addCertificate(s[0], s[1], s[2], source, yearCertificate, sequenceNumberCertificate);
 		
+		
+		
+		ContextElement ce = Contxt.locateCertificate(source, yearCertificate, sequenceNumberCertificate,  ceCertificate,  "Source");
+		int Id_C = ce.getId_C();
 		INDIV_CONTEXT ic = new INDIV_CONTEXT();
 		ic.setId_D((new Integer(IDNR).toString()));
 		ic.setId_I(Id_I);
@@ -357,6 +361,8 @@ public class Utils {
 		if(address != null)
 		    t = Utils.splitAddress(address);
 		int Id_C = Contxt.add(s[0], s[1], s[2], null, t[0], t[1], t[2], t[3], null);
+		
+
 		
 		INDIV_CONTEXT ic = new INDIV_CONTEXT();
 		ic.setId_D((new Integer(IDNR).toString()));
