@@ -25,7 +25,7 @@ public class Message {
 	@Column(name = "RecordId")  private int      recordID;   
 
 
-	@Id @Column(name = "FTCODE") 	private	int    errorNumber;
+	@Id @Column(name = "FTCODE") 	private	int    errorNumber;   
 	@Column(name = "FTTYPE")	    private	String errorType;
 	@Column(name = "FOUT")          private String errorText;
 
@@ -55,7 +55,7 @@ public class Message {
 	/**
 	 * the message skeleton retrieved based on errorNumber
 	 * the fills are merged into the message skeleton
-	 * the result is stored in errorText
+	 * the result is stored in errorText b
 	 * the Message object (this)  is written to the table "meldingen"  
 	 * 
 	 */
