@@ -405,6 +405,7 @@ public class Contxt {
 		//ArrayList<String> municipalities  = new ArrayList<String>();
 		//ArrayList<String> levels          = new ArrayList<String>();
 			
+		if(1==1) return null;
 		
 		int cnt = 0;
 		for(ContextElement ce: ceList){

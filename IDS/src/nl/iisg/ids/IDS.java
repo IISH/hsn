@@ -25,6 +25,7 @@ import nl.iisg.hsncommon.ConstRelations2;
 import nl.iisg.ref.Ref;
 import nl.iisg.ref.Ref_FirstName;
 import nl.iisg.ref.Ref_Relation_B;
+import iisg.hsn.messages.Message;
 
 public class IDS implements Runnable {
 	
@@ -88,6 +89,8 @@ public class IDS implements Runnable {
 	EntityManagerFactory emf = Persistence.createEntityManagerFactory("hsn_ids");
 	EntityManager em = emf.createEntityManager();
 	
+	message(11111, "9101");
+	Message.finalise();
 	
 	//for(int i = 0; i < idnr.length; i++){
 	idnr = 0;
@@ -1856,6 +1859,14 @@ public static void setVersion(String version) {
 }
 
 
+private static void message(int idnr, String number, String... fills) {
 
+    //print("Messagenr: " + number);
+
+    Message m = new Message(number);
+
+    m.setRecordID(idnr);
+    m.save(fills);
+}
 
 }

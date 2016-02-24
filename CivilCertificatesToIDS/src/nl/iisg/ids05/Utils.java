@@ -331,6 +331,7 @@ public class Utils {
 		//String [] s = Utils.getLocationHierarchy(ceCertificate);
 		//int Id_C = Contxt.addCertificate(s[0], s[1], s[2], source, yearCertificate, sequenceNumberCertificate);
 		
+		if(1==1) return;
 		
 		
 		ContextElement ce = Contxt.locateCertificate(source, yearCertificate, sequenceNumberCertificate,  ceCertificate,  "Source");
@@ -356,6 +357,8 @@ public class Utils {
 	public static void addIndivContextAndContext(String address, ContextElement ceCertificate, EntityManager em, int IDNR, int Id_I, String source, String relation, 
 			String dateType, String estimation, int day, int month, int year){
 
+		
+		if(1==1) return;
 		String [] s = Utils.getLocationHierarchy(ceCertificate);
 		String[] t = {null, null, null, null};
 		if(address != null)
@@ -389,6 +392,8 @@ public class Utils {
 	
 	public static void addIndivAndContext(String address, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String type, 
 			String dateType, String estimation, int day, int month, int year){
+
+		if(1==1) return;
 
 		String [] s = Utils.getLocationHierarchy(ce);
 		String[] t = {null, null, null, null};
