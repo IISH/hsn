@@ -89,13 +89,13 @@ public class IDS implements Runnable {
 	EntityManagerFactory emf = Persistence.createEntityManagerFactory("hsn_ids");
 	EntityManager em = emf.createEntityManager();
 	
-	message(11111, "9101");
+	
 	Message.finalise();
 	
 	//for(int i = 0; i < idnr.length; i++){
 	idnr = 0;
 	icount = 0;
-	 for(int i = 0; i < 10; i++){ // we run in 10 batches
+	 for(int i = 0; i < 1; i++){ // we run in 10 batches
 		
 		setIndexPerson(0);
 		indiv_count = 0;
@@ -147,7 +147,9 @@ public class IDS implements Runnable {
 	}
 	 print("Processed " + idnr + " IDNRs"); 
 	
-	 Ref.finalise(); 
+	Ref.finalise(); 
+    Message.finalise();
+
      print("\nIDS - Integrate           finished\n");
 	
 	 System.out.println("Finished processing");
@@ -890,10 +892,6 @@ private static void integratePersons(){
 			
 			if(family != null){
 				
-
-				// Find RP's
-
-				
 				ArrayList<Person> RPs = handleRP(family); 
 				ArrayList<Person> mothers = handleMothers(family); 
 				ArrayList<Person> fathers = handleFathers(family); 
@@ -903,7 +901,6 @@ private static void integratePersons(){
 				ArrayList<Person> inlaws = handleParentsInLaw(family); 
 				ArrayList<Person> others = handleOthers(family); 
 
-				
 			}
 			
 			idnrOld = personL.get(i).getIdnr();
@@ -998,19 +995,27 @@ private static ArrayList<Person> handleMothers(ArrayList<Person> family){
 	
 	// find id of first mother with startcode = 1
 	
+	
+	String source = null;
+	String name   = null;
+	
 	int idMother = -1;
 	for(Person p: group){
 		if(p.getStartCode() == 1){
 			idMother = p.getIdWithinGroup();
+			source = p.getId_D();
+			name = p.getFirstName() + " " + p.getFamilyName();
+			
 			break;
 		}
 	}
 	
-	// All other mothers are stepmothers
+	// All other mothers are stepmothers. Nee, dit geeft problemen. Maar wel een message
 	
 	for(Person p: group){
 		if(p.getIdWithinGroup() != idMother){
-			p.setRelationRP("Stiefmoeder"); // must use Dutch because of upcoming standardization
+			//p.setRelationRP("Stiefmoeder"); // must use Dutch because of upcoming standardization
+			message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getId_D(), name, source);
 		}
 	}
 	
@@ -1059,19 +1064,25 @@ private static ArrayList<Person> handleFathers(ArrayList<Person> family){
 		
 	// find id of first father with startcode = 1
 	
+	String source = null;
+	String name   = null;
+	
 	int idFather = -1;
 	for(Person p: group){
 		if(p.getStartCode() == 1){
 			idFather = p.getIdWithinGroup();
+			source = p.getId_D();
+			name = p.getFirstName() + " " + p.getFamilyName();
 			break;
 		}
 	}
 	
-	// All other fathers are stepfathers
+	// All other fathers are stepfathers Nee, dit geeft problemen, maar wel een message
 	
 	for(Person p: group){
 		if(p.getIdWithinGroup() != idFather){
-			p.setRelationRP("Stiefvader"); // must use Dutch because of upcoming standardization
+			//p.setRelationRP("Stiefvader"); // must use Dutch because of upcoming standardization
+			message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getId_D(), name, source);
 		}
 	}
 	
