@@ -95,7 +95,7 @@ public class IDS implements Runnable {
 	//for(int i = 0; i < idnr.length; i++){
 	idnr = 0;
 	icount = 0;
-	 for(int i = 0; i < 1; i++){ // we run in 10 batches
+	 for(int i = 1; i < 2; i++){ // we run in 10 batches
 		
 		setIndexPerson(0);
 		indiv_count = 0;
@@ -133,8 +133,8 @@ public class IDS implements Runnable {
 		
 		for(Person pp: personL ){ // xxx
 			//System.out.println("---> id = " + pp.getId() + "  " + pp.getFamilyName() + "   " + pp.getFirstName() + "  " +  pp.getId_D());
-			if(pp.getRelationRP() != null && pp.getRelationRP().trim().length() > 0)
-				pp.setRelationRP(standardizeRelation(pp.getRelationRP()));
+			if(pp.getRelationRP() != null && pp.getRelationRP().trim().length() > 0)						
+				pp.setRelationRP(standardizeRelation(pp.getRelationRP()));				
 
 			if(pp.getFamilyName() != null && !pp.getFamilyName().equalsIgnoreCase("N"))
 				em.persist(pp);
@@ -320,7 +320,7 @@ public class IDS implements Runnable {
     	ArrayList<Integer> relatives = new ArrayList<Integer>();
     	String oldId_new = "";
     	for(Person p: group){
-    		if(!p.getId_I_new().equals(oldId_new)){
+    		if(!p.getId_I_new().equals(oldId_new)){  // dit is niet goed!!!
     			oldId_new = p.getId_I_new();
     			relatives.clear();
     		}
@@ -387,7 +387,7 @@ public class IDS implements Runnable {
 
 /**
  * 
- * This routine reads INDIVIDUAL entries and create Person objects from them.
+ * This routine reads INDIVIDUAL entries and creates Person objects from them.
  * It then links the INDIV_INDIV and INDIV_CONTEXT entries to the Person objects
  * 
  * @param component
@@ -999,27 +999,33 @@ private static ArrayList<Person> handleMothers(ArrayList<Person> family){
 	String source = null;
 	String name   = null;
 	
+	ArrayList<Person> group2 = new ArrayList<Person>();
+	
 	int idMother = -1;
 	for(Person p: group){
 		if(p.getStartCode() == 1){
 			idMother = p.getIdWithinGroup();
 			source = p.getId_D();
 			name = p.getFirstName() + " " + p.getFamilyName();
+			group2.add(p);
 			
 			break;
 		}
 	}
 	
-	// All other mothers are stepmothers. Nee, dit geeft problemen. Maar wel een message
+	// All other mothers are stepmothers. Nee, dit geeft problemen. Maar wel een message. En verwijderen.
+	
+	
 	
 	for(Person p: group){
 		if(p.getIdWithinGroup() != idMother){
 			//p.setRelationRP("Stiefmoeder"); // must use Dutch because of upcoming standardization
 			message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getId_D(), name, source);
 		}
+		
 	}
 	
-    return(group);
+    return(group2);
 	
 }
 /**
@@ -1066,6 +1072,8 @@ private static ArrayList<Person> handleFathers(ArrayList<Person> family){
 	
 	String source = null;
 	String name   = null;
+	ArrayList<Person> group2 = new ArrayList<Person>();
+
 	
 	int idFather = -1;
 	for(Person p: group){
@@ -1073,11 +1081,12 @@ private static ArrayList<Person> handleFathers(ArrayList<Person> family){
 			idFather = p.getIdWithinGroup();
 			source = p.getId_D();
 			name = p.getFirstName() + " " + p.getFamilyName();
+			group2.add(p);
 			break;
 		}
 	}
 	
-	// All other fathers are stepfathers Nee, dit geeft problemen, maar wel een message
+	// All other fathers are stepfathers Nee, dit geeft problemen, maar wel een message. En verwijderen
 	
 	for(Person p: group){
 		if(p.getIdWithinGroup() != idFather){
@@ -1086,7 +1095,7 @@ private static ArrayList<Person> handleFathers(ArrayList<Person> family){
 		}
 	}
 	
-    return(group);
+    return(group2);
 	
 }
 /**
