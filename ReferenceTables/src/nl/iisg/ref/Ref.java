@@ -1268,7 +1268,7 @@ public class Ref {
 	public static void truncateProfession(Ref_Profession p){
 
 		String field = p.getOriginal();
-		int allowedSize = Bigstring;
+		int allowedSize = XBigstring;
 		if(field != null && field.length() > allowedSize){
 			message("1500", "Ref_occupation", "original", "" + allowedSize);
 			field = field.substring(0, allowedSize);

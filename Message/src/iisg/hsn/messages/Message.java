@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -140,6 +141,23 @@ public class Message {
 			em.persist(m);
 
 		messages.clear();
+		
+		em.getTransaction().commit();
+        em.clear();
+		em.close();
+
+	}
+	
+	public static void initialise(){
+
+
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("hsn_ids_mes");
+		EntityManager em = factory.createEntityManager();
+		
+		em.getTransaction().begin();
+		
+		Query query = em.createNativeQuery("truncate table hsn_msg.bfout9ft");  
+		query.executeUpdate();
 		
 		em.getTransaction().commit();
         em.clear();

@@ -84,18 +84,20 @@ public class IDS implements Runnable {
 	Ref.createRefTables();
 	Ref.loadRelation_B();
 	
+	Message.initialise();
+	
 	//int [] idnr = getIDNRs();
 
 	EntityManagerFactory emf = Persistence.createEntityManagerFactory("hsn_ids");
 	EntityManager em = emf.createEntityManager();
 	
 	
-	Message.finalise();
+	
 	
 	//for(int i = 0; i < idnr.length; i++){
 	idnr = 0;
 	icount = 0;
-	 for(int i = 1; i < 2; i++){ // we run in 10 batches
+	 for(int i = 0; i < 1; i++){ // we run in 10 batches
 		
 		setIndexPerson(0);
 		indiv_count = 0;
@@ -184,7 +186,7 @@ public class IDS implements Runnable {
     		public int compare(Person p1, Person p2){
     			
     			int id_i_new_1 = new Integer(p1.getId_I_new());
-    			int id_i_new_2 = new Integer(p2.getId_I_new());
+    			int id_i_new_2 = new Integer(p2.getId_I_new()); 
     			
     			if(id_i_new_1 < id_i_new_2)
     				return -1;  
