@@ -219,7 +219,8 @@ public class IDS implements Runnable {
         		if(idnr % 100 == 0)
         			print("Processed " + idnr + " IDNRs");
     		}
-    		if(personL.get(indexP).getFamilyName() != null && !personL.get(indexP).getFamilyName().equalsIgnoreCase("N"))
+    		if(personL.get(indexP).getFamilyName() != null && !personL.get(indexP).getFamilyName().equalsIgnoreCase("N") && 
+    				personL.get(indexP).getStartCode() > 0)
     			group.add(personL.get(indexP));
     		indexP++;
     		if(indexP % 1000 == 0){
@@ -895,9 +896,9 @@ private static void integratePersons(){
 			if(family != null){
 				
 				ArrayList<Person> RPs = handleRP(family); 
-				ArrayList<Person> mothers = handleMothers(family); 
-				ArrayList<Person> fathers = handleFathers(family); 
-				ArrayList<Person> spouses = handleSpouses(family); 
+				handleMothers(family); 
+				handleFathers(family); 
+				handleSpouses(family); 
 				ArrayList<Person> children = handleChildren(family); 
 				ArrayList<Person> siblings = handleSiblings(family); 
 				ArrayList<Person> inlaws = handleParentsInLaw(family); 
@@ -916,9 +917,9 @@ private static void integratePersons(){
 	if(family != null){
 		
 		ArrayList<Person> RPs = handleRP(family); 
-		ArrayList<Person> mothers = handleMothers(family); 
-		ArrayList<Person> fathers = handleFathers(family);
-		ArrayList<Person> spouses = handleSpouses(family); 
+		handleMothers(family); 
+		handleFathers(family);
+		handleSpouses(family); 
 		ArrayList<Person> children = handleChildren(family); 
 		ArrayList<Person> siblings = handleSiblings(family); 
 		ArrayList<Person> inlaws = handleParentsInLaw(family); 
@@ -956,78 +957,35 @@ private static ArrayList<Person> handleRP(ArrayList<Person> family){
  * @param family
  * @return
  */
-private static ArrayList<Person> handleMothers(ArrayList<Person> family){
+private static void handleMothers(ArrayList<Person> family){
 	
 	ArrayList<Person> group = new ArrayList<Person>();
 	for(Person p: family){
 		if(p.getRelationRP() != null && 
 				(p.getRelationRP().equalsIgnoreCase("Moeder") || p.getRelationRP().equals("" + ConstRelations2.MOEDER) ||
 						p.getRelationRP().equalsIgnoreCase("Stiefmoeder") || p.getRelationRP().equals("" + ConstRelations2.STIEFMOEDER))){
+			p.setStartCode(2);  // preset
 			group.add(p);
 		}
 	}
 	
 	setIDWithinGroup(group, true);  // only Name compare for mothers
 	
+	Person preferredPerson = setStartCode(group); //find preferred source
 	
-	HashSet<Integer> h = new HashSet<Integer>();
-	for(Person p: group)
-		h.add(p.getIdWithinGroup());
-	
-	
-	for(Integer i: h){
-
-		if(i >= 9) break;
-		
-		ArrayList<Person> subGroup = new ArrayList<Person>();
-		for(Person p: group){
-			if(p.getIdWithinGroup() == i){
-				p.setId_I_new("1" + idnrSixCharacters(p.getIdnr()) + "00" + (1 + i));
-				//System.out.println("===> " + "1" + p.getIdnr() + "00" + (1 + i));
-				p.setStartCode(2);
-				subGroup.add(p);
-			}
-		}
-        		
-		setStartCode(subGroup);
-		
-	}
-		
-
-	
-	// find id of first mother with startcode = 1
-	
-	
-	String source = null;
-	String name   = null;
-	
-	ArrayList<Person> group2 = new ArrayList<Person>();
-	
-	int idMother = -1;
 	for(Person p: group){
-		if(p.getStartCode() == 1){
-			idMother = p.getIdWithinGroup();
-			source = p.getId_D();
-			name = p.getFirstName() + " " + p.getFamilyName();
-			group2.add(p);
+		
+		if(p.getIdWithinGroup() == preferredPerson.getIdWithinGroup())
+			p.setId_I_new("1" + idnrSixCharacters(p.getIdnr()) + "002");
+		else{
+				message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getId_D(), 
+						preferredPerson.getFirstName() + " " + preferredPerson.getFamilyName(),preferredPerson.getId_D());
+				p.setStartCode(0);
+		}
+
 			
-			break;
-		}
 	}
 	
-	// All other mothers are stepmothers. Nee, dit geeft problemen. Maar wel een message. En verwijderen.
-	
-	
-	
-	for(Person p: group){
-		if(p.getIdWithinGroup() != idMother){
-			//p.setRelationRP("Stiefmoeder"); // must use Dutch because of upcoming standardization
-			message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getId_D(), name, source);
-		}
-		
-	}
-	
-    return(group2);
 	
 }
 /**
@@ -1036,68 +994,35 @@ private static ArrayList<Person> handleMothers(ArrayList<Person> family){
  * @param family
  * @return
  */
-private static ArrayList<Person> handleFathers(ArrayList<Person> family){
+private static void handleFathers(ArrayList<Person> family){
 	
 	ArrayList<Person> group = new ArrayList<Person>();
 	for(Person p: family){
 		if(p.getRelationRP() != null && 
 				(p.getRelationRP().equalsIgnoreCase("Vader") || p.getRelationRP().equals("" + ConstRelations2.VADER) ||
 						p.getRelationRP().equalsIgnoreCase("Stiefvader") || p.getRelationRP().equals("" + ConstRelations2.STIEFVADER))){
+			p.setStartCode(2);  // preset
 			group.add(p);
 		}
 	}
 	
-	setIDWithinGroup(group, true);  // only name compare for father 
-	HashSet<Integer> h = new HashSet<Integer>();
-	for(Person p: group)
-		h.add(p.getIdWithinGroup());
+	setIDWithinGroup(group, true);  // only Name compare for mothers
 	
+	Person preferredPerson = setStartCode(group); //find preferred source
 	
-	for(Integer i: h){
+	for(Person p: group){
 		
-		if(i > 9) break;
-		
-		ArrayList<Person> subGroup = new ArrayList<Person>();
-		for(Person p: group){
-			if(p.getIdWithinGroup() == i){
-				p.setId_I_new("1" + idnrSixCharacters(p.getIdnr()) + "0" + (11 + i));
-				p.setStartCode(2);
-				subGroup.add(p);
-			}
+		if(p.getIdWithinGroup() == preferredPerson.getIdWithinGroup())
+			p.setId_I_new("1" + idnrSixCharacters(p.getIdnr()) + "012");
+		else{
+				message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getId_D(), 
+						preferredPerson.getFirstName() + " " + preferredPerson.getFamilyName(),preferredPerson.getId_D());
+				p.setStartCode(0);
 		}
-        		
-		setStartCode(subGroup);
-		
-	}
-		
-	// find id of first father with startcode = 1
-	
-	String source = null;
-	String name   = null;
-	ArrayList<Person> group2 = new ArrayList<Person>();
 
-	
-	int idFather = -1;
-	for(Person p: group){
-		if(p.getStartCode() == 1){
-			idFather = p.getIdWithinGroup();
-			source = p.getId_D();
-			name = p.getFirstName() + " " + p.getFamilyName();
-			group2.add(p);
-			break;
-		}
+			
 	}
 	
-	// All other fathers are stepfathers Nee, dit geeft problemen, maar wel een message. En verwijderen
-	
-	for(Person p: group){
-		if(p.getIdWithinGroup() != idFather){
-			//p.setRelationRP("Stiefvader"); // must use Dutch because of upcoming standardization
-			message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getId_D(), name, source);
-		}
-	}
-	
-    return(group2);
 	
 }
 /**
@@ -1106,7 +1031,7 @@ private static ArrayList<Person> handleFathers(ArrayList<Person> family){
  * @param family
  * @return
  */
-private static ArrayList<Person> handleSpouses(ArrayList<Person> family){
+private static void handleSpouses(ArrayList<Person> family){
 	
 	ArrayList<Person> group = new ArrayList<Person>();
 	for(Person p: family){
@@ -1117,39 +1042,21 @@ private static ArrayList<Person> handleSpouses(ArrayList<Person> family){
 					 	 p.getRelationRP().equals("" + ConstRelations2.ECHTGENOOT_EXPLICIET_HOOFD) ||
 					 	 p.getRelationRP().equals("" + ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD) ||
 					 	 p.getRelationRP().equals("" + ConstRelations2.PARTNER) 
-			 	 )){
+			 	 ))
+		
 			group.add(p);
-		}
+		
 		
 	}
 	
-	setIDWithinGroup(group, false);
+	setIDWithinGroup(group, false);     // this gives one or more different spouses
 	
-	HashSet<Integer> h = new HashSet<Integer>();
-	for(Person p: group)
-		h.add(p.getIdWithinGroup());
-	
-	
-	for(Integer i: h){
-
-		if(i > 9) break;
-
-		ArrayList<Person> subGroup = new ArrayList<Person>();
-		for(Person p: group){
-			if(p.getIdWithinGroup() == i){
-
-				p.setId_I_new("1" + idnrSixCharacters(p.getIdnr()) + "0" + (20 + i));
-				p.setStartCode(2);
-				subGroup.add(p);
-			}
-		}
-        		
-		setStartCode(subGroup);
+	for(Person p: group){
+		//p.setId_I_new("1" + idnrSixCharacters(p.getIdnr()) + "20" + p.getIdWithinGroup());
 		
+	    String a = String.format("1%s20%1d", idnrSixCharacters(p.getIdnr()), p.getIdWithinGroup());
+	    p.setId_I_new(a);
 	}
-		
-    return(group);
-	
 }
 
 /**
@@ -1353,7 +1260,7 @@ private static ArrayList<Person> handleOthers(ArrayList<Person> family){
 }
 
 /**
- * This routine sets startcode = 1 for a person group
+ * This routine sets startcode = 1 for a person in the group
  * It searches for sources in the order:
  * 
  * 	Birth Certificate
@@ -1366,7 +1273,7 @@ private static ArrayList<Person> handleOthers(ArrayList<Person> family){
  * @param group
  */
 
-private static void setStartCode(ArrayList<Person> group){
+private static Person setStartCode(ArrayList<Person> group){
 	
 	//System.out.println("In setStartCode");
 	
@@ -1381,7 +1288,7 @@ private static void setStartCode(ArrayList<Person> group){
 			if(p.getId_D() != null && p.getId_D().substring(0,s.length()).equals(s)){
 				
 				p.setStartCode(1);
-				break x;
+				return p;
 				
 			}
 			
@@ -1389,7 +1296,7 @@ private static void setStartCode(ArrayList<Person> group){
 		
 	}
 	
-	
+	return null;
 }
 
 
