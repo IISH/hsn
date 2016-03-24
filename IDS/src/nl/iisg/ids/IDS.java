@@ -899,10 +899,10 @@ private static void integratePersons(){
 				handleMothers(family); 
 				handleFathers(family); 
 				handleSpouses(family); 
-				ArrayList<Person> children = handleChildren(family); 
-				ArrayList<Person> siblings = handleSiblings(family); 
-				ArrayList<Person> inlaws = handleParentsInLaw(family); 
-				ArrayList<Person> others = handleOthers(family); 
+				//ArrayList<Person> children = handleChildren(family); 
+				//ArrayList<Person> siblings = handleSiblings(family); 
+				//ArrayList<Person> inlaws = handleParentsInLaw(family); 
+				//ArrayList<Person> others = handleOthers(family); 
 
 			}
 			
@@ -920,9 +920,10 @@ private static void integratePersons(){
 		handleMothers(family); 
 		handleFathers(family);
 		handleSpouses(family); 
-		ArrayList<Person> children = handleChildren(family); 
-		ArrayList<Person> siblings = handleSiblings(family); 
-		ArrayList<Person> inlaws = handleParentsInLaw(family); 
+		//ArrayList<Person> children = handleChildren(family); 
+		//ArrayList<Person> siblings = handleSiblings(family); 
+		//ArrayList<Person> inlaws = handleParentsInLaw(family); 
+		//
 		ArrayList<Person> others = handleOthers(family); 
 
 	}
@@ -971,21 +972,29 @@ private static void handleMothers(ArrayList<Person> family){
 	
 	setIDWithinGroup(group, true);  // only Name compare for mothers
 	
-	Person preferredPerson = setStartCode(group); //find preferred source
 	
-	for(Person p: group){
+	ArrayList<Person> group2 = new ArrayList<Person>();  // We only use the first mother, but she may appear multiple times
+	ArrayList<Person> group3 = new ArrayList<Person>();  // We only use the first mother, but she may appear multiple times
+	for(Person p: group)
+		if(p.getIdWithinGroup() == 1)
+			group2.add(p);	
+		else
+			group3.add(p);
+	
+	Person preferredPerson = setStartCode(group2); //find preferred source
+	
+	for(Person p: group2)
+		p.setId_I_new("1" + idnrSixCharacters(p.getIdnr()) + "002");
+	
+	for(Person p: group3){
+		message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getId_D(), 
+				preferredPerson.getFirstName() + " " + preferredPerson.getFamilyName(),preferredPerson.getId_D());
 		
-		if(p.getIdWithinGroup() == preferredPerson.getIdWithinGroup())
-			p.setId_I_new("1" + idnrSixCharacters(p.getIdnr()) + "002");
-		else{
-				message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getId_D(), 
-						preferredPerson.getFirstName() + " " + preferredPerson.getFamilyName(),preferredPerson.getId_D());
-				p.setStartCode(0);
-		}
-
-			
+		p.setStartCode(0);
+		p.setId_I_new("0");
 	}
-	
+			
+			
 	
 }
 /**
@@ -1006,23 +1015,32 @@ private static void handleFathers(ArrayList<Person> family){
 		}
 	}
 	
-	setIDWithinGroup(group, true);  // only Name compare for mothers
+	setIDWithinGroup(group, true);  // only Name compare for fathers
 	
-	Person preferredPerson = setStartCode(group); //find preferred source
 	
-	for(Person p: group){
+	ArrayList<Person> group2 = new ArrayList<Person>();  // We only use the first father, but he may appear multiple times
+	ArrayList<Person> group3 = new ArrayList<Person>();  // We only use the first father, but he may appear multiple times
+	for(Person p: group)
+		if(p.getIdWithinGroup() == 1)
+			group2.add(p);	
+		else
+			group3.add(p);
+	
+	Person preferredPerson = setStartCode(group2); //find preferred source
+	
+	for(Person p: group2)
+		p.setId_I_new("1" + idnrSixCharacters(p.getIdnr()) + "012");
+	
+	for(Person p: group3){
+		message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getId_D(), 
+				preferredPerson.getFirstName() + " " + preferredPerson.getFamilyName(),preferredPerson.getId_D());
 		
-		if(p.getIdWithinGroup() == preferredPerson.getIdWithinGroup())
-			p.setId_I_new("1" + idnrSixCharacters(p.getIdnr()) + "012");
-		else{
-				message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getId_D(), 
-						preferredPerson.getFirstName() + " " + preferredPerson.getFamilyName(),preferredPerson.getId_D());
-				p.setStartCode(0);
-		}
+		p.setStartCode(0);
+		p.setId_I_new("0");
 
-			
+
 	}
-	
+			
 	
 }
 /**
@@ -1051,12 +1069,46 @@ private static void handleSpouses(ArrayList<Person> family){
 	
 	setIDWithinGroup(group, false);     // this gives one or more different spouses
 	
+	Collections.sort(group, new Comparator<Person>() 
+			{
+		public int compare(Person p1, Person p2){
+			
+			if(p1.getIdWithinGroup() < p2.getIdWithinGroup())
+				return -1;
+			if(p1.getIdWithinGroup() > p2.getIdWithinGroup())
+				return  1;
+				
+			return 0;
+		}
+			});
+	
+	
+	int id_prev = -1;
+	ArrayList<Person> group2 = new ArrayList<Person>();
+	
 	for(Person p: group){
-		//p.setId_I_new("1" + idnrSixCharacters(p.getIdnr()) + "20" + p.getIdWithinGroup());
+		if(p.getIdWithinGroup() != id_prev){
+			if(group2.size() > 0){
+				setStartCode(group2); //find preferred source
+				for(Person p2: group2)					
+					p2.setId_I_new("1" + idnrSixCharacters(p.getIdnr()) + "02" + p2.getIdWithinGroup());
+
+			}
+			id_prev = p.getIdWithinGroup();  	
+			
+		}
+		else
+			group2.add(p);
 		
-	    String a = String.format("1%s20%1d", idnrSixCharacters(p.getIdnr()), p.getIdWithinGroup());
-	    p.setId_I_new(a);
 	}
+	if(group2.size() > 0){
+		setStartCode(group2); //find preferred source
+		for(Person p2: group2)					
+			p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + "02" + p2.getIdWithinGroup());
+
+	}
+	
+	
 }
 
 /**
