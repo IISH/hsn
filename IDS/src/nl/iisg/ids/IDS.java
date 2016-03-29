@@ -181,9 +181,16 @@ public class IDS implements Runnable {
     	
     	// Sort the person list on (id_i_new, start code)
     	
+    	//for(Person p: personL){
+    	//	String id_i_new = p.getId_I_new() == null ? "NuLL" : p.getId_I_new();
+    	//	System.out.println(p.getIdnr() + "  " + p.getIdWithinGroup() + " " + p.getOriginalRelationRP() +  " " + id_i_new);
+    	//}
+    	
     	Collections.sort(personL, new Comparator<Person>() // this gives all identified Persons, prefered source first
     			{
     		public int compare(Person p1, Person p2){
+    			
+    			//System.out.println(p1.getId_I_new() + "  " + p2.getId_I_new());
     			
     			int id_i_new_1 = new Integer(p1.getId_I_new());
     			int id_i_new_2 = new Integer(p2.getId_I_new()); 
@@ -193,10 +200,12 @@ public class IDS implements Runnable {
     			if(id_i_new_1 > id_i_new_2)
     				return  1;
     			
+    			// sort inverse on start code to get startcode = 1 entries first
+    			
     			if(p1.getStartCode() < p2.getStartCode())
-    				return -1;
+    				return +1;
     			if(p1.getStartCode() > p2.getStartCode())
-    				return  1;
+    				return -1;
     				
     			return 0;
     		}
@@ -681,6 +690,7 @@ private static void loadIDS(String component, int lastDigit){
 	print("Reading .");
 
 	
+	//Query q = em.createQuery("select a from INDIVIDUAL a where a.id_D < 9000"); 
 	Query q = em.createQuery("select a from INDIVIDUAL a where a.id_D like '%" + lastD + "'"); 
 	//Query q = em.createQuery("select a from INDIVIDUAL a"); 
 	setIndividualL(q.getResultList());	
@@ -713,6 +723,7 @@ private static void loadIDS(String component, int lastDigit){
 	System.out.println("Start loading INDIV_INDIV from " + component);
 	print("Reading ..");
 
+	//q = em.createQuery("select a from INDIV_INDIV a where a.id_D == 1090"); 
 	q = em.createQuery("select a from INDIV_INDIV a where a.id_D like '%" + lastD + "'"); 
 	//q = em.createQuery("select a from INDIV_INDIV a"); 
 	setIndiv_indivL(q.getResultList());	
@@ -895,14 +906,14 @@ private static void integratePersons(){
 			
 			if(family != null){
 				
-				ArrayList<Person> RPs = handleRP(family); 
+				handleRP(family); 
 				handleMothers(family); 
 				handleFathers(family); 
 				handleSpouses(family); 
-				//ArrayList<Person> children = handleChildren(family); 
-				//ArrayList<Person> siblings = handleSiblings(family); 
-				//ArrayList<Person> inlaws = handleParentsInLaw(family); 
-				//ArrayList<Person> others = handleOthers(family); 
+				handleChildren(family); 
+				handleSiblings(family); 
+				handleParentsInLaw(family); 
+				handleOthers(family); 
 
 			}
 			
@@ -916,15 +927,14 @@ private static void integratePersons(){
 	}
 	if(family != null){
 		
-		ArrayList<Person> RPs = handleRP(family); 
+		handleRP(family); 
 		handleMothers(family); 
 		handleFathers(family);
 		handleSpouses(family); 
-		//ArrayList<Person> children = handleChildren(family); 
-		//ArrayList<Person> siblings = handleSiblings(family); 
-		//ArrayList<Person> inlaws = handleParentsInLaw(family); 
-		//
-		ArrayList<Person> others = handleOthers(family); 
+		handleChildren(family); 
+		handleSiblings(family); 
+		handleParentsInLaw(family);		
+		handleOthers(family); 
 
 	}
 	
@@ -937,7 +947,7 @@ private static void integratePersons(){
  * @param family
  * @return
  */
-private static ArrayList<Person> handleRP(ArrayList<Person> family){
+private static void handleRP(ArrayList<Person> family){
 	
 	ArrayList<Person> group = new ArrayList<Person>();
 	for(Person p: family){
@@ -948,8 +958,8 @@ private static ArrayList<Person> handleRP(ArrayList<Person> family){
 		}
 	}
 	setStartCode(group);
-    return(group);
-
+	family.removeAll(group);
+    
 	
 }
 /**
@@ -995,7 +1005,8 @@ private static void handleMothers(ArrayList<Person> family){
 	}
 			
 			
-	
+	family.removeAll(group2);
+	family.removeAll(group3);
 }
 /**
  * Routine to handle fathers
@@ -1041,7 +1052,8 @@ private static void handleFathers(ArrayList<Person> family){
 
 	}
 			
-	
+	family.removeAll(group2);
+	family.removeAll(group3);
 }
 /**
  * Routine to handle spouses
@@ -1091,14 +1103,14 @@ private static void handleSpouses(ArrayList<Person> family){
 			if(group2.size() > 0){
 				setStartCode(group2); //find preferred source
 				for(Person p2: group2)					
-					p2.setId_I_new("1" + idnrSixCharacters(p.getIdnr()) + "02" + p2.getIdWithinGroup());
+					p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + "02" + p2.getIdWithinGroup());
 
+				group2.clear();
 			}
 			id_prev = p.getIdWithinGroup();  	
 			
 		}
-		else
-			group2.add(p);
+		group2.add(p);
 		
 	}
 	if(group2.size() > 0){
@@ -1108,6 +1120,8 @@ private static void handleSpouses(ArrayList<Person> family){
 
 	}
 	
+	family.removeAll(group);
+
 	
 }
 
@@ -1117,7 +1131,7 @@ private static void handleSpouses(ArrayList<Person> family){
  * @param family
  * @return
  */
-private static ArrayList<Person> handleChildren(ArrayList<Person> family){
+private static void handleChildren(ArrayList<Person> family){
 	
 	ArrayList<Person> group = new ArrayList<Person>();
 	for(Person p: family){
@@ -1131,32 +1145,56 @@ private static ArrayList<Person> handleChildren(ArrayList<Person> family){
 		}
 	}
 	
-	setIDWithinGroup(group, false);
+	setIDWithinGroup(group, false);	
 	
-	HashSet<Integer> h = new HashSet<Integer>();
-	for(Person p: group)
-		h.add(p.getIdWithinGroup());
-	
-	
-	for(Integer i: h){
-
-		if(i > 9) break;
-		
-		ArrayList<Person> subGroup = new ArrayList<Person>();
-		for(Person p: group){
-			if(p.getIdWithinGroup() == i){
-
-				p.setId_I_new("1" + idnrSixCharacters(p.getIdnr()) + "0" + (30 + i));
-				p.setStartCode(2);
-				subGroup.add(p);
-			}
+	Collections.sort(group, new Comparator<Person>() 
+			{
+		public int compare(Person p1, Person p2){
+			
+			if(p1.getIdWithinGroup() < p2.getIdWithinGroup())
+				return -1;
+			if(p1.getIdWithinGroup() > p2.getIdWithinGroup())
+				return  1;
+				
+			return 0;
 		}
-        		
-		setStartCode(subGroup);
+			});
+	
+	
+	int id_prev = -1;
+	ArrayList<Person> group2 = new ArrayList<Person>();
+	
+	for(Person p: group){
+		if(p.getIdWithinGroup() != id_prev){
+			if(group2.size() > 0){
+				setStartCode(group2); //find preferred source
+				for(Person p2: group2){					
+					//p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + "03" + p2.getIdWithinGroup());
+					String n = (30 + p2.getIdWithinGroup()) + "";
+					p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + "0" + n);
+				}
+
+				group2.clear();
+			}
+			id_prev = p.getIdWithinGroup();  	
+			
+		}
+		group2.add(p);
 		
 	}
-		
-    return(group);
+	if(group2.size() > 0){
+		setStartCode(group2); //find preferred source
+		for(Person p2: group2){					
+			//p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + "03" + p2.getIdWithinGroup());
+			String n = (30 + p2.getIdWithinGroup()) + "";
+			p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + "0" + n);
+
+		}
+
+	}
+	
+	family.removeAll(group);
+
 	
 }
 /**
@@ -1165,7 +1203,7 @@ private static ArrayList<Person> handleChildren(ArrayList<Person> family){
  * @param family
  * @return
  */
-private static ArrayList<Person> handleSiblings(ArrayList<Person> family){
+private static void handleSiblings(ArrayList<Person> family){
 	
 	int id = 101;
 	ArrayList<Person> group = new ArrayList<Person>();
@@ -1183,39 +1221,62 @@ private static ArrayList<Person> handleSiblings(ArrayList<Person> family){
 	
 	setIDWithinGroup(group, false);
 	
-	HashSet<Integer> h = new HashSet<Integer>();
-	for(Person p: group)
-		h.add(p.getIdWithinGroup());
-	
-	
-	for(Integer i: h){
-
-		if(i > 99) break;
-		
-		ArrayList<Person> subGroup = new ArrayList<Person>();
-		for(Person p: group){
-			if(p.getIdWithinGroup() == i){
-
-				p.setId_I_new("1" + idnrSixCharacters(p.getIdnr()) +  (100 + i));
-				p.setStartCode(2);
-				subGroup.add(p);
-			}
+	Collections.sort(group, new Comparator<Person>() 
+			{
+		public int compare(Person p1, Person p2){
+			
+			if(p1.getIdWithinGroup() < p2.getIdWithinGroup())
+				return -1;
+			if(p1.getIdWithinGroup() > p2.getIdWithinGroup())
+				return  1;
+				
+			return 0;
 		}
-        		
-		setStartCode(subGroup);
+			});
+	
+	
+	int id_prev = -1;
+	ArrayList<Person> group2 = new ArrayList<Person>();
+	
+	for(Person p: group){
+		if(p.getIdWithinGroup() != id_prev){
+			if(group2.size() > 0){
+				setStartCode(group2); //find preferred source
+				for(Person p2: group2){
+					String n = (100 + p2.getIdWithinGroup()) + "";
+					p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + n);
+				}
+
+				group2.clear();
+			}
+			id_prev = p.getIdWithinGroup();  	
+			
+		}
+		group2.add(p);
 		
 	}
-		
-    return(group);
+	if(group2.size() > 0){
+		setStartCode(group2); //find preferred source
+		for(Person p2: group2){					
+			//p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + "10" + p2.getIdWithinGroup());
+			String n = (100 + p2.getIdWithinGroup()) + "";
+			p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + n);
+
+		}
+
+	}
 	
-}
+	family.removeAll(group);
+
+
+	}
 /**
  * Routine to handle parents in law
  * 
  * @param family
  * @return
  */
-private static ArrayList<Person> handleParentsInLaw(ArrayList<Person> family){
+private static void handleParentsInLaw(ArrayList<Person> family){
 	
 	int id = 201;
 	ArrayList<Person> group = new ArrayList<Person>();
@@ -1229,32 +1290,55 @@ private static ArrayList<Person> handleParentsInLaw(ArrayList<Person> family){
 	
 	setIDWithinGroup(group, false);
 	
-	HashSet<Integer> h = new HashSet<Integer>();
-	for(Person p: group)
-		h.add(p.getIdWithinGroup());
-	
-	
-	for(Integer i: h){
-	
-		if(i > 99) break;
-
-		//System.out.println("PIL " + i);
-		ArrayList<Person> subGroup = new ArrayList<Person>();
-		for(Person p: group){
-			if(p.getIdWithinGroup() == i){
-
-				p.setId_I_new("1" + idnrSixCharacters(p.getIdnr()) +  (200 + i));
-				p.setStartCode(2);
-				subGroup.add(p);
-			}
+	Collections.sort(group, new Comparator<Person>() 
+			{
+		public int compare(Person p1, Person p2){
+			
+			if(p1.getIdWithinGroup() < p2.getIdWithinGroup())
+				return -1;
+			if(p1.getIdWithinGroup() > p2.getIdWithinGroup())
+				return  1;
+				
+			return 0;
 		}
-        		
-		setStartCode(subGroup);
+			});
+	
+	
+	int id_prev = -1;
+	ArrayList<Person> group2 = new ArrayList<Person>();
+	
+	for(Person p: group){
+		if(p.getIdWithinGroup() != id_prev){
+			if(group2.size() > 0){
+				setStartCode(group2); //find preferred source
+				for(Person p2: group2){					
+					//p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + "20" + p2.getIdWithinGroup());
+					String n = (200 + p2.getIdWithinGroup()) + "";
+					p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + n);
+
+				}
+
+				group2.clear();
+			}
+			id_prev = p.getIdWithinGroup();  	
+			
+		}
+		group2.add(p);
 		
 	}
-		
-    return(group);
+	if(group2.size() > 0){
+		setStartCode(group2); //find preferred source
+		for(Person p2: group2){					
+			//p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + "20" + p2.getIdWithinGroup());
+			String n = (200 + p2.getIdWithinGroup()) + "";
+			p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + n);
+
+		}
+
+	}
 	
+	family.removeAll(group);
+
 }
 
 /**
@@ -1263,7 +1347,7 @@ private static ArrayList<Person> handleParentsInLaw(ArrayList<Person> family){
  * @param family
  * @return
  */
-private static ArrayList<Person> handleOthers(ArrayList<Person> family){
+private static void handleOthers(ArrayList<Person> family){
 	
 	ArrayList<Person> group = new ArrayList<Person>();
 	for(Person p: family){
@@ -1284,30 +1368,55 @@ private static ArrayList<Person> handleOthers(ArrayList<Person> family){
 	
 	setIDWithinGroup(group, false);
 	
-	HashSet<Integer> h = new HashSet<Integer>();
-	for(Person p: group)
-		h.add(p.getIdWithinGroup());
-	
-	
-	for(Integer i: h){
-
-		if(i > 699) break;
-		
-		ArrayList<Person> subGroup = new ArrayList<Person>();
-		for(Person p: group){
-			if(p.getIdWithinGroup() == i){
-
-				p.setId_I_new("1" + idnrSixCharacters(p.getIdnr()) + (300 + i));
-				p.setStartCode(2);
-				subGroup.add(p);
-			}
+	Collections.sort(group, new Comparator<Person>() 
+			{
+		public int compare(Person p1, Person p2){
+			
+			if(p1.getIdWithinGroup() < p2.getIdWithinGroup())
+				return -1;
+			if(p1.getIdWithinGroup() > p2.getIdWithinGroup())
+				return  1;
+				
+			return 0;
 		}
-        		
-		setStartCode(subGroup);
+			});
+	
+	
+	int id_prev = -1;
+	ArrayList<Person> group2 = new ArrayList<Person>();
+	
+	for(Person p: group){
+		if(p.getIdWithinGroup() != id_prev){
+			if(group2.size() > 0){
+				setStartCode(group2); //find preferred source
+				for(Person p2: group2){					
+					//p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + "30" + p2.getIdWithinGroup());
+					String n = (300 + p2.getIdWithinGroup()) + "";
+					p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + n);
+
+				}
+
+				group2.clear();
+			}
+			id_prev = p.getIdWithinGroup();  	
+			
+		}
+		group2.add(p);
 		
 	}
-		
-    return(group);
+	if(group2.size() > 0){
+		setStartCode(group2); //find preferred source
+		for(Person p2: group2){					
+			//p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + "30" + p2.getIdWithinGroup());
+			String n = (300 + p2.getIdWithinGroup()) + "";
+			p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + n);
+
+		}
+
+	}
+	
+	family.removeAll(group);
+
 	
 }
 
