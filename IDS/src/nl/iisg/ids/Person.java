@@ -28,7 +28,7 @@ public class Person {
 @Column(name = "Birthday")  			private int 	  birthDay;  
 @Column(name = "Birthmonth")  			private int 	  birthMonth;  
 @Column(name = "Birthyear")  			private int 	  birthYear;  
-@Column(name = "Birthstartday")  		private int 	  birthStartDay;  
+@Column(name = "Birthstartday")  		private int 	  birthStartDay;   
 @Column(name = "Birthstartmonth")  		private int 	  birthStartMonth;  
 @Column(name = "Birthstartyear")  		private int 	  birthStartYear;  
 @Column(name = "Birthendday")  			private int 	  birthEndDay;  

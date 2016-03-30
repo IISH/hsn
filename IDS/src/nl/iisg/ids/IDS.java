@@ -50,6 +50,9 @@ public class IDS implements Runnable {
     static String version;	
     static int idnr; 
     static int icount;
+    
+	static String [] sources = {"HSN BC", "HSN MC", "HSN PC", "HSN DC", "HSN PR"};
+
 
     public void run() {
 
@@ -186,7 +189,7 @@ public class IDS implements Runnable {
     	//	System.out.println(p.getIdnr() + "  " + p.getIdWithinGroup() + " " + p.getOriginalRelationRP() +  " " + id_i_new);
     	//}
     	
-    	Collections.sort(personL, new Comparator<Person>() // this gives all identified Persons, prefered source first
+    	Collections.sort(personL, new Comparator<Person>() // this gives all identified Persons, preferred source first
     			{
     		public int compare(Person p1, Person p2){
     			
@@ -202,10 +205,35 @@ public class IDS implements Runnable {
     			
     			// sort inverse on start code to get startcode = 1 entries first
     			
-    			if(p1.getStartCode() < p2.getStartCode())
-    				return +1;
-    			if(p1.getStartCode() > p2.getStartCode())
+    			//if(p1.getStartCode() < p2.getStartCode())
+    				//return +1;
+    			//if(p1.getStartCode() > p2.getStartCode())
+    				//return -1;
+    			
+    			// Source = "HSN MC B4"
+    			//           012345678
+    			
+    			String source1 = p1.getId_D().substring(0, 8);
+    			int    tab1    = new Integer(p1.getId_D().substring(8,9));  
+    			String source2 = p2.getId_D().substring(0, 8);
+    			int    tab2    = new Integer(p2.getId_D().substring(8,9));  
+
+    			
+    			// sort on sources
+    			
+    			if(Arrays.asList(sources).indexOf(source1) < Arrays.asList(sources).indexOf(source2))
     				return -1;
+    			if(Arrays.asList(sources).indexOf(source1) > Arrays.asList(sources).indexOf(source2))
+    				return +1;
+    			
+    			// sort on tables e.g. M1 < M2
+    			
+    			if(tab1 < tab2)
+    				return -1;
+    			if(tab1 > tab2)
+    				return +1;
+    			
+
     				
     			return 0;
     		}
@@ -267,6 +295,8 @@ public class IDS implements Runnable {
     	
     	//System.out.println("In write Group");
     	
+    	
+    	
     	for(Person p: group){
     		for(INDIVIDUAL i: p.getIndividual()){
     			if(p.getStartCode() == 1 || !typeInPerson(i.getType())){
@@ -287,7 +317,6 @@ public class IDS implements Runnable {
     		
     		// For INDIV_INDIV, we must FIRST update Id_I_1 and Id_I_2 to the new IDNR
     		
-    	String [] sources = {"HSN BC", "HSN MC", "HSN PC", "HSN DC", "HSN PR"};
 
     	
     	
@@ -402,6 +431,10 @@ public class IDS implements Runnable {
  * This routine reads INDIVIDUAL entries and creates Person objects from them.
  * It then links the INDIV_INDIV and INDIV_CONTEXT entries to the Person objects
  * 
+ * They must be read in the preferred sources-sequence (B, M, D)
+ * 
+ * 
+ * 
  * @param component
  */
 private static void handler(){
@@ -442,7 +475,7 @@ private static void handler(){
 			 p.setIdnr(individualL.get(i).getId_D());
 			 //p.setRelationRP(individualL.get(i).getId_I());			 
 			 p.setId_I(individualL.get(i).getId_I());
-			 //p.setId_D(individualL.get(i).getSource());
+			 p.setId_D(individualL.get(i).getSource());
 		}
 
 	    p.getIndividual().add(individualL.get(i));  // Save the INDIVIDUAL object
@@ -454,75 +487,91 @@ private static void handler(){
 		
 	    if(individualL.get(i).getType().equalsIgnoreCase("BIRTH_DATE")){
 	    	
-			 p.setId_D(individualL.get(i).getSource());
-
 	    	if(individualL.get(i).getYear() > 0){  // date
 	    		//System.out.println("Setting Birthdate");
-	    		p.setBirthDay  (individualL.get(i).getDay());
-	    		p.setBirthMonth(individualL.get(i).getMonth());
-	    		p.setBirthYear (individualL.get(i).getYear());
+	    		if(p.getBirthDay() == 0){
+	    			p.setBirthDay  (individualL.get(i).getDay());
+	    			p.setBirthMonth(individualL.get(i).getMonth());
+	    			p.setBirthYear (individualL.get(i).getYear());
+	    		}
 	    	}
 	    	else
 	    		if(individualL.get(i).getStart_year() > 0){  // interval
-	    			p.setBirthStartDay(individualL.get(i).getStart_day());
-	    			p.setBirthStartMonth(individualL.get(i).getStart_month());
-	    			p.setBirthStartYear(individualL.get(i).getStart_year());
-	    			p.setBirthEndDay(individualL.get(i).getEnd_day());
-	    			p.setBirthEndMonth(individualL.get(i).getEnd_month());
-	    			p.setBirthEndYear(individualL.get(i).getEnd_year());
+	    			if(p.getBirthStartDay() == 0){
+	    				p.setBirthStartDay(individualL.get(i).getStart_day());
+	    				p.setBirthStartMonth(individualL.get(i).getStart_month());
+	    				p.setBirthStartYear(individualL.get(i).getStart_year());
+	    				p.setBirthEndDay(individualL.get(i).getEnd_day());
+	    				p.setBirthEndMonth(individualL.get(i).getEnd_month());
+	    				p.setBirthEndYear(individualL.get(i).getEnd_year());
+	    			}
 	    		}
 	    	continue;
 	    }
 	    
 	    
-	    
+	    else
 	    if(individualL.get(i).getType().equalsIgnoreCase("BIRTH_LOCATION")){
-	    	p.setId_BC     (individualL.get(i).getId_C());
-			p.setId_D(individualL.get(i).getSource());
+	    	if(p.getId_BC() == null)
+	    		p.setId_BC     (individualL.get(i).getId_C());
+			//p.setId_D(individualL.get(i).getSource());
 
 	    	continue;
 	    }
+	    else
 	    if(individualL.get(i).getType().equalsIgnoreCase("LAST_NAME")){
-	    	p.setFamilyName(individualL.get(i).getValue());
-			p.setId_D(individualL.get(i).getSource());
+	    	if(p.getFamilyName() == null)
+	    		p.setFamilyName(individualL.get(i).getValue());
+			//p.setId_D(individualL.get(i).getSource());
 
 	    	continue;
 	    }
+	    else
 		if(individualL.get(i).getType().equalsIgnoreCase("FIRST_NAME")){
-			p.setId_D(individualL.get(i).getSource());
-			p.setFirstName (individualL.get(i).getValue());
+			if(p.getFirstName() == null)
+				p.setFirstName(individualL.get(i).getValue());
+			
 	    	continue;
 		}
+		else
 		if(individualL.get(i).getType().equalsIgnoreCase("PREFIX_LAST_NAME")){
-			p.setId_D(individualL.get(i).getSource());
-			p.setPrefix(individualL.get(i).getValue());
+			//p.setId_D(individualL.get(i).getSource());
+			if(p.getPrefix() == null)
+				p.setPrefix(individualL.get(i).getValue());
 	    	continue;
 		}
-		
+		else
 	    if(individualL.get(i).getType().equalsIgnoreCase("DEATH_DATE")){
-			p.setId_D(individualL.get(i).getSource());
-	    	if(individualL.get(i).getYear() > 0){
-	    		p.setDeathDay  (individualL.get(i).getDay());
-	    		p.setDeathMonth(individualL.get(i).getMonth());
-	    		p.setDeathYear (individualL.get(i).getYear());
+			//p.setId_D(individualL.get(i).getSource());
+	    	if(p.getDeathDay() == 0){
+	    		if(individualL.get(i).getYear() > 0){
+	    			p.setDeathDay  (individualL.get(i).getDay());
+	    			p.setDeathMonth(individualL.get(i).getMonth());
+	    			p.setDeathYear (individualL.get(i).getYear());
+	    		}
 	    	}
 	    	continue;
 	    }
 	    if(individualL.get(i).getType().equalsIgnoreCase("DEATH_LOCATION")){
-			p.setId_D(individualL.get(i).getSource());
-	    	p.setId_DC     (individualL.get(i).getId_C());
+			//p.setId_D(individualL.get(i).getSource());
+	    	if(p.getId_DC() == null)
+	    		p.setId_DC     (individualL.get(i).getId_C());
 	    	continue;
 	    }
 	    
+	    else
 		if(individualL.get(i).getType().equalsIgnoreCase("SEX")){
-			p.setId_D(individualL.get(i).getSource());
-			p.setSex(individualL.get(i).getValue().substring(0, 1).toUpperCase());
+			//p.setId_D(individualL.get(i).getSource());
+			if(p.getSex() == null)
+				p.setSex(individualL.get(i).getValue().substring(0, 1).toUpperCase());
 	    	continue;
 		}
 		
+		else
 	    if(individualL.get(i).getType().equalsIgnoreCase("HSN_RESEARCH_PERSON")){
 			p.setId_D(individualL.get(i).getSource());
-	    	p.setRelationRP("RP");
+			if(p.getRelationRP() == null)
+				p.setRelationRP("RP");
 	    	//personID_RP = individualL.get(i).getId_I();
 	    	//System.out.println("RP nr = " + personID_RP);
 	    	continue;
@@ -711,6 +760,30 @@ private static void loadIDS(String component, int lastDigit){
 				return -1;
 			if(i1.getId_I() > i2.getId_I())
 				return  1;
+			
+			// Source = "HSN MC B4"
+			//           012345678
+			
+			String source1 = i1.getSource().substring(0, 8);
+			int    tab1    = new Integer(i1.getSource().substring(8,9));  
+			String source2 = i2.getSource().substring(0, 8);
+			int    tab2    = new Integer(i2.getSource().substring(8,9));  
+
+			
+			// sort on sources
+			
+			if(Arrays.asList(sources).indexOf(source1) < Arrays.asList(sources).indexOf(source2))
+				return -1;
+			if(Arrays.asList(sources).indexOf(source1) > Arrays.asList(sources).indexOf(source2))
+				return +1;
+			
+			// sort on tables
+			
+			if(tab1 < tab2)
+				return -1;
+			if(tab1 > tab2)
+				return +1;
+			
 			
 			return 0;
 		}
@@ -1438,7 +1511,6 @@ private static Person setStartCode(ArrayList<Person> group){
 	
 	//System.out.println("In setStartCode");
 	
-	String [] sources = {"HSN BC", "HSN MC", "HSN PC", "HSN DC", "HSN PR"}; 
  x:	for(String s : sources){
 		
 		for(Person p: group){
