@@ -115,7 +115,13 @@ public class IDS implements Runnable {
 	    //print("\nReading IDNRs ending with " + s1);
 
 		
-		loadIDS("Civil Certificates", i);		
+		loadIDS("HSN BC", i);		
+		handler();
+		
+		loadIDS("HSN MC", i);		
+		handler();
+		
+		loadIDS("HSN DC", i);		
 		handler();
 		
 		
@@ -431,7 +437,6 @@ public class IDS implements Runnable {
  * This routine reads INDIVIDUAL entries and creates Person objects from them.
  * It then links the INDIV_INDIV and INDIV_CONTEXT entries to the Person objects
  * 
- * They must be read in the preferred sources-sequence (B, M, D)
  * 
  * 
  * 
@@ -585,6 +590,7 @@ private static void handler(){
 	
 	// Now we must link the INDIV_INDIV elements to the Persons
 	// Note: We should still remove the duplicates from INDIV_INDIV
+	// Note: This must be improved on, it is to slow
 	
 	int indexP = getIndexPerson();
 	for(INDIV_INDIV ii: getIndiv_indivL()){
@@ -607,7 +613,8 @@ private static void handler(){
 
 	
 	// Now we must link the INDIV_CONTEXT elements to the Persons
-	
+	// Note: This must be improved on, it is to slow
+
 	indexP = getIndexPerson();
 	for(INDIV_CONTEXT ic: getIndiv_contextL()){
 		//System.out.println(" ii Id_D = " + ii.getId_D() + " ID_I_1 = " + ii.getId_I_1());
@@ -720,12 +727,12 @@ private static void loadIDS(String component, int lastDigit){
 	//System.out.println("Start loading " + component); 
 
 	//print(" " + component + ":");
-	
+	//Civil Certificates Marriage Certificates
 	String lastD = String.format("%01d", lastDigit);
 	
 	
 	String persistence = "";
-	if(component.equalsIgnoreCase("Civil Certificates"))
+	if(component.equalsIgnoreCase("HSN BC") || component.equalsIgnoreCase("HSN MC") || component.equalsIgnoreCase("HSN DC"))
 		persistence = "hsn_civrec_ids_00";
 	if(component.equalsIgnoreCase("Personal Cards"))
 		persistence = "hsn_perscd_ids_00";
@@ -740,7 +747,7 @@ private static void loadIDS(String component, int lastDigit){
 
 	
 	//Query q = em.createQuery("select a from INDIVIDUAL a where a.id_D < 9000"); 
-	Query q = em.createQuery("select a from INDIVIDUAL a where a.id_D like '%" + lastD + "'"); 
+	Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%0" + lastD + "'"); 
 	//Query q = em.createQuery("select a from INDIVIDUAL a"); 
 	setIndividualL(q.getResultList());	
 	
@@ -764,25 +771,25 @@ private static void loadIDS(String component, int lastDigit){
 			// Source = "HSN MC B4"
 			//           012345678
 			
-			String source1 = i1.getSource().substring(0, 8);
-			int    tab1    = new Integer(i1.getSource().substring(8,9));  
-			String source2 = i2.getSource().substring(0, 8);
-			int    tab2    = new Integer(i2.getSource().substring(8,9));  
+			//String source1 = i1.getSource().substring(0, 8);
+			//int    tab1    = new Integer(i1.getSource().substring(8,9));  
+			//String source2 = i2.getSource().substring(0, 8);
+			//int    tab2    = new Integer(i2.getSource().substring(8,9));  
 
 			
 			// sort on sources
 			
-			if(Arrays.asList(sources).indexOf(source1) < Arrays.asList(sources).indexOf(source2))
-				return -1;
-			if(Arrays.asList(sources).indexOf(source1) > Arrays.asList(sources).indexOf(source2))
-				return +1;
+			//if(Arrays.asList(sources).indexOf(source1) < Arrays.asList(sources).indexOf(source2))
+				//return -1;
+			//if(Arrays.asList(sources).indexOf(source1) > Arrays.asList(sources).indexOf(source2))
+				//return +1;
 			
 			// sort on tables
 			
-			if(tab1 < tab2)
-				return -1;
-			if(tab1 > tab2)
-				return +1;
+			//if(tab1 < tab2)
+				//return -1;
+			//if(tab1 > tab2)
+				//return +1;
 			
 			
 			return 0;
@@ -797,7 +804,7 @@ private static void loadIDS(String component, int lastDigit){
 	print("Reading ..");
 
 	//q = em.createQuery("select a from INDIV_INDIV a where a.id_D == 1090"); 
-	q = em.createQuery("select a from INDIV_INDIV a where a.id_D like '%" + lastD + "'"); 
+	q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%0" + lastD + "'"); 
 	//q = em.createQuery("select a from INDIV_INDIV a"); 
 	setIndiv_indivL(q.getResultList());	
 	
@@ -839,7 +846,7 @@ private static void loadIDS(String component, int lastDigit){
 	print("Reading ...");
 
 	
-	q = em.createQuery("select a from INDIV_CONTEXT a where a.id_D like '%" + lastD + "'"); 
+	q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%' and a.id_D like '%0" + lastD + "'"); 
 	//q = em.createQuery("select a from INDIV_CONTEXT a"); 
 	setIndiv_contextL(q.getResultList());	
 	
