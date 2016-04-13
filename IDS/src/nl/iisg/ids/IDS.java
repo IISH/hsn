@@ -219,10 +219,10 @@ public class IDS implements Runnable {
     			// Source = "HSN MC B4"
     			//           012345678
     			
-    			String source1 = p1.getId_D().substring(0, 8);
-    			int    tab1    = new Integer(p1.getId_D().substring(8,9));  
-    			String source2 = p2.getId_D().substring(0, 8);
-    			int    tab2    = new Integer(p2.getId_D().substring(8,9));  
+    			String source1 = p1.getSource().substring(0, 8);
+    			int    tab1    = new Integer(p1.getSource().substring(8,9));  
+    			String source2 = p2.getSource().substring(0, 8);
+    			int    tab2    = new Integer(p2.getSource().substring(8,9));  
 
     			
     			// sort on sources
@@ -247,13 +247,13 @@ public class IDS implements Runnable {
     	
     	
     	int indexP = 0;
-    	String oldIDNR = "";
+    	int oldIDNR = -1;;
     	//System.out.println("Number of Persons: " + personL.size());
     	ArrayList<Person> group = new ArrayList<Person>();
     	
     	em.getTransaction().begin();
     	while(indexP < personL.size()){
-    		if(!personL.get(indexP).getIdnr().equals(oldIDNR)){ // new group
+    		if(personL.get(indexP).getIdnr() != oldIDNR){ // new group
     			oldIDNR = personL.get(indexP).getIdnr();
     			idnr++;
     			if(!group.isEmpty())
@@ -321,45 +321,56 @@ public class IDS implements Runnable {
     	//if(1==1)
     	//	return;
     		
-    		// For INDIV_INDIV, we must FIRST update Id_I_1 and Id_I_2 to the new IDNR
+   		// For INDIV_INDIV, we must FIRST update Id_I_1 and Id_I_2 to the new IDNR
+    	// We will do his per source
+    	// We must make sure that we only update relations to and from valid people
+    	
+    	
+    	System.out.println("Group: ");
+    	System.out.println();
+    	
+    	for(Person p: group){
+    		
+    		System.out.format("  %s %s  %20s   %20s\n", p.getSource(), p.getIdnr(), p.getFirstName(), p.getFamilyName());     		
+    		
+    		
+    	}
     		
 
     	
     	
     	for(String x: sources){
     		for(Person p1: group){
-    			//System.out.println("Person = " + p1);
-    			//if(p1.getId_D() != null)    				
-    			//	System.out.println("p1.getId() = " + p1.getId_D());
-    			//else
-    			//	System.out.println("p1.getId() = null");
+    			
+    			if(p1.getSource() != null && p1.getSource().substring(0, 6).equals(x)){
+    				
+        			if(p1.getId_I_new() != null && !p1.getId_I_new().equals("0")){  // Person still valid    			
 
-    			if(p1.getId_D() != null && p1.getId_D().substring(0, 6).equals(x)){  // Person from source we are processing
-    				for(INDIV_INDIV ii: p1.getIndiv_indiv()){    						
-    					ii.setId_I_1(new Integer(p1.getId_I_new()));
-    					ii.setId_D(getVersion());
-    					//System.out.println("Version = " + getVersion() + ", length = " + getVersion().length());
-    				}
+        				for(INDIV_INDIV ii: p1.getIndiv_indiv())   
+        					ii.setId_I_1(new Integer(p1.getId_I_new()));
+
+        			}
+    				
     				for(Person p2: group){
-    	    			//if(p2.getId_D() != null)    				
-    	    			//	System.out.println("p2.getId() = " + p2.getId_D());
-    	    			//else
-    	    			//	System.out.println("p2.getId() = null");
-
-    					if(p2.getId_D() != null && p2.getId_D().substring(0, 6).equals(x) && p2 != p1){  // Different Person from source we are processing
-    						for(INDIV_INDIV ii: p2.getIndiv_indiv()){  
-    						//	System.out.println("ii.getId_I_2() = " + ii.getId_I_2());
-    						//	System.out.println("p1.getId()     = " + p1.getId());
-    							if(ii.getId_I_2() == p1.getId_I()){
-    								//System.out.println("Updating Id_I_2");
-    								ii.setId_I_2(new Integer(p1.getId_I_new()));
-    							}
-    						}
-    					}   
+    				
+    	    			if(p2 != p1 && p2.getSource() != null && p2.getSource().substring(0, 6).equals(x) && !p2.getId_I_new().equals("0")){
+    	    				
+            				for(INDIV_INDIV ii: p2.getIndiv_indiv()){    
+            					
+            					if(ii.getId_I_2() == p1.getId_I())
+            						ii.setId_I_2(new Integer(p1.getId_I_new()));
+            				}
+    	    			}
+    				
     				}
     			}
     		}
-    	}
+    	}	
+    		
+    	
+    	
+    	
+
 
     	// Now we must write the INDIV_INDIV entries
     	// Undated (family) relations must be written only once
@@ -367,7 +378,10 @@ public class IDS implements Runnable {
     	ArrayList<Integer> relatives = new ArrayList<Integer>();
     	String oldId_new = "";
     	for(Person p: group){
-    		if(!p.getId_I_new().equals(oldId_new)){  // dit is niet goed!!!
+    		
+    		if(p.getId_I_new().equals("0")) continue;   // This is a double father or mother, no messages
+    		
+    		if(!p.getId_I_new().equals(oldId_new)){  
     			oldId_new = p.getId_I_new();
     			relatives.clear();
     		}
@@ -385,13 +399,20 @@ public class IDS implements Runnable {
     				
     				if(ii.getRelation() != null && ii.getRelation().trim().length() > 0)
     					ii.setRelation(standardizeRelation(ii.getRelation()));
+    				ii.setId_D(getVersion());
     				em.persist(ii);
+    				
+    				//System.out.println("Adding   INDIV_INDIV, ID_D = " + ii.getId() + ", ID_I_1 = " + ii.getId_I_1() + ", ID_I_2 = " + ii.getId_I_2() +
+    				//		", Source = " + ii.getSource() + ", Relation = " + ii.getRelation());
+
     				
     				indiv_indiv_count++;
     			}
-    			else
+    			else{
     				System.out.println("Skipping INDIV_INDIV, ID_D = " + ii.getId() + ", ID_I_1 = " + ii.getId_I_1() + ", ID_I_2 = " + ii.getId_I_2() +
     						", Source = " + ii.getSource() + ", Relation = " + ii.getRelation());
+    				System.out.println("p.getId_I_new()" + p.getId_I_new());
+    			}
     		}
     	}
     		
@@ -471,16 +492,16 @@ private static void handler(){
 			oldId = individualL.get(i).getId_I();
 			if(p != null && p.getFamilyName() != null && !p.getFamilyName().equalsIgnoreCase("N"))   // If there is no family name, we drop the person altogether
 				personL.add(p);  // (1) save old person 
-			//else
-			//	if(p != null)
-			//		System.out.println("Skipping Person with IDNR = " + p.getId_D());
+			else
+				if(p != null)
+					System.out.println("Skipping Person with IDNR = " + p.getIdnr());
 			
 			 p = new Person(); // (2) allocate new person, it will be saved at either (1) or (3)
 			 
-			 p.setIdnr(individualL.get(i).getId_D());
+			 p.setIdnr(new Integer(individualL.get(i).getId_D()));
 			 //p.setRelationRP(individualL.get(i).getId_I());			 
 			 p.setId_I(individualL.get(i).getId_I());
-			 p.setId_D(individualL.get(i).getSource());
+			 p.setSource(individualL.get(i).getSource());
 		}
 
 	    p.getIndividual().add(individualL.get(i));  // Save the INDIVIDUAL object
@@ -574,7 +595,7 @@ private static void handler(){
 		
 		else
 	    if(individualL.get(i).getType().equalsIgnoreCase("HSN_RESEARCH_PERSON")){
-			p.setId_D(individualL.get(i).getSource());
+			p.setSource(individualL.get(i).getSource());
 			if(p.getRelationRP() == null)
 				p.setRelationRP("RP");
 	    	//personID_RP = individualL.get(i).getId_I();
@@ -585,24 +606,28 @@ private static void handler(){
 	}
 	if(p != null && p.getFamilyName() != null && !p.getFamilyName().equalsIgnoreCase("N"))
 		personL.add(p);  // (3) because there still is a Person p that must be saved
+	else
+		if(p != null)
+			System.out.println("Skipping Person with IDNR = " + p.getIdnr());
+
 	
 	//print("Number of IDNRs: " + icount);
 	
 	// Now we must link the INDIV_INDIV elements to the Persons
 	// Note: We should still remove the duplicates from INDIV_INDIV
-	// Note: This must be improved on, it is to slow
+	// Note: This must be improved on, it is too slow
 	
 	int indexP = getIndexPerson();
 	for(INDIV_INDIV ii: getIndiv_indivL()){
 		//System.out.println("ii Id_D = " + ii.getId_D() + " ID_I_1 = " + ii.getId_I_1() + " ID_I_2 = " + ii.getId_I_2());
-		while(indexP < personL.size() && (!personL.get(indexP).getIdnr().equals(ii.getId_D()) || personL.get(indexP).getId_I() != ii.getId_I_1())){
+		while(indexP < personL.size() && (personL.get(indexP).getIdnr() != new Integer(ii.getId_D()) || personL.get(indexP).getId_I() != ii.getId_I_1())){
 			//System.out.println("Skip  p  Id_D = " + personL.get(indexP).getIdnr() + " ID_I = " + personL.get(indexP).getId_I());
 			indexP++;
 		}
 		
-		if(indexP < personL.size() && personL.get(indexP).getIdnr().equals(ii.getId_D()) && personL.get(indexP).getId_I() == ii.getId_I_1()){			
+		if(indexP < personL.size() && personL.get(indexP).getIdnr() == new Integer(ii.getId_D()) && personL.get(indexP).getId_I() == ii.getId_I_1()){			
 			personL.get(indexP).getIndiv_indiv().add(ii);
-			//System.out.println("Add   p  Id_D = " + personL.get(indexP).getIdnr() + " ID_I = " + personL.get(indexP).getId_I());
+			System.out.println("Add   p  Id_D = " + personL.get(indexP).getIdnr() + " ID_I = " + personL.get(indexP).getId_I());
 
 			//if(personL.get(indexP).getIdnr().equals("1001")){
 				//personL.get(indexP).setRelationRP(ii.getRelation());
@@ -613,17 +638,17 @@ private static void handler(){
 
 	
 	// Now we must link the INDIV_CONTEXT elements to the Persons
-	// Note: This must be improved on, it is to slow
+	// Note: This must be improved on, it is too slow
 
 	indexP = getIndexPerson();
 	for(INDIV_CONTEXT ic: getIndiv_contextL()){
 		//System.out.println(" ii Id_D = " + ii.getId_D() + " ID_I_1 = " + ii.getId_I_1());
-		while(indexP < personL.size() && (!personL.get(indexP).getIdnr().equals(ic.getId_D()) || personL.get(indexP).getId_I() != ic.getId_I())){
+		while(indexP < personL.size() && (personL.get(indexP).getIdnr() != new Integer(ic.getId_D()) || personL.get(indexP).getId_I() != ic.getId_I())){
 			//System.out.println("p  Id_D = " + personL.get(indexP).getIdnr() + " ID_I = " + personL.get(indexP).getId_I());
 			indexP++;
 		}
 		
-		if(indexP < personL.size() && personL.get(indexP).getIdnr().equals(ic.getId_D()) && personL.get(indexP).getId_I() == ic.getId_I()){
+		if(indexP < personL.size() && personL.get(indexP).getIdnr() == new Integer(ic.getId_D()) && personL.get(indexP).getId_I() == ic.getId_I()){
 			personL.get(indexP).getIndiv_context().add(ic);
 			//System.out.println("Adding");
 		}
@@ -639,12 +664,12 @@ private static void handler(){
 	
 	indexP = getIndexPerson();  // set to first person in this slot
 	
-	String oldIDNR = "";
-	ArrayList<Person> t = null; // will contain all persons for an IDNR
+	int oldIDNR = -1;
+	ArrayList<Person> t = new ArrayList<Person>(); // will contain all persons for an IDNR
 	while(indexP < personL.size()){
-		if(!personL.get(indexP).getIdnr().equals(oldIDNR)){
+		if(personL.get(indexP).getIdnr() == new Integer(oldIDNR)){
 			oldIDNR = personL.get(indexP).getIdnr();
-			if(t != null){				
+			if(t.size() > 0){				
 				int iDRP = -1;
 				for(Person p1: t){  // find all RPs
 					if(p1.getRelationRP() != null && p1.getRelationRP().equals("RP")){
@@ -660,26 +685,25 @@ private static void handler(){
 					}
 				}
 			}
-			t = new ArrayList<Person>();
+			t.clear();
 		}
 		t.add(personL.get(indexP));
 
 		//System.out.println("  p  Id_D = " + personL.get(indexP).getIdnr() + " ID_I = " + personL.get(indexP).getId_I());
 		indexP++;
 	}
-	if(t != null){				
+	if(t.size() > 0){				
 		int iDRP = -1;
 		for(Person p1: t){
 			if(p1.getRelationRP() != null && p1.getRelationRP().equals("RP")){
 				iDRP = p1.getId_I();
-				break;
-			}
-		}
-		for(Person p1: t){
-			for(INDIV_INDIV ii: p1.getIndiv_indiv()){
-				if(ii.getId_I_2() == iDRP){
-					p1.setRelationRP(ii.getRelation());
-					break;
+				for(Person p2: t){
+					for(INDIV_INDIV ii: p2.getIndiv_indiv()){
+						if(ii.getId_I_2() == iDRP){
+							p2.setOriginalRelationRP(ii.getRelation().trim()); // ... save the relation
+							p2.setRelationRP(ii.getRelation());
+						}
+					}
 				}
 			}
 		}
@@ -747,7 +771,7 @@ private static void loadIDS(String component, int lastDigit){
 
 	
 	//Query q = em.createQuery("select a from INDIVIDUAL a where a.id_D < 9000"); 
-	Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%0" + lastD + "'"); 
+	Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%00" + lastD + "'"); 
 	//Query q = em.createQuery("select a from INDIVIDUAL a"); 
 	setIndividualL(q.getResultList());	
 	
@@ -804,7 +828,7 @@ private static void loadIDS(String component, int lastDigit){
 	print("Reading ..");
 
 	//q = em.createQuery("select a from INDIV_INDIV a where a.id_D == 1090"); 
-	q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%0" + lastD + "'"); 
+	q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%00" + lastD + "'"); 
 	//q = em.createQuery("select a from INDIV_INDIV a"); 
 	setIndiv_indivL(q.getResultList());	
 	
@@ -846,7 +870,7 @@ private static void loadIDS(String component, int lastDigit){
 	print("Reading ...");
 
 	
-	q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%' and a.id_D like '%0" + lastD + "'"); 
+	q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%' and a.id_D like '%00" + lastD + "'"); 
 	//q = em.createQuery("select a from INDIV_CONTEXT a"); 
 	setIndiv_contextL(q.getResultList());	
 	
@@ -960,12 +984,9 @@ private static void integratePersons(){
 			{
 		public int compare(Person p1, Person p2){
 
-			int idnr1 = new Integer(p1.getIdnr());
-			int idnr2 = new Integer(p2.getIdnr());
-
-			if(idnr1 < idnr2)
+			if(p1.getIdnr() < p2.getIdnr())
 				return -1;
-			if(idnr1 > idnr2)
+			if(p1.getIdnr() > p2.getIdnr())
 				return  1;
 			
 			if(p1.getId_I() < p2.getId_I())
@@ -979,10 +1000,10 @@ private static void integratePersons(){
 	
 	
 	
-	String idnrOld = "";
+	int idnrOld = -1;
 	ArrayList<Person> family = null; 
 	for(int i = 0; i < personL.size(); i++){
-		if(!personL.get(i).getIdnr().equals(idnrOld)){
+		if(personL.get(i).getIdnr() != idnrOld){
 			
 			if(family != null){
 				
@@ -1032,7 +1053,8 @@ private static void handleRP(ArrayList<Person> family){
 	ArrayList<Person> group = new ArrayList<Person>();
 	for(Person p: family){
 		if(p.getRelationRP() != null && p.getRelationRP().equals("RP")){
-			p.setId_I_new("1" +  idnrSixCharacters(p.getIdnr()) + "001");
+			String idnr6 = String.format("%06d", p.getIdnr());
+			p.setId_I_new("1" +  idnr6 + "001");
 			p.setStartCode(2); // preset 
 			group.add(p);
 		}
@@ -1073,15 +1095,17 @@ private static void handleMothers(ArrayList<Person> family){
 	
 	Person preferredPerson = setStartCode(group2); //find preferred source
 	
-	for(Person p: group2)
-		p.setId_I_new("1" + idnrSixCharacters(p.getIdnr()) + "002");
+	for(Person p: group2){
+		String idnr6 = String.format("%06d", p.getIdnr());
+		p.setId_I_new("1" + idnr6 + "002");
+	}
 	
 	for(Person p: group3){
-		message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getId_D(), 
-				preferredPerson.getFirstName() + " " + preferredPerson.getFamilyName(),preferredPerson.getId_D());
+		message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getSource(), 
+				preferredPerson.getFirstName() + " " + preferredPerson.getFamilyName(),preferredPerson.getSource());
 		
 		p.setStartCode(0);
-		p.setId_I_new("0");
+		p.setId_I_new("0");  // this indicates that we know the person is removed, so no messages about her
 	}
 			
 			
@@ -1119,15 +1143,17 @@ private static void handleFathers(ArrayList<Person> family){
 	
 	Person preferredPerson = setStartCode(group2); //find preferred source
 	
-	for(Person p: group2)
-		p.setId_I_new("1" + idnrSixCharacters(p.getIdnr()) + "012");
+	for(Person p: group2){
+		String idnr6 = String.format("%06d", p.getIdnr());
+		p.setId_I_new("1" + idnr6 + "012");
+	}
 	
 	for(Person p: group3){
-		message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getId_D(), 
-				preferredPerson.getFirstName() + " " + preferredPerson.getFamilyName(),preferredPerson.getId_D());
+		message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getSource(), 
+				preferredPerson.getFirstName() + " " + preferredPerson.getFamilyName(),preferredPerson.getSource());
 		
 		p.setStartCode(0);
-		p.setId_I_new("0");
+		p.setId_I_new("0"); // this indicates that we know the person is removed, so no messages about him
 
 
 	}
@@ -1182,8 +1208,10 @@ private static void handleSpouses(ArrayList<Person> family){
 		if(p.getIdWithinGroup() != id_prev){
 			if(group2.size() > 0){
 				setStartCode(group2); //find preferred source
-				for(Person p2: group2)					
-					p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + "02" + p2.getIdWithinGroup());
+				for(Person p2: group2){
+					String idnr6 = String.format("%06d", p2.getIdnr());
+					p2.setId_I_new("1" + idnr6 + "02" + p2.getIdWithinGroup());
+				}
 
 				group2.clear();
 			}
@@ -1195,8 +1223,10 @@ private static void handleSpouses(ArrayList<Person> family){
 	}
 	if(group2.size() > 0){
 		setStartCode(group2); //find preferred source
-		for(Person p2: group2)					
-			p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + "02" + p2.getIdWithinGroup());
+		for(Person p2: group2){
+			String idnr6 = String.format("%06d", p2.getIdnr());
+			p2.setId_I_new("1" + idnr6 + "02" + p2.getIdWithinGroup());
+		}
 
 	}
 	
@@ -1251,7 +1281,8 @@ private static void handleChildren(ArrayList<Person> family){
 				for(Person p2: group2){					
 					//p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + "03" + p2.getIdWithinGroup());
 					String n = (30 + p2.getIdWithinGroup()) + "";
-					p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + "0" + n);
+					String idnr6 = String.format("%06d", p2.getIdnr());
+					p2.setId_I_new("1" + idnr6 + "0" + n);
 				}
 
 				group2.clear();
@@ -1267,7 +1298,8 @@ private static void handleChildren(ArrayList<Person> family){
 		for(Person p2: group2){					
 			//p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + "03" + p2.getIdWithinGroup());
 			String n = (30 + p2.getIdWithinGroup()) + "";
-			p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + "0" + n);
+			String idnr6 = String.format("%06d", p2.getIdnr());
+			p2.setId_I_new("1" + idnr6 + "0" + n);
 
 		}
 
@@ -1324,7 +1356,8 @@ private static void handleSiblings(ArrayList<Person> family){
 				setStartCode(group2); //find preferred source
 				for(Person p2: group2){
 					String n = (100 + p2.getIdWithinGroup()) + "";
-					p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + n);
+					String idnr6 = String.format("%06d", p2.getIdnr());
+					p2.setId_I_new("1" + idnr6 + n);
 				}
 
 				group2.clear();
@@ -1340,7 +1373,8 @@ private static void handleSiblings(ArrayList<Person> family){
 		for(Person p2: group2){					
 			//p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + "10" + p2.getIdWithinGroup());
 			String n = (100 + p2.getIdWithinGroup()) + "";
-			p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + n);
+			String idnr6 = String.format("%06d", p2.getIdnr());
+			p2.setId_I_new("1" + idnr6 + n);
 
 		}
 
@@ -1394,7 +1428,8 @@ private static void handleParentsInLaw(ArrayList<Person> family){
 				for(Person p2: group2){					
 					//p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + "20" + p2.getIdWithinGroup());
 					String n = (200 + p2.getIdWithinGroup()) + "";
-					p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + n);
+					String idnr6 = String.format("%06d", p2.getIdnr());
+					p2.setId_I_new("1" + idnr6 + n);
 
 				}
 
@@ -1411,7 +1446,8 @@ private static void handleParentsInLaw(ArrayList<Person> family){
 		for(Person p2: group2){					
 			//p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + "20" + p2.getIdWithinGroup());
 			String n = (200 + p2.getIdWithinGroup()) + "";
-			p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + n);
+			String idnr6 = String.format("%06d", p2.getIdnr());
+			p2.setId_I_new("1" + idnr6 + n);
 
 		}
 
@@ -1434,12 +1470,12 @@ private static void handleOthers(ArrayList<Person> family){
 		if(p.getStartCode() == 0){
 			if(p.getRelationRP() == null)
 				p.setRelationRP("Onbekend");
-			if((p.getId_D().substring(0, 6).equals("HSN BC") && (p.getId_I() == 5 || p.getId_I() == 6)) ||
-			   (p.getId_D().substring(0, 6).equals("HSN MC") && (p.getId_I() % 100 == 31 || p.getId_I() % 100 == 32 || p.getId_I() % 100 == 33 || p.getId_I() % 100 == 34 )))
+			if((p.getSource().substring(0, 6).equals("HSN BC") && (p.getId_I() == 5 || p.getId_I() == 6)) ||
+			   (p.getSource().substring(0, 6).equals("HSN MC") && (p.getId_I() % 100 == 31 || p.getId_I() % 100 == 32 || p.getId_I() % 100 == 33 || p.getId_I() % 100 == 34 )))
 				p.setFunction("Witness");
 					
-			if((p.getId_D().substring(0, 6).equals("HSN BC") && (p.getId_I() == 4)) ||
-			   (p.getId_D().substring(0, 6).equals("HSN DC") && (p.getId_I() == 61 || p.getId_I()  == 62)))					
+			if((p.getSource().substring(0, 6).equals("HSN BC") && (p.getId_I() == 4)) ||
+			   (p.getSource().substring(0, 6).equals("HSN DC") && (p.getId_I() == 61 || p.getId_I()  == 62)))					
 				p.setFunction("Informer");
 					
 			group.add(p);
@@ -1472,7 +1508,8 @@ private static void handleOthers(ArrayList<Person> family){
 				for(Person p2: group2){					
 					//p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + "30" + p2.getIdWithinGroup());
 					String n = (300 + p2.getIdWithinGroup()) + "";
-					p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + n);
+					String idnr6 = String.format("%06d", p2.getIdnr());
+					p2.setId_I_new("1" + idnr6 + n);
 
 				}
 
@@ -1489,7 +1526,8 @@ private static void handleOthers(ArrayList<Person> family){
 		for(Person p2: group2){					
 			//p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + "30" + p2.getIdWithinGroup());
 			String n = (300 + p2.getIdWithinGroup()) + "";
-			p2.setId_I_new("1" + idnrSixCharacters(p2.getIdnr()) + n);
+			String idnr6 = String.format("%06d", p2.getIdnr());
+			p2.setId_I_new("1" + idnr6 + n);
 
 		}
 
@@ -1525,7 +1563,7 @@ private static Person setStartCode(ArrayList<Person> group){
 			//System.out.println("   In setStartCode A");
 
 			
-			if(p.getId_D() != null && p.getId_D().substring(0,s.length()).equals(s)){
+			if(p.getSource() != null && p.getSource().substring(0,s.length()).equals(s)){
 				
 				p.setStartCode(1);
 				return p;

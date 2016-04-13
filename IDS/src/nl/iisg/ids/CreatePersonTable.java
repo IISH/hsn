@@ -8,7 +8,7 @@ public class CreatePersonTable {
 		 "(" +
 		 "Id  INT NOT NULL PRIMARY KEY AUTO_INCREMENT, " +
 		 "IDNR INT, " +
-		 "Id_D VARCHAR(50), " +
+		 "Source VARCHAR(50), " +
 		 "Id_I INT, " +
 		 "Id_I_new VARCHAR(50), " +
 		 "Start_code SMALLINT, " +

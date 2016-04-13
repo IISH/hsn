@@ -15,9 +15,9 @@ import javax.persistence.Transient;
 public class Person {
 	
 @Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
-@Column(name = "Id")  				private int       id; 		// Primary Key
-@Column(name = "IDNR")  				private String    idnr;   	// IDNR RP
-@Column(name = "Id_D")  				private String    id_D;   	// CC/PC/PR
+@Column(name = "Id")  				    private int       id; 		// Primary Key
+@Column(name = "IDNR")  				private int       idnr;   	// IDNR RP
+@Column(name = "Source")  				private String    Source;   	// CC/PC/PR
 @Column(name = "Id_I")  				private int		  id_I;  	// Id_I from CC/PC/PR
 @Column(name = "Id_I_new")  			private String	  id_I_new;  // to be constructed
 @Column(name = "Start_code")  			private int       startCode;  // first source found
@@ -55,11 +55,11 @@ public void setId(int id) {
 	this.id = id;
 }
 
-public String getId_D() {
-	return id_D;
+public String getSource() {
+	return Source;
 }
-public void setId_D(String id_D) {
-	this.id_D = id_D;
+public void setSource(String source) {
+	Source = source;
 }
 public int getId_I() {
 	return id_I;
@@ -160,10 +160,10 @@ public void setDeathYear(int deathYear) {
 	this.deathYear = deathYear;
 }
 
-public String getIdnr() {
+public int getIdnr() {
 	return idnr;
 }
-public void setIdnr(String idnr) {
+public void setIdnr(int idnr) {
 	this.idnr = idnr;
 }
 public String getId_BC() {
