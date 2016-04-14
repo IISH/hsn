@@ -331,12 +331,20 @@ public class IDS implements Runnable {
     	
     	for(Person p: group){
     		
-    		System.out.format("  %s %s  %20s   %20s\n", p.getSource(), p.getIdnr(), p.getFirstName(), p.getFamilyName());     		
+    		System.out.println();
+    		System.out.format("%s %d %02d  %12s  %20s  %20s %s\n", p.getSource(), p.getIdnr(),p.getId_I(), p.getId_I_new(),  p.getFirstName(), p.getFamilyName(), p.toString());     		
+    		System.out.println();
     		
+    		for(INDIV_INDIV ii: p.getIndiv_indiv()){
+    			System.out.format("%s  %s, %d, %15s, %d\n", ii.getSource(), ii.getId_D(), ii.getId_I_1(), ii.getRelation(), ii.getId_I_2());
+				System.out.println("xxxxxxxx INDIV_INDIV, ID_D = " + ii.getId() + ", ID_I_1 = " + ii.getId_I_1() + ", ID_I_2 = " + ii.getId_I_2() +
+						", Source = " + ii.getSource() + ", Relation = " + ii.getRelation());
+
+    		}
     		
     	}
     		
-
+    	System.out.println();
     	
     	
     	for(String x: sources){
@@ -344,7 +352,7 @@ public class IDS implements Runnable {
     			
     			if(p1.getSource() != null && p1.getSource().substring(0, 6).equals(x)){
     				
-        			if(p1.getId_I_new() != null && !p1.getId_I_new().equals("0")){  // Person still valid    			
+        			if(p1.getId_I_new() != null /* && !p1.getId_I_new().equals("0") */){  // Person still valid    			
 
         				for(INDIV_INDIV ii: p1.getIndiv_indiv())   
         					ii.setId_I_1(new Integer(p1.getId_I_new()));
@@ -353,7 +361,7 @@ public class IDS implements Runnable {
     				
     				for(Person p2: group){
     				
-    	    			if(p2 != p1 && p2.getSource() != null && p2.getSource().substring(0, 6).equals(x) && !p2.getId_I_new().equals("0")){
+    	    			if(p2 != p1 && p2.getSource() != null && p2.getSource().substring(0, 6).equals(x) /*!p2.getId_I_new().equals("0") */){
     	    				
             				for(INDIV_INDIV ii: p2.getIndiv_indiv()){    
             					
@@ -368,7 +376,21 @@ public class IDS implements Runnable {
     	}	
     		
     	
-    	
+    	for(Person p: group){
+    		
+    		System.out.println();
+    		System.out.format("%s %d %02d  %12s  %20s  %20s %s\n", p.getSource(), p.getIdnr(),p.getId_I(), p.getId_I_new(),  p.getFirstName(), p.getFamilyName(), p.toString());     		
+    		System.out.println();
+    		
+    		for(INDIV_INDIV ii: p.getIndiv_indiv()){
+    			System.out.format("%s  %s, %d, %15s, %d\n", ii.getSource(), ii.getId_D(), ii.getId_I_1(), ii.getRelation(), ii.getId_I_2());
+				System.out.println("xxxxxxxx INDIV_INDIV, ID_D = " + ii.getId() + ", ID_I_1 = " + ii.getId_I_1() + ", ID_I_2 = " + ii.getId_I_2() +
+						", Source = " + ii.getSource() + ", Relation = " + ii.getRelation());
+
+    		}
+    		
+    	}
+
     	
 
 
@@ -403,7 +425,7 @@ public class IDS implements Runnable {
     				em.persist(ii);
     				
     				//System.out.println("Adding   INDIV_INDIV, ID_D = " + ii.getId() + ", ID_I_1 = " + ii.getId_I_1() + ", ID_I_2 = " + ii.getId_I_2() +
-    				//		", Source = " + ii.getSource() + ", Relation = " + ii.getRelation());
+    					//	", Source = " + ii.getSource() + ", Relation = " + ii.getRelation());
 
     				
     				indiv_indiv_count++;
@@ -411,7 +433,8 @@ public class IDS implements Runnable {
     			else{
     				System.out.println("Skipping INDIV_INDIV, ID_D = " + ii.getId() + ", ID_I_1 = " + ii.getId_I_1() + ", ID_I_2 = " + ii.getId_I_2() +
     						", Source = " + ii.getSource() + ", Relation = " + ii.getRelation());
-    				System.out.println("p.getId_I_new()" + p.getId_I_new());
+    				System.out.println("p = " + p.toString());
+    				System.out.println("p.getId_I_new = " + p.getId_I_new());
     			}
     		}
     	}
@@ -627,7 +650,7 @@ private static void handler(){
 		
 		if(indexP < personL.size() && personL.get(indexP).getIdnr() == new Integer(ii.getId_D()) && personL.get(indexP).getId_I() == ii.getId_I_1()){			
 			personL.get(indexP).getIndiv_indiv().add(ii);
-			System.out.println("Add   p  Id_D = " + personL.get(indexP).getIdnr() + " ID_I = " + personL.get(indexP).getId_I());
+			//System.out.println("Add   p  Id_D = " + personL.get(indexP).getIdnr() + " ID_I = " + personL.get(indexP).getId_I());
 
 			//if(personL.get(indexP).getIdnr().equals("1001")){
 				//personL.get(indexP).setRelationRP(ii.getRelation());
@@ -1104,7 +1127,7 @@ private static void handleMothers(ArrayList<Person> family){
 		message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getSource(), 
 				preferredPerson.getFirstName() + " " + preferredPerson.getFamilyName(),preferredPerson.getSource());
 		
-		p.setStartCode(0);
+		//p.setStartCode(0);
 		p.setId_I_new("0");  // this indicates that we know the person is removed, so no messages about her
 	}
 			
@@ -1152,7 +1175,7 @@ private static void handleFathers(ArrayList<Person> family){
 		message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getSource(), 
 				preferredPerson.getFirstName() + " " + preferredPerson.getFamilyName(),preferredPerson.getSource());
 		
-		p.setStartCode(0);
+		//p.setStartCode(0);
 		p.setId_I_new("0"); // this indicates that we know the person is removed, so no messages about him
 
 
