@@ -305,7 +305,7 @@ public class IDS implements Runnable {
     	
     	for(Person p: group){
     		for(INDIVIDUAL i: p.getIndividual()){
-    			if(p.getStartCode() == 1 || !typeInPerson(i.getType())){
+    			if(!p.getId_I_new().equals("0") && (p.getStartCode() == 1 || !typeInPerson(i.getType()))){   // Change!!
     				//i.setId(0);
     				i.setId_I(new Integer(p.getId_I_new()));
     				//String s = getVersion();
@@ -324,14 +324,14 @@ public class IDS implements Runnable {
    		// For INDIV_INDIV, we must FIRST update Id_I_1 and Id_I_2 to the new IDNR
     	// We will do his per source
     	// We must make sure that we only update relations to and from valid people
-    	
+    	/*
     	
     	System.out.println("Group: ");
     	System.out.println();
     	
     	for(Person p: group){
     		
-    		System.out.println();
+    	    System.out.println();
     		System.out.format("%s %d %02d  %12s  %20s  %20s %s\n", p.getSource(), p.getIdnr(),p.getId_I(), p.getId_I_new(),  p.getFirstName(), p.getFamilyName(), p.toString());     		
     		System.out.println();
     		
@@ -345,6 +345,7 @@ public class IDS implements Runnable {
     	}
     		
     	System.out.println();
+    	*/
     	
     	
     	for(String x: sources){
@@ -366,7 +367,10 @@ public class IDS implements Runnable {
             				for(INDIV_INDIV ii: p2.getIndiv_indiv()){    
             					
             					if(ii.getId_I_2() == p1.getId_I())
-            						ii.setId_I_2(new Integer(p1.getId_I_new()));
+                					if(!p1.getId_I_new().equals("0") && !p2.getId_I_new().equals("0"))    // Change!!
+                						ii.setId_I_2(new Integer(p1.getId_I_new()));
+                					else;
+                						ii.setId_I_2(-1);  // Change!! Let code below know that this was detected, no message needeed
             				}
     	    			}
     				
@@ -375,6 +379,11 @@ public class IDS implements Runnable {
     		}
     	}	
     		
+    	
+    	/*
+    	System.out.println("Group X: ");
+    	System.out.println();
+
     	
     	for(Person p: group){
     		
@@ -392,7 +401,7 @@ public class IDS implements Runnable {
     	}
 
     	
-
+		*/
 
     	// Now we must write the INDIV_INDIV entries
     	// Undated (family) relations must be written only once
@@ -431,10 +440,12 @@ public class IDS implements Runnable {
     				indiv_indiv_count++;
     			}
     			else{
-    				System.out.println("Skipping INDIV_INDIV, ID_D = " + ii.getId() + ", ID_I_1 = " + ii.getId_I_1() + ", ID_I_2 = " + ii.getId_I_2() +
-    						", Source = " + ii.getSource() + ", Relation = " + ii.getRelation());
-    				System.out.println("p = " + p.toString());
-    				System.out.println("p.getId_I_new = " + p.getId_I_new());
+    				if(ii.getId_I_2() != -1){   // Change!!
+    					System.out.println("Skipping INDIV_INDIV, ID_D = " + ii.getId() + ", ID_I_1 = " + ii.getId_I_1() + ", ID_I_2 = " + ii.getId_I_2() +
+    							", Source = " + ii.getSource() + ", Relation = " + ii.getRelation());
+    					System.out.println("p = " + p.toString());
+    					System.out.println("p.getId_I_new = " + p.getId_I_new());
+    				}
     			}
     		}
     	}
@@ -794,7 +805,7 @@ private static void loadIDS(String component, int lastDigit){
 
 	
 	//Query q = em.createQuery("select a from INDIVIDUAL a where a.id_D < 9000"); 
-	Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%00" + lastD + "'"); 
+	Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%0" + lastD + "'"); 
 	//Query q = em.createQuery("select a from INDIVIDUAL a"); 
 	setIndividualL(q.getResultList());	
 	
@@ -851,7 +862,7 @@ private static void loadIDS(String component, int lastDigit){
 	print("Reading ..");
 
 	//q = em.createQuery("select a from INDIV_INDIV a where a.id_D == 1090"); 
-	q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%00" + lastD + "'"); 
+	q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%0" + lastD + "'"); 
 	//q = em.createQuery("select a from INDIV_INDIV a"); 
 	setIndiv_indivL(q.getResultList());	
 	
@@ -893,7 +904,7 @@ private static void loadIDS(String component, int lastDigit){
 	print("Reading ...");
 
 	
-	q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%' and a.id_D like '%00" + lastD + "'"); 
+	q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%' and a.id_D like '%0" + lastD + "'"); 
 	//q = em.createQuery("select a from INDIV_CONTEXT a"); 
 	setIndiv_contextL(q.getResultList());	
 	
