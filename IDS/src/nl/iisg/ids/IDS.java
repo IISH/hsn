@@ -345,11 +345,13 @@ public class IDS implements Runnable {
     	}
     		
     	System.out.println();
-    	*/
     	
+    	*/
     	
     	for(String x: sources){
     		for(Person p1: group){
+    			
+    			//System.out.println("p1 =  " +  p1.toString() + "  " + p1.getId_I_new());
     			
     			if(p1.getSource() != null && p1.getSource().substring(0, 6).equals(x)){
     				
@@ -361,16 +363,27 @@ public class IDS implements Runnable {
         			}
     				
     				for(Person p2: group){
-    				
+
+    	    			//System.out.println("   p2 =  " +  p2.toString() + "  " + p2.getId_I_new());
+
     	    			if(p2 != p1 && p2.getSource() != null && p2.getSource().substring(0, 6).equals(x) /*!p2.getId_I_new().equals("0") */){
     	    				
             				for(INDIV_INDIV ii: p2.getIndiv_indiv()){    
             					
-            					if(ii.getId_I_2() == p1.getId_I())
-                					if(!p1.getId_I_new().equals("0") && !p2.getId_I_new().equals("0"))    // Change!!
+            					//System.out.println("Testing " + " ii.getId_I_2() == p1.getId_I()) " + ii.getId_I_2() + " "+  p1.getId_I());
+            					
+            					if(ii.getId_I_2() == p1.getId_I()){
+            		    			//System.out.println("       p1 =  " +  p1.toString() + "  " + p1.getId_I_new());
+                	    			//System.out.println("       p2 =  " +  p2.toString() + "  " + p2.getId_I_new());
+
+            						
+                					if(!p1.getId_I_new().equals("0") && !p2.getId_I_new().equals("0")){    // Change!!
                 						ii.setId_I_2(new Integer(p1.getId_I_new()));
-                					else;
+                						//System.out.println("::" + ii.getId_I_2());
+                					}
+                					else
                 						ii.setId_I_2(-1);  // Change!! Let code below know that this was detected, no message needeed
+            					}
             				}
     	    			}
     				
@@ -379,8 +392,8 @@ public class IDS implements Runnable {
     		}
     	}	
     		
-    	
     	/*
+    	
     	System.out.println("Group X: ");
     	System.out.println();
 
@@ -400,8 +413,8 @@ public class IDS implements Runnable {
     		
     	}
 
-    	
-		*/
+    	*/
+		
 
     	// Now we must write the INDIV_INDIV entries
     	// Undated (family) relations must be written only once
@@ -418,6 +431,8 @@ public class IDS implements Runnable {
     		}
     		
  outer:		for(INDIV_INDIV ii: p.getIndiv_indiv()){
+	 
+	 			//System.out.println("in loop, id_i_1 = " + ii.getId_I_1() + ", id_i_2 = " + ii.getId_I_2());
     			if(ii.getStart_day() == 0 && ii.getDay() == 0){ // undated entry
     				for(Integer i: relatives){
     					if(ii.getId_I_2() == i){
@@ -805,7 +820,7 @@ private static void loadIDS(String component, int lastDigit){
 
 	
 	//Query q = em.createQuery("select a from INDIVIDUAL a where a.id_D < 9000"); 
-	Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%0" + lastD + "'"); 
+	Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%00" + lastD + "'"); 
 	//Query q = em.createQuery("select a from INDIVIDUAL a"); 
 	setIndividualL(q.getResultList());	
 	
@@ -862,7 +877,7 @@ private static void loadIDS(String component, int lastDigit){
 	print("Reading ..");
 
 	//q = em.createQuery("select a from INDIV_INDIV a where a.id_D == 1090"); 
-	q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%0" + lastD + "'"); 
+	q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%00" + lastD + "'"); 
 	//q = em.createQuery("select a from INDIV_INDIV a"); 
 	setIndiv_indivL(q.getResultList());	
 	
@@ -904,7 +919,7 @@ private static void loadIDS(String component, int lastDigit){
 	print("Reading ...");
 
 	
-	q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%' and a.id_D like '%0" + lastD + "'"); 
+	q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%' and a.id_D like '%00" + lastD + "'"); 
 	//q = em.createQuery("select a from INDIV_CONTEXT a"); 
 	setIndiv_contextL(q.getResultList());	
 	
