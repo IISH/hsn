@@ -297,11 +297,7 @@ public class IDS implements Runnable {
      * 
      * @param p
      */
-    private static void writeGroup(ArrayList<Person> group, EntityManager em){
-    	
-    	//System.out.println("In write Group");
-    	
-    	
+    private static void writeGroup(ArrayList<Person> group, EntityManager em){ 	
     	
     	for(Person p: group){
     		for(INDIVIDUAL i: p.getIndividual()){
@@ -317,41 +313,8 @@ public class IDS implements Runnable {
     		}
     	}
     	
-    	
-    	//if(1==1)
-    	//	return;
-    		
-   		// For INDIV_INDIV, we must FIRST update Id_I_1 and Id_I_2 to the new IDNR
-    	// We will do his per source
-    	// We must make sure that we only update relations to and from valid people
-    	/*
-    	
-    	System.out.println("Group: ");
-    	System.out.println();
-    	
-    	for(Person p: group){
-    		
-    	    System.out.println();
-    		System.out.format("%s %d %02d  %12s  %20s  %20s %s\n", p.getSource(), p.getIdnr(),p.getId_I(), p.getId_I_new(),  p.getFirstName(), p.getFamilyName(), p.toString());     		
-    		System.out.println();
-    		
-    		for(INDIV_INDIV ii: p.getIndiv_indiv()){
-    			System.out.format("%s  %s, %d, %15s, %d\n", ii.getSource(), ii.getId_D(), ii.getId_I_1(), ii.getRelation(), ii.getId_I_2());
-				System.out.println("xxxxxxxx INDIV_INDIV, ID_D = " + ii.getId() + ", ID_I_1 = " + ii.getId_I_1() + ", ID_I_2 = " + ii.getId_I_2() +
-						", Source = " + ii.getSource() + ", Relation = " + ii.getRelation());
-
-    		}
-    		
-    	}
-    		
-    	System.out.println();
-    	
-    	*/
-    	
     	for(String x: sources){
     		for(Person p1: group){
-    			
-    			//System.out.println("p1 =  " +  p1.toString() + "  " + p1.getId_I_new());
     			
     			if(p1.getSource() != null && p1.getSource().substring(0, 6).equals(x)){
     				
@@ -361,120 +324,92 @@ public class IDS implements Runnable {
         					ii.setId_I_1(new Integer(p1.getId_I_new()));
 
         			}
-    				
-    				for(Person p2: group){
-
-    	    			//System.out.println("   p2 =  " +  p2.toString() + "  " + p2.getId_I_new());
-
-    	    			if(p2 != p1 && p2.getSource() != null && p2.getSource().substring(0, 6).equals(x) /*!p2.getId_I_new().equals("0") */){
-    	    				
-            				for(INDIV_INDIV ii: p2.getIndiv_indiv()){    
-            					
-            					//System.out.println("Testing " + " ii.getId_I_2() == p1.getId_I()) " + ii.getId_I_2() + " "+  p1.getId_I());
-            					
-            					if(ii.getId_I_2() == p1.getId_I()){
-            		    			//System.out.println("       p1 =  " +  p1.toString() + "  " + p1.getId_I_new());
-                	    			//System.out.println("       p2 =  " +  p2.toString() + "  " + p2.getId_I_new());
-
-            						
-                					if(!p1.getId_I_new().equals("0") && !p2.getId_I_new().equals("0")){    // Change!!
-                						ii.setId_I_2(new Integer(p1.getId_I_new()));
-                						//System.out.println("::" + ii.getId_I_2());
-                					}
-                					else
-                						ii.setId_I_2(-1);  // Change!! Let code below know that this was detected, no message needeed
-            					}
-            				}
-    	    			}
-    				
-    				}
     			}
-    		}
-    	}	
-    		
-    	/*
-    	
-    	System.out.println("Group X: ");
-    	System.out.println();
 
-    	
-    	for(Person p: group){
-    		
-    		System.out.println();
-    		System.out.format("%s %d %02d  %12s  %20s  %20s %s\n", p.getSource(), p.getIdnr(),p.getId_I(), p.getId_I_new(),  p.getFirstName(), p.getFamilyName(), p.toString());     		
-    		System.out.println();
-    		
-    		for(INDIV_INDIV ii: p.getIndiv_indiv()){
-    			System.out.format("%s  %s, %d, %15s, %d\n", ii.getSource(), ii.getId_D(), ii.getId_I_1(), ii.getRelation(), ii.getId_I_2());
-				System.out.println("xxxxxxxx INDIV_INDIV, ID_D = " + ii.getId() + ", ID_I_1 = " + ii.getId_I_1() + ", ID_I_2 = " + ii.getId_I_2() +
-						", Source = " + ii.getSource() + ", Relation = " + ii.getRelation());
-
-    		}
-    		
-    	}
-
-    	*/
-		
-
-    	// Now we must write the INDIV_INDIV entries
-    	// Undated (family) relations must be written only once
-    	
-    	ArrayList<Integer> relatives = new ArrayList<Integer>();
-    	String oldId_new = "";
-    	for(Person p: group){
-    		
-    		if(p.getId_I_new().equals("0")) continue;   // This is a double father or mother, no messages
-    		
-    		if(!p.getId_I_new().equals(oldId_new)){  
-    			oldId_new = p.getId_I_new();
-    			relatives.clear();
-    		}
-    		
- outer:		for(INDIV_INDIV ii: p.getIndiv_indiv()){
-	 
-	 			//System.out.println("in loop, id_i_1 = " + ii.getId_I_1() + ", id_i_2 = " + ii.getId_I_2());
-    			if(ii.getStart_day() == 0 && ii.getDay() == 0){ // undated entry
-    				for(Integer i: relatives){
-    					if(ii.getId_I_2() == i){
-    						continue outer;
-    					}
-    				}
-    				relatives.add(ii.getId_I_2());
-    			} 
-    			if(ii.getId_I_1() > 1000 * 1000 * 1000 && ii.getId_I_2() > 1000 * 1000 * 1000){ // it has both id_i_1 and Id_i_2 updated to the new values
+    			for(Person p2: group){
     				
-    				if(ii.getRelation() != null && ii.getRelation().trim().length() > 0)
-    					ii.setRelation(standardizeRelation(ii.getRelation()));
-    				ii.setId_D(getVersion());
-    				em.persist(ii);
     				
-    				//System.out.println("Adding   INDIV_INDIV, ID_D = " + ii.getId() + ", ID_I_1 = " + ii.getId_I_1() + ", ID_I_2 = " + ii.getId_I_2() +
-    					//	", Source = " + ii.getSource() + ", Relation = " + ii.getRelation());
+	    			if(p2 != p1 && p2.getSource() != null && p2.getSource().substring(0, 6).equals(x) /*!p2.getId_I_new().equals("0") */){
+	    				
+        				for(INDIV_INDIV ii: p2.getIndiv_indiv()){    
+        					
+        					if(ii.getId_I_2() == p1.getId_I()){
 
+								if (!p1.getId_I_new().equals("-1")	&& !p2.getId_I_new().equals("-1")) { // Change!!
+									
+									ii.setId_I_2(new Integer(p1.getId_I_new()));	
+								}
+								else
+									ii.setId_I_2(-1);
+        					}
+
+        				}
+	    			}
     				
-    				indiv_indiv_count++;
-    			}
-    			else{
-    				if(ii.getId_I_2() != -1){   // Change!!
-    					System.out.println("Skipping INDIV_INDIV, ID_D = " + ii.getId() + ", ID_I_1 = " + ii.getId_I_1() + ", ID_I_2 = " + ii.getId_I_2() +
-    							", Source = " + ii.getSource() + ", Relation = " + ii.getRelation());
-    					System.out.println("p = " + p.toString());
-    					System.out.println("p.getId_I_new = " + p.getId_I_new());
-    				}
     			}
     		}
     	}
-    		
     	
+
+		ArrayList<Integer> relatives = new ArrayList<Integer>();
+		String oldId_new = "";
+		for (Person p : group) {
+
+
+			if (!p.getId_I_new().equals(oldId_new)) {
+				oldId_new = p.getId_I_new();
+				relatives.clear();
+			}
+
+			outer: for (INDIV_INDIV ii : p.getIndiv_indiv()) {
+
+				if (ii.getStart_day() == 0 && ii.getDay() == 0) { // undated
+																	// entry
+					for (Integer i : relatives) {
+						if (ii.getId_I_2() == i) {
+							continue outer;
+						}
+					}
+					relatives.add(ii.getId_I_2());
+				}
+				if (ii.getId_I_1() > 1000 * 1000 * 1000	&& ii.getId_I_2() > 1000 * 1000 * 1000) { // it has both 
+
+					if (ii.getRelation() != null && ii.getRelation().trim().length() > 0)
+						ii.setRelation(standardizeRelation(ii.getRelation()));
+					ii.setId_D(getVersion());
+					em.persist(ii);
+
+					// System.out.println("Adding   INDIV_INDIV, ID_D = " +
+					// ii.getId() + ", ID_I_1 = " + ii.getId_I_1() +
+					// ", ID_I_2 = " + ii.getId_I_2() +
+					// ", Source = " + ii.getSource() + ", Relation = " +
+					// ii.getRelation());
+
+					indiv_indiv_count++;
+				} 
+				else {
+					if (!(ii.getId_I_1() == -1 || ii.getId_I_2() == -1)) { // Change!!
+						System.out.println("Skipping INDIV_INDIV, ID_D = "
+								+ ii.getId() + ", ID_I_1 = " + ii.getId_I_1()
+								+ ", ID_I_2 = " + ii.getId_I_2()
+								+ ", Source = " + ii.getSource()
+								+ ", Relation = " + ii.getRelation());
+						System.out.println("p = " + p.toString());
+						System.out.println("p.getId_I_new = " + p.getId_I_new());
+					}
+				}
+			}
+		}
+
     	// Write the INDIV_CONTEXT entries
-    	
+
     	for(Person p: group){
     		for(INDIV_CONTEXT ic: p.getIndiv_context()){
-    				ic.setId_I(new Integer(p.getId_I_new()));
-    				ic.setId_D(getVersion());
-    				em.persist(ic);
-    				indiv_context_count++;
-   			}
+    			ic.setId_I(new Integer(p.getId_I_new()));
+    			ic.setId_D(getVersion());
+    			em.persist(ic);
+    			indiv_context_count++;
+    		}
     	}
     	
     	
@@ -1154,7 +1089,7 @@ private static void handleMothers(ArrayList<Person> family){
 				preferredPerson.getFirstName() + " " + preferredPerson.getFamilyName(),preferredPerson.getSource());
 		
 		//p.setStartCode(0);
-		p.setId_I_new("0");  // this indicates that we know the person is removed, so no messages about her
+		p.setId_I_new("-1");  // this indicates that we know the person is removed, so no messages about her
 	}
 			
 			
@@ -1202,7 +1137,7 @@ private static void handleFathers(ArrayList<Person> family){
 				preferredPerson.getFirstName() + " " + preferredPerson.getFamilyName(),preferredPerson.getSource());
 		
 		//p.setStartCode(0);
-		p.setId_I_new("0"); // this indicates that we know the person is removed, so no messages about him
+		p.setId_I_new("-1"); // this indicates that we know the person is removed, so no messages about him
 
 
 	}
