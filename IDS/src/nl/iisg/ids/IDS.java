@@ -190,10 +190,11 @@ public class IDS implements Runnable {
     	
     	// Sort the person list on (id_i_new, start code)
     	
-    	//for(Person p: personL){
-    	//	String id_i_new = p.getId_I_new() == null ? "NuLL" : p.getId_I_new();
-    	//	System.out.println(p.getIdnr() + "  " + p.getIdWithinGroup() + " " + p.getOriginalRelationRP() +  " " + id_i_new);
-    	//}
+    	for(Person p: personL){
+    		String id_i_new = p.getId_I_new() == null ? "NuLL" : p.getId_I_new();
+    		//if(p.getSource().substring(0,6).equalsIgnoreCase("HSN DC"))
+    			System.out.println(p.getIdnr() + "  " + p.getSource() + " " + p.getIdWithinGroup() + " " + p.getOriginalRelationRP() +  " " + id_i_new);
+    	}
     	
     	Collections.sort(personL, new Comparator<Person>() // this gives all identified Persons, preferred source first
     			{
@@ -328,24 +329,14 @@ public class IDS implements Runnable {
 
     			for(Person p2: group){
     				
-    				
 	    			if(p2 != p1 && p2.getSource() != null && p2.getSource().substring(0, 6).equals(x) /*!p2.getId_I_new().equals("0") */){
 	    				
         				for(INDIV_INDIV ii: p2.getIndiv_indiv()){    
         					
-        					if(ii.getId_I_2() == p1.getId_I()){
-
-								if (!p1.getId_I_new().equals("-1")	&& !p2.getId_I_new().equals("-1")) { // Change!!
-									
-									ii.setId_I_2(new Integer(p1.getId_I_new()));	
-								}
-								else
-									ii.setId_I_2(-1);
-        					}
-
+        					if(ii.getId_I_2() == p1.getId_I())
+								ii.setId_I_2(new Integer(p1.getId_I_new()));	
         				}
 	    			}
-    				
     			}
     		}
     	}
@@ -1069,32 +1060,28 @@ private static void handleMothers(ArrayList<Person> family){
 	setIDWithinGroup(group, true);  // only Name compare for mothers
 	
 	
-	ArrayList<Person> group2 = new ArrayList<Person>();  // We only use the first mother, but she may appear multiple times
-	ArrayList<Person> group3 = new ArrayList<Person>();  // We only use the first mother, but she may appear multiple times
+	ArrayList<Person> group2 = new ArrayList<Person>();  
 	for(Person p: group)
-		if(p.getIdWithinGroup() == 1)
+		if(p.getIdWithinGroup() != 1)
 			group2.add(p);	
-		else
-			group3.add(p);
 	
-	Person preferredPerson = setStartCode(group2); //find preferred source
+	Person preferredPerson = setStartCode(group); //find preferred source
 	
-	for(Person p: group2){
+	for(Person p: group){
 		String idnr6 = String.format("%06d", p.getIdnr());
 		p.setId_I_new("1" + idnr6 + "002");
 	}
 	
-	for(Person p: group3){
+	for(Person p: group2){
 		message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getSource(), 
 				preferredPerson.getFirstName() + " " + preferredPerson.getFamilyName(),preferredPerson.getSource());
 		
-		//p.setStartCode(0);
-		p.setId_I_new("-1");  // this indicates that we know the person is removed, so no messages about her
+		//p.;
+		//p.setId_I_new("-1");  // this indicates that we know the person is removed, so no messages about her
 	}
 			
 			
-	family.removeAll(group2);
-	family.removeAll(group3);
+	family.removeAll(group);
 }
 /**
  * Routine to handle fathers
@@ -1117,33 +1104,29 @@ private static void handleFathers(ArrayList<Person> family){
 	setIDWithinGroup(group, true);  // only Name compare for fathers
 	
 	
-	ArrayList<Person> group2 = new ArrayList<Person>();  // We only use the first father, but he may appear multiple times
-	ArrayList<Person> group3 = new ArrayList<Person>();  // We only use the first father, but he may appear multiple times
+	ArrayList<Person> group2 = new ArrayList<Person>();  
 	for(Person p: group)
-		if(p.getIdWithinGroup() == 1)
+		if(p.getIdWithinGroup() != 1)
 			group2.add(p);	
-		else
-			group3.add(p);
 	
-	Person preferredPerson = setStartCode(group2); //find preferred source
+	Person preferredPerson = setStartCode(group); //find preferred source
 	
-	for(Person p: group2){
+	for(Person p: group){
 		String idnr6 = String.format("%06d", p.getIdnr());
 		p.setId_I_new("1" + idnr6 + "012");
 	}
 	
-	for(Person p: group3){
+	for(Person p: group2){
 		message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getSource(), 
 				preferredPerson.getFirstName() + " " + preferredPerson.getFamilyName(),preferredPerson.getSource());
 		
 		//p.setStartCode(0);
-		p.setId_I_new("-1"); // this indicates that we know the person is removed, so no messages about him
+		//p.setId_I_new("-1"); // this indicates that we know the person is removed, so no messages about him
 
 
 	}
 			
-	family.removeAll(group2);
-	family.removeAll(group3);
+	family.removeAll(group);
 }
 /**
  * Routine to handle spouses
@@ -1164,6 +1147,7 @@ private static void handleSpouses(ArrayList<Person> family){
 					 	 p.getRelationRP().equals("" + ConstRelations2.PARTNER) 
 			 	 ))
 		
+			p.setStartCode(2);  // preset
 			group.add(p);
 		
 		
@@ -1235,7 +1219,9 @@ private static void handleChildren(ArrayList<Person> family){
 						p.getRelationRP().equalsIgnoreCase("Dochter") || p.getRelationRP().equals("" + ConstRelations2.DOCHTER) ||
 						p.getRelationRP().equalsIgnoreCase("Kind") || p.getRelationRP().equals("" + ConstRelations2.KIND_PK) ||
 						p.getRelationRP().equalsIgnoreCase("Stiefdochter") || p.getRelationRP().equals("" + ConstRelations2.STIEFDOCHTER))){
+			p.setStartCode(2);  // preset
 			group.add(p);
+			
 		}
 	}
 	
@@ -1311,6 +1297,7 @@ private static void handleSiblings(ArrayList<Person> family){
 						p.getRelationRP().equalsIgnoreCase("Sibling") || p.getRelationRP().equals("" + ConstRelations2.SIBLING) ||
 						p.getRelationRP().equalsIgnoreCase("Stiefsibling") || p.getRelationRP().equals("" + ConstRelations2.STIEFSIBLING) ||
 						p.getRelationRP().equalsIgnoreCase("Stiefzuster") || p.getRelationRP().equals("" + ConstRelations2.STIEFZUSTER))){
+			p.setStartCode(2);  // preset
 			group.add(p);
 		}
 	}
@@ -1383,6 +1370,7 @@ private static void handleParentsInLaw(ArrayList<Person> family){
 				(p.getRelationRP().equalsIgnoreCase("Schoonvader") || p.getRelationRP().equals("" + ConstRelations2.SCHOONVADER) ||
 						p.getRelationRP().equalsIgnoreCase("Schoonmoeder") || p.getRelationRP().equals("" + ConstRelations2.SCHOONMOEDER))){
 			group.add(p);
+			p.setStartCode(2);  // preset
 		}
 	}
 	
@@ -1462,6 +1450,7 @@ private static void handleOthers(ArrayList<Person> family){
 			   (p.getSource().substring(0, 6).equals("HSN DC") && (p.getId_I() == 61 || p.getId_I()  == 62)))					
 				p.setFunction("Informer");
 					
+			p.setStartCode(2);  // preset
 			group.add(p);
 		}
 	}
