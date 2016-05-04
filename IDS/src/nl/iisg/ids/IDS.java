@@ -100,7 +100,7 @@ public class IDS implements Runnable {
 	//for(int i = 0; i < idnr.length; i++){
 	idnr = 0;
 	icount = 0;
-	 for(int i = 0; i < 1; i++){ // we run in 10 batches
+	 for(int i = 0; i < 10; i++){ // we run in 10 batches
 		
 		setIndexPerson(0);
 		indiv_count = 0;
@@ -746,7 +746,8 @@ private static void loadIDS(String component, int lastDigit){
 
 	
 	//Query q = em.createQuery("select a from INDIVIDUAL a where a.id_D < 9000"); 
-	Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%00" + lastD + "'"); 
+	//Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%00" + lastD + "'"); 
+	Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%" + lastD + "'"); 
 	//Query q = em.createQuery("select a from INDIVIDUAL a"); 
 	setIndividualL(q.getResultList());	
 	
@@ -803,7 +804,8 @@ private static void loadIDS(String component, int lastDigit){
 	print("Reading ..");
 
 	//q = em.createQuery("select a from INDIV_INDIV a where a.id_D == 1090"); 
-	q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%00" + lastD + "'"); 
+	//q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%00" + lastD + "'"); 
+	q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%" + lastD + "'"); 
 	//q = em.createQuery("select a from INDIV_INDIV a"); 
 	setIndiv_indivL(q.getResultList());	
 	
@@ -845,7 +847,8 @@ private static void loadIDS(String component, int lastDigit){
 	print("Reading ...");
 
 	
-	q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%' and a.id_D like '%00" + lastD + "'"); 
+	//q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%' and a.id_D like '%00" + lastD + "'"); 
+	q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%' and a.id_D like '%" + lastD + "'"); 
 	//q = em.createQuery("select a from INDIV_CONTEXT a"); 
 	setIndiv_contextL(q.getResultList());	
 	
@@ -1145,11 +1148,11 @@ private static void handleSpouses(ArrayList<Person> family){
 					 	 p.getRelationRP().equals("" + ConstRelations2.ECHTGENOOT_EXPLICIET_HOOFD) ||
 					 	 p.getRelationRP().equals("" + ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD) ||
 					 	 p.getRelationRP().equals("" + ConstRelations2.PARTNER) 
-			 	 ))
+			 	 )){
 		
 			p.setStartCode(2);  // preset
 			group.add(p);
-		
+		}
 		
 	}
 	
@@ -1172,8 +1175,14 @@ private static void handleSpouses(ArrayList<Person> family){
 	int id_prev = -1;
 	ArrayList<Person> group2 = new ArrayList<Person>();
 	
+	int spouseCount = 0;
 	for(Person p: group){
 		if(p.getIdWithinGroup() != id_prev){
+			spouseCount++;
+			if(spouseCount > 9){
+				System.out.println("Too many wifes!!, idnr = " + p.getIdnr() + " , id_i = " + p.getId_I());
+				break;
+			}
 			if(group2.size() > 0){
 				setStartCode(group2); //find preferred source
 				for(Person p2: group2){
