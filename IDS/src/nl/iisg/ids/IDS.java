@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -50,6 +51,8 @@ public class IDS implements Runnable {
     static String version;	
     static int idnr; 
     static int icount;
+    
+    
     
 	static String [] sources = {"HSN BC", "HSN MC", "HSN PC", "HSN DC", "HSN PR"};
 
@@ -100,7 +103,7 @@ public class IDS implements Runnable {
 	//for(int i = 0; i < idnr.length; i++){
 	idnr = 0;
 	icount = 0;
-	 for(int i = 0; i < 10; i++){ // we run in 10 batches
+	 for(int i = 0; i < 1; i++){ // we run in 10 batches
 		
 		setIndexPerson(0);
 		indiv_count = 0;
@@ -193,7 +196,7 @@ public class IDS implements Runnable {
     	for(Person p: personL){
     		String id_i_new = p.getId_I_new() == null ? "NuLL" : p.getId_I_new();
     		//if(p.getSource().substring(0,6).equalsIgnoreCase("HSN DC"))
-    			System.out.println(p.getIdnr() + "  " + p.getSource() + " " + p.getIdWithinGroup() + " " + p.getOriginalRelationRP() +  " " + id_i_new);
+    		//	System.out.println(p.getIdnr() + "  " + p.getSource() + " " + p.getIdWithinGroup() + " " + p.getOriginalRelationRP() +  " " + id_i_new);
     	}
     	
     	Collections.sort(personL, new Comparator<Person>() // this gives all identified Persons, preferred source first
@@ -294,25 +297,67 @@ public class IDS implements Runnable {
     
     /**
      * 
-     * This routine writes out the INDIVIDUAL, INDIV and INDIV_CONTEXT entries for this Person
+     * This routine writes out the INDIVIDUAL, INDIV and INDIV_CONTEXT entries for this idnr
      * 
      * @param p
      */
     private static void writeGroup(ArrayList<Person> group, EntityManager em){ 	
     	
+    	
+    	// xxx
+    	
+    	String[]  identPerson1 = {"BIRTH_DATE", "BIRTH_LOCATION", "LAST_NAME", "PREFIX_LAST_NAME", "FIRST_NAME", "DEATH_DATE", "DEATH_LOCATION", "HSN_RESEARCH_PERSON"};
+    	String[]  identPerson  = null;
+    	
+    	System.out.println("In write group");
+    	
+    	int id_prev = -1;
     	for(Person p: group){
-    		for(INDIVIDUAL i: p.getIndividual()){
-    			if(!p.getId_I_new().equals("0") && (p.getStartCode() == 1 || !typeInPerson(i.getType()))){   // Change!!
-    				//i.setId(0);
-    				i.setId_I(new Integer(p.getId_I_new()));
-    				//String s = getVersion();
-    				//System.out.println("s = " + s +", length = " + s.length());
-    				i.setId_D(getVersion());
-    				em.persist(i);
-    				indiv_count++;
+    		if(p.getId() != id_prev){
+    			id_prev = new Integer(p.getId_I_new());
+    			identPerson = Arrays.copyOf(identPerson1, identPerson1.length);
+    			System.out.println("Person " + p.getId_I_new() + " " + p.getSource());
+    		}
+    		
+    		for(INDIVIDUAL ind: p.getIndividual()){
+    			boolean found = false;
+    			if(ind.getType().equalsIgnoreCase(("BIRTH_DATE")))	System.out.println("1->" + ind.getId() + "  " + ind.getType() + "  " + ind.getSource());
+    			for(int j = 0; j < identPerson.length; j++){				
+
+    				if(ind.getType().equalsIgnoreCase(identPerson[j])){
+    					
+    					found = true;    				
+
+    	    			if(ind.getType().equalsIgnoreCase(("BIRTH_DATE")))	System.out.println("2->" + ind.getId() + "  " + ind.getType() + "  " + ind.getSource());
+
+    					
+    					if(ind.getType().equals(identPerson[j])){  // This is the first time
+
+    		    			if(ind.getType().equalsIgnoreCase(("BIRTH_DATE")))	System.out.println("3->" + ind.getId() + "  " + ind.getType() + "  " + ind.getSource());
+
+    						
+    						identPerson[j] = identPerson[j].toLowerCase(); // So that we know it was used 
+    						ind.setId_I(new Integer(p.getId_I_new()));
+    						ind.setId_D(getVersion());
+    						em.persist(ind);
+    						indiv_count++;   					
+
+    					}
+
+    				}
+					if(found == false){
+						ind.setId_I(new Integer(p.getId_I_new()));
+						ind.setId_D(getVersion());
+						em.persist(ind);
+						indiv_count++;   					
+
+					}
+    				
     			}
     		}
     	}
+    	
+    	
     	
     	for(String x: sources){
     		for(Person p1: group){
@@ -342,28 +387,26 @@ public class IDS implements Runnable {
     	}
     	
 
-		ArrayList<Integer> relatives = new ArrayList<Integer>();
-		String oldId_new = "";
+		//HashMap<<Integer, Integer>, Boolean> relatives = new <<Integer, Integer>, Boolean>();
+    	
+    	int[][] relatives = new int[1000][1000];
+    	
+    	
 		for (Person p : group) {
-
-
-			if (!p.getId_I_new().equals(oldId_new)) {
-				oldId_new = p.getId_I_new();
-				relatives.clear();
-			}
 
 			outer: for (INDIV_INDIV ii : p.getIndiv_indiv()) {
 
-				if (ii.getStart_day() == 0 && ii.getDay() == 0) { // undated
-																	// entry
-					for (Integer i : relatives) {
-						if (ii.getId_I_2() == i) {
+				if (ii.getId_I_1() > 1000 * 1000 * 1000	&& ii.getId_I_2() > 1000 * 1000 * 1000) { // it has both Id_I update to new value
+					
+					if (ii.getMissing() != null && ii.getMissing().equalsIgnoreCase("Time Invariant")) { // undated entry
+						
+						if(relatives[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000] == 1)
 							continue outer;
-						}
+						else
+							relatives[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000] = 1;
+						
 					}
-					relatives.add(ii.getId_I_2());
-				}
-				if (ii.getId_I_1() > 1000 * 1000 * 1000	&& ii.getId_I_2() > 1000 * 1000 * 1000) { // it has both 
+
 
 					if (ii.getRelation() != null && ii.getRelation().trim().length() > 0)
 						ii.setRelation(standardizeRelation(ii.getRelation()));
