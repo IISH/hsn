@@ -11,7 +11,6 @@ package nl.iisg.ids05;
 
 import java.io.*;
 import java.util.Date;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -26,6 +25,7 @@ import javax.persistence.Query;
 import javax.swing.JTextArea;
 
 import nl.iisg.idscontext.Contxt;
+import nl.iisg.ref.Ref;
 
 import org.eclipse.persistence.internal.sessions.remote.SequencingFunctionCall.GetNextValue;
 
@@ -134,6 +134,7 @@ public class CivilCertificatesToIDS implements Runnable{
 	//query = em.createNativeQuery("LOCK TABLES individual WRITE, indiv_indiv WRITE, indiv_context WRITE;");  
 	//query.executeUpdate();  
 
+	Ref.loadRelation_C();  // we need it to transform some relations
 	
 	int cnt = 0;
 	
@@ -163,8 +164,8 @@ public class CivilCertificatesToIDS implements Runnable{
 
 			}
 
-			if(b0.getB1L() == null || b0.getB1L().size() == 0)
-				System.out.println("No RP for IDNR = " + b0.getIdnr());
+			//if(b0.getB1L() == null || b0.getB1L().size() == 0)
+			//	System.out.println("No RP for IDNR = " + b0.getIdnr());
 			for(B1 b1: b0.getB1L()){			
 				b1.convert(em);
 

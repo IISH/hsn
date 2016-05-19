@@ -453,7 +453,7 @@ public class Common1 {
     		return new int[]{relToHeadB};
     			
     	
-    	
+    		
     	
     	// look up first code
     	  

@@ -674,7 +674,7 @@ static{
 	b3kode1_Related[158] = "Ouder";
 	b3kode1_Related[162] = "Halfsibling";
 	b3kode1_Related[164] = "Grootouder";
-
+	
     
 // B3kode1 - Marriable (The head can marry any of these persons, provided the sex is different. This is already checked by the civil servant who concludes the marriage way back)
     

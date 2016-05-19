@@ -312,8 +312,10 @@ public class IDS implements Runnable {
     	System.out.println("In write group");
     	
     	int id_prev = -1;
+    	String prevSex = "";
+    	
     	for(Person p: group){
-    		if(p.getId() != id_prev){
+    		if(new Integer(p.getId_I_new()) != id_prev){
     			id_prev = new Integer(p.getId_I_new());
     			identPerson = Arrays.copyOf(identPerson1, identPerson1.length);
     			System.out.println("Person " + p.getId_I_new() + " " + p.getSource());
@@ -328,7 +330,7 @@ public class IDS implements Runnable {
     					
     					found = true;    				
 
-    	    			if(ind.getType().equalsIgnoreCase(("BIRTH_DATE")))	System.out.println("2->" + ind.getId() + "  " + ind.getType() + "  " + ind.getSource());
+    	    			if(ind.getType().equalsIgnoreCase(("BIRTH_DATE")))	System.out.println("2->" + ind.getId() + "  " + ind.getType() + "  " + ind.getSource() + " " + identPerson[j]);
 
     					
     					if(ind.getType().equals(identPerson[j])){  // This is the first time
@@ -345,15 +347,29 @@ public class IDS implements Runnable {
     					}
 
     				}
-					if(found == false){
+    			}
+				if(found == false){
+				
+					if(ind.getType().equalsIgnoreCase("SEX")){
+						if(!ind.getValue().equalsIgnoreCase(prevSex)){
+						
+							prevSex = ind.getValue();
+							ind.setId_I(new Integer(p.getId_I_new()));
+							ind.setId_D(getVersion());
+							em.persist(ind);
+							indiv_count++;   					
+						}
+						
+					}
+					else{
+							
 						ind.setId_I(new Integer(p.getId_I_new()));
 						ind.setId_D(getVersion());
 						em.persist(ind);
-						indiv_count++;   					
-
+						indiv_count++;
 					}
-    				
-    			}
+					
+				}
     		}
     	}
     	
@@ -789,8 +805,8 @@ private static void loadIDS(String component, int lastDigit){
 
 	
 	//Query q = em.createQuery("select a from INDIVIDUAL a where a.id_D < 9000"); 
-	//Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%00" + lastD + "'"); 
-	Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%" + lastD + "'"); 
+	Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%00" + lastD + "'"); 
+	//Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%" + lastD + "'"); 
 	//Query q = em.createQuery("select a from INDIVIDUAL a"); 
 	setIndividualL(q.getResultList());	
 	
@@ -847,8 +863,8 @@ private static void loadIDS(String component, int lastDigit){
 	print("Reading ..");
 
 	//q = em.createQuery("select a from INDIV_INDIV a where a.id_D == 1090"); 
-	//q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%00" + lastD + "'"); 
-	q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%" + lastD + "'"); 
+	q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%00" + lastD + "'"); 
+	//q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%" + lastD + "'"); 
 	//q = em.createQuery("select a from INDIV_INDIV a"); 
 	setIndiv_indivL(q.getResultList());	
 	

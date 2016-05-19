@@ -1,5 +1,7 @@
 package nl.iisg.ids05;
 
+import java.util.ArrayList;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
@@ -9,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import nl.iisg.hsncommon.Common1;
+import nl.iisg.hsncommon.ConstRelations2;
 import nl.iisg.idscontext.ContextElement;
 import nl.iisg.idscontext.Contxt;
 
@@ -89,10 +93,15 @@ public class M4 {
 		 
     	 // System.out.println("M4 IDNR = " + getIdnr() + " m4w_lr = " + getM4w_lr() + " m4w_ls = " + getM4w_ls());
     	 
+    	 boolean GR_WT = false;
+    	 boolean BR_WT = false;
+    	 
 		 if(getM4w_lr() != null){
 			 if(getM4w_lr().trim().equalsIgnoreCase("M") || getM4w_lr().trim().equalsIgnoreCase("B"))
 				 if(getM4w_ls() != null && getM4w_ls().trim().length() > 0){
-					 Utils.addIndivIndiv(em, getIdnr(), Id_I_WT, Id_I_GR, "MC M4",  getM4w_ls().trim(), "Event", "Exact",  getMar_cd(), getMar_cm(), getMar_cy());
+					 Utils.addIndivIndiv(em, getIdnr(), Id_I_WT, Id_I_GR, "MC M4",  getM4w_ls().trim(), "Event", "Exact",  getMar_cd(), getMar_cm(), getMar_cy());					 
+					 Utils.addIndivIndiv(em, getIdnr(), Id_I_GR, Id_I_WT, "MC M4",  findReciproke(getM4w_ls().trim(), "M"), "Event", "Exact",  getMar_cd(), getMar_cm(), getMar_cy());
+					 GR_WT = true;
 					 Utils.addIndivIndiv(em, getIdnr(), Id_I_WT, Id_I_BR, "MC M4",  "Onbekend", "Event", "Exact",  getMar_cd(), getMar_cm(), getMar_cy());
 				 }
 				 else{
@@ -103,6 +112,8 @@ public class M4 {
 				 if(getM4w_lr().trim().equalsIgnoreCase("V") || getM4w_lr().trim().equalsIgnoreCase("B")){
 					 if(getM4w_ls() != null && getM4w_ls().trim().length() > 0){
 						 Utils.addIndivIndiv(em, getIdnr(), Id_I_WT, Id_I_BR, "MC M4",  getM4w_ls().trim(), "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+						 Utils.addIndivIndiv(em, getIdnr(), Id_I_BR, Id_I_WT, "MC M4",  findReciproke(getM4w_ls().trim(), "V"), "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+						 BR_WT = true;
 						 Utils.addIndivIndiv(em, getIdnr(), Id_I_WT, Id_I_GR, "MC M4",  "Onbekend", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 					 }
 					 else{
@@ -119,13 +130,63 @@ public class M4 {
 		     Utils.addIndivIndiv(em, getIdnr(), Id_I_WT, Id_I_BR, "MC M4",  "Onbekend", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 		     Utils.addIndivIndiv(em, getIdnr(), Id_I_WT, Id_I_GR, "MC M4",  "Onbekend", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 		 }
-	     Utils.addIndivIndiv(em, getIdnr(), Id_I_GR, Id_I_WT, "MC M4",  "Onbekend", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
-	     Utils.addIndivIndiv(em, getIdnr(), Id_I_BR, Id_I_WT, "MC M4",  "Onbekend", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+		 if(!GR_WT)
+			 Utils.addIndivIndiv(em, getIdnr(), Id_I_GR, Id_I_WT, "MC M4",  "Onbekend", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+		 if(!BR_WT)
+			 Utils.addIndivIndiv(em, getIdnr(), Id_I_BR, Id_I_WT, "MC M4",  "Onbekend", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 
      }
 
 
      
+    private String findReciproke(String relation, String sex){
+    	
+    	    	
+    	System.out.println("xxx1 " + relation);
+    	
+    	if(relation == null) return("Onbekend");
+    	 
+    	int code = -1;
+    	for(int j= 1; j < ConstRelations2.b3kode1.length; j++){
+    		if(relation.equalsIgnoreCase(ConstRelations2.b3kode1[j])){
+    			code = j;
+    			break;
+    		}
+    		
+    	}
+    	System.out.println("xxx2 " + code);
+
+    	
+    	if(code > 0){
+    		
+    		int reciprokeCode = Common1.getRelation(1, code)[0];
+        	System.out.println("xxx3 " + reciprokeCode);
+        	//System.out.println("xxx4 " + ConstRelations2.b3kode1[reciprokeCode]);
+
+    		if(reciprokeCode > 0 && reciprokeCode < ConstRelations2.b3kode1.length){
+    			
+    	    	// Adapt for sex
+
+    	    	if(sex.equalsIgnoreCase("V") && ConstRelations2.b3kode1_Female[reciprokeCode] == null)
+    	    		if(ConstRelations2.mToF[reciprokeCode] != 0)
+    	    			reciprokeCode = ConstRelations2.mToF[reciprokeCode];
+
+    	    	if(sex.equalsIgnoreCase("M") && ConstRelations2.b3kode1_Male[reciprokeCode] == null)
+    	    		if(ConstRelations2.fToM[reciprokeCode] != 0)
+    	    			reciprokeCode = ConstRelations2.fToM[reciprokeCode];
+
+    	    	
+    			
+    			return (ConstRelations2.b3kode1[reciprokeCode]);
+    		}
+    		
+    		
+    	}
+    	
+    	
+    	return("Onbekend");
+    	 
+    }
 
 	public int getIdnr() {
 		return idnr;
