@@ -175,6 +175,7 @@ public class M4 {
     	    		if(ConstRelations2.fToM[reciprokeCode] != 0)
     	    			reciprokeCode = ConstRelations2.fToM[reciprokeCode];
 
+    	    	System.out.println("xxx4 " + ConstRelations2.b3kode1[reciprokeCode]);
     	    	
     			
     			return (ConstRelations2.b3kode1[reciprokeCode]);
