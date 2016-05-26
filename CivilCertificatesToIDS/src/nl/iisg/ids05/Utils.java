@@ -886,6 +886,8 @@ public class Utils {
 	 }
 	 
     public static String sex(String sex){
+    	
+    	if(sex == null) return "Unknown";
 	    	
     	if(sex.trim().toUpperCase().equals("M"))
     		return "Male";

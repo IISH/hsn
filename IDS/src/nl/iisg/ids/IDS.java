@@ -309,7 +309,7 @@ public class IDS implements Runnable {
     	String[]  identPerson1 = {"BIRTH_DATE", "BIRTH_LOCATION", "LAST_NAME", "PREFIX_LAST_NAME", "FIRST_NAME", "DEATH_DATE", "DEATH_LOCATION", "HSN_RESEARCH_PERSON"};
     	String[]  identPerson  = null;
     	
-    	System.out.println("In write group");
+    	//System.out.println("In write group");
     	
     	int id_prev = -1;
     	String prevSex = "";
@@ -318,24 +318,24 @@ public class IDS implements Runnable {
     		if(new Integer(p.getId_I_new()) != id_prev){
     			id_prev = new Integer(p.getId_I_new());
     			identPerson = Arrays.copyOf(identPerson1, identPerson1.length);
-    			System.out.println("Person " + p.getId_I_new() + " " + p.getSource());
+    			//System.out.println("Person " + p.getId_I_new() + " " + p.getSource());
     		}
     		
     		for(INDIVIDUAL ind: p.getIndividual()){
     			boolean found = false;
-    			if(ind.getType().equalsIgnoreCase(("BIRTH_DATE")))	System.out.println("1->" + ind.getId() + "  " + ind.getType() + "  " + ind.getSource());
+    			//if(ind.getType().equalsIgnoreCase(("BIRTH_DATE")))	System.out.println("1->" + ind.getId() + "  " + ind.getType() + "  " + ind.getSource());
     			for(int j = 0; j < identPerson.length; j++){				
 
     				if(ind.getType().equalsIgnoreCase(identPerson[j])){
     					
     					found = true;    				
 
-    	    			if(ind.getType().equalsIgnoreCase(("BIRTH_DATE")))	System.out.println("2->" + ind.getId() + "  " + ind.getType() + "  " + ind.getSource() + " " + identPerson[j]);
+    	    			//if(ind.getType().equalsIgnoreCase(("BIRTH_DATE")))	System.out.println("2->" + ind.getId() + "  " + ind.getType() + "  " + ind.getSource() + " " + identPerson[j]);
 
     					
     					if(ind.getType().equals(identPerson[j])){  // This is the first time
 
-    		    			if(ind.getType().equalsIgnoreCase(("BIRTH_DATE")))	System.out.println("3->" + ind.getId() + "  " + ind.getType() + "  " + ind.getSource());
+    		    			//if(ind.getType().equalsIgnoreCase(("BIRTH_DATE")))	System.out.println("3->" + ind.getId() + "  " + ind.getType() + "  " + ind.getSource());
 
     						
     						identPerson[j] = identPerson[j].toLowerCase(); // So that we know it was used 
@@ -414,7 +414,11 @@ public class IDS implements Runnable {
 
 				if (ii.getId_I_1() > 1000 * 1000 * 1000	&& ii.getId_I_2() > 1000 * 1000 * 1000) { // it has both Id_I update to new value
 					
-					if (ii.getMissing() != null && ii.getMissing().equalsIgnoreCase("Time Invariant")) { // undated entry
+					if (ii.getMissing() != null && ii.getMissing().equalsIgnoreCase("Time_Invariant")) { // undated entry					
+						
+						
+						//System.out.println("ii.getId_I_1() % 1000 =  " + ii.getId_I_1() % 1000 + " ii.getId_I_2() % 1000 = " + ii.getId_I_2() % 1000);
+						//System.out.println("(relatives[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000] = " + relatives[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000]);
 						
 						if(relatives[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000] == 1)
 							continue outer;

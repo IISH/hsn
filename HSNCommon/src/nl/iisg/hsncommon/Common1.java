@@ -5,7 +5,9 @@ package nl.iisg.hsncommon;
 import java.io.File;
 
 
+
 import nl.iisg.ref.Ref;
+import nl.iisg.ref.Ref_Relation_C;
 
 public class Common1 {
 	
@@ -431,7 +433,7 @@ public class Common1 {
     	
     	
     	if(Ref.getRelation_C(relToHeadA, relToHeadB) != null){
-    		System.out.println("   RelationA = " +  relToHeadA +  "   RelationB = " +  relToHeadB + "   RelationM = " +  Ref.getRelation_C(relToHeadA, relToHeadB));
+    		System.out.println("   RelationA = " +  relToHeadA +  "   RelationB = " +  relToHeadB + "   RelationM = " +  Ref.getRelation_C(relToHeadA, relToHeadB)[0]);
     		return Ref.getRelation_C(relToHeadA, relToHeadB);
     	}
     	

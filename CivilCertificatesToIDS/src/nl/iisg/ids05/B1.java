@@ -196,12 +196,17 @@ public class B1 {
 
 
 
-			// Informer relations
+			// Relations
 
 			if(getB1infa().equalsIgnoreCase("J")){
 				if(ceCertificate != null)
 					Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_IN, "Birth Certificate", "Father as Informer", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
-				Utils.addIndivIndiv(em, getIdnr(), Id_I_RP, Id_I_IN, "BC B1", "Kind",  "Missing", "Time_invariant",0, 0,0 ); 
+				
+				String relation = "Kind";
+				if(getB1rpgn().equalsIgnoreCase("M")) relation = "Zoon";
+				else
+					if(getB1rpgn().equalsIgnoreCase("V")) relation = "Dochter";
+				Utils.addIndivIndiv(em, getIdnr(), Id_I_RP, Id_I_IN, "BC B1", relation,  "Missing", "Time_invariant",0, 0,0 ); 
 				Utils.addIndivIndiv(em, getIdnr(), Id_I_IN, Id_I_RP, "BC B1", "Vader",  "Missing", "Time_invariant",0, 0,0 ); 
 
 			}
@@ -249,7 +254,12 @@ public class B1 {
 			// Mother relations
 
 			Utils.addIndivIndiv(em, getIdnr(), Id_I_MO, Id_I_RP, "BC B1", "Moeder", "Missing", "Time_invariant", 0, 0,0 ); // Son and Mother
-			Utils.addIndivIndiv(em, getIdnr(), Id_I_RP, Id_I_MO, "BC B1", "Kind", "Missing", "Time_invariant", 0, 0,0 ); // Son and Mother
+			String relation = "Kind";
+			if(getB1rpgn().equalsIgnoreCase("M")) relation = "Zoon";
+			else
+				if(getB1rpgn().equalsIgnoreCase("V")) relation = "Dochter";
+
+			Utils.addIndivIndiv(em, getIdnr(), Id_I_RP, Id_I_MO, "BC B1", relation, "Missing", "Time_invariant", 0, 0,0 ); // Son and Mother
 
 			if(getB1infa().equalsIgnoreCase("J") && getB1mocs().equals("5")){
 				Utils.addIndivIndiv(em, getIdnr(), Id_I_MO, Id_I_IN, "BC B1", "Echtgenote", "Declared", "Exact",getB1sdcd(),  getB1sdcm(), getB1sdcy()); 

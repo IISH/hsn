@@ -125,7 +125,14 @@ public class B5 {
 		 // Father relations
 		 
 		 Utils.addIndivIndiv(em, getIdnr(), Id_I_FA, 1, "BC B5", "Vader", "Missing", "Time_invariant", 0, 0,0); 
-		 Utils.addIndivIndiv(em, getIdnr(), 1, Id_I_FA, "BC B5", "Kind", "Missing", "Time_invariant", 0, 0,0); 
+		 
+		String relation = "Kind";
+		if(getB1().getB1rpgn().equalsIgnoreCase("M")) relation = "Zoon";
+		else
+			if(getB1().getB1rpgn().equalsIgnoreCase("V")) relation = "Dochter";
+
+
+		 Utils.addIndivIndiv(em, getIdnr(), 1, Id_I_FA, "BC B5", relation, "Missing", "Time_invariant", 0, 0,0); 
     	 
 
      }

@@ -15,6 +15,8 @@ import nl.iisg.hsncommon.Common1;
 import nl.iisg.hsncommon.ConstRelations2;
 import nl.iisg.idscontext.ContextElement;
 import nl.iisg.idscontext.Contxt;
+import nl.iisg.ref.Ref;
+import nl.iisg.ref.Ref_Relation_B;
 
 @Entity
 @Table(name="m4")
@@ -142,11 +144,23 @@ public class M4 {
     private String findReciproke(String relation, String sex){
     	
     	    	
-    	System.out.println("xxx1 " + relation);
+    	//System.out.println("xxx1 " + relation);
     	
-    	if(relation == null) return("Onbekend");
+    	if(relation == null){
+    		System.out.println("yyy0 " + relation);
+    		return("Onbekend");
+    	}
+    	
+    	Ref_Relation_B r =  Ref.getRelation_B(relation);
+    	
+    	if(r == null  || r.getKode() == 0){
+    		System.out.println("yyy1 " + relation);
+    		return("Onbekend");
+    	}
     	 
-    	int code = -1;
+    	int code = r.getKode();
+    	
+    	/*
     	for(int j= 1; j < ConstRelations2.b3kode1.length; j++){
     		if(relation.equalsIgnoreCase(ConstRelations2.b3kode1[j])){
     			code = j;
@@ -154,35 +168,36 @@ public class M4 {
     		}
     		
     	}
-    	System.out.println("xxx2 " + code);
+    	*/ 
+    	
+    	//System.out.println("xxx2 " + code);
 
     	
-    	if(code > 0){
     		
-    		int reciprokeCode = Common1.getRelation(1, code)[0];
-        	System.out.println("xxx3 " + reciprokeCode);
-        	//System.out.println("xxx4 " + ConstRelations2.b3kode1[reciprokeCode]);
+    	int reciprokeCode = Common1.getRelation(1, code)[0];
+    	//System.out.println("xxx3 " + reciprokeCode);
+    	//System.out.println("xxx4 " + ConstRelations2.b3kode1[reciprokeCode]);
 
-    		if(reciprokeCode > 0 && reciprokeCode < ConstRelations2.b3kode1.length){
-    			
-    	    	// Adapt for sex
+    	if(reciprokeCode > 0 && reciprokeCode < ConstRelations2.b3kode1.length){
 
-    	    	if(sex.equalsIgnoreCase("V") && ConstRelations2.b3kode1_Female[reciprokeCode] == null)
-    	    		if(ConstRelations2.mToF[reciprokeCode] != 0)
-    	    			reciprokeCode = ConstRelations2.mToF[reciprokeCode];
+    		// Adapt for sex
 
-    	    	if(sex.equalsIgnoreCase("M") && ConstRelations2.b3kode1_Male[reciprokeCode] == null)
-    	    		if(ConstRelations2.fToM[reciprokeCode] != 0)
-    	    			reciprokeCode = ConstRelations2.fToM[reciprokeCode];
+    		if(sex.equalsIgnoreCase("V") && ConstRelations2.b3kode1_Female[reciprokeCode] == null)
+    			if(ConstRelations2.mToF[reciprokeCode] != 0)
+    				reciprokeCode = ConstRelations2.mToF[reciprokeCode];
 
-    	    	System.out.println("xxx4 " + ConstRelations2.b3kode1[reciprokeCode]);
-    	    	
-    			
-    			return (ConstRelations2.b3kode1[reciprokeCode]);
-    		}
-    		
-    		
+    		if(sex.equalsIgnoreCase("M") && ConstRelations2.b3kode1_Male[reciprokeCode] == null)
+    			if(ConstRelations2.fToM[reciprokeCode] != 0)
+    				reciprokeCode = ConstRelations2.fToM[reciprokeCode];
+
+    		//System.out.println("xxx4 " + ConstRelations2.b3kode1[reciprokeCode]);
+
+
+    		return (ConstRelations2.b3kode1[reciprokeCode]);
     	}
+    	else
+    		System.out.println("yyy4 " + relation + " " + reciprokeCode);
+    		
     	
     	
     	return("Onbekend");

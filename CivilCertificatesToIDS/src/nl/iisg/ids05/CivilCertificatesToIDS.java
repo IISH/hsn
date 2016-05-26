@@ -134,6 +134,7 @@ public class CivilCertificatesToIDS implements Runnable{
 	//query = em.createNativeQuery("LOCK TABLES individual WRITE, indiv_indiv WRITE, indiv_context WRITE;");  
 	//query.executeUpdate();  
 
+	Ref.loadRelation_B();  // to standardize relations
 	Ref.loadRelation_C();  // we need it to transform some relations
 	
 	int cnt = 0;

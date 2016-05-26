@@ -179,7 +179,7 @@ public void convert(EntityManager em){
     	 
     	 // Father dead RP
     	 
-		 int Id_I_FA = 52; // Father Dead RP; (Happened often because of high infant death rate)
+		 int Id_I_FA = 52; // Father Dead RP; 
 		 
 		 boolean fatherLastname = false;
 		 if(getD1faln() != null && getD1faln().trim().length() > 0 && !getD1faln().trim().equalsIgnoreCase("N")){
@@ -244,7 +244,7 @@ public void convert(EntityManager em){
 		 
 		 // Mother dead RP
 
-		 int Id_I_MO = 53; // Mother Dead RP; (Happened often because of high infant death rate)
+		 int Id_I_MO = 53; // Mother Dead RP; 
 		 
 		 boolean motherLastname = false;
 
