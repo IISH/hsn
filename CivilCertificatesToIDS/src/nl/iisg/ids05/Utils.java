@@ -2,8 +2,12 @@ package nl.iisg.ids05;
 
 import javax.persistence.EntityManager;
 
+import nl.iisg.hsncommon.Common1;
+import nl.iisg.hsncommon.ConstRelations2;
 import nl.iisg.idscontext.ContextElement;
 import nl.iisg.idscontext.Contxt;
+import nl.iisg.ref.Ref;
+import nl.iisg.ref.Ref_Relation_B;
 
 public class Utils {
 	
@@ -895,6 +899,69 @@ public class Utils {
     		return "Female";
    		return "Unknown";
 	    	
+    }
+
+    public static String findReciproke(String relation, String sex){
+    	
+    	
+    	//System.out.println("xxx1 " + relation);
+    	
+    	if(relation == null){
+    		System.out.println("yyy0 " + relation);
+    		return("Onbekend");
+    	}
+    	
+    	Ref_Relation_B r =  Ref.getRelation_B(relation);
+    	
+    	if(r == null  || r.getKode() == 0){
+    		System.out.println("yyy1 " + relation);
+    		return("Onbekend");
+    	}
+    	 
+    	int code = r.getKode();
+    	
+    	/*
+    	for(int j= 1; j < ConstRelations2.b3kode1.length; j++){
+    		if(relation.equalsIgnoreCase(ConstRelations2.b3kode1[j])){
+    			code = j;
+    			break;
+    		}
+    		
+    	}
+    	*/ 
+    	
+    	//System.out.println("xxx2 " + code);
+
+    	
+    		
+    	int reciprokeCode = Common1.getRelation(1, code)[0];
+    	//System.out.println("xxx3 " + reciprokeCode);
+    	//System.out.println("xxx4 " + ConstRelations2.b3kode1[reciprokeCode]);
+
+    	if(reciprokeCode > 0 && reciprokeCode < ConstRelations2.b3kode1.length){
+
+    		// Adapt for sex
+
+    		if(sex.equalsIgnoreCase("V") && ConstRelations2.b3kode1_Female[reciprokeCode] == null)
+    			if(ConstRelations2.mToF[reciprokeCode] != 0)
+    				reciprokeCode = ConstRelations2.mToF[reciprokeCode];
+
+    		if(sex.equalsIgnoreCase("M") && ConstRelations2.b3kode1_Male[reciprokeCode] == null)
+    			if(ConstRelations2.fToM[reciprokeCode] != 0)
+    				reciprokeCode = ConstRelations2.fToM[reciprokeCode];
+
+    		//System.out.println("xxx4 " + ConstRelations2.b3kode1[reciprokeCode]);
+
+
+    		return (ConstRelations2.b3kode1[reciprokeCode]);
+    	}
+    	else
+    		System.out.println("yyy4 " + relation + " " + reciprokeCode);
+    		
+    	
+    	
+    	return("Onbekend");
+    	 
     }
 
 

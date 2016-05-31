@@ -319,6 +319,7 @@ public class IDS implements Runnable {
     			id_prev = new Integer(p.getId_I_new());
     			identPerson = Arrays.copyOf(identPerson1, identPerson1.length);
     			//System.out.println("Person " + p.getId_I_new() + " " + p.getSource());
+    			prevSex = "";
     		}
     		
     		for(INDIVIDUAL ind: p.getIndividual()){

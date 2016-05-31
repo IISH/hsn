@@ -82,15 +82,15 @@ public class D3 {
 
 		 // Relation to RP 
     	 
-    	 String informer = null;
-    	 if(getD3i_ls() != null && getD3i_ls().trim().length() > 0 && !getD3i_ls().trim().equalsIgnoreCase("N"))
-    		 informer = getD3i_ls().trim();
-    	 else
-    		 informer = "Onbekend";
+    	 String informer          = "Onbekend";
+    	 String reciproceInformer = "Onbekend";
     	 
+    	 if(getD3i_ls() != null && getD3i_ls().trim().length() > 0 && !getD3i_ls().trim().equalsIgnoreCase("N")){
+    		 informer = getD3i_ls().trim();
+    		 reciproceInformer = Utils.findReciproke(informer, getD1().getD1rpgn());
+    	 }
 		 Utils.addIndivIndiv(em, getIdnr(), Id_I_IN, 51, "DC D3",  informer , "Event", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy()); // Deceased RP and Informer
-		 Utils.addIndivIndiv(em, getIdnr(), 51, Id_I_IN, "DC D3",  "Deceased" , "Event", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy()); // Deceased RP and Informer
-
+		 Utils.addIndivIndiv(em, getIdnr(), 51, Id_I_IN, "DC D3",  reciproceInformer, "Event", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy()); // Deceased RP and Informer
 		 
      }
      
