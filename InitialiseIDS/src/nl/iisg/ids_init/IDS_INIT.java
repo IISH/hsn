@@ -112,10 +112,14 @@ public class IDS_INIT implements Runnable {
 		 query = em_context.createNativeQuery("TRUNCATE TABLE indiv_context");  
 		 query.executeUpdate();
 
+		String s = "select a from Ref_Location as a "
+				+ "group by a.country, a.province, a.region, a.municipality, a.location "
+	            + "order by a.country  a.province  a.region  a.municipality  a.location ";
 		 
-		 query = em_ref.createQuery("select a from Ref_Location a where length(a.location) > 0");
+		 query = em_ref.createQuery(s);
 	     ref_location =  query.getResultList();
 	     
+	     /*
 	     Collections.sort(ref_location, new Comparator<Ref_Location>()
 					{
 				public int compare(Ref_Location l1, Ref_Location l2){
@@ -160,7 +164,7 @@ public class IDS_INIT implements Runnable {
 
 				}
 					});
-	     
+	     */
 	     
 	    	String country      = "";
 			String region       = "";
@@ -199,6 +203,7 @@ public class IDS_INIT implements Runnable {
 				if(no_country && no_region && no_province && no_municipality && no_location) continue;
 				
 				//System.out.println("C= " + country + ", R= " + region + ", P=" + province + ", M= " + municipality + ", L=" + location);
+				System.out.format("%10s %10s %10s %10s %10s\n", country, region, province, municipality, location);
 				
 				if(rl.getCountry() != null && !rl.getCountry().equals(country) && !rl.getCountry().equals("Unknown")){
 					
@@ -210,7 +215,6 @@ public class IDS_INIT implements Runnable {
 					
 					addContext(++Id_C, "NAME", country);
 					addContext(  Id_C, "LEVEL", "Country");
-					addContext(  Id_C, "HSN_MUNICIPALITY_CODE", "" + rl.getLocationNo());
 					
 					Id_C_CurrentCountry = Id_C;
 					Id_C_CurrentRegion       = -1;
@@ -236,7 +240,6 @@ public class IDS_INIT implements Runnable {
 					
 					addContext(++Id_C, "NAME", region);
 					addContext(  Id_C, "LEVEL", "Region");
-					addContext(  Id_C, "HSN_MUNICIPALITY_CODE", "" + rl.getLocationNo());
 					
 					Id_C_CurrentRegion       = Id_C;
 					Id_C_CurrentProvince     = -1;
@@ -263,7 +266,6 @@ public class IDS_INIT implements Runnable {
 					
 					addContext(++Id_C, "NAME", province);
 					addContext(  Id_C, "LEVEL", "Province");
-					addContext(  Id_C, "HSN_MUNICIPALITY_CODE", "" + rl.getLocationNo());
 					
 					Id_C_CurrentProvince     = Id_C;
 					Id_C_CurrentMunicipality = -1;
@@ -291,7 +293,8 @@ public class IDS_INIT implements Runnable {
 					
 					addContext(++Id_C, "NAME", municipality);
 					addContext(  Id_C, "LEVEL", "municipality");
-					addContext(  Id_C, "HSN_MUNICIPALITY_CODE", "" + rl.getLocationNo());
+					if(rl.getLocationNo() != 0)
+						addContext(  Id_C, "HSN_MUNICIPALITY_CODE", "" + rl.getLocationNo());
 					
 					Id_C_CurrentMunicipality = Id_C;
 					Id_C_CurrentLocation     = -1;	
@@ -321,7 +324,6 @@ public class IDS_INIT implements Runnable {
 					
 					addContext(++Id_C, "NAME", location);
 					addContext(  Id_C, "LEVEL", "locality");
-					addContext(  Id_C, "HSN_MUNICIPALITY_CODE", "" + rl.getLocationNo());
 					
 					Id_C_CurrentLocation     = Id_C;	
 					
