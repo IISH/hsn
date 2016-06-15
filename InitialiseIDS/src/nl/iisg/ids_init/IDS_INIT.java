@@ -114,7 +114,7 @@ public class IDS_INIT implements Runnable {
 
 		String s = "select a from Ref_Location as a "
 				+ "group by a.country, a.province, a.region, a.municipality, a.location "
-	            + "order by a.country  a.province  a.region  a.municipality  a.location ";
+	            + "order by a.country, a.province, a.region, a.municipality, a.location ";
 		 
 		 query = em_ref.createQuery(s);
 	     ref_location =  query.getResultList();
@@ -205,153 +205,147 @@ public class IDS_INIT implements Runnable {
 				//System.out.println("C= " + country + ", R= " + region + ", P=" + province + ", M= " + municipality + ", L=" + location);
 				System.out.format("%10s %10s %10s %10s %10s\n", country, region, province, municipality, location);
 				
-				if(rl.getCountry() != null && !rl.getCountry().equals(country) && !rl.getCountry().equals("Unknown")){
+				if(rl.getCountry() != null && !rl.getCountry().trim().equalsIgnoreCase("Unknown")){
 					
-					country = rl.getCountry();
-					region  = "";
-					province = "";
-					municipality = "";
-					location = "";
-					
-					addContext(++Id_C, "NAME", country);
-					addContext(  Id_C, "LEVEL", "Country");
-					
-					Id_C_CurrentCountry = Id_C;
-					Id_C_CurrentRegion       = -1;
-					Id_C_CurrentProvince     = -1;
-					Id_C_CurrentMunicipality = -1;
-					Id_C_CurrentLocation     = -1;	
+					if(!rl.getCountry().trim().equalsIgnoreCase(country)){
+						
+						country = rl.getCountry().trim();
+						region  = "";
+						province = "";
+						municipality = "";
+						location = "";
+						
+						addContext(++Id_C, "NAME", country);
+						addContext(  Id_C, "LEVEL", "Country");
+						
+						Id_C_CurrentCountry = Id_C;
+						Id_C_CurrentRegion       = -1;
+						Id_C_CurrentProvince     = -1;
+						Id_C_CurrentMunicipality = -1;
+						Id_C_CurrentLocation     = -1;	
+					}
 				}
-				else{
-					country = "";
-					Id_C_CurrentCountry = -1;
-					continue;
-				}
-
 				
 					
 				
-				if(rl.getRegion() != null && !rl.getRegion().equals(region) && !rl.getRegion().equals("Unknown")){
+				if(rl.getRegion() != null && !rl.getRegion().trim().equalsIgnoreCase("Unknown")){
 					
-					region = rl.getRegion();
-					province = "";
-					municipality = "";
-					location = "";					
+					if(!rl.getRegion().trim().equalsIgnoreCase(region)){
 					
-					addContext(++Id_C, "NAME", region);
-					addContext(  Id_C, "LEVEL", "Region");
+						region = rl.getRegion().trim();
+						province = "";
+						municipality = "";
+						location = "";					
 					
-					Id_C_CurrentRegion       = Id_C;
-					Id_C_CurrentProvince     = -1;
-					Id_C_CurrentMunicipality = -1;
-					Id_C_CurrentLocation     = -1;	
+						addContext(++Id_C, "NAME", region);
+						addContext(  Id_C, "LEVEL", "Region");
+					
+						Id_C_CurrentRegion       = Id_C;
+						Id_C_CurrentProvince     = -1;
+						Id_C_CurrentMunicipality = -1;
+					    Id_C_CurrentLocation     = -1;	
 					
 					if(Id_C_CurrentCountry > 0)
 						addContextContext(Id_C, Id_C_CurrentCountry, "Region and Country");
-				}
-				else{
-					region = "";
-					Id_C_CurrentRegion = -1;
+					}
 				}
 				
 				
 				
 
-				if(rl.getProvince() != null && !rl.getProvince().equals(province) && !rl.getProvince().equals("Unknown")){
+				if(rl.getProvince() != null && !rl.getProvince().trim().equalsIgnoreCase("Unknown")){
 					
-					province = rl.getProvince();
-					municipality = "";
-					location = "";
+					if(!rl.getProvince().trim().equalsIgnoreCase(province)){
+						province = rl.getProvince().trim();
+						municipality = "";
+						location = "";
 					
 					
-					addContext(++Id_C, "NAME", province);
-					addContext(  Id_C, "LEVEL", "Province");
+						addContext(++Id_C, "NAME", province);
+						addContext(  Id_C, "LEVEL", "Province");
 					
-					Id_C_CurrentProvince     = Id_C;
-					Id_C_CurrentMunicipality = -1;
-					Id_C_CurrentLocation     = -1;	
+						Id_C_CurrentProvince     = Id_C;
+						Id_C_CurrentMunicipality = -1;
+						Id_C_CurrentLocation     = -1;	
 					
-					int Id_C_Temp = Id_C_CurrentRegion;
-					x = "Region";
-					if(Id_C_Temp == -1){
-						Id_C_Temp = Id_C_CurrentCountry;
-						x = "Country";
-					}
-					if(Id_C_Temp > 0)
-						addContextContext( Id_C, Id_C_Temp, "Province and " + x);					
-					
-				}
-				else{
-					province = "";
-					Id_C_CurrentProvince = -1;
-				}
-				
-				if(rl.getMunicipality() != null && !rl.getMunicipality().equals(municipality) && !rl.getMunicipality().equals("Unknown")){
-					
-					municipality = rl.getMunicipality();
-					location = "";
-					
-					addContext(++Id_C, "NAME", municipality);
-					addContext(  Id_C, "LEVEL", "municipality");
-					if(rl.getLocationNo() != 0)
-						addContext(  Id_C, "HSN_MUNICIPALITY_CODE", "" + rl.getLocationNo());
-					
-					Id_C_CurrentMunicipality = Id_C;
-					Id_C_CurrentLocation     = -1;	
-					
-					int Id_C_Temp = Id_C_CurrentProvince;
-					x = "Province";
-					if(Id_C_Temp == -1){
-						Id_C_Temp = Id_C_CurrentRegion;
+						int Id_C_Temp = Id_C_CurrentRegion;
 						x = "Region";
-					}
-					if(Id_C_Temp == -1){
-						Id_C_Temp = Id_C_CurrentCountry;
-						x = "Country";
-					}
-					if(Id_C_Temp > 0)
-						addContextContext( Id_C, Id_C_Temp, "Municipality and " + x);					
+						if(Id_C_Temp == -1){
+							Id_C_Temp = Id_C_CurrentCountry;
+							x = "Country";
+						}
 					
-				}
-				else{
-					municipality = "";
-					Id_C_CurrentLocation = -1;
+						if(Id_C_Temp > 0)
+							addContextContext( Id_C, Id_C_Temp, "Province and " + x);
+					}
+					
 				}
 				
-				if(rl.getLocation() != null && !rl.getLocation().equals(location) && !rl.getLocation().equals("Unknown")){
-					
-					location = rl.getLocation();
-					
-					addContext(++Id_C, "NAME", location);
-					addContext(  Id_C, "LEVEL", "locality");
-					
-					Id_C_CurrentLocation     = Id_C;	
-					
-					int Id_C_Temp = Id_C_CurrentMunicipality;
-					x = "Municipality";
-					if(Id_C_Temp == -1){
-					    Id_C_Temp = Id_C_CurrentProvince;
-					    x = "Province";
+				if(rl.getMunicipality() != null && !rl.getMunicipality().trim().equalsIgnoreCase("Unknown")){
+
+					if(!rl.getMunicipality().trim().equalsIgnoreCase(municipality)){	
+
+						municipality = rl.getMunicipality().trim();
+						location = "";
+
+						addContext(++Id_C, "NAME", municipality);
+						addContext(  Id_C, "LEVEL", "municipality");
+						if(rl.getLocationNo() != 0)
+							addContext(Id_C, "HSN_MUNICIPALITY_CODE", "" + rl.getLocationNo());
+
+						Id_C_CurrentMunicipality = Id_C;
+						Id_C_CurrentLocation     = -1;	
+
+						int Id_C_Temp = Id_C_CurrentProvince;
+						x = "Province";
+						if(Id_C_Temp == -1){
+							Id_C_Temp = Id_C_CurrentRegion;
+							x = "Region";
+						}
+						if(Id_C_Temp == -1){
+							Id_C_Temp = Id_C_CurrentCountry;
+							x = "Country";
+						}
+						if(Id_C_Temp > 0)
+							addContextContext( Id_C, Id_C_Temp, "Municipality and " + x);					
+
 					}
-					if(Id_C_Temp == -1){
-						Id_C_Temp = Id_C_CurrentRegion;
-						x = "Region";
-					}
-					if(Id_C_Temp == -1){
-						Id_C_Temp = Id_C_CurrentCountry;
-						x = "Country";
-					}
-					if(Id_C_Temp > 0)
-						addContextContext( Id_C, Id_C_Temp, "Locality and " + x);					
-					
-				}
-				else{
-					location = "";
-					Id_C_CurrentLocation = -1;
 				}
 				
+				if(rl.getLocation() != null && !rl.getLocation().trim().equalsIgnoreCase("Unknown")){
+
+
+					if(!rl.getLocation().trim().equalsIgnoreCase(location)){
+
+						location = rl.getLocation().trim();
+
+						addContext(++Id_C, "NAME", location);
+						addContext(  Id_C, "LEVEL", "locality");
+
+						Id_C_CurrentLocation     = Id_C;	
+
+						int Id_C_Temp = Id_C_CurrentMunicipality;
+						x = "Municipality";
+						if(Id_C_Temp == -1){
+							Id_C_Temp = Id_C_CurrentProvince;
+							x = "Province";
+						}
+						if(Id_C_Temp == -1){
+							Id_C_Temp = Id_C_CurrentRegion;
+							x = "Region";
+						}
+						if(Id_C_Temp == -1){
+							Id_C_Temp = Id_C_CurrentCountry;
+							x = "Country";
+						}
+						if(Id_C_Temp > 0)
+							addContextContext( Id_C, Id_C_Temp, "Locality and " + x);					
+
+					}
+
+				}
 			}
-		 
+				
 			em_context.getTransaction().commit();
 			
 			print("Highest Id_C = " + Id_C);
@@ -396,4 +390,4 @@ public class IDS_INIT implements Runnable {
 	 
 
 		
-}
+	}
