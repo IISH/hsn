@@ -171,6 +171,9 @@ public class Utils {
 	public static void addIndivAndContext(String quarter, String street, String number, String addition, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String type, 
 			String dateType, String estimation, int day, int month, int year){
 
+		
+		System.out.println("addIndivAndContext 1");
+		
 		//String [] s = Utils.getLocationHierarchy(ce);
 		//int Id_C = Contxt.add(s[0], s[1], s[2], null, quarter, street, number, addition, null);
 		
@@ -181,12 +184,15 @@ public class Utils {
 			if(quarter != null && quarter.trim().length() > 0)
 				context1 = Contxt.locateQuarter(street, number, addition, ce, "Quarter");
 
+		System.out.println("addIndivAndContext 2 " + context1 );
+
 		
 		if(context1 == null)
 			return;
 		
 		int Id_C = context1.getId_C();
 		
+		System.out.println("addIndivAndContext 3 " + Id_C);
 
 		
 		INDIVIDUAL i = new INDIVIDUAL();

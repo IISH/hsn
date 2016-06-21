@@ -290,8 +290,6 @@ public class IDS_INIT implements Runnable {
 
 						addContext(++Id_C, "NAME", municipality);
 						addContext(  Id_C, "LEVEL", "municipality");
-						if(rl.getLocationNo() != 0)
-							addContext(Id_C, "HSN_MUNICIPALITY_CODE", "" + rl.getLocationNo());
 
 						Id_C_CurrentMunicipality = Id_C;
 						Id_C_CurrentLocation     = -1;	
@@ -322,6 +320,9 @@ public class IDS_INIT implements Runnable {
 						addContext(++Id_C, "NAME", location);
 						addContext(  Id_C, "LEVEL", "locality");
 
+						if(rl.getLocationNo() != 0)
+							addContext(Id_C, "HSN_MUNICIPALITY_CODE", "" + rl.getLocationNo());
+						
 						Id_C_CurrentLocation     = Id_C;	
 
 						int Id_C_Temp = Id_C_CurrentMunicipality;
