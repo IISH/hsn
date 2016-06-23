@@ -35,6 +35,7 @@ public class ContextElement {
 			
 			context.setId_C(getId_C());
 			context.setId_D("HSN");
+			context.setSource("HSN");
 			//System.out.println(getTypes().get(i));
 			context.setType(getTypes().get(i));
 			context.setValue(getValues().get(i));

@@ -172,7 +172,7 @@ public class Utils {
 			String dateType, String estimation, int day, int month, int year){
 
 		
-		System.out.println("addIndivAndContext 1");
+		//System.out.println("addIndivAndContext 1 " + quarter + "  "+ street);
 		
 		//String [] s = Utils.getLocationHierarchy(ce);
 		//int Id_C = Contxt.add(s[0], s[1], s[2], null, quarter, street, number, addition, null);
@@ -182,17 +182,20 @@ public class Utils {
 			context1 = Contxt.locateAddress(street, number, addition, ce, "Address");
 		else
 			if(quarter != null && quarter.trim().length() > 0)
-				context1 = Contxt.locateQuarter(street, number, addition, ce, "Quarter");
+				context1 = Contxt.locateQuarter(quarter, number, addition, ce, "Quarter");
 
-		System.out.println("addIndivAndContext 2 " + context1 );
+		//System.out.println("addIndivAndContext 2 " + context1 );
 
+		int Id_C = 0;
 		
-		if(context1 == null)
-			return;
+		if(context1 != null)
+			Id_C = context1.getId_C();
+		else
+			Id_C = ce.getId_C();
 		
-		int Id_C = context1.getId_C();
 		
-		System.out.println("addIndivAndContext 3 " + Id_C);
+		
+		//System.out.println("addIndivAndContext 3 " + Id_C);
 
 		
 		INDIVIDUAL i = new INDIVIDUAL();

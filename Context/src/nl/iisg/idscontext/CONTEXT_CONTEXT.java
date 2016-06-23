@@ -15,8 +15,8 @@ public class CONTEXT_CONTEXT {
     @Column(name = "Id_D")  			private String    id_D;
     @Column(name = "Id_C_1")  			private int		  id_C_1;
     @Column(name = "Id_C_2")  			private int		  id_C_2;
-    @Column(name = "Relation") 			private String    relation;
-    
+    @Column(name = "Source")  			private String    source;
+    @Column(name = "Relation") 			private String    relation;    
     @Column(name = "Date_type")  		private String    date_type;
     @Column(name = "Estimation")  		private String    estimation;
     @Column(name = "Day")		  		private int       day;
@@ -131,6 +131,12 @@ public class CONTEXT_CONTEXT {
 	}
 	public void setMissing(String missing) {
 		this.missing = missing;
+	}
+	public String getSource() {
+		return source;
+	}
+	public void setSource(String source) {
+		this.source = source;
 	}
     
     

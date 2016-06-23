@@ -566,6 +566,7 @@ public class Contxt {
 		CONTEXT_CONTEXT cc = new CONTEXT_CONTEXT();
 		cc.setId_C_1(ce1.getId_C());
 		cc.setId_C_2(ce2.getId_C());
+		cc.setSource("HSN");
 		
 		String level1 = null;
 		

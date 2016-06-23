@@ -143,7 +143,7 @@ public class PKToIDS implements Runnable{
     	if(idCount % 100 == 0)
     		print("Processed " + idCount + " IDNRs");
     }
-    System.out.print("Processed " + idCount + " IDNRs");
+    System.out.println("Processed " + idCount + " IDNRs");
 
     System.out.println("Start saving");
 

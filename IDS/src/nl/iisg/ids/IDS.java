@@ -128,7 +128,7 @@ public class IDS implements Runnable {
 		handler();
 		
 		
-		loadIDS("Personal Cards", i);	
+		loadIDS("HSN PC", i);	
 		handler();
 		
 
@@ -797,7 +797,7 @@ private static void loadIDS(String component, int lastDigit){
 	String persistence = "";
 	if(component.equalsIgnoreCase("HSN BC") || component.equalsIgnoreCase("HSN MC") || component.equalsIgnoreCase("HSN DC"))
 		persistence = "hsn_civrec_ids_00";
-	if(component.equalsIgnoreCase("Personal Cards"))
+	if(component.equalsIgnoreCase("HSN PC"))
 		persistence = "hsn_perscd_ids_00";
 	if(component.equalsIgnoreCase("Population Register"))
 		persistence = "hsn_popreg_total_ids_00";
@@ -810,8 +810,8 @@ private static void loadIDS(String component, int lastDigit){
 
 	
 	//Query q = em.createQuery("select a from INDIVIDUAL a where a.id_D < 9000"); 
-	Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%00" + lastD + "'"); 
-	//Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%" + lastD + "'"); 
+	//Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%00" + lastD + "'"); 
+	Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%" + lastD + "'"); 
 	//Query q = em.createQuery("select a from INDIVIDUAL a"); 
 	setIndividualL(q.getResultList());	
 	
@@ -868,8 +868,8 @@ private static void loadIDS(String component, int lastDigit){
 	print("Reading ..");
 
 	//q = em.createQuery("select a from INDIV_INDIV a where a.id_D == 1090"); 
-	q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%00" + lastD + "'"); 
-	//q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%" + lastD + "'"); 
+	//q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%00" + lastD + "'"); 
+	q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%" + lastD + "'"); 
 	//q = em.createQuery("select a from INDIV_INDIV a"); 
 	setIndiv_indivL(q.getResultList());	
 	

@@ -360,6 +360,7 @@ public class IDS_INIT implements Runnable {
 		 context.setId_C(Id_C);
 		 context.setId_D(version);
 		 //System.out.println(getTypes().get(i));
+		 context.setSource("HSN");
 		 context.setType(type);
 		 context.setValue(value);
 
@@ -373,6 +374,7 @@ public class IDS_INIT implements Runnable {
 		 
 		 CONTEXT_CONTEXT cc = new CONTEXT_CONTEXT();
 		 cc.setId_D(version);
+		 cc.setSource("HSN");
 		 cc.setId_C_1(Id_C_1);  
 		 cc.setId_C_2(Id_C_2);  
 		 cc.setRelation(relation);
