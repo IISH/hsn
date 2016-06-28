@@ -86,7 +86,7 @@ public class PkAdres {
 		
 		if(municipality == null) return;
 		
-		String [] b = municipality.split("!");
+		String [] b = municipality.split("!");  
 		
 		if(b.length > 1)
 			municipality = b[b.length -1];

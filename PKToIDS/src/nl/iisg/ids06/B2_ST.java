@@ -128,8 +128,38 @@ public class B2_ST {
 			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "FIRST_NAME", getFirstName().trim(), "Reported", "Exact", day, month, year);
 		if(getSex() != null && getSex().trim().length() > 0)
 			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "SEX", Utils.sex(getSex()), "Reported", "Exact", day, month, year);
-		if(getNatureOfPerson() == 1 || getNatureOfPerson() == 5)
-			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "HSN_RP", "Reported", "Exact", day, month, year);			
+		if(getKeyToRP() != 0)
+			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_IDENTIFIER", "" + getKeyToRP(), "Reported", "Exact", day, month, year);
+		
+		for(B313_ST b313: getRelationsToPKHolder()){
+			
+			switch(b313.getContentOfDynamicData()){
+
+			case  1:  // RP
+				
+				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "HSN_RP", "Reported", "Exact", day, month, year);
+				break;
+
+			
+			case 11:  // Father
+				
+				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "Father RP", "Reported", "Exact", day, month, year);
+				break;
+
+			case 21:  // Mother
+				
+				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "Mother RP", "Reported", "Exact", day, month, year);	
+				break;
+
+			default:  
+				
+				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "Other", "Reported", "Exact", day, month, year);	
+				break;
+
+			}
+			
+		}
+
 
 		if(year > 0)
 			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "BIRTH_DATE", null, "Reported", "Exact", day, month, year);	

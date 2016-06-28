@@ -696,11 +696,10 @@ public class Contxt {
 		ContextElement ce = new ContextElement();
 		ce.types.add("LEVEL");
 		ce.values.add(level);
-		ce.types.add("NAME");
+		ce.types.add("STREET");
 		ce.values.add(street);
 		if(number != null && number.length() > 0){
-			ce.types
-			.add("HOUSE_NUMBER");
+			ce.types.add("HOUSE_NUMBER");
 			ce.values.add(number);
 		}
 		if(addition != null && addition.length() > 0){
