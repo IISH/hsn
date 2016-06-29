@@ -270,6 +270,91 @@ public class B2_ST {
 			}
 		}
 		
+		// Start Observation for PK Holder, Spouses and (step) children
+		
+		String startObservation = null;
+		for(B313_ST b313: getRelationsToPKHolder()){
+			
+			switch(b313.getContentOfDynamicData()){
+			case 1:  // Holder
+				startObservation = "Start Source";
+				break;
+			case 2: // Partner
+			case 145: 
+			case 161: 
+				if(getStartFlag() == 21) startObservation = "Arrival";
+				else                     startObservation = "Start Source";
+				break;
+			case 3: // Children
+			case 4:
+			case 133:
+				
+				if(getStartFlag() == 22) startObservation = "Birth";
+				else                     startObservation = "Start Source";	// 			
+				break;
+				
+			case 8: // Step Children
+			case 9: 
+				
+				if(getStartFlag() == 22) startObservation = "Birth";
+				else                     startObservation = "Arrival";	// 			
+				break;
+			
+				
+			}
+		}
+		
+		if(startObservation != null)
+			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "START_OBSERVATION", startObservation, "Declared", "Exact", startDay, startMonth, startYear);
+		
+		// End Observation for PK Holder, Spouses and (step) children
+		
+		String endObservation = null;
+		for(B313_ST b313: getRelationsToPKHolder()){
+			
+			switch(b313.getContentOfDynamicData()){
+			case 1:  // Holder
+				if(endYear == 0) break;  // not dead yet
+				if(endFlag == 10) endObservation = "Death";
+				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", endObservation, "Declared", "Exact", endDay, endMonth, endYear);
+				break;
+				
+			case 2: // Partner
+			case 145: 
+			case 161:
+				
+			case 3: // (Step) Children
+			case 4: 
+			case 8: 
+			case 9: 
+			case 133:
+				
+				if(getEndFlag() == 40) endObservation = "Death";
+				else if(endFlag == 41 || endFlag == 42) endObservation = "Departure";		
+				
+				if(endObservation != null)
+					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", endObservation, "Declared", "Exact", endDay, endMonth, endYear);
+				
+				else{
+					if(getRegistration().getEndDate() != null){
+						
+						int cardEndDay   = new Integer(getRegistration().getEndDate().substring(0, 2));
+						int cardEndMonth = new Integer(getRegistration().getEndDate().substring(3, 5));
+						int cardEndYear  = new Integer(getRegistration().getEndDate().substring(6, 10));
+						
+						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", endObservation, "Declared", "Exact", 
+								endDay, endMonth, endYear);
+						
+						
+					}
+				}
+				break;
+			
+				
+			}
+		}
+		
+		
 		// See which addresses this person can be bound to
 		// Check relation to RP, only spouses and children live with RP
 		// For now, only RP
