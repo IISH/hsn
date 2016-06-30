@@ -277,29 +277,29 @@ public class B2_ST {
 			
 			switch(b313.getContentOfDynamicData()){
 			case 1:  // Holder
+				
 				startObservation = "Start Source";
 				break;
+				
 			case 2: // Partner
 			case 145: 
 			case 161: 
+				
 				if(getStartFlag() == 21) startObservation = "Arrival";
 				else                     startObservation = "Start Source";
 				break;
+				
 			case 3: // Children
 			case 4:
 			case 133:
+			case 8: // Step Children
+			case 9: 
+				
+				if(startYear == 0) break; // not under observation
 				
 				if(getStartFlag() == 22) startObservation = "Birth";
 				else                     startObservation = "Start Source";	// 			
 				break;
-				
-			case 8: // Step Children
-			case 9: 
-				
-				if(getStartFlag() == 22) startObservation = "Birth";
-				else                     startObservation = "Arrival";	// 			
-				break;
-			
 				
 			}
 		}
@@ -315,8 +315,8 @@ public class B2_ST {
 			switch(b313.getContentOfDynamicData()){
 			case 1:  // Holder
 				if(endYear == 0) break;  // not dead yet
-				if(endFlag == 10) endObservation = "Death";
-				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", endObservation, "Declared", "Exact", endDay, endMonth, endYear);
+				if(endFlag == 10) 
+					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", "Death", "Declared", "Exact", endDay, endMonth, endYear);
 				break;
 				
 			case 2: // Partner
@@ -328,6 +328,8 @@ public class B2_ST {
 			case 8: 
 			case 9: 
 			case 133:
+				
+				if(endYear == 0) break;  // not under observation
 				
 				if(getEndFlag() == 40) endObservation = "Death";
 				else if(endFlag == 41 || endFlag == 42) endObservation = "Departure";		
@@ -342,8 +344,8 @@ public class B2_ST {
 						int cardEndMonth = new Integer(getRegistration().getEndDate().substring(3, 5));
 						int cardEndYear  = new Integer(getRegistration().getEndDate().substring(6, 10));
 						
-						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", endObservation, "Declared", "Exact", 
-								endDay, endMonth, endYear);
+						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", "End Source", "Declared", "Exact", 
+								cardEndDay, cardEndMonth, cardEndYear);
 						
 						
 					}

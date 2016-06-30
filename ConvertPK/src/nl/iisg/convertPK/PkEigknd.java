@@ -260,7 +260,7 @@ public class PkEigknd {
     	}
     	else{
 
-    		if(Common1.dayCount(b2.getDateOfBirth()) > Common1.dayCount(b2.getRegistration().getStartDate())){
+    		if(b2.getDateOfBirth() != null && Common1.dayCount(b2.getDateOfBirth()) > Common1.dayCount(b2.getRegistration().getStartDate())){
 
     			b2.setStartDate(b2.getDateOfBirth());
     			b2.setStartFlag(22);

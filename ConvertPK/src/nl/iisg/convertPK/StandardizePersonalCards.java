@@ -514,7 +514,7 @@ public class StandardizePersonalCards implements Runnable {
 								int marriageEndDays   = b2_temp.getRelationsToPKHolder().get(0).getEndDate() != null ?  
 								Common1.dayCount(b2_temp.getRelationsToPKHolder().get(0).getEndDate()) : 0;
 
-								if(marriageStartDays < Common1.dayCount(b2.getDateOfBirth()) &&	
+								if(b2.getDateOfBirth() != null && marriageStartDays < Common1.dayCount(b2.getDateOfBirth()) &&	
 										(marriageEndDays == 0 || marriageEndDays > Common1.dayCount(b2.getDateOfBirth()))){
 
 										if(b2.getPersonID_FA() == 0)
@@ -804,15 +804,17 @@ public class StandardizePersonalCards implements Runnable {
         				}
         			}
         			
-    				
+    				boolean newPerson = false;
         			
         			if(b2 == null){
         				
         				//System.out.println("allocating person: b4Wife = " + b4Wife + "b4H = " + b2H);
 
+        				newPerson = true;
         				b2 = allocateB2(b4Wife, b2H);  // Allocate new person
         				b2.setKeyToPersons(b4Wife.getPersons().size() + 1);  // keep together    				
         				b4Wife.getPersons().add(b2);                         // keep together
+        				
 
         			}
         			else{  // Some info must be copied
@@ -856,7 +858,12 @@ public class StandardizePersonalCards implements Runnable {
     					break; 
     					
     				case 3: // Son of the husband
-    				case 4: // Daughter of the husband    					
+    				case 4: // Daughter of the husband    
+    				case 133:  // Child of the husband
+
+    					
+    					if(newPerson)
+    						b2.setStartFlag(21);  // assume that children move with the mother to the household of the new husband
     					
     					if(b2H.getPersonID_MO() == b4Wife.getPersons().get(0).getPersonID())
     						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()); // also wife's child
@@ -874,7 +881,11 @@ public class StandardizePersonalCards implements Runnable {
     					
     				case 8: // Stepson of the husband
     				case 9: // Stepdaughter of the husband
-	
+
+    					if(newPerson)
+    						b2.setStartFlag(21);  // assume that step-children move with the mother to the household of the new husband
+
+    					
     					if(b2H.getPersonID_MO() == b4Wife.getPersons().get(0).getPersonID())
     						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData() - 5); // wife's child
     					else{

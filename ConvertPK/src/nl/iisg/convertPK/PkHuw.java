@@ -276,8 +276,16 @@ public class PkHuw {
     	}
     	else{
     		if(Common1.dateIsValid(getHdghuwp(), getHmdhuwp(), getHjrhuwp()) == 0){
-    			b2.setStartDate(String.format("%02d-%02d-%04d", getHdghuwp(), getHmdhuwp(), getHjrhuwp()));
-    			b2.setStartFlag(21);
+    			if(Common1.dayCount(getHdghuwp(), getHmdhuwp(), getHjrhuwp()) > Common1.dayCount(b2.getRegistration().getStartDate())){
+    				b2.setStartDate(String.format("%02d-%02d-%04d", getHdghuwp(), getHmdhuwp(), getHjrhuwp()));
+    				b2.setStartFlag(21);
+    			}
+    			else{
+    				b2.setStartDate(b2.getRegistration().getStartDate());
+    				b2.setStartFlag(1);
+    				
+    				
+    			}
     		}
 
     		//if(getIdnr() == 345456) System.out.println("---> "+ getOdghuwp() + getOmdhuwp()+  getOjrhuwp());
