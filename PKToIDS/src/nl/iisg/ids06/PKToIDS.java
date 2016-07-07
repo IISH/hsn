@@ -11,7 +11,6 @@ package nl.iisg.ids06;
 
 import java.io.*;
 import java.util.Date;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -26,6 +25,7 @@ import javax.persistence.Query;
 import javax.swing.JTextArea;
 
 import nl.iisg.idscontext.Contxt;
+import nl.iisg.ref.Ref;
 
 
 /**
@@ -96,6 +96,9 @@ public class PKToIDS implements Runnable{
     print("Creating or resetting IDS tables...");
     i.createIDSTables();
     
+	Ref.loadRelation_B();
+
+    
     // Initialize Context System
 
 	EntityManagerFactory factory = Persistence.createEntityManagerFactory("hsn_perscd_ids");				
@@ -127,8 +130,8 @@ public class PKToIDS implements Runnable{
     	for(B4_ST r: op.getRegistrationsStandardizedOfOP()){
     		//System.out.println(r.getKeyToRP());
 
-    		//if(!r.getEntryDateHead().equals("01-01-1940")) continue; // because the RP is under this number 
-    		if(r.getKeyToRP() > 500000) continue;
+    		if(!r.getEntryDateHead().equals("01-01-1940")) continue; // because the RP is under this number 
+    		//if(r.getKeyToRP() > 500000) continue;
     		
     		idCount++;
 

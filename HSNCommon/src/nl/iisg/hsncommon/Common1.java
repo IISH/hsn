@@ -6,7 +6,9 @@ import java.io.File;
 
 
 
+
 import nl.iisg.ref.Ref;
+import nl.iisg.ref.Ref_Relation_B;
 import nl.iisg.ref.Ref_Relation_C;
 
 public class Common1 {
@@ -502,6 +504,64 @@ public class Common1 {
     	
     }
     
+    public static String standardizeRelation(String relation){
+		
+		//System.out.println("Relation = " + relation);
+		
+		if(relation == null) return null;
+		
+		relation = relation.trim();
+		
+		if(relation.length() == 0) return "";
+		
+		Ref_Relation_B r = null;
+
+		// First see if relation is numeric 
+		
+		boolean relationNumeric = true;
+		
+		for(int i = 0; i < relation.length(); i++){
+			if(!Character.isDigit(relation.charAt(i))){
+				relationNumeric = false;
+				break;
+			}
+		}
+
+		if(relationNumeric){
+			Integer a = new Integer(relation);	
+			r = Ref.getRelation_B(a); // use numeric argument version of getRelation_B
+			if(r != null){
+				//System.out.println("Found numeric " + "  " + r.getIds());
+				return r.getIds();
+			}
+			else{
+				//System.out.println("1 Relation = " + relation);
+
+				return null;
+			}
+		}
+		
+		r = Ref.getRelation_B(relation);
+		
+		if(r != null  && r.getKode() != 0  && r.getNederlands() != null && r.getNederlands().trim().length() > 0){
+			//System.out.println("Found non-numeric " + "  " + r.getIds());
+
+			return r.getIds();
+		}
+		else{
+			//System.out.println("No usable name found");
+			if(r == null){
+				Ref_Relation_B r1 = new Ref_Relation_B();
+				r1.setNederlands(relation);
+				r1.setNeedSave(true);
+				Ref.addRelation_B(r1);
+			}	
+		}
+		//System.out.println("2 Relation = " + relation);
+
+		return null;	
+	}
+
 	
 
 }

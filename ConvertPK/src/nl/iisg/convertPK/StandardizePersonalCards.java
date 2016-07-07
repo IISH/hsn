@@ -412,7 +412,8 @@ public class StandardizePersonalCards implements Runnable {
         for (PkKnd pkknd1 : pkkndL) { // the Wives (and the male OPs) are selected from this list
 
         	if(pkknd1.getB4().getKeyToRP() != prevIdnr){
-        		uniquePersons.clear(); // This assures we link in the context of an IDNR, not 'globally'
+        		//uniquePersons.clear(); // This assures we link in the context of an IDNR, not 'globally'
+        		//unique = 1;
         		prevIdnr = pkknd1.getB4().getKeyToRP();
         	}
         	
@@ -842,6 +843,7 @@ public class StandardizePersonalCards implements Runnable {
     				b313.setKeyToRegistrationPersons(b2.getKeyToPersons());
     				b313.setDynamicDataSequenceNumber(1);
     				
+    				b2.getRelationsToPKHolder().clear();  //  overwrite previous relation if on eexisted
     				b2.getRelationsToPKHolder().add(b313); 
     				
     				switch(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()){ // relation to PK-Holder husband
@@ -1049,6 +1051,7 @@ public class StandardizePersonalCards implements Runnable {
         b313.setKeyToRP(b4.getKeyToRP());
         b313.setEntryDateHead(b4.getEntryDateHead());
         b313.setKeyToSourceRegister(b4.getKeyToSourceRegister());
+        b313.setDynamicDataSequenceNumber(1);
         
         // rest from b2I
         

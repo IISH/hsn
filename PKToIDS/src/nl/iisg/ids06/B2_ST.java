@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import nl.iisg.hsncommon.Common1;
 import nl.iisg.hsncommon.ConstRelations2;
 import nl.iisg.idscontext.ContextElement;
 import nl.iisg.idscontext.Contxt;
@@ -153,8 +154,20 @@ public class B2_ST {
 
 			default:  
 				
-				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "Other", "Reported", "Exact", day, month, year);	
-				break;
+
+				String other = null;
+				//if(b313.getContentOfDynamicData() < ConstRelations2.b3kode1.length && ConstRelations2.b3kode1[b313.getContentOfDynamicData()] != null)
+				//	other = ConstRelations2.b3kode1[b313.getContentOfDynamicData()] + " RP";
+				if(b313.getContentOfDynamicData() != 0){
+					
+					    String code = b313.getContentOfDynamicData() + ""; 
+						other = Common1.standardizeRelation(code) ;
+				}
+
+				if(other != null){
+					String person = other + " RP";
+					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", person, "Reported", "Exact", day, month, year);
+				}
 
 			}
 			
@@ -304,8 +317,17 @@ public class B2_ST {
 			}
 		}
 		
-		if(startObservation != null)
-			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "START_OBSERVATION", startObservation, "Declared", "Exact", startDay, startMonth, startYear);
+		if(startObservation != null){
+			
+			if(getStartDate() != null){
+				
+				startDay = new Integer(getStartDate().substring(0,2));
+				startMonth = new Integer(getStartDate().substring(3,5));
+				startYear = new Integer(getStartDate().substring(6,10));
+
+				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "START_OBSERVATION", startObservation, "Declared", "Exact", startDay, startMonth, startYear);
+			}
+		}
 		
 		// End Observation for PK Holder, Spouses and (step) children
 		
@@ -334,8 +356,17 @@ public class B2_ST {
 				if(getEndFlag() == 40) endObservation = "Death";
 				else if(endFlag == 41 || endFlag == 42) endObservation = "Departure";		
 				
-				if(endObservation != null)
-					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", endObservation, "Declared", "Exact", endDay, endMonth, endYear);
+				if(endObservation != null){
+					
+					if(getEndDate() != null){
+						
+						endDay = new Integer(getEndDate().substring(0,2));
+						endMonth = new Integer(getEndDate().substring(3,5));
+						endYear = new Integer(getEndDate().substring(6,10));
+
+						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", endObservation, "Declared", "Exact", endDay, endMonth, endYear);
+					}
+				}
 				
 				else{
 					if(getRegistration().getEndDate() != null){

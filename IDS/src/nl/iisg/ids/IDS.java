@@ -148,7 +148,7 @@ public class IDS implements Runnable {
 		for(Person pp: personL ){ // xxx
 			//System.out.println("---> id = " + pp.getId() + "  " + pp.getFamilyName() + "   " + pp.getFirstName() + "  " +  pp.getId_D());
 			if(pp.getRelationRP() != null && pp.getRelationRP().trim().length() > 0)						
-				pp.setRelationRP(standardizeRelation(pp.getRelationRP()));				
+				pp.setRelationRP(Common1.standardizeRelation(pp.getRelationRP()));				
 
 			if(pp.getFamilyName() != null && !pp.getFamilyName().equalsIgnoreCase("N"))
 				em.persist(pp);
@@ -430,7 +430,7 @@ public class IDS implements Runnable {
 
 
 					if (ii.getRelation() != null && ii.getRelation().trim().length() > 0)
-						ii.setRelation(standardizeRelation(ii.getRelation()));
+						ii.setRelation(Common1.standardizeRelation(ii.getRelation()));
 					ii.setId_D(getVersion());
 					em.persist(ii);
 
@@ -811,7 +811,8 @@ private static void loadIDS(String component, int lastDigit){
 	
 	//Query q = em.createQuery("select a from INDIVIDUAL a where a.id_D < 9000"); 
 	//Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%00" + lastD + "'"); 
-	Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%" + lastD + "'"); 
+	//Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%" + lastD + "'"); 
+	Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%'"); 
 	//Query q = em.createQuery("select a from INDIVIDUAL a"); 
 	setIndividualL(q.getResultList());	
 	
@@ -869,7 +870,8 @@ private static void loadIDS(String component, int lastDigit){
 
 	//q = em.createQuery("select a from INDIV_INDIV a where a.id_D == 1090"); 
 	//q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%00" + lastD + "'"); 
-	q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%" + lastD + "'"); 
+	//q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%" + lastD + "'"); 
+	q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%'"); 
 	//q = em.createQuery("select a from INDIV_INDIV a"); 
 	setIndiv_indivL(q.getResultList());	
 	
@@ -912,7 +914,8 @@ private static void loadIDS(String component, int lastDigit){
 
 	
 	//q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%' and a.id_D like '%00" + lastD + "'"); 
-	q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%' and a.id_D like '%" + lastD + "'"); 
+	//q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%' and a.id_D like '%" + lastD + "'"); 
+	q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%'"); 
 	//q = em.createQuery("select a from INDIV_CONTEXT a"); 
 	setIndiv_contextL(q.getResultList());	
 	
@@ -1952,63 +1955,6 @@ public static String removeSuffixes(String t, String[] suffixes){
 	return s;
 }
 
-private static String standardizeRelation(String relation){
-	
-	//System.out.println("Relation = " + relation);
-	
-	if(relation == null) return null;
-	
-	relation = relation.trim();
-	
-	if(relation.length() == 0) return "";
-	
-	Ref_Relation_B r = null;
-
-	// First see if relation is numeric 
-	
-	boolean relationNumeric = true;
-	
-	for(int i = 0; i < relation.length(); i++){
-		if(!Character.isDigit(relation.charAt(i))){
-			relationNumeric = false;
-			break;
-		}
-	}
-
-	if(relationNumeric){
-		Integer a = new Integer(relation);	
-		r = Ref.getRelation_B(a); // use numeric argument version of getRelation_B
-		if(r != null){
-			//System.out.println("Found numeric " + "  " + r.getIds());
-			return r.getIds();
-		}
-		else{
-			//System.out.println("1 Relation = " + relation);
-
-			return null;
-		}
-	}
-	
-	r = Ref.getRelation_B(relation);
-	
-	if(r != null  && r.getKode() != 0  && r.getNederlands() != null && r.getNederlands().trim().length() > 0){
-		//System.out.println("Found non-numeric " + "  " + r.getIds());
-
-		return r.getIds();
-	}
-	else{
-		//System.out.println("No usable name found");
-		if(r == null){
-			Ref_Relation_B r1 = new Ref_Relation_B();
-			r1.setNederlands(relation);
-			r1.setNeedSave(true);
-			Ref.addRelation_B(r1);
-		}	
-	}
-	//System.out.println("2 Relation = " + relation);
-
-	return null;	
-}
 
 public static List<INDIVIDUAL> getIndividualL() {
 	return individualL;
