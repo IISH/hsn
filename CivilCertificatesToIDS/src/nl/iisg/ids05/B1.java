@@ -96,7 +96,7 @@ public class B1 {
 			Utils.addIndiv(em, getIdnr(), Id_I_RP,"BC B1", "FIRST_NAME", getB1rpfn(), "Event", "Exact", getB1rpbd(),  getB1rpbm(), getB1rpby());
 		if(getB1rpgn() != null && getB1rpgn().trim().length() > 0)
 			Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B1", "SEX", Utils.sex(getB1rpgn()), "Event", "Exact", getB1rpbd(), getB1rpbm(), getB1rpby());
-		Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B1", "HSN_RESEARCH_PERSON", "HSN_RP", "Missing", "Time_invariant", 0, 0, 0);
+		Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B1", "HSN_RESEARCH_PERSON", "HSN RP", "Missing", "Time_invariant", 0, 0, 0);
 
 
 

@@ -65,8 +65,8 @@ public class B32_ST extends B3_ST{
 		}
 		
 		if(getContentOfDynamicData() == 5){ //  Marriage
-			if(mutationYear > 0)
-				Utils.addIndiv(em, getKeyToRP(), getPerson().getPersonID(), "B32_ST ", "MARRIAGE_DATE", null, "Reported", "Exact", mutationDay, mutationMonth, mutationYear);
+			if(startYear > 0)
+				Utils.addIndiv(em, getKeyToRP(), getPerson().getPersonID(), "B32_ST ", "MARRIAGE_DATE", null, "Reported", "Exact", startDay, startMonth, startYear);
 			if(getCivilLocalityID() > 0){
 				ContextElement ce = Contxt.get(getCivilLocalityID());
 				if(ce != null){

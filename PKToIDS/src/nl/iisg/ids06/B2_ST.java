@@ -120,17 +120,17 @@ public class B2_ST {
 		}
 		
 		if(getFamilyName() != null && getFamilyName().trim().length() > 0 && !getFamilyName().trim().equalsIgnoreCase("N"))
-			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "LAST_NAME", getFamilyName().trim(), "Reported", "Exact", day, month, year);
+			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "LAST_NAME", getFamilyName().trim(), "Reported", "Exact", 0, 0, 0);
 		else
 			return;
 		if(getPrefixLastName() != null && getPrefixLastName().trim().length() > 0)
-			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "PREFIX_LAST_NAME", getPrefixLastName().trim(), "Reported", "Exact", day, month, year);
+			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "PREFIX_LAST_NAME", getPrefixLastName().trim(), "Reported", "Exact", 0, 0, 0);
 		if(getFirstName() != null && getFirstName().trim().length() > 0)
-			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "FIRST_NAME", getFirstName().trim(), "Reported", "Exact", day, month, year);
+			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "FIRST_NAME", getFirstName().trim(), "Reported", "Exact", 0, 0, 0);
 		if(getSex() != null && getSex().trim().length() > 0)
-			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "SEX", Utils.sex(getSex()), "Reported", "Exact", day, month, year);
+			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "SEX", Utils.sex(getSex()), "Reported", "Exact", 0, 0, 0);
 		if(getKeyToRP() != 0)
-			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_IDENTIFIER", "" + getKeyToRP(), "Reported", "Exact", day, month, year);
+			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_IDENTIFIER", "" + getKeyToRP(), "Reported", "Exact", 0, 0, 0);
 		
 		for(B313_ST b313: getRelationsToPKHolder()){
 			
@@ -138,7 +138,7 @@ public class B2_ST {
 
 			case  1:  // RP
 				
-				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "HSN_RP", "Reported", "Exact", day, month, year);
+				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "HSN RP", "Reported", "Exact", 0, 0, 0);
 				break;
 
 			
@@ -291,7 +291,7 @@ public class B2_ST {
 			switch(b313.getContentOfDynamicData()){
 			case 1:  // Holder
 				
-				startObservation = "Start Source";
+				startObservation = "Start source";
 				break;
 				
 			case 2: // Partner
@@ -299,7 +299,7 @@ public class B2_ST {
 			case 161: 
 				
 				if(getStartFlag() == 21) startObservation = "Arrival";
-				else                     startObservation = "Start Source";
+				else                     startObservation = "Start source";
 				break;
 				
 			case 3: // Children
@@ -311,7 +311,7 @@ public class B2_ST {
 				if(startYear == 0) break; // not under observation
 				
 				if(getStartFlag() == 22) startObservation = "Birth";
-				else                     startObservation = "Start Source";	// 			
+				else                     startObservation = "Start source";	// 			
 				break;
 				
 			}
@@ -325,7 +325,7 @@ public class B2_ST {
 				startMonth = new Integer(getStartDate().substring(3,5));
 				startYear = new Integer(getStartDate().substring(6,10));
 
-				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "START_OBSERVATION", startObservation, "Declared", "Exact", startDay, startMonth, startYear);
+				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "START_OBSERVATION", startObservation, "Assigned", "Exact", startDay, startMonth, startYear);
 			}
 		}
 		
@@ -338,7 +338,7 @@ public class B2_ST {
 			case 1:  // Holder
 				if(endYear == 0) break;  // not dead yet
 				if(endFlag == 10) 
-					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", "Death", "Declared", "Exact", endDay, endMonth, endYear);
+					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", "Death", "Assigned", "Exact", endDay, endMonth, endYear);
 				break;
 				
 			case 2: // Partner
@@ -375,7 +375,7 @@ public class B2_ST {
 						int cardEndMonth = new Integer(getRegistration().getEndDate().substring(3, 5));
 						int cardEndYear  = new Integer(getRegistration().getEndDate().substring(6, 10));
 						
-						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", "End Source", "Declared", "Exact", 
+						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", "End source", "Declared", "Exact", 
 								cardEndDay, cardEndMonth, cardEndYear);
 						
 						

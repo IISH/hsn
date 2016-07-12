@@ -79,13 +79,13 @@ public class Utils {
 
 		
 		if(boat != null && boat.trim().length() > 0)
-			context1 = Contxt.locateBoat(boat, street, number, addition, ce, "Boat");
+			context1 = Contxt.locateBoat(boat, street, number, addition, ce, "Address");
 		else
 			if(street != null && street.trim().length() > 0)
 				context1 = Contxt.locateAddress(street, number, addition, ce, "Address");
 			else
 				if(quarter != null && quarter.trim().length() > 0)
-					context1 = Contxt.locateQuarter(quarter, number, addition, ce, "Quarter");
+					context1 = Contxt.locateQuarter(quarter, number, addition, ce, "Address");
 
 		
 		if(context1 == null)
@@ -126,13 +126,13 @@ public class Utils {
 
 		//String [] s = Utils.getLocationHierarchy(ce);
 		if(boat != null && boat.trim().length() > 0)
-			context1 = Contxt.locateBoat(boat, street, number, addition, ce, "Boat");
+			context1 = Contxt.locateBoat(boat, street, number, addition, ce, "Address");
 		else
 			if(street != null && street.trim().length() > 0)
 				context1 = Contxt.locateAddress(street, number, addition, ce, "Address");
 			else
 				if(quarter != null && quarter.trim().length() > 0)
-					context1 = Contxt.locateQuarter(quarter, number, addition, ce, "Quarter");
+					context1 = Contxt.locateQuarter(quarter, number, addition, ce, "Address");
 
 		
 		if(context1 == null)
