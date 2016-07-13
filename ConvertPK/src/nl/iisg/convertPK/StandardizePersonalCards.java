@@ -794,6 +794,7 @@ public class StandardizePersonalCards implements Runnable {
     			
     			if(b2Partner != null){
         			
+    				if(b2H.getEndDate() != null && Common1.dayCount(b2H.getEndDate()) < Common1.dayCount(b2Partner.getStartDate())) continue; // Must be child that left before marriage
     				
     				B2_ST b2 = null;
     			

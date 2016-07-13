@@ -144,12 +144,12 @@ public class B2_ST {
 			
 			case 11:  // Father
 				
-				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "Father RP", "Reported", "Exact", day, month, year);
+				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "Father RP", "Reported", "Exact", 0, 0, 0);
 				break;
 
 			case 21:  // Mother
 				
-				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "Mother RP", "Reported", "Exact", day, month, year);	
+				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "Mother RP", "Reported", "Exact", 0, 0, 0);
 				break;
 
 			default:  
@@ -166,7 +166,7 @@ public class B2_ST {
 
 				if(other != null){
 					String person = other + " RP";
-					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", person, "Reported", "Exact", day, month, year);
+					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", person, "Reported", "Exact",  0, 0, 0);
 				}
 
 			}
@@ -277,8 +277,8 @@ public class B2_ST {
 		// Observation Period for PK Holder and Spouses only
 		
 		for(B313_ST b313: getRelationsToPKHolder()){
-			if(b313.getContentOfDynamicData() == 1 || b313.getContentOfDynamicData() == 2){
-				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "OBSERVATION", null, "Declared", "Exact", startDay, startMonth, startYear, endDay, endMonth, endYear);
+			if(b313.getContentOfDynamicData() == 1 || b313.getContentOfDynamicData() == 2 && startYear > 0 && endYear > 0){
+				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "OBSERVATION", null, "Assigned", "Exact", startDay, startMonth, startYear, endDay, endMonth, endYear);
 				break;
 			}
 		}
@@ -364,7 +364,7 @@ public class B2_ST {
 						endMonth = new Integer(getEndDate().substring(3,5));
 						endYear = new Integer(getEndDate().substring(6,10));
 
-						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", endObservation, "Declared", "Exact", endDay, endMonth, endYear);
+						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", endObservation, "Assigned", "Exact", endDay, endMonth, endYear);
 					}
 				}
 				
@@ -375,7 +375,7 @@ public class B2_ST {
 						int cardEndMonth = new Integer(getRegistration().getEndDate().substring(3, 5));
 						int cardEndYear  = new Integer(getRegistration().getEndDate().substring(6, 10));
 						
-						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", "End source", "Declared", "Exact", 
+						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", "End source", "Assigned", "Exact", 
 								cardEndDay, cardEndMonth, cardEndYear);
 						
 						

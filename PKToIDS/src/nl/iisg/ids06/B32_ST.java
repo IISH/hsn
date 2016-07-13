@@ -72,7 +72,7 @@ public class B32_ST extends B3_ST{
 				if(ce != null){
 					//Utils.addIndivContextAndContext(null, null, null, null,
 					//		ce, em, getKeyToRP(), getPerson().getPersonID(), "B32_ST ", "MARRIAGE_LOCATION", mutationDay, mutationMonth, mutationYear);
-					Utils.addIndivAndContext(null, null, null, null, ce, em, getKeyToRP(), getPerson().getPersonID(), "B32_ST",  "MARRIAGE_LOCATION", "Reported", "Exact", mutationDay, mutationMonth, mutationYear);
+					Utils.addIndivAndContext(null, null, null, null, ce, em, getKeyToRP(), getPerson().getPersonID(), "B32_ST",  "MARRIAGE_LOCATION", "Reported", "Exact", startDay, startMonth, startYear);
 
 				}
 			}
