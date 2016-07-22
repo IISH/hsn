@@ -229,6 +229,7 @@ public class Utils {
 	public static void addIndiv(EntityManager em, int IDNR, int Id_I, String source, String type, String value, 
 			String dateType, String estimation, int day, int month, int year){
 		
+		//System.out.println("Cr add individual");
 		INDIVIDUAL i = new INDIVIDUAL();
 		
 		i.setId_I(Id_I);
@@ -256,6 +257,8 @@ public class Utils {
 	public static void addIndiv(EntityManager em, int IDNR, int Id_I, String source, String type, String value, 
 			String dateType, String estimation, int startDay, int startMonth, int startYear, int endDay, int endMonth, int endYear){
 		
+		//System.out.println("Cr add individual");
+
 		INDIVIDUAL i = new INDIVIDUAL();
 		
 		i.setId_I(Id_I);

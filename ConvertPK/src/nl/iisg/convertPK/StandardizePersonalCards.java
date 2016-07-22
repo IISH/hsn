@@ -410,16 +410,25 @@ public class StandardizePersonalCards implements Runnable {
         int prevIdnr = 0;
         int unique = 1;
         for (PkKnd pkknd1 : pkkndL) { // the Wives (and the male OPs) are selected from this list
+        	
+        	//System.out.println("Cr L1");
 
         	if(pkknd1.getB4().getKeyToRP() != prevIdnr){
-        		//uniquePersons.clear(); // This assures we link in the context of an IDNR, not 'globally'
-        		//unique = 1;
+        		uniquePersons.clear(); // This assures we link in the context of an IDNR, not 'globally'
+        		unique = 1;
         		prevIdnr = pkknd1.getB4().getKeyToRP();
         	}
         	
         	for (B2_ST b2 : pkknd1.getB4().getPersons()) {
+        		
+            	//System.out.println("Cr L11");
+        		
+        		
     			boolean fnd = false;
         		for (B2_ST b2unique : uniquePersons) {
+        			
+                	//System.out.println("Cr L13");
+
         			if (comparePersons(b2, b2unique) == 0) {
         				b2.setPersonID(b2unique.getPersonID());
         				fnd = true;
@@ -427,6 +436,8 @@ public class StandardizePersonalCards implements Runnable {
         			}
         		}
     			if(fnd == false){
+    	        	//System.out.println("Cr L4");
+
     				b2.setPersonID(unique++);
     				uniquePersons.add(b2);
     			}
@@ -438,11 +449,20 @@ public class StandardizePersonalCards implements Runnable {
 
         	for (PkKnd pkknd2 : pkkndL2) { // The husbands are selected from this list        		
         		
+            	//System.out.println("Cr L2");
+
+        		
         		if(pkknd1 != pkknd2 && pkknd2.getIdnrp() == pkknd1.getIdnr()){  // Wife-pkknd1 was married to husband-pkknd2
 
                 	for (B2_ST b2 : pkknd2.getB4().getPersons()) {
+                		
+                  //  	System.out.println("Cr L21");
+
             			boolean fnd = false;
                 		for (B2_ST b2unique : uniquePersons) {
+                			
+                    //    	System.out.println("Cr L22");
+
 
                 			if (comparePersons(b2, b2unique) == 0) {
                 				b2.setPersonID(b2unique.getPersonID());
@@ -780,6 +800,9 @@ public class StandardizePersonalCards implements Runnable {
 
     				}
     			}
+    			else 
+    				break A; // If we cannot find the husband in the wife's registry
+    			
     			break;
 
 
@@ -787,14 +810,15 @@ public class StandardizePersonalCards implements Runnable {
     		
     		
     		case 2:  // One of the wives, maybe the RP No action, we know everything about her already from her own card
+    		case 161:  // One of the wives, maybe the RP No action, we know everything about her already from her own card
     			break;
     		
-    		default:  // Husband's parents and children
+    		default:  // Husband's parents and children 
 
     			
     			if(b2Partner != null){
         			
-    				if(b2H.getEndDate() != null && Common1.dayCount(b2H.getEndDate()) < Common1.dayCount(b2Partner.getStartDate())) continue; // Must be child that left before marriage
+    				//if(b2H.getEndDate() != null && Common1.dayCount(b2H.getEndDate()) < Common1.dayCount(b2Partner.getStartDate())) continue; // Must be child that left before marriage
     				
     				B2_ST b2 = null;
     			
@@ -814,6 +838,10 @@ public class StandardizePersonalCards implements Runnable {
 
         				newPerson = true;
         				b2 = allocateB2(b4Wife, b2H);  // Allocate new person
+        				
+        				//b2.setStartDate(b2Partner.getStartDate());
+        				//b2.setStartFlag(b2Partner.getStartFlag());
+        				
         				b2.setKeyToPersons(b4Wife.getPersons().size() + 1);  // keep together    				
         				b4Wife.getPersons().add(b2);                         // keep together
         				
@@ -838,25 +866,45 @@ public class StandardizePersonalCards implements Runnable {
         				
         				
         			}
+        			
+        			
+        			// Thye following was tried but appaears to be not true
+        			
+        			//if(b2H.getStartDate() == null) b2.setStartDate(null);
+        			//if(b2H.getEndDate() == null) b2.setEndDate(null);
+        			//if(b2H.getStartFlag() == 0) b2.setStartFlag(0);
+        			//if(b2H.getEndFlag() == 0) b2.setEndFlag(0);
     				
     				B313_ST b313 = allocateB313(b4Wife, b2Partner); // relation new person to PK-Holder Wife
     				b313.setPerson(b2);
     				b313.setKeyToRegistrationPersons(b2.getKeyToPersons());
     				b313.setDynamicDataSequenceNumber(1);
     				
-    				b2.getRelationsToPKHolder().clear();  //  overwrite previous relation if on eexisted
+    				b2.getRelationsToPKHolder().clear();  //  overwrite previous relation if one existed
     				b2.getRelationsToPKHolder().add(b313); 
+    				
+
+    				
     				
     				switch(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()){ // relation to PK-Holder husband
     				
     				case 11:
     					
     					b313.setContentOfDynamicData(61); // Father (11) -> Father in Law (61)
+    					b313.setStartDate(b2Partner.getRelationsToPKHolder().get(0).getStartDate());  // Start Date is marriage date
+    					b313.setStartFlag(89); // marriage-related
+    					b313.setEndDate(null);
+    					b313.setStartFlag(89);
     					//setRelations(b2);
     					break;
     					
     				case 21:
     					b313.setContentOfDynamicData(71); // Mother (21) -> Mother in Law (71)
+    					b313.setStartDate(b2Partner.getRelationsToPKHolder().get(0).getStartDate());  // Start Date is marriage date
+    					b313.setStartFlag(89);
+    					b313.setEndDate(null);
+    					b313.setStartFlag(89);
+
     					//setRelations(b2);
     					break; 
     					
@@ -872,10 +920,10 @@ public class StandardizePersonalCards implements Runnable {
     						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()); // also wife's child
     					else{
     						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData() + 5); // make them wife's stepchild
-    						b313.setStartDate(b2H.getStartDate());
-    						b313.setStartFlag(b2H.getStartFlag());
-    						b313.setEndDate(b4Wife.getPersons().get(0).getEndDate());  // For step-children, we assume the relation lasts until endPK of Wife 
-    						b313.setEndFlag(b4Wife.getPersons().get(0).getEndFlag());
+        					b313.setStartDate(b2Partner.getRelationsToPKHolder().get(0).getStartDate());  // Start Date is marriage date
+        					b313.setStartFlag(89);
+        					b313.setEndDate(null);
+        					b313.setStartFlag(89);
     					}
     					
     					 //setRelations(b2);
@@ -893,10 +941,10 @@ public class StandardizePersonalCards implements Runnable {
     						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData() - 5); // wife's child
     					else{
     						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()); // wife's stepchild
-    						b313.setStartDate(b2H.getStartDate());
-    						b313.setStartFlag(b2H.getStartFlag());
-    						b313.setEndDate(b4Wife.getPersons().get(0).getEndDate());  // For step-children, we assume the relation lasts until endPK of Wife 
-    						b313.setEndFlag(b4Wife.getPersons().get(0).getEndFlag());
+        					b313.setStartDate(b2Partner.getRelationsToPKHolder().get(0).getStartDate());  // Start Date is marriage date
+        					b313.setStartFlag(89);
+        					b313.setEndDate(null);
+        					b313.setStartFlag(89);
 
     					}
     					
@@ -909,13 +957,6 @@ public class StandardizePersonalCards implements Runnable {
     				
     				}
     				
-    				if(ConstRelations2.b3kode1_Related[b313.getContentOfDynamicData()] == null) {  
-    					b313.setStartDate(b2H.getStartDate());
-    					b313.setStartFlag(b2H.getStartFlag());
-    					b313.setEndDate(b4Wife.getPersons().get(0).getEndDate());  
-    					b313.setEndFlag(b4Wife.getPersons().get(0).getEndFlag());
-    				}
-    			
     				
     				// Children may have a civil status (married) in their original registration
     				// Test for this and copy if needed
@@ -1908,6 +1949,7 @@ public class StandardizePersonalCards implements Runnable {
         
         if(ConstRelations2.b3kode1_Related[rel] == null) {  
         	
+        	//if(b313L.getStartDate() == null &&  b313L.getEndDate() == null)
         	
         	if(b313L.getStartDate() == null &&  b313L.getEndDate() == null && b313R.getStartDate() != null &&  b313R.getEndDate() != null){
         		
@@ -2020,6 +2062,8 @@ public class StandardizePersonalCards implements Runnable {
 
     private static int comparePersons(B2_ST p, B2_ST pu) {
     	
+    	//System.out.println("Cr ComparePersons 1");
+    	
     	boolean deb = false;
     	
     	//if(p.getKeyToPersons() == 344896 || p.getKeyToPersons() == 645689) deb = true;
@@ -2039,25 +2083,66 @@ public class StandardizePersonalCards implements Runnable {
     	int pu_gen = -1;
     	
     	for(int i = 0; i < Generation0.length; i++){    		
-    		if(p.getRelationsToPKHolder().get(0).getContentOfDynamicData()  == Generation0[i]) p_gen = 0;
-    		if(pu.getRelationsToPKHolder().get(0).getContentOfDynamicData() == Generation0[i]) pu_gen = 0;  		
+    		if(p.getRelationsToPKHolder().get(0).getContentOfDynamicData()  == Generation0[i]){
+    			p_gen = 0;
+    			break;
+    		}
+    	}
+    	
+    	for(int i = 0; i < Generation0.length; i++){    		
+    		if(pu.getRelationsToPKHolder().get(0).getContentOfDynamicData() == Generation0[i]){
+    			pu_gen = 0;
+    			break;
+    		}
+    	}
+    	
+    	
+    	for(int i = 0; i < Generation1.length; i++){    		
+    		if(p.getRelationsToPKHolder().get(0).getContentOfDynamicData()  == Generation1[i]){
+    			p_gen = 1;
+    			break;
+    		}
     	}
     	
     	for(int i = 0; i < Generation1.length; i++){    		
-    		if(p.getRelationsToPKHolder().get(0).getContentOfDynamicData()  == Generation1[i]) p_gen = 1;
-    		if(pu.getRelationsToPKHolder().get(0).getContentOfDynamicData() == Generation1[i]) pu_gen = 1;  		
+    		if(pu.getRelationsToPKHolder().get(0).getContentOfDynamicData() == Generation1[i]) {
+    			pu_gen = 1;
+    			break;
+    		}
     	}
     	
     	for(int i = 0; i < Generation2.length; i++){    		
-    		if(p.getRelationsToPKHolder().get(0).getContentOfDynamicData()  == Generation2[i]) p_gen = 2;
-    		if(pu.getRelationsToPKHolder().get(0).getContentOfDynamicData() == Generation2[i]) pu_gen = 2;  		
+    		if(p.getRelationsToPKHolder().get(0).getContentOfDynamicData()  == Generation2[i]){
+    			p_gen = 2;
+    			break;
+    		}
+    	}
+    	
+    	for(int i = 0; i < Generation2.length; i++){    		
+    		if(pu.getRelationsToPKHolder().get(0).getContentOfDynamicData() == Generation2[i]) {
+    			pu_gen = 2;
+    			break;
+    		}
     	}
 
     	
     	// If persons are from different generations, they cannot be the same person
     	
-    	if(p_gen != pu_gen)
+    	if(p_gen != pu_gen){
+    		
+    		
+    		//System.out.println("Cr Niet zelfde generatie: " + p.getEntryDateHead() + ", nr " +  p.getKeyToPersons() + ", gen = " + p_gen);
+    		//System.out.println("Cr Niet zelfde generatie: " + pu.getEntryDateHead() + ", nr "+  pu.getKeyToPersons()+ ", gen = " + pu_gen);
+    		
     		return -1;
+    	}
+    	else{
+    		//System.out.println("Cr zelfde generatie: " + p.getEntryDateHead() + ", nr " +  p.getKeyToPersons() + ", gen = " + p_gen);
+    		//System.out.println("Cr zelfde generatie: " + pu.getEntryDateHead() + ", nr "+  pu.getKeyToPersons()+ ", gen = " + pu_gen);
+    		
+    		
+    		
+    	}
     	
 
         //

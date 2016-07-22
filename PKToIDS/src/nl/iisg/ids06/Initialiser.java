@@ -246,7 +246,7 @@ public class Initialiser {
 			for(OP op: ops){
 				for(B4_ST r: op.getRegistrationsStandardizedOfOP()){
 					
-					//System.out.println(r.getKeyToRP());
+					//System.out.println("Cr B4: r.getKeyToRP() "+ r.getKeyToRP());
 					
 					while(i_ra < addresses.size() && r.contains(addresses.get(i_ra))){	
 						
@@ -256,7 +256,9 @@ public class Initialiser {
 					}
 					
 					while(i_p < persons.size() && r.contains(persons.get(i_p))){  
-						
+
+						//System.out.println("Cr B2: r.getKeyToRP() "+ persons.get(i_p).getKeyToRP());
+
 						persons.get(i_p).setRegistration(r);	
 						r.getPersons().add(persons.get(i_p));
 

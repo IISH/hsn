@@ -306,7 +306,7 @@ public class IDS implements Runnable {
     	
     	// xxx
     	
-    	String[]  identPerson1 = {"BIRTH_DATE", "BIRTH_LOCATION", "LAST_NAME", "PREFIX_LAST_NAME", "FIRST_NAME", "DEATH_DATE", "DEATH_LOCATION", "HSN_RESEARCH_PERSON"};
+    	String[]  identPerson1 = {"BIRTH_DATE", "BIRTH_LOCATION", "LAST_NAME", "PREFIX_LAST_NAME", "FIRST_NAME", "DEATH_DATE", "DEATH_LOCATION", "HSN_RESEARCH_PERSON", "HSN_IDENTIFIER"};
     	String[]  identPerson  = null;
     	
     	//System.out.println("In write group");
@@ -479,7 +479,7 @@ public class IDS implements Runnable {
      */
     private static boolean typeInPerson(String s){
     	
-    	String[] inPerson = {"BIRTH_DATE", "BIRTH_LOCATION", "LAST_NAME", "PREFIX_LAST_NAME", "FIRST_NAME", "DEATH_DATE", "DEATH_LOCATION", "HSN_RESEARCH_PERSON"};
+    	String[] inPerson = {"BIRTH_DATE", "BIRTH_LOCATION", "LAST_NAME", "PREFIX_LAST_NAME", "FIRST_NAME", "DEATH_DATE", "DEATH_LOCATION", "HSN_RESEARCH_PERSON", "HSN_IDENTIFIER"};
     	
     	for(String t: inPerson)
     		if(t.equals(s))
@@ -633,15 +633,18 @@ private static void handler(){
 		}
 		
 		else
-	    if(individualL.get(i).getType().equalsIgnoreCase("HSN_RESEARCH_PERSON")){
-			p.setSource(individualL.get(i).getSource());
-			if(p.getRelationRP() == null)
-				p.setRelationRP("RP");
-	    	//personID_RP = individualL.get(i).getId_I();
-	    	//System.out.println("RP nr = " + personID_RP);
-	    	continue;
-	    }
-
+		    if(individualL.get(i).getType().equalsIgnoreCase("HSN_RESEARCH_PERSON")){
+				p.setSource(individualL.get(i).getSource());  // because everybody has this
+				
+				if(individualL.get(i).getValue().equalsIgnoreCase("HSN RP")){
+					if(p.getRelationRP() == null)
+						p.setRelationRP("RP");
+					//personID_RP = individualL.get(i).getId_I();
+					//System.out.println("RP nr = " + personID_RP);
+					continue;
+				}
+		    }
+	
 	}
 	if(p != null && p.getFamilyName() != null && !p.getFamilyName().equalsIgnoreCase("N"))
 		personL.add(p);  // (3) because there still is a Person p that must be saved
@@ -668,9 +671,9 @@ private static void handler(){
 			personL.get(indexP).getIndiv_indiv().add(ii);
 			//System.out.println("Add   p  Id_D = " + personL.get(indexP).getIdnr() + " ID_I = " + personL.get(indexP).getId_I());
 
-			//if(personL.get(indexP).getIdnr().equals("1001")){
+			//if(personL.get(indexP).getIdnr() == 344004){
 				//personL.get(indexP).setRelationRP(ii.getRelation());
-				//System.out.println("Adding IDNR = " + ii.getId_D() + " I1 " +   ii.getId_I_1() + " I2 " +   ii.getId_I_2());
+			//	System.out.println("Adding IDNR = " + ii.getId_D() + " I1 " +   ii.getId_I_1() + " I2 " +   ii.getId_I_2() + "rel = " + ii.getRelation() );
 			//}
 		}
 	}
@@ -1103,7 +1106,24 @@ private static void handleRP(ArrayList<Person> family){
 			p.setStartCode(2); // preset 
 			group.add(p);
 		}
+		
 	}
+	
+	if(group.size() == 0){
+		
+//		System.out.println("CRR 1 " + family.get(0).getIdnr());
+//		System.out.println();
+//		for(Person p: family){
+			
+			
+//			System.out.println("CRR 1 " +  p.getIdnr() + "  " + p.getFamilyName() + "  " + p.getFirstName() + "  " + p.getRelationRP()) ;
+			
+//		}
+		
+		//System.exit(9);
+		
+	}
+	
 	setStartCode(group);
 	family.removeAll(group);
     

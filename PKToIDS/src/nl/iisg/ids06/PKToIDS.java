@@ -128,13 +128,15 @@ public class PKToIDS implements Runnable{
     int idCount = 0;
     for(OP op: ops){
     	for(B4_ST r: op.getRegistrationsStandardizedOfOP()){
-    		//System.out.println(r.getKeyToRP());
+    		//System.out.println("Cr IDNR = " + r.getKeyToRP() + ", r.getEntryDateHead() " + r.getEntryDateHead());
 
     		if(!r.getEntryDateHead().equals("01-01-1940")) continue; // because the RP is under this number 
     		//if(r.getKeyToRP() > 500000) continue;
     		
     		idCount++;
 
+    		//System.out.println("Persons: " + r.getPersons().size());
+    		
     		int person_number = -1;
     		for(B2_ST p: r.getPersons()){
     			if(person_number != p.getPersonID()){

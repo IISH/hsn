@@ -106,7 +106,7 @@ public class B2_ST {
 	
 	public void convert(EntityManager em){
 		
-		//System.out.println("Enter B2");
+		//System.out.println("Cr Enter B2, family name = " + getFamilyName() + ", firstname = " +  getFirstName() + ",  key to persons = " + getKeyToPersons());
 
 		int day   = 0;
 		int month = 0;
@@ -118,6 +118,8 @@ public class B2_ST {
 		    month = (new Integer(getDateOfBirth().substring(3,5))).intValue();
 		    year  = (new Integer(getDateOfBirth().substring(6,10))).intValue();
 		}
+		
+		
 		
 		if(getFamilyName() != null && getFamilyName().trim().length() > 0 && !getFamilyName().trim().equalsIgnoreCase("N"))
 			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "LAST_NAME", getFamilyName().trim(), "Reported", "Exact", 0, 0, 0);
@@ -132,47 +134,55 @@ public class B2_ST {
 		if(getKeyToRP() != 0)
 			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_IDENTIFIER", "" + getKeyToRP(), "Reported", "Exact", 0, 0, 0);
 		
-		for(B313_ST b313: getRelationsToPKHolder()){
-			
-			switch(b313.getContentOfDynamicData()){
+		//System.out.println("Number of b313 " + getRelationsToPKHolder().size());
+		
+		
+		// In the main registration (of the Wife) we set the relation to RP
+		
+		if(getEntryDateHead().equals("01-01-1940")){
+			for(B313_ST b313: getRelationsToPKHolder()){
 
-			case  1:  // RP
-				
-				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "HSN RP", "Reported", "Exact", 0, 0, 0);
-				break;
+				//System.out.println("Relation to RP = " + b313.getContentOfDynamicData());
 
-			
-			case 11:  // Father
-				
-				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "Father RP", "Reported", "Exact", 0, 0, 0);
-				break;
+				switch(b313.getContentOfDynamicData()){
 
-			case 21:  // Mother
-				
-				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "Mother RP", "Reported", "Exact", 0, 0, 0);
-				break;
+				case  1:  // RP
 
-			default:  
-				
+					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "HSN RP", "Reported", "Exact", 0, 0, 0);
+					break;
 
-				String other = null;
-				//if(b313.getContentOfDynamicData() < ConstRelations2.b3kode1.length && ConstRelations2.b3kode1[b313.getContentOfDynamicData()] != null)
-				//	other = ConstRelations2.b3kode1[b313.getContentOfDynamicData()] + " RP";
-				if(b313.getContentOfDynamicData() != 0){
-					
-					    String code = b313.getContentOfDynamicData() + ""; 
+
+				case 11:  // Father
+
+					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "Father RP", "Reported", "Exact", 0, 0, 0);
+					break;
+
+				case 21:  // Mother
+
+					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "Mother RP", "Reported", "Exact", 0, 0, 0);
+					break;
+
+				default:  
+
+
+					String other = null;
+					//if(b313.getContentOfDynamicData() < ConstRelations2.b3kode1.length && ConstRelations2.b3kode1[b313.getContentOfDynamicData()] != null)
+					//	other = ConstRelations2.b3kode1[b313.getContentOfDynamicData()] + " RP";
+					if(b313.getContentOfDynamicData() != 0){
+
+						String code = b313.getContentOfDynamicData() + ""; 
 						other = Common1.standardizeRelation(code) ;
-				}
+					}
 
-				if(other != null){
-					String person = other + " RP";
-					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", person, "Reported", "Exact",  0, 0, 0);
+					if(other != null){
+						String person = other + " RP";
+						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", person, "Reported", "Exact",  0, 0, 0);
+					}
+
 				}
 
 			}
-			
 		}
-
 
 		if(year > 0)
 			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "BIRTH_DATE", null, "Reported", "Exact", day, month, year);	
@@ -283,7 +293,7 @@ public class B2_ST {
 			}
 		}
 		
-		// Start Observation for PK Holder, Spouses and (step) children
+		// Start Observation for PK Holder, Spouses and (step) children if in scope
 		
 		String startObservation = null;
 		for(B313_ST b313: getRelationsToPKHolder()){
@@ -313,6 +323,8 @@ public class B2_ST {
 				if(getStartFlag() == 22) startObservation = "Birth";
 				else                     startObservation = "Start source";	// 			
 				break;
+			
+			default:
 				
 			}
 		}
@@ -383,7 +395,7 @@ public class B2_ST {
 				}
 				break;
 			
-				
+				default:	
 			}
 		}
 		

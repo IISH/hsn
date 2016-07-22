@@ -245,12 +245,20 @@ public class PkEigknd {
     	
     	String endDateSave = b2.getEndDate();
     	
-    	// No start and end dates for children that are terminated before the PK start date 1-7-1938
+    	// No start and end dates for children that are terminated before the 2nd marriage
     	
+    	// get date second marriage
     	
-    	if((Common1.dateIsValid(getAdgkndp(), getAmdkndp(), getAjrkndp()) == 0 && Common1.dayCount(getAdgkndp(), getAmdkndp(), getAjrkndp()) < Common1.dayCount(b2.getRegistration().getStartDate())) || 
-       	   (Common1.dateIsValid(getOdgkndp(), getOmdkndp(), getOjrkndp()) == 0 && Common1.dayCount(getOdgkndp(), getOmdkndp(), getOjrkndp()) < Common1.dayCount(b2.getRegistration().getStartDate())) || 
-    	   (Common1.dateIsValid(getHdgkndp(), getHmdkndp(), getHjrkndp()) == 0 && Common1.dayCount(getHdgkndp(), getHmdkndp(), getHjrkndp()) < Common1.dayCount(b2.getRegistration().getStartDate()))){ 
+    	int marriageDays = 0;
+    	if(getPkHolder().getMarriages() != null && getPkHolder().getMarriages().size() > 1){    		
+    		PkHuw pkh = getPkHolder().getMarriages().get(1); 
+    		marriageDays = Common1.dayCount(pkh.getHdghuwp(), pkh.getHmdhuwp(), pkh.getHjrhuwp());
+    	}
+    		
+    	
+    	if((Common1.dateIsValid(getAdgkndp(), getAmdkndp(), getAjrkndp()) == 0 && Common1.dayCount(getAdgkndp(), getAmdkndp(), getAjrkndp()) < Common1.dayCount(b2.getRegistration().getStartDate()))   ||  
+    	   (Common1.dateIsValid(getOdgkndp(), getOmdkndp(), getOjrkndp()) == 0 && Common1.dayCount(getOdgkndp(), getOmdkndp(), getOjrkndp()) < Common1.dayCount(b2.getRegistration().getStartDate()))   ||
+    	   (Common1.dateIsValid(getHdgkndp(), getHmdkndp(), getHjrkndp()) == 0 && Common1.dayCount(getHdgkndp(), getHmdkndp(), getHjrkndp()) < Common1.dayCount(b2.getRegistration().getStartDate()))){		   
     		
     	    b2.setStartDate(null);
     		b2.setStartFlag(0);
@@ -261,10 +269,12 @@ public class PkEigknd {
     	else{
 
     		if(b2.getDateOfBirth() != null && Common1.dayCount(b2.getDateOfBirth()) > Common1.dayCount(b2.getRegistration().getStartDate())){
-
     			b2.setStartDate(b2.getDateOfBirth());
     			b2.setStartFlag(22);
-
+    		}    		
+    		else{
+    			b2.setStartDate("01-07-1938");
+    			b2.setStartFlag(0);   			
     		}
 
     		if(Common1.dateIsValid(getOdgkndp(), getOmdkndp(), getOjrkndp()) == 0){
@@ -320,6 +330,8 @@ public class PkEigknd {
 						b313.setContentOfDynamicData(9); // Stepdaughter
 					else
 						if(getRelkndp().trim().equalsIgnoreCase("KIND")) 
+							b313.setContentOfDynamicData(133); // Kind PK
+						else
 							b313.setContentOfDynamicData(133); // Kind PK
 
 				

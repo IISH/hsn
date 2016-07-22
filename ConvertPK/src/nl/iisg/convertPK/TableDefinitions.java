@@ -410,7 +410,7 @@ public class TableDefinitions {
 	 " END_FLAG SMALLINT, " +
 	 " END_EST  SMALLINT, " +
 	 
-	 " MUNICIPALITY_ST VARCHAR(" + Bigstring + "), " + 
+	 " MUNICIPALITY_ST VARCHAR(" + XBigstring + "), " + 
 	 " MUNICIPALITY_NO INT, " + 
 	 " POSTAL_CODE CHAR(6), " +
 	 " RENUMBERING TINYINT, " +

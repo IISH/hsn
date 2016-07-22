@@ -63,11 +63,13 @@ public class B34_ST extends B3_ST {
 		int id_i_1 = getPerson().getPersonID();
 		int id_i_2 = getPerson().getRegistration().getPersons().get(getValueOfRelatedPerson() - 1).getPersonID(); // B34 -> B2 -> B4 -> B2 (RP)
 		
+		
+		
 		String est = "Exact";
 		if(getStartFlag() == 88) est = "Time Invariant";
-		else
-			if(getStartFlag() == 11 && (getStartEst() == 1 || getStartEst() ==2))
-					est = "Unilateral";
+		//else
+			//if(getStartFlag() == 11 && (getStartEst() == 1 || getStartEst() ==2))
+				//	est = "Unilateral"; 
 			
 		
 		Utils.addIndivIndiv(em, getKeyToRP(), id_i_1,  id_i_2, "B34_ST", "" + getContentOfDynamicData(), "Reported", est, startDay, startMonth, startYear, endDay, endMonth, endYear);
