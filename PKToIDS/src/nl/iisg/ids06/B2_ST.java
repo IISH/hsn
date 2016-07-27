@@ -348,7 +348,7 @@ public class B2_ST {
 			
 			switch(b313.getContentOfDynamicData()){
 			case 1:  // Holder
-				if(endYear == 0) break;  // not dead yet
+				if(endYear == 0) break;  // not dead yet, but this is not possible because we get the PK only after the holder (=subject) dies.
 				if(endFlag == 10) 
 					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", "Death", "Assigned", "Exact", endDay, endMonth, endYear);
 				break;
