@@ -233,6 +233,7 @@ public class StandardizePersonalCards implements Runnable {
                 if (p71.getIdnr() > p72.getIdnr()) return 1;
                 else if (p71.getIdnr() < p72.getIdnr()) return -1;
                 return 0;
+                
             }
         });
 
@@ -411,7 +412,7 @@ public class StandardizePersonalCards implements Runnable {
         int unique = 1;
         for (PkKnd pkknd1 : pkkndL) { // the Wives (and the male OPs) are selected from this list
         	
-        	System.out.println("Cr L1 " + pkknd1.getIdnr());
+        	//System.out.println("Cr L1 " + pkknd1.getIdnr());
         	if(pkknd1.getIdnr() > 500000) break;  // OP are below 500000
 
 
@@ -423,14 +424,14 @@ public class StandardizePersonalCards implements Runnable {
         	
         	for (B2_ST b2 : pkknd1.getB4().getPersons()) {
         		
-            	System.out.println("Cr L11");
+            	//System.out.println("Cr L11");
         		
             	
         		
     			boolean fnd = false;
         		for (B2_ST b2unique : uniquePersons) {
         			
-                	System.out.println("Cr L13");
+                	//System.out.println("Cr L13");
 
         			if (comparePersons(b2, b2unique) == 0) {
         				b2.setPersonID(b2unique.getPersonID());
@@ -439,13 +440,13 @@ public class StandardizePersonalCards implements Runnable {
         			}
         		}
     			if(fnd == false){
-    	        	System.out.println("Cr L4");
+    	        	//System.out.println("Cr L4");
 
     				b2.setPersonID(unique++);
     				uniquePersons.add(b2);
     			}
 
-        		System.out.println("HHH " + b2.getFirstName() +  "  " + b2.getFamilyName() + " " + b2.getPersonID());
+        		//System.out.println("HHH " + b2.getFirstName() +  "  " + b2.getFamilyName() + " " + b2.getPersonID());
         	}
 
         	// locate partner registration
@@ -453,19 +454,19 @@ public class StandardizePersonalCards implements Runnable {
 
         	for (PkKnd pkknd2 : pkkndL2) { // The husbands are selected from this list        		
         		
-            	System.out.println("Cr L2");
+            	//System.out.println("Cr L2");
 
         		
         		if(pkknd1 != pkknd2 && pkknd2.getIdnrp() == pkknd1.getIdnr()){  // Wife-pkknd1 was married to husband-pkknd2
 
                 	for (B2_ST b2 : pkknd2.getB4().getPersons()) {
                 		
-                    	System.out.println("Cr L21");
+                    	//System.out.println("Cr L21");
 
             			boolean fnd = false;
                 		for (B2_ST b2unique : uniquePersons) {
                 			
-                        	System.out.println("Cr L22");
+                        	//System.out.println("Cr L22");
 
 
                 			if (comparePersons(b2, b2unique) == 0) {
@@ -479,7 +480,7 @@ public class StandardizePersonalCards implements Runnable {
             				uniquePersons.add(b2);
             			}
             			
-                		System.out.println("HHH " + b2.getFirstName() +  "  " + b2.getFamilyName() + " " + b2.getPersonID());
+                		//System.out.println("HHH " + b2.getFirstName() +  "  " + b2.getFamilyName() + " " + b2.getPersonID());
 
 
                 	}
@@ -494,7 +495,7 @@ public class StandardizePersonalCards implements Runnable {
         // Set PersonID_FA and PersonID_MO for children and OP
         
         
-        /*
+        
         
         for (PkKnd pkknd1 : pkkndL) {
         	for (B2_ST b2 : pkknd1.getB4().getPersons()) {
@@ -575,13 +576,13 @@ public class StandardizePersonalCards implements Runnable {
 
         }
         
-        */
+        
        
         
         
         // Integrate cards
         
-        /*
+        
         for (PkKnd pkknd1 : pkkndL) { // the Wives (and the male OPs) are selected from this list
 
         	// locate partner registration
@@ -685,7 +686,7 @@ public class StandardizePersonalCards implements Runnable {
         	
         	
         }
-*/
+
         
         // Test if OP is married to same persons twice 
         
@@ -770,7 +771,7 @@ public class StandardizePersonalCards implements Runnable {
     	
     A:	for(B2_ST b2H: b4Husband.getPersons()){
     	
-    		System.out.println("HHH " + b2H.getFirstName() +  "  " + b2H.getFamilyName() + " " + b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData());
+    		//System.out.println("HHH " + b2H.getFirstName() +  "  " + b2H.getFamilyName() + " " + b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData());
     		
     		switch(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()){
     		
@@ -778,7 +779,7 @@ public class StandardizePersonalCards implements Runnable {
     			
     			for(B2_ST b2W: b4Wife.getPersons()){
     				
-    	    		System.out.println("WWW " + b2W.getFirstName() +  "  " + b2W.getFamilyName() + " " + b2W.getRelationsToPKHolder().get(0).getContentOfDynamicData());
+    	    		//System.out.println("WWW " + b2W.getFirstName() +  "  " + b2W.getFamilyName() + " " + b2W.getRelationsToPKHolder().get(0).getContentOfDynamicData());
     				
     				if(b2H.getPersonID() == b2W.getPersonID()){
     					
@@ -787,7 +788,7 @@ public class StandardizePersonalCards implements Runnable {
     				}
     			}
 
-	    		System.out.println("HHH Partner" + b2Partner.getFirstName() +  "  " + b2Partner.getFamilyName() + " " + b2Partner.getRelationsToPKHolder().get(0).getContentOfDynamicData());
+	    		//System.out.println("HHH Partner" + b2Partner.getFirstName() +  "  " + b2Partner.getFamilyName() + " " + b2Partner.getRelationsToPKHolder().get(0).getContentOfDynamicData());
 
     			if(b2Partner != null){				
 
@@ -855,8 +856,8 @@ public class StandardizePersonalCards implements Runnable {
         				newPerson = true;
         				b2 = allocateB2(b4Wife, b2H);  // Allocate new person
         				
-        				//b2.setStartDate(b2Partner.getStartDate());
-        				//b2.setStartFlag(b2Partner.getStartFlag());
+        				b2.setStartDate(b2Partner.getStartDate());
+        				b2.setStartFlag(b2Partner.getStartFlag());
         				
         				b2.setKeyToPersons(b4Wife.getPersons().size() + 1);  // keep together    				
         				b4Wife.getPersons().add(b2);                         // keep together

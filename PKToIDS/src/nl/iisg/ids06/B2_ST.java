@@ -320,7 +320,9 @@ public class B2_ST {
 				
 				if(startYear == 0) break; // not under observation
 				
-				if(getStartFlag() == 22) startObservation = "Birth";
+				if(getStartFlag() == 21) startObservation = "Arrival";
+				else
+					if(getStartFlag() == 22) startObservation = "Birth";
 				else                     startObservation = "Start source";	// 			
 				break;
 			
