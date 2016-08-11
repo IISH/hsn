@@ -8,7 +8,7 @@ import nl.iisg.idscontext.Contxt;
 public class Utils {
 	
 	public static void addIndivIndiv(EntityManager em, int IDNR, int id_i_1,  int id_i_2, String source, String relation, 
-			String dateType, String estimation, int day, int month, int year){
+			String dateType, String missing, int day, int month, int year){
 		
 		INDIV_INDIV iiUp = new INDIV_INDIV();
 		
@@ -22,7 +22,6 @@ public class Utils {
 		if(year != 0){
 			
 			iiUp.setDate_type(dateType);
-			iiUp.setEstimation(estimation);
 			iiUp.setDay(day);
 			iiUp.setMonth(month);
 			iiUp.setYear(year);			
@@ -39,7 +38,7 @@ public class Utils {
 	}
 	
 	public static void addIndivIndiv(EntityManager em, int IDNR, int id_i_1,  int id_i_2, String source, String relation, 
-			String dateType, String estimation, int startDay, int startMonth, int startYear, int endDay, int endMonth, int endYear){
+			String dateType, String missing, int startDay, int startMonth, int startYear, int endDay, int endMonth, int endYear){
 		
 		INDIV_INDIV iiUp = new INDIV_INDIV();
 		
@@ -52,18 +51,20 @@ public class Utils {
 		
 		if(startYear != 0){
 			
-			iiUp.setDate_type(dateType);
-			iiUp.setEstimation(estimation);
+			//iiUp.setDate_type(dateType);
 			iiUp.setStart_day(startDay);
 			iiUp.setStart_month(startMonth);
 			iiUp.setStart_year(startYear);
+		}
+		if(endYear != 0){
+		
 			iiUp.setEnd_day(endDay);
 			iiUp.setEnd_month(endMonth);
 			iiUp.setEnd_year(endYear);
 			
 		}
-		else
-			iiUp.setMissing("Time Invariant");
+		
+		iiUp.setMissing(missing);
 		
 		em.persist(iiUp);
 		

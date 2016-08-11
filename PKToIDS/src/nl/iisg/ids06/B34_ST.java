@@ -39,6 +39,9 @@ public class B34_ST extends B3_ST {
 			startDay   = new Integer(getStartDate().substring(0,2));
 			startMonth = new Integer(getStartDate().substring(3,5));
 			startYear  = new Integer(getStartDate().substring(6,10));
+		}
+		
+		if(getEndDate() != null){
 			endDay     = new Integer(getEndDate().substring(0,2));
 			endMonth   = new Integer(getEndDate().substring(3,5));
 			endYear    = new Integer(getEndDate().substring(6,10));
@@ -65,14 +68,21 @@ public class B34_ST extends B3_ST {
 		
 		
 		
-		String est = "Exact";
-		if(getStartFlag() == 88) est = "Time Invariant";
+		String m = "";
+		if(getStartFlag() == 88) 
+			m = "Time Invariant";
+		else
+			if(getStartFlag() == 11)
+				m = "Marriage Related";
+			else
+				return;
+		
 		//else
 			//if(getStartFlag() == 11 && (getStartEst() == 1 || getStartEst() ==2))
 				//	est = "Unilateral"; 
 			
 		
-		Utils.addIndivIndiv(em, getKeyToRP(), id_i_1,  id_i_2, "B34_ST", "" + getContentOfDynamicData(), "Reported", est, startDay, startMonth, startYear, endDay, endMonth, endYear);
+		Utils.addIndivIndiv(em, getKeyToRP(), id_i_1,  id_i_2, "B34_ST", "" + getContentOfDynamicData(), "Reported", m, startDay, startMonth, startYear, endDay, endMonth, endYear);
 		
 	}
 	

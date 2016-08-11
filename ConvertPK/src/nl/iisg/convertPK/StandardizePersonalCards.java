@@ -1949,41 +1949,75 @@ public class StandardizePersonalCards implements Runnable {
         
         if(ConstRelations2.b3kode1_Related[rel] == null) {  
         	
+            // Hack
+            // If a relation is through marriage and the relation is not between the spouses (but between a spouse and an in-law) we
+        	// do not set the end date. This is nonsense, but Kees thinks this is nice. We will undoubtedly remove it later
+        	
+        	boolean leftIsSpouse = false;
+        	
+        	if(b313L.getContentOfDynamicData() == ConstRelations2.ECHTGENOTE_HOOFD || 
+        			b313L.getContentOfDynamicData() == ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD ||
+        			b313L.getContentOfDynamicData() == ConstRelations2.PARTNER ||
+        			b313L.getContentOfDynamicData() == ConstRelations2.HOOFD) leftIsSpouse = true;
+        	
+        	boolean rightIsSpouse = false;
+        	
+        	if(b313R.getContentOfDynamicData() == ConstRelations2.ECHTGENOTE_HOOFD || 
+        			b313R.getContentOfDynamicData() == ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD ||
+        			b313R.getContentOfDynamicData() == ConstRelations2.PARTNER ||
+        			b313R.getContentOfDynamicData() == ConstRelations2.HOOFD) rightIsSpouse = true;
+        	
+
+        	
         	//if(b313L.getStartDate() == null &&  b313L.getEndDate() == null)
         	
-        	if(b313L.getStartDate() == null &&  b313L.getEndDate() == null && b313R.getStartDate() != null &&  b313R.getEndDate() != null){
+        	if((b313L.getStartDate() == null &&  b313L.getEndDate() == null) && b313R.getStartDate() != null){
         		
         		b34.setStartDate(b313R.getStartDate());
-        		b34.setEndDate(b313R.getEndDate());
         		b34.setStartFlag(11);
         		b34.setStartEst(1);
-        		b34.setEndFlag(11);
-        		b34.setEndEst(1);
+        		
+            	if(leftIsSpouse && rightIsSpouse){
+
+            		b34.setEndDate(b313R.getEndDate());
+            		b34.setEndFlag(11);
+            		b34.setEndEst(1);
+            	}
         		return b34;
         		
         	}
         	
-        	if(b313L.getStartDate() != null &&  b313L.getEndDate() != null && b313R.getStartDate() == null &&  b313R.getEndDate() == null){
+        	
+        	if(b313L.getStartDate() != null  && b313R.getStartDate() == null &&  b313R.getEndDate() == null){
         		
         		b34.setStartDate(b313L.getStartDate());
-        		b34.setEndDate(b313L.getEndDate());
         		b34.setStartFlag(11);
         		b34.setStartEst(2);
-        		b34.setEndFlag(11);
-        		b34.setEndEst(2);
+        		
+            	if(leftIsSpouse && rightIsSpouse){
+
+            		b34.setEndDate(b313L.getEndDate());
+            		b34.setEndFlag(11);
+            		b34.setEndEst(2);
+            	}
         		return b34;
         		
         	}
+        	
+        	
+        	
         	
         	int [] a = findCommonTime(b313L.getStartDate(), b313L.getEndDate(), b313R.getStartDate(), b313R.getEndDate());
 
         	if(a != null){
 
         		b34.setStartDate(Common1.dateFromDayCount(a[0]));
-        		b34.setEndDate(Common1.dateFromDayCount(a[1]));
+        		
+            	
+            	if(leftIsSpouse && rightIsSpouse)
+            		b34.setEndDate(Common1.dateFromDayCount(a[1]));
         		
         	}
-        		
         }
     	else{
     		b34.setStartFlag(88);
@@ -1991,6 +2025,8 @@ public class StandardizePersonalCards implements Runnable {
     		
     	}
 
+        
+        
         return b34;
     }
     
@@ -2011,7 +2047,7 @@ public class StandardizePersonalCards implements Runnable {
      * If the intersection is not empty, an array of 2 integers is returned specifying the left and right boundaries of the intersection
      * Otherwise null is returned
      * 
-     * 
+     * If one or both have no start and end
      * 
      * 
      * @return
