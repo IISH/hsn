@@ -471,6 +471,9 @@ public class PkKnd {
 		b313.setDynamicDataType(13);
 		b313.setContentOfDynamicData(1);         // PK-Holder him/her self
 		b313.setDynamicDataSequenceNumber(1);
+		
+		b313.setStartDate(b2.getDateOfBirth());
+		b313.setStartFlag(b2.getDateOfBirthFlag());
 
 		b313.setKeyToRegistrationPersons(b2.getKeyToPersons());
 
