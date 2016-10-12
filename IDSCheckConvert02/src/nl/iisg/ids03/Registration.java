@@ -263,7 +263,7 @@ public class Registration implements Comparable<Registration>{
 		
 		checkConsistencyAddresses();
 		
-		System.out.println("    Registration.check, rc =  " + returnCode);
+		//System.out.println("    Registration.check, rc =  " + returnCode);
 		
 		return returnCode;
 

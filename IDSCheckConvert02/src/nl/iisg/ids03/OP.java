@@ -55,7 +55,7 @@ public boolean check(){
 		
 		
 		boolean rc = r.check();
-		System.out.println("  Op.check, re = " + rc);
+		//System.out.println("  Op.check, re = " + rc);
 		if(rc == false)
 			returnCode = false;
 	}
@@ -168,7 +168,7 @@ public boolean check(){
 	       message("1111", r.getPageNumberOfSource(), "" + r.getNumberOfHousehold()); 
 
 	
-	System.out.println("  Op.check, returnCode = " + returnCode);
+	//System.out.println("  Op.check, returnCode = " + returnCode);
 	return returnCode;
 	
 }

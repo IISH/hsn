@@ -139,7 +139,7 @@ public class CivilCertificatesToIDS implements Runnable{
 	
 	int cnt = 0;
 	
-	for(int j = 0; j < 10; j++){
+	for(int j = 0; j < 1; j++){
 		
 	    i.loadTables(all, j);
 

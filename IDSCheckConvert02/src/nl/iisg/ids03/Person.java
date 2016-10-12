@@ -286,7 +286,7 @@ public class Person {
 		if(getIsHeadFirstSuccessor() == true)
 			checkExplicitHead(ainb);
 		
-		System.out.println("        Person.check, rc =  " + returnCode);
+		//System.out.println("        Person.check, rc =  " + returnCode);
 
 
 		return returnCode;

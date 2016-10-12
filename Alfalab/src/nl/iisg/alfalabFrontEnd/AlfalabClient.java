@@ -521,7 +521,7 @@ public class AlfalabClient extends JFrame implements ActionListener {
 
         FilenameFilter dbfFilter = new FilenameFilter() {
             public boolean accept(File dir, String name) {
-                return name.endsWith(".dbf") || name.endsWith(".DBF");
+                return name.endsWith(".dbf") || name.endsWith(".DBF") || name.endsWith(".ACCDB") || name.endsWith(".accdb");
             }
         };
 

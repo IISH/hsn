@@ -380,7 +380,7 @@ public class Common1 {
 		for(String f: file){
 			boolean found = false;
 			for(File fd: dir.listFiles()){
-				if(fd.getName().equals(f)){
+				if(fd.getName().equalsIgnoreCase(f)){
 					found = true;
 					break;
 				}
@@ -494,6 +494,9 @@ public class Common1 {
     	// look up code between A and B
     	
     	int [] AB =  new int[]{90};  // preset geen verwantschap
+    	
+    	//System.out.println("Rel A  = " + relToHeadA + " Rel B  = " + relToHeadB);
+    	//System.out.println("code 1 = " + code1 + " code2 = " + code2);
     	
     	if(ConstRelations.transform[code1][code2] != null && ConstRelations.transform[code1][code2].length > 0)
    		  AB = ConstRelations.transform[code1][code2]; 

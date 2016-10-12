@@ -24,7 +24,8 @@ public class Initialiser {
 			System.out.println("Loading " + tables[i]);
 			//Query q = em.createQuery("select a from " + tables[i] + " a where a.idnr like %");
 			//Query q = em.createQuery("select a from " + tables[i] + " a");
-			Query q = em.createQuery("select a from " + tables[i] + " a where a.idnr like '%" + j +"'");
+			//Query q = em.createQuery("select a from " + tables[i] + " a where a.idnr like '%" + j +"'");
+			Query q = em.createQuery("select a from " + tables[i] + " a where a.idnr like '%0" + j +"'");
 
 			all.get(i).clear();
 			all.get(i).addAll(q.getResultList());

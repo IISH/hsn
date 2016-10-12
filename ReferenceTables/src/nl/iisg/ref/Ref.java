@@ -98,7 +98,7 @@ public class Ref {
 	static EntityManager                     em_ref_2      = getFactory_ref_2().createEntityManager(); 
 
 	public static final int XBigstring = 256;
-	public static final int Bigstring = 60;
+	public static final int Bigstring = 80;
 	public static final int Smallstring = 15;
 	
 	

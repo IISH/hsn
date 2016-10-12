@@ -546,18 +546,38 @@ public class CreateDBNieuw {
     
 	 public static final String M6 = 		
 
-    
-    "CREATE TABLE IF NOT EXISTS m6" +
-    "(" +
-    "    IDNR     INT, " +
-    "    MAR_CD   SMALLINT, " +
-    "    MAR_CM   SMALLINT, " +
-    "    MAR_CY   SMALLINT, " +
-    "    M6SDMI   TEXT, " +
-    "    RecordID INT AUTO_INCREMENT, " +
-    "    Primary Key  (RecordID), " +
-    "    INDEX        (IDNR)" +
-    ") Engine=InnoDB;";
+			    
+			    "CREATE TABLE IF NOT EXISTS m6" +
+			    "(" +
+			    "    IDNR     INT, " +
+			    "    MAR_CD   SMALLINT, " +
+			    "    MAR_CM   SMALLINT, " +
+			    "    MAR_CY   SMALLINT, " +
+			    "    M6SDMI   TEXT, " +
+			    "    RecordID INT AUTO_INCREMENT, " +
+			    "    Primary Key  (RecordID), " +
+			    "    INDEX        (IDNR)" +
+			    ") Engine=InnoDB;";
+
+
+	 public static final String A1 = 		
+
+			    
+			    "CREATE TABLE IF NOT EXISTS a1" +
+			    "(" +
+			    "    IDNR     INT, " +
+			    "    ADR_CD   SMALLINT, " +
+			    "    ADR_CM   SMALLINT, " +
+			    "    MAR_CY   SMALLINT, " +
+			    "    MUNICIPALITY  CHAR(" + Const.Bigstring + "), " +
+			    "    STREET        CHAR(" + Const.Bigstring + "), " +
+			    "    QUARTER       CHAR(" + Const.Smallstring + "), " +
+			    "    NUMBER        CHAR(" + Const.Smallstring + "), " +
+			    "    NUMBER_ADDITION      CHAR(" + Const.Smallstring + "), " +
+			    "    RecordID INT AUTO_INCREMENT, " +
+			    "    Primary Key  (RecordID), " +
+			    "    INDEX        (IDNR)" +
+			    ") Engine=InnoDB;";
 
 
 

@@ -15,6 +15,7 @@ import javax.print.attribute.standard.MediaSize.Other;
 import javax.swing.*;
 
 import nl.iisg.hsncommon.Common1;
+import nl.iisg.hsncommon.Common2;
 import nl.iisg.hsncommon.ConstRelations;
 import nl.iisg.hsncommon.ConstRelations2;
 import nl.iisg.hsncommon.DBFHandler;
@@ -75,10 +76,18 @@ public class StandardizePersonalCards implements Runnable {
         }
 
         String [] requiredFiles = {"PKKND.DBF", "PKHUW.DBF", "PKEIGKND.DBF", "PKBRP.DBF", "PKBYZ.DBF", "PKADRES.DBF", "P7.DBF", "P8.DBF"};
+        boolean MSAccess = false;
 
         String missingFile = Common1.nonExisitingFile(inputDirectory, requiredFiles);
         if(missingFile != null){
-        	print("Required file " + missingFile + " missing\n");
+        	String[] requiredFile = {"PK.ACCDB"};
+            String missingFile2 = Common1.nonExisitingFile(inputDirectory, requiredFile);
+        	if(missingFile2 != null){
+        		print("Required file " + missingFile + " missing\n");
+        		print("Required file " + missingFile2 + " missing\n");
+        	}
+        	else
+        		MSAccess = true;
         	return;
         }
         
@@ -106,7 +115,11 @@ public class StandardizePersonalCards implements Runnable {
         
         print("Reading input files...");
         
-        List<PkKnd> pkkndL = Utils.createObjects("nl.iisg.convertPK.PkKnd", inputDirectory);
+        List<PkKnd> pkkndL = MSAccess == true ? Common2.createObjects("nl.iisg.convertPK.PkKnd", inputDirectory) : Utils.createObjects("nl.iisg.convertPK.PkKnd", inputDirectory);
+        
+        //if(MSAccess == true)
+        
+        //List<PkKnd> pkkndL = Common2.createObjects("nl.iisg.convertPK.PkKnd", inputDirectory);
         print("Read PKKND.DBF, " + pkkndL.size() + " rows");
         List<PkBrp> pkbrpL = Utils.createObjects("nl.iisg.convertPK.PkBrp", inputDirectory);
         print("Read PKBRP.DBF, " + pkbrpL.size() + " rows");
@@ -389,7 +402,7 @@ public class StandardizePersonalCards implements Runnable {
         // We create a second list of Pkknd objects, only the males, sorted on idnrP 
         
         
-        List<PkKnd> pkkndL2 = new ArrayList(); 
+        List<PkKnd> pkkndL2 = new ArrayList<PkKnd>(); 
         
         for(PkKnd pk: pkkndL)
         	if(pk.getIdnr() > 500000)
