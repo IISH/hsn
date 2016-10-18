@@ -167,14 +167,14 @@ public class IDS_INIT implements Runnable {
 	     */
 	     
 	    	String country      = "";
-			String region       = "";
 			String province     = "";
+			String region       = "";
 			String municipality = "";
 			String location     = "";
 			
 			int Id_C_CurrentCountry      = -1;
-			int Id_C_CurrentRegion       = -1;
 			int Id_C_CurrentProvince     = -1;
+			int Id_C_CurrentRegion       = -1;
 			int Id_C_CurrentMunicipality = -1;
 			int Id_C_CurrentLocation     = -1;
 			
@@ -189,8 +189,8 @@ public class IDS_INIT implements Runnable {
 				//System.out.println("Looping!!!");
 				
 				boolean no_country = false;
-				boolean no_region = false;
 				boolean no_province = false;
+				boolean no_region = false;
 				boolean no_municipality = false;
 				boolean no_location = false;
 				
@@ -203,15 +203,15 @@ public class IDS_INIT implements Runnable {
 				if(no_country && no_region && no_province && no_municipality && no_location) continue;
 				
 				//System.out.println("C= " + country + ", R= " + region + ", P=" + province + ", M= " + municipality + ", L=" + location);
-				System.out.format("%10s %10s %10s %10s %10s\n", country, region, province, municipality, location);
+				System.out.format("%10s %10s %10s %10s %10s\n", country, province, region, municipality, location);
 				
 				if(rl.getCountry() != null && !rl.getCountry().trim().equalsIgnoreCase("Unknown")){
 					
 					if(!rl.getCountry().trim().equalsIgnoreCase(country)){
 						
 						country = rl.getCountry().trim();
-						region  = "";
-						province = "";
+						province     = "";
+						region       = "";
 						municipality = "";
 						location = "";
 						
@@ -226,37 +226,11 @@ public class IDS_INIT implements Runnable {
 					}
 				}
 				
-					
-				
-				if(rl.getRegion() != null && !rl.getRegion().trim().equalsIgnoreCase("Unknown")){
-					
-					if(!rl.getRegion().trim().equalsIgnoreCase(region)){
-					
-						region = rl.getRegion().trim();
-						province = "";
-						municipality = "";
-						location = "";					
-					
-						addContext(++Id_C, "NAME", region);
-						addContext(  Id_C, "LEVEL", "Region");
-					
-						Id_C_CurrentRegion       = Id_C;
-						Id_C_CurrentProvince     = -1;
-						Id_C_CurrentMunicipality = -1;
-					    Id_C_CurrentLocation     = -1;	
-					
-					if(Id_C_CurrentCountry > 0)
-						addContextContext(Id_C, Id_C_CurrentCountry, "Region and Country");
-					}
-				}
-				
-				
-				
-
 				if(rl.getProvince() != null && !rl.getProvince().trim().equalsIgnoreCase("Unknown")){
 					
 					if(!rl.getProvince().trim().equalsIgnoreCase(province)){
 						province = rl.getProvince().trim();
+						region = "";
 						municipality = "";
 						location = "";
 					
@@ -265,6 +239,7 @@ public class IDS_INIT implements Runnable {
 						addContext(  Id_C, "LEVEL", "Province");
 					
 						Id_C_CurrentProvince     = Id_C;
+						Id_C_CurrentRegion       = -1;
 						Id_C_CurrentMunicipality = -1;
 						Id_C_CurrentLocation     = -1;	
 					
@@ -281,6 +256,32 @@ public class IDS_INIT implements Runnable {
 					
 				}
 				
+
+					
+				
+				if(rl.getRegion() != null && !rl.getRegion().trim().equalsIgnoreCase("Unknown")){
+					
+					if(!rl.getRegion().trim().equalsIgnoreCase(region)){
+					
+						region = rl.getRegion().trim();
+						municipality = "";
+						location = "";					
+					
+						addContext(++Id_C, "NAME", region);
+						addContext(  Id_C, "LEVEL", "Region");
+					
+						Id_C_CurrentRegion       = Id_C;
+						Id_C_CurrentMunicipality = -1;
+					    Id_C_CurrentLocation     = -1;	
+					
+					if(Id_C_CurrentCountry > 0)
+						addContextContext(Id_C, Id_C_CurrentCountry, "Region and Country");
+					}
+				}
+				
+				
+				
+
 				if(rl.getMunicipality() != null && !rl.getMunicipality().trim().equalsIgnoreCase("Unknown")){
 
 					if(!rl.getMunicipality().trim().equalsIgnoreCase(municipality)){	
