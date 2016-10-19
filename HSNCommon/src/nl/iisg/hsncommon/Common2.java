@@ -1,5 +1,8 @@
 package nl.iisg.hsncommon;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -57,6 +60,8 @@ public class Common2 {
 	
 	public static List createObjects(String className, String inputDirectory){ 
 		
+        System.out.println("In create Objects");
+
 	
 			
 			try{
@@ -86,7 +91,7 @@ public class Common2 {
 			
 			// Get MSAccess table information
 			
-            String connURL = "jdbc:ucanaccess://" + inputDirectory + "\\PK.accdb";
+            String connURL = "jdbc:ucanaccess://" + inputDirectory + File.separator + "PK.accdb";
 			 
             Connection conn = DriverManager.getConnection(connURL, "", "");
 	        Statement s = conn.createStatement();
@@ -245,6 +250,9 @@ public class Common2 {
 	        }
 
 	        // close and cleanup
+	        
+			System.out.println("Read    " + tabName + " from " + inputDirectory + "\\PK.accdb: " + count + " rows");	
+
 	        s.close();
 	        conn.close();
 	        

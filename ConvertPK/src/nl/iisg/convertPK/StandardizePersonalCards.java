@@ -85,10 +85,11 @@ public class StandardizePersonalCards implements Runnable {
         	if(missingFile2 != null){
         		print("Required file " + missingFile + " missing\n");
         		print("Required file " + missingFile2 + " missing\n");
+        		
+        		return;
         	}
         	else
         		MSAccess = true;
-        	return;
         }
         
         print("Creating databases....");
@@ -115,7 +116,7 @@ public class StandardizePersonalCards implements Runnable {
         
         print("Reading input files...");
         
-        List<PkKnd> pkkndL = MSAccess == true ? Common2.createObjects("nl.iisg.convertPK.PkKnd", inputDirectory) : Utils.createObjects("nl.iisg.convertPK.PkKnd", inputDirectory);
+        List<PkKnd> pkkndL = MSAccess == true ? Utils.createObjects2("nl.iisg.convertPK.PkKnd", inputDirectory) : Utils.createObjects("nl.iisg.convertPK.PkKnd", inputDirectory);
         
         //if(MSAccess == true)
         
