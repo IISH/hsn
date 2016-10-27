@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -22,9 +23,10 @@ import javax.persistence.Table;
 
 public class Common2 {
 
+	
     /**
      * 
-     * Name: CreateObjects
+     * Name: CreateObjects2
      * 
      * Purpose: Read MSAccess table and return List with initiated objects
      * 
@@ -58,7 +60,7 @@ public class Common2 {
      * 
      */
 	
-	public static List createObjects(String className, String inputDirectory){ 
+	public static List createObjects2(String className, String inputDirectory){ 
 		
         System.out.println("In create Objects");
 
@@ -84,6 +86,9 @@ public class Common2 {
             }
 
             // Get declared fields (class/instance variables) of inputClass
+            // Accessing these fields must be replaced by accessing the public methods
+            // However, in that case we should also change our annotation, i.e. annotate the setters instead of the fields themselves
+            
 
             Field [] declaredFieldList = inputClass.getDeclaredFields();  // all fields (class/instance variables) in class
 			int [] columnAnnotatedVariableToMSAField = new int[declaredFieldList.length];  // used to link fields with columns
@@ -145,6 +150,8 @@ public class Common2 {
 
 							// Data type of class variable and  column must match: "int" <-> "N" and "java.lang.String" <-> "C" (or "D" - date)
 							
+
+							
 							if(fieldTypesMSA[j].equalsIgnoreCase("VARCHAR")){
 								if(!columnAnnotatedFieldType.equalsIgnoreCase("java.lang.String")){
 									
@@ -193,7 +200,7 @@ public class Common2 {
 	        	
 				Object outputObject = inputClass.newInstance();  // equivalent to "Object outputObject = new inputClass();"
 				
-				int index1 = 1;
+				int index1 = 0;
 				for(int i = 0; i < declaredFieldList.length; i++){
 
 				
@@ -205,8 +212,13 @@ public class Common2 {
 						// Make ready to invoke the setter of the annotated Field's variable
 					
 						// Set parameter list, only one parameter for setter, with datatype depending on  Field's type
-					
-					
+
+						
+						//System.out.println("index1 = " + index1);
+						//System.out.println("columnAnnotatedVariableToMSAField[index1] = " + columnAnnotatedVariableToMSAField[index1]);
+		                //System.out.println("fieldNamesMSA[columnAnnotatedVariableToMSAField[index1]] =  " + fieldNamesMSA[columnAnnotatedVariableToMSAField[index1]]);
+		                //System.out.println("fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]] =  " + fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]]);
+
 					
 						if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("DOUBLE")) 
 							parameterTypes[0] = Integer.TYPE;
@@ -221,17 +233,29 @@ public class Common2 {
 						methodName += declaredFieldList[i].getName().substring(1);
 					
 						// Get the method from inputClass by it's name and signature (number of parameters and their types)
+		                //System.out.println("parameterTypes[0] =  " + parameterTypes[0]);
 					
 						Method  method = inputClass.getDeclaredMethod(methodName, parameterTypes);
 					
 					
-						// create object to hold value from MSA Column			
+						// create object to hold value from MSA Column		
+						
+						e[0] = null;
 					
 						if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("DOUBLE")) 
-							e[0] = rs.getInt(columnAnnotatedVariableToMSAField[index1]);
+							e[0] = rs.getInt(columnAnnotatedVariableToMSAField[index1] + 1);
 						
 						if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("VARCHAR")) 
-							e[0] = rs.getString(columnAnnotatedVariableToMSAField[index1]);
+							e[0] = rs.getString(columnAnnotatedVariableToMSAField[index1] + 1);
+						
+						if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("TIMESTAMP")){
+							
+							Date d = rs.getDate(columnAnnotatedVariableToMSAField[index1] + 1);
+							String ss = d.toString();							
+							String u =  ss.substring(8, 10) + "-" + ss.substring(5, 7) + "-" + ss.substring(0, 4);
+
+							e[0] = u;
+						}
 					
 						// Next statement is equivalent to: setVarx(rowObject[Y]);
 					
@@ -284,9 +308,7 @@ public class Common2 {
 			return null;
 
 	        
-	}		
-		
-}	
+	}}	
 			
 	
 	

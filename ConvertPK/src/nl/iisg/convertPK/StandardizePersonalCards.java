@@ -116,27 +116,62 @@ public class StandardizePersonalCards implements Runnable {
         
         print("Reading input files...");
         
-        List<PkKnd> pkkndL = MSAccess == true ? Utils.createObjects2("nl.iisg.convertPK.PkKnd", inputDirectory) : Utils.createObjects("nl.iisg.convertPK.PkKnd", inputDirectory);
         
-        //if(MSAccess == true)
-        
-        //List<PkKnd> pkkndL = Common2.createObjects("nl.iisg.convertPK.PkKnd", inputDirectory);
-        print("Read PKKND.DBF, " + pkkndL.size() + " rows");
-        List<PkBrp> pkbrpL = Utils.createObjects("nl.iisg.convertPK.PkBrp", inputDirectory);
-        print("Read PKBRP.DBF, " + pkbrpL.size() + " rows");
-        List<PkHuw> pkhuwL = Utils.createObjects("nl.iisg.convertPK.PkHuw", inputDirectory);
-        print("Read PKHUW.DBF, " + pkhuwL.size() + " rows");
-        List<PkEigknd> pkeigkndL = Utils.createObjects("nl.iisg.convertPK.PkEigknd", inputDirectory);
-        print("Read PKEIGKND.DBF, " + pkeigkndL.size() + " rows");
-        List<PkAdres> pkadresL = Utils.createObjects("nl.iisg.convertPK.PkAdres", inputDirectory);
-        print("Read PKADRES.DBF, " + pkadresL.size() + " rows");
-        List<PkByz> pkbyzL = Utils.createObjects("nl.iisg.convertPK.PkByz", inputDirectory);
-        print("Read PKBYZ.DBF, " + pkbyzL.size() + " rows");
-        List<P7> p7L = Utils.createObjects("nl.iisg.convertPK.P7", inputDirectory);
-        print("Read P7.DBF, " + p7L.size() + " rows");
-        List<P8> p8L = Utils.createObjects("nl.iisg.convertPK.P8", inputDirectory);
-        print("Read P8.DBF, " + p8L.size() + " rows");
+        List<PkKnd> pkkndL = null;
+        List<PkBrp> pkbrpL = null;
+        List<PkHuw> pkhuwL = null;
+        List<PkEigknd> pkeigkndL = null; 
+        List<PkAdres> pkadresL = null; 
+        List<PkByz> pkbyzL = null; 
+        List<P7> p7L = null; 
+        List<P8> p8L = null; 
 
+        
+        if(MSAccess == true){
+
+            pkkndL = Common2.createObjects2("nl.iisg.convertPK.PkKnd", inputDirectory);
+            print("Read PKKND.DBF, " + pkkndL.size() + " rows");
+            pkbrpL = Common2.createObjects2("nl.iisg.convertPK.PkBrp", inputDirectory);
+            print("Read PKBRP.DBF, " + pkbrpL.size() + " rows");
+            pkhuwL = Common2.createObjects2("nl.iisg.convertPK.PkHuw", inputDirectory);
+            print("Read PKHUW.DBF, " + pkhuwL.size() + " rows");
+            pkeigkndL = Common2.createObjects2("nl.iisg.convertPK.PkEigknd", inputDirectory);
+            print("Read PKEIGKND.DBF, " + pkeigkndL.size() + " rows");
+            pkadresL = Common2.createObjects2("nl.iisg.convertPK.PkAdres", inputDirectory);
+            print("Read PKADRES.DBF, " + pkadresL.size() + " rows");
+            pkbyzL = Common2.createObjects2("nl.iisg.convertPK.PkByz", inputDirectory);
+            print("Read PKBYZ.DBF, " + pkbyzL.size() + " rows");
+            p7L = Common2.createObjects2("nl.iisg.convertPK.P7", inputDirectory);
+            print("Read P7.DBF, " + p7L.size() + " rows");
+            p8L = Common2.createObjects2("nl.iisg.convertPK.P8", inputDirectory);
+            print("Read P8.DBF, " + p8L.size() + " rows");
+
+        }
+        
+        else{
+        	
+            pkkndL = Utils.createObjects("nl.iisg.convertPK.PkKnd", inputDirectory);
+            print("Read PKKND.DBF, " + pkkndL.size() + " rows");
+            pkbrpL = Utils.createObjects("nl.iisg.convertPK.PkBrp", inputDirectory);
+            print("Read PKBRP.DBF, " + pkbrpL.size() + " rows");
+            pkhuwL = Utils.createObjects("nl.iisg.convertPK.PkHuw", inputDirectory);
+            print("Read PKHUW.DBF, " + pkhuwL.size() + " rows");
+            pkeigkndL = Utils.createObjects("nl.iisg.convertPK.PkEigknd", inputDirectory);
+            print("Read PKEIGKND.DBF, " + pkeigkndL.size() + " rows");
+            pkadresL = Utils.createObjects("nl.iisg.convertPK.PkAdres", inputDirectory);
+            print("Read PKADRES.DBF, " + pkadresL.size() + " rows");
+            pkbyzL = Utils.createObjects("nl.iisg.convertPK.PkByz", inputDirectory);
+            print("Read PKBYZ.DBF, " + pkbyzL.size() + " rows");
+            p7L = Utils.createObjects("nl.iisg.convertPK.P7", inputDirectory);
+            print("Read P7.DBF, " + p7L.size() + " rows");
+            p8L = Utils.createObjects("nl.iisg.convertPK.P8", inputDirectory);
+            print("Read P8.DBF, " + p8L.size() + " rows");
+
+        	
+        	
+        	
+        }
+        
         // Save the Object Lists
 
         try {

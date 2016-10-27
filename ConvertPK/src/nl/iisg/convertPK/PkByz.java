@@ -29,9 +29,9 @@ public class PkByz {
 	 
 	// No-arguments constructor is necessary
 	    
-	    PkByz(){
+    public PkByz(){
 	    	
-	    }
+    }
 	 
 	 
 	public int getIdnr() {

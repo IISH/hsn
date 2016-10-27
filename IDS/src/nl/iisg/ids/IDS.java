@@ -103,7 +103,7 @@ public class IDS implements Runnable {
 	//for(int i = 0; i < idnr.length; i++){
 	idnr = 0;
 	icount = 0;
-	 for(int i = 0; i < 1; i++){ // we run in 10 batches
+	 for(int i = 0; i < 10; i++){ // we run in 10 batches
 		
 		setIndexPerson(0);
 		indiv_count = 0;
@@ -814,8 +814,8 @@ private static void loadIDS(String component, int lastDigit){
 	
 	//Query q = em.createQuery("select a from INDIVIDUAL a where a.id_D < 9000"); 
 	//Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%00" + lastD + "'"); 
-	//Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%" + lastD + "'"); 
-	Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%'"); 
+	Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%" + lastD + "'"); 
+	//Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%'"); 
 	//Query q = em.createQuery("select a from INDIVIDUAL a"); 
 	setIndividualL(q.getResultList());	
 	
@@ -917,8 +917,8 @@ private static void loadIDS(String component, int lastDigit){
 
 	
 	//q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%' and a.id_D like '%00" + lastD + "'"); 
-	//q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%' and a.id_D like '%" + lastD + "'"); 
-	q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%'"); 
+	q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%' and a.id_D like '%" + lastD + "'"); 
+	//q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%'"); 
 	//q = em.createQuery("select a from INDIV_CONTEXT a"); 
 	setIndiv_contextL(q.getResultList());	
 	

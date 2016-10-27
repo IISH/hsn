@@ -63,7 +63,7 @@ public class PkEigknd {
 	 
 	// No-arguments constructor is necessary
 	    
-    PkEigknd(){
+    public PkEigknd(){
 	    	
     }
 	    

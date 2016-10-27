@@ -58,7 +58,7 @@ public class P8 {
 	 
 	// No-arguments constructor is necessary
 	    
-	P8(){   }
+	public P8(){   }
 	
 	public void convert(B6_ST b6){
 		

@@ -43,7 +43,7 @@ public class PkAdres {
 	 
 	// No-arguments constructor is necessary
 	    
-    PkAdres(){
+    public PkAdres(){
 	    	
     }
 	 

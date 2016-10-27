@@ -38,7 +38,7 @@ public class PkBrp {
     
 // No-arguments constructor is necessary
     
-    PkBrp(){
+    public PkBrp(){
     	
     }
     

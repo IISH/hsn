@@ -137,7 +137,7 @@ public class PkKnd {
     	
     // No-arguments constructor is necessary
     
-    PkKnd(){
+    public PkKnd(){
     	
     }
     	
@@ -497,7 +497,7 @@ public class PkKnd {
     	
     	// Last name     	
 		
-    	lastName = getAnmvdrp().trim();
+    	lastName = getAnmvdrp();
     	
     	if(lastName != null && lastName.trim().length() > 0){
 			if(lastName.split("%").length > 1){
@@ -511,14 +511,16 @@ public class PkKnd {
     	}
 		
     	prefix = null;
-    	i = lastName.indexOf(",");
-    	if(i >= 0){    		
-       		prefix = lastName.substring(i+1).trim();
-       		lastName = lastName.substring(0,i).trim();    		
-    		
-    	}
-    	b2.setFamilyName(Utils.standardizeFamilyName(lastName));
+    	if(lastName != null){
+    		i = lastName.indexOf(",");
+    		if(i >= 0){    		
+    			prefix = lastName.substring(i+1).trim();
+    			lastName = lastName.substring(0,i).trim();    		
 
+    		}
+    		b2.setFamilyName(Utils.standardizeFamilyName(lastName));
+    	}
+    	
     	// First Name
     	
     	b2.setFirstNameFlag(1);
@@ -638,7 +640,7 @@ public class PkKnd {
     	
     	// Last name 
 
-    	lastName = getAnmmdrp().trim();
+    	lastName = getAnmmdrp();
     	
     	if(lastName != null){
 			if(lastName.split("%").length > 1){
@@ -651,15 +653,16 @@ public class PkKnd {
 			}
     	}
 
-    	lastName = lastName.trim();
     	prefix = null;
-    	i = lastName.indexOf(",");
-    	if(i >= 0){    		
-       		prefix = lastName.substring(i+1).trim();
-       		lastName = lastName.substring(0,i).trim();    		
-    		
+    	if(lastName != null){
+    		i = lastName.indexOf(",");
+    		if(i >= 0){    		
+    			prefix = lastName.substring(i+1).trim();
+    			lastName = lastName.substring(0,i).trim();    		
+
+    		}
+    		b2.setFamilyName(Utils.standardizeFamilyName(lastName));
     	}
-    	b2.setFamilyName(Utils.standardizeFamilyName(lastName));
 
     	// first name
     	
@@ -812,7 +815,7 @@ public class PkKnd {
     	
     	for(PkHuw pkhuw: getMarriages()){
 
-    		if(pkhuw.getAnmhuwp().trim().length() == 0){
+    		if(pkhuw.getAnmhuwp() == null || pkhuw.getAnmhuwp().trim().length() == 0){
     			System.out.println("Partner without last name skipped for idnr = " + pkhw.getIdnr());
     			continue;
     		}
@@ -1228,10 +1231,10 @@ public class PkKnd {
     	int seqNoAdr = 1;
     	for(P8 p8: getP8()){
 
-    		if(p8.getP8opwf().equalsIgnoreCase("BRIEFADRES"))
+    		if(p8.getP8opwf() == null || p8.getP8opwf().equalsIgnoreCase("BRIEFADRES"))
     			continue;
 
-    		if(p8.getP8opil() != null && p8.getP8opil().trim().equalsIgnoreCase("NL") || p8.getP8opil().trim().length() == 0){
+    		if(p8.getP8opil() != null && (p8.getP8opil().trim().equalsIgnoreCase("NL") || p8.getP8opil().trim().length() == 0)){
 
     			B6_ST b6 = new B6_ST();
 
@@ -1289,14 +1292,14 @@ public class PkKnd {
     	
     	for(int k = 0; k < p8.length; k++){
 
-    		if(k == 0 &&  !(p8[k].getP8opil() != null || p8[k].getP8opil().trim().length() == 0 || p8[k].getP8opil().trim().equalsIgnoreCase("NL")))
+    		if(k == 0 &&  !(p8[k].getP8opil() == null || p8[k].getP8opil().trim().length() == 0 || p8[k].getP8opil().trim().equalsIgnoreCase("NL")))
     			p8[k].origin(b2pk);
     		
 
     		else{
-        		if(!(p8[k].getP8opil() != null || p8[k].getP8opil().trim().length() == 0 || p8[k].getP8opil().trim().equalsIgnoreCase("NL"))){
+        		if(!(p8[k].getP8opil() == null || p8[k].getP8opil().trim().length() == 0 || p8[k].getP8opil().trim().equalsIgnoreCase("NL"))){
     				if(k < p8.length - 1){
-    		    		if(!(p8[k].getP8opil() != null || p8[k].getP8opil().trim().length() == 0 || p8[k].getP8opil().trim().equalsIgnoreCase("NL"))){
+    		    		if(!(p8[k].getP8opil() == null || p8[k].getP8opil().trim().length() == 0 || p8[k].getP8opil().trim().equalsIgnoreCase("NL"))){
         					//System.out.println("P8        1 destination country = " + p8[k].getP8opil() + " locality = " + p8[k].getPladrp());
     						p8[k].destination(b2pk);
     		    		}

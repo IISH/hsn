@@ -35,7 +35,7 @@ public class P7 {
 	 
 	// No-arguments constructor is necessary
 	    
-	P7(){}
+	public P7(){}
 	
 	public void convert(B6_ST b6){
 		

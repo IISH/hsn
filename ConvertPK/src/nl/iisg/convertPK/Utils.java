@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.sql.Date;
 import java.util.List;
 
 import com.linuxense.javadbf.DBFException;
@@ -398,6 +399,9 @@ public class Utils {
             }
 
             // Get declared fields (class/instance variables) of inputClass
+            // Accessing these fields must be replaced by accessing the public methods
+            // However, in that case we should also change our annotation, i.e. annotate the setters instead of the fields themselves
+            
 
             Field [] declaredFieldList = inputClass.getDeclaredFields();  // all fields (class/instance variables) in class
 			int [] columnAnnotatedVariableToMSAField = new int[declaredFieldList.length];  // used to link fields with columns
@@ -523,10 +527,10 @@ public class Utils {
 						// Set parameter list, only one parameter for setter, with datatype depending on  Field's type
 
 						
-						System.out.println("index1 = " + index1);
-						System.out.println("columnAnnotatedVariableToMSAField[index1] = " + columnAnnotatedVariableToMSAField[index1]);
-		                System.out.println("fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]] =  " + fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]]);
-		                System.out.println("fieldNamesMSA[columnAnnotatedVariableToMSAField[index1]] =  " + fieldNamesMSA[columnAnnotatedVariableToMSAField[index1]]);
+						//System.out.println("index1 = " + index1);
+						//System.out.println("columnAnnotatedVariableToMSAField[index1] = " + columnAnnotatedVariableToMSAField[index1]);
+		                //System.out.println("fieldNamesMSA[columnAnnotatedVariableToMSAField[index1]] =  " + fieldNamesMSA[columnAnnotatedVariableToMSAField[index1]]);
+		                //System.out.println("fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]] =  " + fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]]);
 
 					
 						if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("DOUBLE")) 
@@ -542,18 +546,29 @@ public class Utils {
 						methodName += declaredFieldList[i].getName().substring(1);
 					
 						// Get the method from inputClass by it's name and signature (number of parameters and their types)
-		                System.out.println("parameterTypes[0] =  " + parameterTypes[0]);
+		                //System.out.println("parameterTypes[0] =  " + parameterTypes[0]);
 					
 						Method  method = inputClass.getDeclaredMethod(methodName, parameterTypes);
 					
 					
-						// create object to hold value from MSA Column			
+						// create object to hold value from MSA Column		
+						
+						e[0] = null;
 					
 						if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("DOUBLE")) 
 							e[0] = rs.getInt(columnAnnotatedVariableToMSAField[index1] + 1);
 						
 						if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("VARCHAR")) 
 							e[0] = rs.getString(columnAnnotatedVariableToMSAField[index1] + 1);
+						
+						if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("TIMESTAMP")){
+							
+							Date d = rs.getDate(columnAnnotatedVariableToMSAField[index1] + 1);
+							String ss = d.toString();							
+							String u =  ss.substring(8, 10) + "-" + ss.substring(5, 7) + "-" + ss.substring(0, 4);
+
+							e[0] = u;
+						}
 					
 						// Next statement is equivalent to: setVarx(rowObject[Y]);
 					

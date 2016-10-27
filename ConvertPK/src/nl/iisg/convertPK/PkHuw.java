@@ -91,7 +91,7 @@ public class PkHuw {
 	 
 	// No-arguments constructor is necessary
 	    
-    PkHuw(){
+    public PkHuw(){
 	    	
     }
 	 
