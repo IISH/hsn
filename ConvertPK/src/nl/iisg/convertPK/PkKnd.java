@@ -1076,11 +1076,20 @@ public class PkKnd {
     	
     	for(PkByz pkbyz: getRemarks()){
     		
-    		remarks += pkbyz.getByz().trim();
-    		remarks += " " ;
+    		if(pkbyz != null){
+    			
+    			String r = pkbyz.getByz();
+    			
+    			if(r != null){    		
+    				remarks += r;
+    				remarks += " " ;
+    			}
+    			
+    		}
     		
     	}
-    	remarks = remarks.trim();
+    	if(remarks != null)
+    		remarks = remarks.trim();
     	
     	if(remarks.length() != 0)
     		b4.setRemarks(remarks);
