@@ -74,8 +74,8 @@ public class B34_ST extends B3_ST {
 		else
 			if(getStartFlag() == 11)
 				m = "Marriage Related";
-			else
-				return;
+			//else xyz
+				//return;
 		
 		//else
 			//if(getStartFlag() == 11 && (getStartEst() == 1 || getStartEst() ==2))

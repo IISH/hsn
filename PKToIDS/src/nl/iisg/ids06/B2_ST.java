@@ -131,6 +131,9 @@ public class B2_ST {
 			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "FIRST_NAME", getFirstName().trim(), "Reported", "Exact", 0, 0, 0);
 		if(getSex() != null && getSex().trim().length() > 0)
 			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "SEX", Utils.sex(getSex()), "Reported", "Exact", 0, 0, 0);
+		else
+			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "SEX", "Unknown", "Reported", "Exact", 0, 0, 0);
+
 		if(getKeyToRP() != 0)
 			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_IDENTIFIER", "" + getKeyToRP(), "Reported", "Exact", 0, 0, 0);
 		

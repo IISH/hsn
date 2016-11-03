@@ -950,7 +950,7 @@ public class StandardizePersonalCards implements Runnable {
         					if(b2H.getPersonID_MO() == b4Wife.getPersons().get(0).getPersonID())
         						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()); // also wife's child
         					else{
-        						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData() + 5); // make them wife's stepchild
+        						b313.setContentOfDynamicData(ConstRelations2.STIEFKIND_PK); // make them wife's stepchild
             					b313.setStartDate(b2Partner.getRelationsToPKHolder().get(0).getStartDate());  // Start Date is marriage date
             					b313.setStartFlag(89);
             					b313.setEndDate(null);
