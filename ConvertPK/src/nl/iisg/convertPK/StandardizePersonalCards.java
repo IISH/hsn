@@ -963,6 +963,7 @@ public class StandardizePersonalCards implements Runnable {
         					
         				case 8: // Stepson of the husband
         				case 9: // Stepdaughter of the husband
+        				case 136: // Stepchild of husband
 
         					if(newPerson)
         						b2.setStartFlag(21);  // assume that step-children move with the mother to the household of the new husband

@@ -322,7 +322,15 @@ public class IDS implements Runnable {
     			prevSex = "";
     		}
     		
+    		
+//    		System.out.println("P heeft id_i = " + p.getId_I_new());
+    		
+    		
+    		
     		for(INDIVIDUAL ind: p.getIndividual()){
+    			
+	//			System.out.println("INDIVIDUAL  = " + ind.getType()  + "    " + ind.getValue());
+
     			boolean found = false;
     			//if(ind.getType().equalsIgnoreCase(("BIRTH_DATE")))	System.out.println("1->" + ind.getId() + "  " + ind.getType() + "  " + ind.getSource());
     			for(int j = 0; j < identPerson.length; j++){				
@@ -751,17 +759,18 @@ private static void handler(){
 		}
 	}
 
-	// print
+	// print xxy
 	/*
 	indexP = getIndexPerson();
 	for(Person pp: personL){
 		System.out.println("Person = " + pp.getIdnr());
 		for(INDIVIDUAL i: pp.getIndividual())
-			System.out.println("INDIVIDUAL  = " + i.getId_D());
+			System.out.println("INDIVIDUAL  = " + i.getType()  + "    " + i.getValue());
 		for(INDIV_INDIV ii: pp.getIndiv_indiv())
-			System.out.println("INDIV_INDIV = " + ii.getId_D());
+			System.out.println("INDIV_INDIV = " + ii.getId_I_1()   + "        " + ii.getId_I_2() + "   " + ii.getRelation());
+		System.out.println();
 	}
-	*/	
+		*/
 	// print end
 	setIndexPerson(personL.size());  // next slot
 	
@@ -1089,6 +1098,7 @@ private static void integratePersons(){
 	}
 	
 	
+	
 
 }
 
@@ -1315,6 +1325,7 @@ private static void handleChildren(ArrayList<Person> family){
 						p.getRelationRP().equalsIgnoreCase("Stiefzoon") || p.getRelationRP().equals("" + ConstRelations2.STIEFZOON) ||
 						p.getRelationRP().equalsIgnoreCase("Dochter") || p.getRelationRP().equals("" + ConstRelations2.DOCHTER) ||
 						p.getRelationRP().equalsIgnoreCase("Kind") || p.getRelationRP().equals("" + ConstRelations2.KIND_PK) ||
+						p.getRelationRP().equalsIgnoreCase("Stiefkind") || p.getRelationRP().equals("" + ConstRelations2.STIEFKIND_PK) ||
 						p.getRelationRP().equalsIgnoreCase("Stiefdochter") || p.getRelationRP().equals("" + ConstRelations2.STIEFDOCHTER))){
 			p.setStartCode(2);  // preset
 			group.add(p);
