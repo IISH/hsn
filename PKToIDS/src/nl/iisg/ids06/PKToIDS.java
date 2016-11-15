@@ -139,11 +139,14 @@ public class PKToIDS implements Runnable{
     		
     		int person_number = -1;
     		for(B2_ST p: r.getPersons()){
-    			if(person_number != p.getPersonID()){
+    			if(person_number < p.getPersonID()){  // The '<'- sign assures that every person number is written only once
     				p.convert(em);
     				person_number = p.getPersonID();
     			}
     		}
+    		
+    		
+    		// We must sort on person
     	}
     	if(idCount % 100 == 0)
     		print("Processed " + idCount + " IDNRs");
