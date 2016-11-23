@@ -1006,8 +1006,8 @@ public class PkKnd {
         	b2.setRegistration(b4);  // Link B2_ST -> B4_ST
 
     		initialiseB2_ST(b2);
-    		if(getPktype() != 8 && getPktype() != 9) // not for Person List children
-    			setStartAndEndDate(b2);
+    		//if(getPktype() != 8 && getPktype() != 9) // not for Person List children -> Fix in PkEigknd
+   			setStartAndEndDate(b2);
         	b2.setKeyToPersons(seqNoPersons);
     		pkeigknd.convert(b2);
         	

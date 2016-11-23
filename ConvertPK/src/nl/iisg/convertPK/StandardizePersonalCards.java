@@ -905,8 +905,8 @@ public class StandardizePersonalCards implements Runnable {
         				newPerson = true;
         				b2 = allocateB2(b4Wife, b2H);  // Allocate new person
         				
-        				b2.setStartDate(b2Partner.getStartDate());
-        				b2.setStartFlag(b2Partner.getStartFlag());
+        				//b2.setStartDate(b2Partner.getStartDate());
+        				//b2.setStartFlag(b2Partner.getStartFlag());
         				
         				b2.setKeyToPersons(b4Wife.getPersons().size() + 1);  // keep together    				
         				b4Wife.getPersons().add(b2);                         // keep together
@@ -2253,8 +2253,8 @@ public class StandardizePersonalCards implements Runnable {
     	
     	boolean sexOK = true;
     	
-    	if((p.getSex() != null && p.getSex().equals("m") && pu.getSex() != null && pu.getSex().equals("v")) ||
-    	   (p.getSex() != null && p.getSex().equals("v") && pu.getSex() != null && pu.getSex().equals("m")))
+    	if((p.getSex() != null && p.getSex().equalsIgnoreCase("m") && pu.getSex() != null && pu.getSex().equalsIgnoreCase("v")) ||
+    	   (p.getSex() != null && p.getSex().equalsIgnoreCase("v") && pu.getSex() != null && pu.getSex().equalsIgnoreCase("m")))
     		sexOK = false;
 
 

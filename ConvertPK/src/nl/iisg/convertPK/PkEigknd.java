@@ -246,70 +246,68 @@ public class PkEigknd {
     	String endDateSave = b2.getEndDate();
     	
     	// No start and end dates for children that are terminated before the 2nd marriage
-    	// Also no start and end days if no start/end date set at this point already (eg because pkknd type = 8 or 9 = PL)
     	
-    	if(b2.getStartDate() != null){
 
-    		// get date second marriage
+    	// get date second marriage
 
-    		int marriageDays = 0;
-    		if(getPkHolder().getMarriages() != null && getPkHolder().getMarriages().size() > 1){    		
-    			PkHuw pkh = getPkHolder().getMarriages().get(1); 
-    			marriageDays = Common1.dayCount(pkh.getHdghuwp(), pkh.getHmdhuwp(), pkh.getHjrhuwp());
+    	int marriageDays = 0;
+    	if(getPkHolder().getMarriages() != null && getPkHolder().getMarriages().size() > 1){    		
+    		PkHuw pkh = getPkHolder().getMarriages().get(1); 
+    		marriageDays = Common1.dayCount(pkh.getHdghuwp(), pkh.getHmdhuwp(), pkh.getHjrhuwp());
+    	}
+
+
+    	if((Common1.dateIsValid(getAdgkndp(), getAmdkndp(), getAjrkndp()) == 0 && Common1.dayCount(getAdgkndp(), getAmdkndp(), getAjrkndp()) < Common1.dayCount(b2.getRegistration().getStartDate()))   ||  
+    			(Common1.dateIsValid(getOdgkndp(), getOmdkndp(), getOjrkndp()) == 0 && Common1.dayCount(getOdgkndp(), getOmdkndp(), getOjrkndp()) < Common1.dayCount(b2.getRegistration().getStartDate()))   ||
+    			(Common1.dateIsValid(getHdgkndp(), getHmdkndp(), getHjrkndp()) == 0 && Common1.dayCount(getHdgkndp(), getHmdkndp(), getHjrkndp()) < Common1.dayCount(b2.getRegistration().getStartDate()))){		   
+
+    		b2.setStartDate(null);
+    		b2.setStartFlag(0);
+    		b2.setEndDate(null);
+    		b2.setEndFlag(0);
+
+    	}
+    	else{
+
+    		if(b2.getDateOfBirth() != null && Common1.dayCount(b2.getDateOfBirth()) > Common1.dayCount(b2.getRegistration().getStartDate())){
+    			b2.setStartDate(b2.getDateOfBirth());
+    			b2.setStartFlag(22);
+    		}    		
+    		else{
+    			b2.setStartDate("01-07-1938");
+    			b2.setStartFlag(0);   			
     		}
 
+    		if(Common1.dateIsValid(getOdgkndp(), getOmdkndp(), getOjrkndp()) == 0){
+    			b2.setEndDate(String.format("%02d-%02d-%04d", getOdgkndp(), getOmdkndp(), getOjrkndp()));
+    			b2.setEndFlag(40);
+    		}
+    		else
+    			if(Common1.dateIsValid(getAdgkndp(), getAmdkndp(), getAjrkndp()) == 0){
+    				b2.setEndDate(String.format("%02d-%02d-%04d", getAdgkndp(), getAmdkndp(), getAjrkndp()));
+    				b2.setEndFlag(41);
+    			}
+    			else
+    				if(Common1.dateIsValid(getHdgkndp(), getHmdkndp(), getHjrkndp()) == 0){
+    					b2.setEndDate(String.format("%02d-%02d-%04d",getHdgkndp(), getHmdkndp(), getHjrkndp()));
+    					b2.setEndFlag(42);
+    				}
 
-    		if((Common1.dateIsValid(getAdgkndp(), getAmdkndp(), getAjrkndp()) == 0 && Common1.dayCount(getAdgkndp(), getAmdkndp(), getAjrkndp()) < Common1.dayCount(b2.getRegistration().getStartDate()))   ||  
-    				(Common1.dateIsValid(getOdgkndp(), getOmdkndp(), getOjrkndp()) == 0 && Common1.dayCount(getOdgkndp(), getOmdkndp(), getOjrkndp()) < Common1.dayCount(b2.getRegistration().getStartDate()))   ||
-    				(Common1.dateIsValid(getHdgkndp(), getHmdkndp(), getHjrkndp()) == 0 && Common1.dayCount(getHdgkndp(), getHmdkndp(), getHjrkndp()) < Common1.dayCount(b2.getRegistration().getStartDate()))){		   
 
-    			b2.setStartDate(null);
-    			b2.setStartFlag(0);
-    			b2.setEndDate(null);
+
+    		if(b2.getStartDate() != null && b2.getEndDate() != null && 
+    				Common1.dayCount(b2.getStartDate()) > Common1.dayCount(b2.getEndDate())){
+    			message(b2.getKeyToRP(), "7136", "" + b2.getFirstName() + " " + b2.getFamilyName());
+
+    			//	b2.setStartDate(null);
+    			//	b2.setStartFlag(0);
+    			//	b2.setEndDate(null);
     			b2.setEndFlag(0);
 
     		}
-    		else{
 
-    			if(b2.getDateOfBirth() != null && Common1.dayCount(b2.getDateOfBirth()) > Common1.dayCount(b2.getRegistration().getStartDate())){
-    				b2.setStartDate(b2.getDateOfBirth());
-    				b2.setStartFlag(22);
-    			}    		
-    			else{
-    				b2.setStartDate("01-07-1938");
-    				b2.setStartFlag(0);   			
-    			}
-
-    			if(Common1.dateIsValid(getOdgkndp(), getOmdkndp(), getOjrkndp()) == 0){
-    				b2.setEndDate(String.format("%02d-%02d-%04d", getOdgkndp(), getOmdkndp(), getOjrkndp()));
-    				b2.setEndFlag(40);
-    			}
-    			else
-    				if(Common1.dateIsValid(getAdgkndp(), getAmdkndp(), getAjrkndp()) == 0){
-    					b2.setEndDate(String.format("%02d-%02d-%04d", getAdgkndp(), getAmdkndp(), getAjrkndp()));
-    					b2.setEndFlag(41);
-    				}
-    				else
-    					if(Common1.dateIsValid(getHdgkndp(), getHmdkndp(), getHjrkndp()) == 0){
-    						b2.setEndDate(String.format("%02d-%02d-%04d",getHdgkndp(), getHmdkndp(), getHjrkndp()));
-    						b2.setEndFlag(42);
-    					}
-
-
-
-    			if(b2.getStartDate() != null && b2.getEndDate() != null && 
-    					Common1.dayCount(b2.getStartDate()) > Common1.dayCount(b2.getEndDate())){
-    				message(b2.getKeyToRP(), "7136", "" + b2.getFirstName() + " " + b2.getFamilyName());
-
-    				//	b2.setStartDate(null);
-    				//	b2.setStartFlag(0);
-    				//	b2.setEndDate(null);
-    				b2.setEndFlag(0);
-
-    			}
-
-    		}
     	}
+
     	// Relation to PK-Holder
     	
 		B313_ST b313 = new B313_ST();
