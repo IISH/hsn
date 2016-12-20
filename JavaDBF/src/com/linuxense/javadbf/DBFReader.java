@@ -17,7 +17,7 @@ import java.io.*;
 import java.util.*;
 
 /**
-	DBFReader class can creates objects to represent DBF data.  -+t-
+	DBFReader class can creates objects to represent DBF data.  -+t-d
 
 	This Class is used to read data from a DBF file. Meta data and
 	records can be queried against this document.
