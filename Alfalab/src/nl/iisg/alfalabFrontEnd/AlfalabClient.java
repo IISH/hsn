@@ -53,6 +53,8 @@ public class AlfalabClient extends JFrame implements ActionListener {
     private final static String MISC_PRINT_CONTROLE_AB_4000 = "miscPrintControleAB_400";
 
     private final static int MAX_FILE_SIZE = 10 * 1024 * 1024; // = 10 Megabytes
+    
+    private final static int portNo = 8009;
 
     private static String serverAddress = "";
 
@@ -590,7 +592,7 @@ public class AlfalabClient extends JFrame implements ActionListener {
         try {
             //socket = new Socket("10.24.63.203", 4444);
             //socket = new Socket("localhost", 4444);
-            socket = new Socket(serverAddress, 4444);
+            socket = new Socket(serverAddress, portNo);
             out = new DataOutputStream(socket.getOutputStream());
             in = new DataInputStream(socket.getInputStream());
             startUpdateThread();

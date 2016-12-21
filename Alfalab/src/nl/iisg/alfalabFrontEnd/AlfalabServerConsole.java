@@ -72,6 +72,8 @@ public class AlfalabServerConsole implements Runnable {
     private final static int MAX_FILE_SIZE = 100 * 1024 * 1024; // = 100 Megabytes
     private final static int NR_OF_COLUMNS = 2;
     private final static int COLUMN_WIDTH = 50;
+    
+    private final static int portNo = 8009;
 
     private File latestReceivedFile;
 
@@ -134,11 +136,11 @@ public class AlfalabServerConsole implements Runnable {
     public void listenSocket() {
     	
             try {
-                server = new ServerSocket(4444);
-                System.out.println("Listening to port 4444");
+                server = new ServerSocket(portNo);
+                System.out.println("Listening to port " + portNo);
                 System.out.println("Started.\n");
             } catch (IOException e) {
-                System.out.println("Could not listen on port 4444");
+                System.out.println("Could not listen on port " + portNo);
                 System.exit(-1);
             }
 
@@ -158,7 +160,7 @@ public class AlfalabServerConsole implements Runnable {
 						uiThread = new Thread(asc);
 						uiThread.start();
 						client = client1;
-						System.out.println("Accept succeeded: 4444");
+						System.out.println("Accept succeeded: " + portNo);
 						System.out.println("getReceiveBufferSize = " + client.getReceiveBufferSize());
 					}
 				}
@@ -176,7 +178,7 @@ public class AlfalabServerConsole implements Runnable {
 				
 				
 			} catch (IOException e) {
-				System.out.println("Accept failed: 4444");
+				System.out.println("Accept failed: " + portNo);
 				System.exit(-1);
 			}
 			
@@ -188,20 +190,20 @@ public class AlfalabServerConsole implements Runnable {
     public void listenSocket2() {        
         while (true) {
             try {
-                server = new ServerSocket(4444);
-                System.out.println("Listening to port 4444");
+                server = new ServerSocket(portNo);
+                System.out.println("Listening to port " + portNo);
                 System.out.println("Started.\n");
             } catch (IOException e) {
-                System.out.println("Could not listen on port 4444");
+                System.out.println("Could not listen on port" + portNo);
                 System.exit(-1);
             }
 
             try {
                 client = server.accept();
-                System.out.println("Accept succeeded: 4444");
+                System.out.println("Accept succeeded:" + portNo);
                 System.out.println("getReceiveBufferSize = " + client.getReceiveBufferSize());
             } catch (IOException e) {
-                System.out.println("Accept failed: 4444");
+                System.out.println("Accept failed: " + portNo);
                 System.exit(-1);
             }
 
@@ -213,7 +215,7 @@ public class AlfalabServerConsole implements Runnable {
                 System.out.println("DataOutStream succeeded");
 
             } catch (IOException e) {
-                System.out.println("Accept failed: 4444");
+                System.out.println("Accept failed: " + portNo);
                 System.exit(-1);
             }
 
@@ -244,7 +246,7 @@ public class AlfalabServerConsole implements Runnable {
 			System.out.println("DataOutStream succeeded");
 
 		} catch (IOException e) {
-			System.out.println("Accept failed: 4444");
+			System.out.println("Accept failed: " + portNo);
 			System.exit(-1);
 		}
 
