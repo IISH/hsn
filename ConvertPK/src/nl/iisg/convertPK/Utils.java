@@ -375,7 +375,7 @@ public class Utils {
 	
 	public static List createObjects2(String className, String inputDirectory){ 
 		
-        System.out.println("In create Objects");
+        System.out.println("In create Objects2");
 
 	
 			
@@ -409,7 +409,10 @@ public class Utils {
 			
 			// Get MSAccess table information
 			
+            //String connURL = "jdbc:ucanaccess://" + inputDirectory + File.separator + "PK.accdb;memory=false";
             String connURL = "jdbc:ucanaccess://" + inputDirectory + File.separator + "PK.accdb";
+            
+            System.out.println("Connection URL = " + connURL);
 			 
             Connection conn = DriverManager.getConnection(connURL, "", "");
 	        Statement s = conn.createStatement();
