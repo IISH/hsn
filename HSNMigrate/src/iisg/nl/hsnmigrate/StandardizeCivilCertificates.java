@@ -113,11 +113,11 @@ public class StandardizeCivilCertificates  implements Runnable {
         		                   "OVLKND.DBF", "OVLECH.DBF", "OVLAGV.DBF", "OVLBYZ.DBF",
         		                   "PLAATS.DBF", "BEHEER.DBF", "PKKND.DBF"};
         
-        String missingFile = Common1.nonExisitingFile(inputFiles, requiredFiles);
-        if(missingFile != null){
-        	print("Required file " + missingFile + " missing\n");
-        	return;
-        }
+        //String missingFile = Common1.nonExisitingFile(inputFiles, requiredFiles);
+        //if(missingFile != null){
+        //	print("Required file " + missingFile + " missing\n");
+        //	return;
+        //}
         
 
 		for(int i = 0; i < CreateDBImport.tables.length; i++){
@@ -431,6 +431,8 @@ public class StandardizeCivilCertificates  implements Runnable {
 		
 		em.getTransaction().begin();
 		List<Stpb> stpbL = Utils.createObjects("iisg.nl.hsnimport.Stpb", inputFiles);
+		if(stpbL == null) stpbL = Utils.createObjects2("iisg.nl.hsnimport.Stpb", inputFiles);
+		if(stpbL == null) return false;
 		
 		for(Stpb g: stpbL){
 			em.persist(g);
@@ -438,11 +440,16 @@ public class StandardizeCivilCertificates  implements Runnable {
 		em.getTransaction().commit();
 		em.clear();
 		print("Read STPB.DBF, " + stpbL.size() + " rows");
-		stpbL = null; 
+		stpbL = null; // because we are going to read again from the SQL tables, in smaller portions
 
+		//
+		
 		em = emf.createEntityManager();
 		em.getTransaction().begin();		
 		List<Gebakte> gebakteL = Utils.createObjects("iisg.nl.hsnimport.Gebakte", inputFiles);
+		if(gebakteL == null) gebakteL = Utils.createObjects2("iisg.nl.hsnimport.Gebakte", inputFiles);
+		if(gebakteL == null) return false;
+		
 		for(Gebakte g: gebakteL){
 			em.persist(g);
 		}
@@ -450,10 +457,15 @@ public class StandardizeCivilCertificates  implements Runnable {
 		em.clear();
 		print("Read GEBAKTE.DBF, " + gebakteL.size() + " rows");
 		gebakteL = null;
+		
+		//
 
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		List<Gebbyz>   gebbyzL = Utils.createObjects("iisg.nl.hsnimport.Gebbyz", inputFiles);
+		if(gebbyzL == null) gebbyzL = Utils.createObjects2("iisg.nl.hsnimport.Gebbyz", inputFiles);
+		if(gebbyzL == null) return false;
+		
 		for(Gebbyz g: gebbyzL){
 			em.persist(g);
 		}
@@ -462,9 +474,14 @@ public class StandardizeCivilCertificates  implements Runnable {
 		print("Read GEBBYZ.DBF, " + gebbyzL.size() + " rows");
 		gebbyzL = null;
 		
+		//
+		
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		List<Gebgtg>   gebgtgL = Utils.createObjects("iisg.nl.hsnimport.Gebgtg", inputFiles);
+		if(gebgtgL == null) gebgtgL = Utils.createObjects2("iisg.nl.hsnimport.Gebgtg", inputFiles);
+		if(gebgtgL == null) return false;
+		
 		for(Gebgtg g: gebgtgL){
 			em.persist(g);
 		}
@@ -472,10 +489,15 @@ public class StandardizeCivilCertificates  implements Runnable {
 		em.clear();
 		print("Read GEBGTG.DBF, " + gebgtgL.size() + " rows");
 		gebgtgL = null;
+		
+		//
 
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		List<Gebkant>   gebkantL = Utils.createObjects("iisg.nl.hsnimport.Gebkant", inputFiles);
+		if(gebkantL == null) gebkantL = Utils.createObjects2("iisg.nl.hsnimport.Gebkant", inputFiles);
+		if(gebkantL == null) return false;
+		
 		for(Gebkant g: gebkantL){
 			em.persist(g);
 		}
@@ -483,10 +505,15 @@ public class StandardizeCivilCertificates  implements Runnable {
 		em.clear();
 		print("Read GEBKANT.DBF, " + gebkantL.size() + " rows");
 		gebkantL = null;
+		
+		//
 
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		List<Gebknd>   gebkndL = Utils.createObjects("iisg.nl.hsnimport.Gebknd", inputFiles);
+		if(gebkndL == null) gebkndL = Utils.createObjects2("iisg.nl.hsnimport.Gebknd", inputFiles);
+		if(gebkndL == null) return false;
+		
 		for(Gebknd g: gebkndL){
 			em.persist(g);
 		}
@@ -494,11 +521,16 @@ public class StandardizeCivilCertificates  implements Runnable {
 		em.clear();
 		print("Read GEBKND.DBF, " + gebkndL.size() + " rows");
 		gebkndL = null;
+		
+		//
 
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		em.clear();
 		List<Gebvdr>   gebvdrL = Utils.createObjects("iisg.nl.hsnimport.Gebvdr", inputFiles);
+		if(gebvdrL == null) gebvdrL = Utils.createObjects2("iisg.nl.hsnimport.Gebvdr", inputFiles);
+		if(gebvdrL == null) return false;
+		
 		for(Gebvdr g: gebvdrL){
 			em.persist(g);
 		}
@@ -507,9 +539,14 @@ public class StandardizeCivilCertificates  implements Runnable {
 		print("Read GEBVDR.DBF, " + gebvdrL.size() + " rows");
 		gebvdrL = null;
 		
+		//
+		
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		List<Ovlagv>   ovlagvL = Utils.createObjects("iisg.nl.hsnimport.Ovlagv", inputFiles);
+		if(ovlagvL == null) ovlagvL = Utils.createObjects2("iisg.nl.hsnimport.Ovlagv", inputFiles);
+		if(ovlagvL == null) return false;
+		
 		for(Ovlagv g: ovlagvL){
 			em.persist(g);
 		}
@@ -517,10 +554,15 @@ public class StandardizeCivilCertificates  implements Runnable {
 		em.clear();
 		print("Read OVLAGV.DBF, " + ovlagvL.size() + " rows");
 		ovlagvL = null;
+		
+		//
 
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		List<Ovlbyz>   ovlbyzL = Utils.createObjects("iisg.nl.hsnimport.Ovlbyz", inputFiles);
+		if(ovlbyzL == null) ovlbyzL = Utils.createObjects2("iisg.nl.hsnimport.Ovlbyz", inputFiles);
+		if(ovlbyzL == null) return false;
+		
 		for(Ovlbyz g: ovlbyzL){
 			em.persist(g);
 		}
@@ -529,9 +571,14 @@ public class StandardizeCivilCertificates  implements Runnable {
 		print("Read OVLBYZ.DBF, " + ovlbyzL.size() + " rows");
 		ovlbyzL = null;
 
+		//
+		
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		List<Ovlech>   ovlechL = Utils.createObjects("iisg.nl.hsnimport.Ovlech", inputFiles);
+		if(ovlechL == null) ovlechL = Utils.createObjects2("iisg.nl.hsnimport.Ovlech", inputFiles);
+		if(ovlechL == null) return false;
+		
 		for(Ovlech g: ovlechL){
 			em.persist(g);
 		}
@@ -540,9 +587,14 @@ public class StandardizeCivilCertificates  implements Runnable {
 		print("Read OVLECH.DBF, " + ovlechL.size() + " rows");
 		ovlechL = null;
 
+		//
+		
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		List<Ovlknd>   ovlkndL = Utils.createObjects("iisg.nl.hsnimport.Ovlknd", inputFiles);
+		if(ovlkndL == null) ovlkndL = Utils.createObjects2("iisg.nl.hsnimport.Ovlknd", inputFiles);
+		if(ovlkndL == null) return false;
+		
 		for(Ovlknd g: ovlkndL){
 			em.persist(g);
 		}
@@ -550,10 +602,15 @@ public class StandardizeCivilCertificates  implements Runnable {
 		em.clear();
 		print("Read OVLKND.DBF, " + ovlkndL.size() + " rows");
 		ovlkndL = null;
+		
+		//
 
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		List<Huwknd>   huwkndL = Utils.createObjects("iisg.nl.hsnimport.Huwknd", inputFiles);
+		if(huwkndL == null) huwkndL = Utils.createObjects2("iisg.nl.hsnimport.Huwknd", inputFiles);
+		if(huwkndL == null) return false;
+		
 		for(Huwknd g: huwkndL){
 			em.persist(g);
 		}
@@ -562,9 +619,14 @@ public class StandardizeCivilCertificates  implements Runnable {
 		print("Read HUWKND.DBF, " + huwkndL.size() + " rows");
 		huwkndL = null;
 
+		//
+		
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		List<Huwafk>   huwafkL = Utils.createObjects("iisg.nl.hsnimport.Huwafk", inputFiles);
+		if(huwafkL == null) huwafkL = Utils.createObjects2("iisg.nl.hsnimport.Huwafk", inputFiles);
+		if(huwafkL == null) return false;
+		
 		for(Huwafk g: huwafkL){
 			em.persist(g);
 		}
@@ -572,10 +634,15 @@ public class StandardizeCivilCertificates  implements Runnable {
 		em.clear();
 		print("Read HUWAFK.DBF, " + huwafkL.size() + " rows");
 		huwafkL = null;
+		
+		//
 
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		List<Huweer>   huweerL = Utils.createObjects("iisg.nl.hsnimport.Huweer", inputFiles);
+		if(huweerL == null) huweerL  = Utils.createObjects2("iisg.nl.hsnimport.Huweer", inputFiles);
+		if(huweerL == null) return false;
+		
 		for(Huweer g: huweerL){
 			em.persist(g);
 		}
@@ -583,10 +650,15 @@ public class StandardizeCivilCertificates  implements Runnable {
 		em.clear();
 		print("Read HUWEER.DBF, " + huweerL.size() + " rows");
 		huweerL = null;
+		
+		//
 
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		List<Huwgtg>   huwgtgL = Utils.createObjects("iisg.nl.hsnimport.Huwgtg", inputFiles);
+		if(huwgtgL == null) huwgtgL = Utils.createObjects2("iisg.nl.hsnimport.Huwgtg", inputFiles);
+		if(huwgtgL == null) return false;
+		
 		for(Huwgtg g: huwgtgL){
 			em.persist(g);
 		}
@@ -594,10 +666,15 @@ public class StandardizeCivilCertificates  implements Runnable {
 		em.clear();
 		print("Read HUWGTG.DBF, " + huwgtgL.size() + " rows");
 		huwgtgL = null;
+		
+		//
 
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		List<Huwvrknd>   huwvrkndL = Utils.createObjects("iisg.nl.hsnimport.Huwvrknd", inputFiles);
+		if(huwvrkndL == null) huwvrkndL = Utils.createObjects2("iisg.nl.hsnimport.Huwvrknd", inputFiles);
+		if(huwvrkndL == null) return false;
+		
 		for(Huwvrknd g: huwvrkndL){
 			em.persist(g);
 		}
@@ -605,10 +682,15 @@ public class StandardizeCivilCertificates  implements Runnable {
 		em.clear();
 		print("Read HUWVRKND.DBF, " + huwvrkndL.size() + " rows");
 		huwvrkndL = null;
+		
+		//
 
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		List<Huwbyz>   huwbyzL = Utils.createObjects("iisg.nl.hsnimport.Huwbyz", inputFiles);
+		if(huwbyzL == null) huwbyzL = Utils.createObjects2("iisg.nl.hsnimport.Huwbyz", inputFiles);
+		if(huwbyzL == null) return false;
+		
 		for(Huwbyz g: huwbyzL){
 			em.persist(g);
 		}
@@ -624,6 +706,9 @@ public class StandardizeCivilCertificates  implements Runnable {
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		List<PkKnd>   pkkndL = Utils.createObjects("iisg.nl.hsnimport.PkKnd", inputFiles);
+		if(pkkndL == null)   pkkndL = Utils.createObjects2("iisg.nl.hsnimport.PkKnd", inputFiles);
+		if(pkkndL == null) return false;
+		
 		for(PkKnd g: pkkndL){
 			em.persist(g);
 		}
@@ -631,10 +716,15 @@ public class StandardizeCivilCertificates  implements Runnable {
 		em.clear();
 		print("Read PKKND.DBF, " + pkkndL.size() + " rows");
 		pkkndL = null;
+		
+		//
 
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		List<Plaats>   plaatsL = Utils.createObjects("iisg.nl.hsnimport.Plaats", inputFiles);
+		if(plaatsL == null) plaatsL = Utils.createObjects2("iisg.nl.hsnimport.Plaats", inputFiles);
+		if(plaatsL == null) return false;
+		
 		for(Plaats g: plaatsL){
 			em.persist(g);
 		}
@@ -643,9 +733,14 @@ public class StandardizeCivilCertificates  implements Runnable {
 		print("Read PLAATS.DBF, " + plaatsL.size() + " rows");
 		plaatsL = null;
 
+		//
+		
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
 		List<Beheer>   beheerL = Utils.createObjects("iisg.nl.hsnimport.Beheer", inputFiles);
+		if(beheerL == null)  beheerL = Utils.createObjects2("iisg.nl.hsnimport.Beheer", inputFiles);
+		if(beheerL == null) return false;
+		
 		for(Beheer g: beheerL){
 			em.persist(g);
 		}

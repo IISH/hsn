@@ -12,7 +12,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +27,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Persistence;
 import javax.persistence.Table;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.linuxense.javadbf.DBFException;
 import com.linuxense.javadbf.DBFField;
@@ -201,318 +207,632 @@ public class Utils {
 	 }
 
 
-	    /**
-	     * 
-	     * Name: CreateObjects
-	     * 
-	     * Purpose: Read DBF File and return List with initiated objects
-	     * 
-	     * Remark: This routine uses Reflection (java.lang.reflect) to inspect the input Class
-	     *         It also re-uses JPA-annotations   
-	     * 
-	     * This routine performs the following:
-	     * 
-	     * Read Table annotation from class specified by className (Gives DBF File name)
-	     * Open DBF File from inputDirectory
-	     * Get DBF Column Information
-	     * Get Column Annotations from class specified by className
-	     * Check that every Column Annotation has corresponding DBF column
-	     * Read DBF rows
-	     * For every DBF row:
-	     *     Allocate new Object from class specified by className
-	     *     For every Column Annotation:
-	     *       
-	     *       Take corresponding DBF column data type 
-	     *       Take corresponding DBF column data from DBF row 
-	     *       Transform data depending on data type (to suit our specific needs for HSN) 
-	     *       Find Annotated Field's setter method (based on Field's name, CamelCase) 
-	     *       Invoke annotated Field's setter method with data and datatype
-	     *        
-	     *     Add Object to output arrayList
-	     * 
-	     * 
-	     * @param className
-	     * @param inputDirectory
-	     * @return List of Objects of type indicated by className. Objects are initialized with the data from the DBF File rows.
-	     * 
-	     */
-		
-		public static List createObjects(String className, String inputDirectory){ 
-			String [] months = {"", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};  // needed to transform dates
+	 /**
+	  * 
+	  * Name: CreateObjects
+	  * 
+	  * Purpose: Read DBF File and return List with initiated objects
+	  * 
+	  * Remark: This routine uses Reflection (java.lang.reflect) to inspect the input Class
+	  *         It also re-uses JPA-annotations   
+	  * 
+	  * This routine performs the following:
+	  * 
+	  * Read Table annotation from class specified by className (Gives DBF File name)
+	  * Open DBF File from inputDirectory
+	  * Get DBF Column Information
+	  * Get Column Annotations from class specified by className
+	  * Check that every Column Annotation has corresponding DBF column
+	  * Read DBF rows
+	  * For every DBF row:
+	  *     Allocate new Object from class specified by className
+	  *     For every Column Annotation:
+	  *       
+	  *       Take corresponding DBF column data type 
+	  *       Take corresponding DBF column data from DBF row 
+	  *       Transform data depending on data type (to suit our specific needs for HSN) 
+	  *       Find Annotated Field's setter method (based on Field's name, CamelCase) 
+	  *       Invoke annotated Field's setter method with data and datatype
+	  *        
+	  *     Add Object to output arrayList
+	  * 
+	  * 
+	  * @param className
+	  * @param inputDirectory
+	  * @return List of Objects of type indicated by className. Objects are initialized with the data from the DBF File rows.
+	  * 
+	  */
 
-			
-			try{
-				
-				Class<?> inputClass   = Class.forName(className); 
-				
-				// Get name of .DBF file from annotation
-
-				Table t = (Table) inputClass.getAnnotation(Table.class);
+	 public static List createObjects(String className, String inputDirectory){ 
+		 String [] months = {"", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};  // needed to transform dates
 
 
-	            String dbfName = null;
-	            if(t == null){
-	                //tableName = t.name();
-	                System.out.println("No .DBF file specified for " + className);
-	                System.exit(-1);
-	            }
-				else {
-	                dbfName = t.name().toUpperCase();
-	            }
+		 try{
 
-	            // Get declared fields (class/instance variables) of inputClass
+			 Class<?> inputClass   = Class.forName(className); 
 
-	            Field [] declaredFieldList = inputClass.getDeclaredFields();  // all fields (class/instance variables) in class
-				int [] columnAnnotatedVariableToDBFField = new int[declaredFieldList.length];  // used to link fields with columns
+			 // Get name of .DBF file from annotation
 
-				// Get .DBF file column information
+			 Table t = (Table) inputClass.getAnnotation(Table.class);
 
-				InputStream inputStream  = new FileInputStream(inputDirectory + File.separator + dbfName + ".DBF");
-	            System.out.println("Opening: " + inputDirectory + File.separator + dbfName + ".DBF");
-				DBFReader reader = new DBFReader(inputStream);
-				
-				int numberOfDBFFields = reader.getFieldCount();
 
-				String [] fieldNamesDBF = new String[numberOfDBFFields];
-				byte   [] fieldTypesDBF = new byte[numberOfDBFFields]; 
+			 String dbfName = null;
+			 if(t == null){
+				 //tableName = t.name();
+				 System.out.println("No .DBF file specified for " + className);
+				 System.exit(-1);
+			 }
+			 else {
+				 dbfName = t.name().toUpperCase();
+			 }
 
-				for(int i=0; i<numberOfDBFFields; i++){
-					fieldNamesDBF[i] = reader.getField(i).getName();
-					fieldTypesDBF[i] = reader.getField(i).getDataType();
-				}
+			 // Get declared fields (class/instance variables) of inputClass
 
-				// Check that all annotated fields have a corresponding column in the .DBF File
+			 Field [] declaredFieldList = inputClass.getDeclaredFields();  // all fields (class/instance variables) in class
+			 int [] columnAnnotatedVariableToDBFField = new int[declaredFieldList.length];  // used to link fields with columns
 
-				int index = 0; // used to map fields to columns 
-				for (int i = 0; i < declaredFieldList.length; i++) { // Note: this will give *all* fields, not just the annotated ones
+			 // Get .DBF file column information
 
-					Column columnAnnotatedField = declaredFieldList[i].getAnnotation(Column.class);				
-					GeneratedValue generatedValue = declaredFieldList[i].getAnnotation(GeneratedValue.class);				
+			 InputStream inputStream  = new FileInputStream(inputDirectory + File.separator + dbfName + ".DBF");
+			 System.out.println("Opening: " + inputDirectory + File.separator + dbfName + ".DBF");
+			 DBFReader reader = new DBFReader(inputStream);
 
-					if(columnAnnotatedField != null && generatedValue == null){ // It is one of our "COLUMN=XXXX" annotated fields
+			 int numberOfDBFFields = reader.getFieldCount();
 
-						String columnAnnotatedFieldType = null;
-						String[] a = declaredFieldList[i].getType().toString().split(" "); // Must do this because annotatedFieldList[i].getType().toString() returns "class java.lang.String"
-						if(a.length > 1)
-							columnAnnotatedFieldType = a[1];					
-						else
-							columnAnnotatedFieldType = a[0];					
+			 String [] fieldNamesDBF = new String[numberOfDBFFields];
+			 byte   [] fieldTypesDBF = new byte[numberOfDBFFields]; 
 
-						boolean found = false;
-						
-						// Let's find the corresponding DBF column 
-						
-						for(int j = 0; j < numberOfDBFFields; j++){
+			 for(int i=0; i<numberOfDBFFields; i++){
+				 fieldNamesDBF[i] = reader.getField(i).getName();
+				 fieldTypesDBF[i] = reader.getField(i).getDataType();
+			 }
 
-							if(fieldNamesDBF[j].equalsIgnoreCase(columnAnnotatedField.name())){
+			 // Check that all annotated fields have a corresponding column in the .DBF File
 
-								found = true;
-								columnAnnotatedVariableToDBFField[index++] = j; // Links our "COLUMN=XXXX" annotated variable to DBF Column "XXXX" 
+			 int index = 0; // used to map fields to columns 
+			 for (int i = 0; i < declaredFieldList.length; i++) { // Note: this will give *all* fields, not just the annotated ones
 
-								// Data type of class variable and DBF column must match: "int" <-> "N" and "java.lang.String" <-> "C" (or "D" - date)
-								
-								switch(fieldTypesDBF[j]){
+				 Column columnAnnotatedField = declaredFieldList[i].getAnnotation(Column.class);				
+				 GeneratedValue generatedValue = declaredFieldList[i].getAnnotation(GeneratedValue.class);				
 
-								case(DBFField.FIELD_TYPE_N):
+				 if(columnAnnotatedField != null && generatedValue == null){ // It is one of our "COLUMN=XXXX" annotated fields
 
-									if(!columnAnnotatedFieldType.equalsIgnoreCase("int")){
+					 String columnAnnotatedFieldType = null;
+					 String[] a = declaredFieldList[i].getType().toString().split(" "); // Must do this because annotatedFieldList[i].getType().toString() returns "class java.lang.String"
+					 if(a.length > 1)
+						 columnAnnotatedFieldType = a[1];					
+					 else
+						 columnAnnotatedFieldType = a[0];					
 
-										System.out.println("Field  with annotation: @Column(name=\"" + columnAnnotatedField.name().trim() + "\" has datatype \"" + columnAnnotatedFieldType +
-												"\" but Column " + fieldNamesDBF[j] + " of File " + dbfName + ".DBF has datatype \"" + (char)fieldTypesDBF[j] + "\""); 
-										System.exit(-1);
+					 boolean found = false;
 
-									}
-								break;
+					 // Let's find the corresponding DBF column 
 
-								case(DBFField.FIELD_TYPE_C):
-								case(DBFField.FIELD_TYPE_D):
+					 for(int j = 0; j < numberOfDBFFields; j++){
 
-									if(!columnAnnotatedFieldType.equalsIgnoreCase("java.lang.String")){
+						 if(fieldNamesDBF[j].equalsIgnoreCase(columnAnnotatedField.name())){
 
-										System.out.println("Field with annotation: @Column(name=\"" + columnAnnotatedField.name().trim() + "\" has datatype \"" + columnAnnotatedFieldType +
-												"\" but Column " + fieldNamesDBF[j] + " of File " + dbfName + ".DBF has datatype \"" + (char)fieldTypesDBF[j] + "\""); 
-										System.exit(-1);
+							 found = true;
+							 columnAnnotatedVariableToDBFField[index++] = j; // Links our "COLUMN=XXXX" annotated variable to DBF Column "XXXX" 
 
-									}
-								break;
+							 // Data type of class variable and DBF column must match: "int" <-> "N" and "java.lang.String" <-> "C" (or "D" - date)
 
-								default:
+							 switch(fieldTypesDBF[j]){
 
-									System.out.println("Field with annotation: @Column(name=\"" + columnAnnotatedField.name().trim() + "\" has datatype \"" + columnAnnotatedFieldType +
-											"\" but Column " + fieldNamesDBF[j] + " of File " + dbfName + ".DBF has *unsupported* datatype \"" + (char)fieldTypesDBF[j] + "\""); 
-									System.exit(-1);
+							 case(DBFField.FIELD_TYPE_N):
 
-								}
-							}
-						}
+								 if(!columnAnnotatedFieldType.equalsIgnoreCase("int")){
 
-						//if(found == false){
-                        //
-						//	System.out.println("No corresponding column in " + dbfName + ".DBF for Field: " + declaredFieldList[i].getName() + ", annotation: " + columnAnnotatedField.name());
-						//	System.exit(-1);
-                        //
-						//}
-					}
-				}
-				
-				// Read the DBF rows, instanciate objects and call their setters with data from DBF rows
-				
-				System.out.println("Reading " + dbfName + ".DBF");			
-				
-				
-	            int count = 0;
-	            Object [] rowObjects;
-	            List a = new ArrayList();
-	            Object [] e =  new Object[1];
-	            Class[] parameterTypes = new Class[1];
+									 System.out.println("Field  with annotation: @Column(name=\"" + columnAnnotatedField.name().trim() + "\" has datatype \"" + columnAnnotatedFieldType +
+											 "\" but Column " + fieldNamesDBF[j] + " of File " + dbfName + ".DBF has datatype \"" + (char)fieldTypesDBF[j] + "\""); 
+									 System.exit(-1);
 
-		     	while( (rowObjects = reader.nextRecord()) != null) {
-		     		
-					Object outputObject = inputClass.newInstance();  // equivalent to "Object outputObject = new inputClass();"
+								 }
+							 break;
 
-					int index1 = 0;
-					for(int i = 0; i < declaredFieldList.length; i++){
-						
-						Column columnAnnotatedField = declaredFieldList[i].getAnnotation(Column.class);
-						GeneratedValue generatedValue = declaredFieldList[i].getAnnotation(GeneratedValue.class);				
+							 case(DBFField.FIELD_TYPE_C):
+							 case(DBFField.FIELD_TYPE_D):
 
-						if(columnAnnotatedField != null && generatedValue == null){ // It is one of our "COLUMN=XXXX"-annotated fields
-							
-							// Make ready to invoke the setter of the annotated Field's variable
-							
-							// Set parameter list, only one parameter for setter, with datatype depending on DBF Field's type
-							
-							
-							
-							if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_N)
-								parameterTypes[0] = Integer.TYPE;
-							else
-								parameterTypes[0] = String.class;
-							
-							
-							// Create the name of the setter method for this variable ("abcde" -> "setAbcde")
-							
-							String methodName = "set";
-							methodName += declaredFieldList[i].getName().substring(0,1).toUpperCase();
-							methodName += declaredFieldList[i].getName().substring(1);
-							
-							// Get the method from inputClass by it's name and signature (number of parameters and their types)
-							
-							Method  method = inputClass.getDeclaredMethod(methodName, parameterTypes);
-							
-							// Adapt the DBF column data to suit our HSN needs (tranform "1.0" to "1" (integer))
-							
-							if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_N){
-								
-								if(rowObjects[columnAnnotatedVariableToDBFField[index1]] != null){
-									String s = rowObjects[columnAnnotatedVariableToDBFField[index1]].toString();
+								 if(!columnAnnotatedFieldType.equalsIgnoreCase("java.lang.String")){
 
-									String [] b = s.split("[.]"); 
-									Integer k = new Integer(b[0]);
+									 System.out.println("Field with annotation: @Column(name=\"" + columnAnnotatedField.name().trim() + "\" has datatype \"" + columnAnnotatedFieldType +
+											 "\" but Column " + fieldNamesDBF[j] + " of File " + dbfName + ".DBF has datatype \"" + (char)fieldTypesDBF[j] + "\""); 
+									 System.exit(-1);
 
-									rowObjects[columnAnnotatedVariableToDBFField[index1]] = k;
-								}
-								
-							}
+								 }
+							 break;
 
-							// Adapt the DBF column data to suit our HSN needs (tranform "Wed Jul 19 00:00:00 CEST 2000" to "19-07-2000")
-							
-							if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_D){
-							
-								// Format  Wed Jul 19 00:00:00 CEST 2000
-								//         0   1   2  3        4    5  
-								
-								if(rowObjects[columnAnnotatedVariableToDBFField[index1]] != null){
-									String s = rowObjects[columnAnnotatedVariableToDBFField[index1]].toString();
+							 default:
 
-									String[] d = s.trim().split("[ ]"); 
-									for(int ii = 0; ii < months.length; ii++){
+								 System.out.println("Field with annotation: @Column(name=\"" + columnAnnotatedField.name().trim() + "\" has datatype \"" + columnAnnotatedFieldType +
+										 "\" but Column " + fieldNamesDBF[j] + " of File " + dbfName + ".DBF has *unsupported* datatype \"" + (char)fieldTypesDBF[j] + "\""); 
+								 System.exit(-1);
 
-										if(months[ii].equalsIgnoreCase(d[1])){
+							 }
+						 }
+					 }
 
-											String u = String.format("%02d-%02d-%04d", new Integer(d[2]), new Integer(ii), new Integer(d[5]));
+					 //if(found == false){
+					 //
+					 //	System.out.println("No corresponding column in " + dbfName + ".DBF for Field: " + declaredFieldList[i].getName() + ", annotation: " + columnAnnotatedField.name());
+					 //	System.exit(-1);
+					 //
+					 //}
+				 }
+			 }
 
-											rowObjects[columnAnnotatedVariableToDBFField[index1]] = u;
-											break;
-										}
-									}
-									
-								}
-							}
-							
-							// Adapt the DBF column data to suit our HSN needs: Trim strings
+			 // Read the DBF rows, instanciate objects and call their setters with data from DBF rows
 
-							if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_C){
-								if(rowObjects[columnAnnotatedVariableToDBFField[index1]] != null)
-									rowObjects[columnAnnotatedVariableToDBFField[index1]] = ((String) rowObjects[columnAnnotatedVariableToDBFField[index1]]).trim();
-							}
+			 System.out.println("Reading " + dbfName + ".DBF");			
 
-							
-							// create object to hold value from DBF Column
-							
-							
-							
-							
-							e[0] = rowObjects[columnAnnotatedVariableToDBFField[index1]];
-							
-							// Next statement is equivalent to: setVarx(rowObject[Y]);
-							
-							Object retObject = null;
-							if(e[0] != null)
-								retObject = method.invoke(outputObject,(Object []) e); // retObject contains the return code from the setter method, it is void
-							
-							index1++; // next ColumnAnnotated field
-						}
-					}
-					
-					a.add(outputObject);
-					count++;  // next DBF row
 
-				}	
-						
-				System.out.println("Read    " + dbfName + ".DBF " + count + " rows");	
-				inputStream.close();
+			 int count = 0;
+			 Object [] rowObjects;
+			 List a = new ArrayList();
+			 Object [] e =  new Object[1];
+			 Class[] parameterTypes = new Class[1];
 
-				return a;
-				
-			}
+			 while( (rowObjects = reader.nextRecord()) != null) {
 
-			catch(EOFException e){
-				// Do nothing, the program runs on
-			}
-			catch(ClassNotFoundException e){
-				System.out.println(e.toString());
-				System.exit(-1);
-			}
-			catch(InstantiationException e){
-				System.out.println(e.toString());
-				System.exit(-1);
-			}
-			catch(IllegalAccessException  e){
-				System.out.println(e.toString());
-	  			System.exit(-1);
-			}
-			catch (DBFException e) {
-				System.out.println(e.toString());
-				System.exit(-1);
-			} 
-			catch (NoSuchMethodException e) {
-				System.out.println(e.toString());
-				System.exit(-1);
-			}
-			catch (InvocationTargetException e) {
-				System.out.println(e.toString());
-				System.exit(-1);
-			}
-			catch (FileNotFoundException e) {
-			}
-			catch (IOException e) {
-			}
+				 Object outputObject = inputClass.newInstance();  // equivalent to "Object outputObject = new inputClass();"
 
-			return null;
-		}
+				 int index1 = 0;
+				 for(int i = 0; i < declaredFieldList.length; i++){
 
-	    
+					 Column columnAnnotatedField = declaredFieldList[i].getAnnotation(Column.class);
+					 GeneratedValue generatedValue = declaredFieldList[i].getAnnotation(GeneratedValue.class);				
+
+					 if(columnAnnotatedField != null && generatedValue == null){ // It is one of our "COLUMN=XXXX"-annotated fields
+
+						 // Make ready to invoke the setter of the annotated Field's variable
+
+						 // Set parameter list, only one parameter for setter, with datatype depending on DBF Field's type
+
+
+
+						 if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_N)
+							 parameterTypes[0] = Integer.TYPE;
+						 else
+							 parameterTypes[0] = String.class;
+
+
+						 // Create the name of the setter method for this variable ("abcde" -> "setAbcde")
+
+						 String methodName = "set";
+						 methodName += declaredFieldList[i].getName().substring(0,1).toUpperCase();
+						 methodName += declaredFieldList[i].getName().substring(1);
+
+						 // Get the method from inputClass by it's name and signature (number of parameters and their types)
+
+						 Method  method = inputClass.getDeclaredMethod(methodName, parameterTypes);
+
+						 // Adapt the DBF column data to suit our HSN needs (tranform "1.0" to "1" (integer))
+
+						 if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_N){
+
+							 if(rowObjects[columnAnnotatedVariableToDBFField[index1]] != null){
+								 String s = rowObjects[columnAnnotatedVariableToDBFField[index1]].toString();
+
+								 String [] b = s.split("[.]"); 
+								 Integer k = new Integer(b[0]);
+
+								 rowObjects[columnAnnotatedVariableToDBFField[index1]] = k;
+							 }
+
+						 }
+
+						 // Adapt the DBF column data to suit our HSN needs (tranform "Wed Jul 19 00:00:00 CEST 2000" to "19-07-2000")
+
+						 if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_D){
+
+							 // Format  Wed Jul 19 00:00:00 CEST 2000
+							 //         0   1   2  3        4    5  
+
+							 if(rowObjects[columnAnnotatedVariableToDBFField[index1]] != null){
+								 String s = rowObjects[columnAnnotatedVariableToDBFField[index1]].toString();
+
+								 String[] d = s.trim().split("[ ]"); 
+								 for(int ii = 0; ii < months.length; ii++){
+
+									 if(months[ii].equalsIgnoreCase(d[1])){
+
+										 String u = String.format("%02d-%02d-%04d", new Integer(d[2]), new Integer(ii), new Integer(d[5]));
+
+										 rowObjects[columnAnnotatedVariableToDBFField[index1]] = u;
+										 break;
+									 }
+								 }
+
+							 }
+						 }
+
+						 // Adapt the DBF column data to suit our HSN needs: Trim strings
+
+						 if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_C){
+							 if(rowObjects[columnAnnotatedVariableToDBFField[index1]] != null)
+								 rowObjects[columnAnnotatedVariableToDBFField[index1]] = ((String) rowObjects[columnAnnotatedVariableToDBFField[index1]]).trim();
+						 }
+
+
+						 // create object to hold value from DBF Column
+
+
+
+
+						 e[0] = rowObjects[columnAnnotatedVariableToDBFField[index1]];
+
+						 // Next statement is equivalent to: setVarx(rowObject[Y]);
+
+						 Object retObject = null;
+						 if(e[0] != null)
+							 retObject = method.invoke(outputObject,(Object []) e); // retObject contains the return code from the setter method, it is void
+
+						 index1++; // next ColumnAnnotated field
+					 }
+				 }
+
+				 a.add(outputObject);
+				 count++;  // next DBF row
+
+			 }	
+
+			 System.out.println("Read    " + dbfName + ".DBF " + count + " rows");	
+			 inputStream.close();
+
+			 return a;
+
+		 }
+
+		 catch(EOFException e){
+			 // Do nothing, the program runs on
+		 }
+		 catch(ClassNotFoundException e){
+			 System.out.println(e.toString());
+			 System.exit(-1);
+		 }
+		 catch(InstantiationException e){
+			 System.out.println(e.toString());
+			 System.exit(-1);
+		 }
+		 catch(IllegalAccessException  e){
+			 System.out.println(e.toString());
+			 System.exit(-1);
+		 }
+		 catch (DBFException e) {
+			 System.out.println(e.toString());
+			 System.exit(-1);
+		 } 
+		 catch (NoSuchMethodException e) {
+			 System.out.println(e.toString());
+			 System.exit(-1);
+		 }
+		 catch (InvocationTargetException e) {
+			 System.out.println(e.toString());
+			 System.exit(-1);
+		 }
+		 catch (FileNotFoundException e) {
+		 }
+		 catch (IOException e) {
+		 }
+
+		 return null;
+	 }
+
+
+
+	 /**
+	  * 
+	  * Name: CreateObjects2
+	  * 
+	  * Purpose: Read MSAccess table and return List with initiated objects
+	  * 
+	  * Remark: This routine uses Reflection (java.lang.reflect) to inspect the input Class
+	  *         It also re-uses JPA-annotations   
+	  * 
+	  * This routine performs the following:
+	  * 
+	  * Read Table annotation from class specified by className (Gives MSAccess table name)
+	  * Open MSAccess table from inputDirectory
+	  * Get MSAccess table Column Information
+	  * Get Column Annotations from class specified by className
+	  * Check that every Column Annotation has corresponding MSAccess table column
+	  * Read MSAccess table rows
+	  * For every MSAccess table row:
+	  *     Allocate new Object from class specified by className
+	  *     For every Column Annotation:
+	  *       
+	  *       Take corresponding MSAccess table column data type 
+	  *       Take corresponding MSAccess table column data from  row 
+	  *       Transform data depending on data type (to suit our specific needs for HSN) 
+	  *       Find Annotated Field's setter method (based on Field's name, CamelCase) 
+	  *       Invoke annotated Field's setter method with data and datatype
+	  *        
+	  *     Add Object to output arrayList
+	  * 
+	  * 
+	  * @param className
+	  * @param inputDirectory
+	  * @return List of Objects of type indicated by className. Objects are initialized with the data from the  File rows.
+	  * 
+	  */
+
+	 public static List createObjects2(String className, String inputDirectory){ 
+
+		 System.out.println("In create Objects2");
+
+
+
+		 try{
+
+			 Class<?> inputClass   = Class.forName(className); 
+
+			 // Get name of MSAccess table name from annotation
+
+			 Table t = (Table) inputClass.getAnnotation(Table.class);
+
+
+			 String tabName = null;
+			 if(t == null){
+				 //tableName = t.name();
+				 System.out.println("No MSAccess table name specified for " + className);
+				 System.exit(-1);
+			 }
+			 else {
+				 tabName = t.name().toUpperCase();
+			 }
+
+			 // Get declared fields (class/instance variables) of inputClass
+			 // Accessing these fields must be replaced by accessing the public methods
+			 // However, in that case we should also change our annotation, i.e. annotate the setters instead of the fields themselves
+
+
+			 Field [] declaredFieldList = inputClass.getDeclaredFields();  // all fields (class/instance variables) in class
+			 int [] columnAnnotatedVariableToMSAField = new int[declaredFieldList.length];  // used to link fields with columns
+			 int numberOfMSAFields = 0;
+
+			 // Get MSAccess table information
+
+			 //String connURL = "jdbc:ucanaccess://" + inputDirectory + File.separator + "PK.accdb;memory=false";
+			 //String connURL = "jdbc:ucanaccess://" + inputDirectory + File.separator + "PK.accdb";
+			 String connURL = null;
+			 Connection conn = null;
+			 String [] fieldNamesMSA = null;
+			 String [] fieldTypesMSA = null; 
+
+			 ResultSet rs = null;
+			 ResultSetMetaData rsmd = null;
+			 Statement s = null;
+
+
+			 
+			 final FileNameExtensionFilter extensionFilter = new FileNameExtensionFilter("Access Database", "accdb");			 
+			 final File file = new File(inputDirectory);
+			 
+			 for (final File child : file.listFiles()) {
+				 if(extensionFilter.accept(child)) {
+					 //connURL = "jdbc:ucanaccess://" + inputDirectory + File.separator + "PK.accdb";
+					 connURL = "jdbc:ucanaccess://" + inputDirectory + File.separator + child.getName();				         
+					 conn = DriverManager.getConnection(connURL, "", "");
+					 s = conn.createStatement();
+					 String selTable = "SELECT * FROM " + tabName;
+
+					 try {
+						 s.execute(selTable);
+					 } catch (SQLException e1) {
+						 // TODO Auto-generated catch block
+						 continue;
+					 }
+
+					 rs = s.getResultSet();
+					 rsmd = rs.getMetaData();
+
+					 numberOfMSAFields = rsmd.getColumnCount();
+
+					 fieldNamesMSA = new String[numberOfMSAFields];
+					 fieldTypesMSA = new String[numberOfMSAFields]; 
+
+					 for(int i=0; i<numberOfMSAFields; i++){
+						 fieldNamesMSA[i] = rsmd.getColumnName(i + 1);
+						 fieldTypesMSA[i] = rsmd.getColumnTypeName(i + 1);
+					 }
+				 }
+			 }
+
+			 if(numberOfMSAFields == 0) return null;
+
+
+			 // Check that all annotated fields have a corresponding column in the MSA table
+			 int index = 0; // used to map fields to columns 
+			 for (int i = 0; i < declaredFieldList.length; i++) { // Note: this will give *all* fields, not just the annotated ones
+
+				 Column columnAnnotatedField = declaredFieldList[i].getAnnotation(Column.class);				
+				 GeneratedValue generatedValue = declaredFieldList[i].getAnnotation(GeneratedValue.class);				
+
+				 if(columnAnnotatedField != null && generatedValue == null){ // It is one of our "COLUMN=XXXX" annotated fields
+
+					 String columnAnnotatedFieldType = null;
+					 String[] a = declaredFieldList[i].getType().toString().split(" "); // Must do this because annotatedFieldList[i].getType().toString() returns "class java.lang.String"
+					 if(a.length > 1)
+						 columnAnnotatedFieldType = a[1];					
+					 else
+						 columnAnnotatedFieldType = a[0];					
+
+					 boolean found = false;
+
+					 // Let's find the corresponding  column 
+
+					 for(int j = 0; j < numberOfMSAFields; j++){
+
+						 if(fieldNamesMSA[j].equalsIgnoreCase(columnAnnotatedField.name())){
+
+							 found = true;
+							 columnAnnotatedVariableToMSAField[index++] = j; // Links our "COLUMN=XXXX" annotated variable to MSA Column "XXXX" 
+
+							 // Data type of class variable and  column must match: "int" <-> "N" and "java.lang.String" <-> "C" (or "D" - date)
+
+
+
+							 if(fieldTypesMSA[j].equalsIgnoreCase("VARCHAR")){
+								 if(!columnAnnotatedFieldType.equalsIgnoreCase("java.lang.String")){
+
+									 System.out.println("Field  with annotation: @Column(name=\"" + columnAnnotatedField.name().trim() + "\" has datatype \"" + columnAnnotatedFieldType +
+											 "\" but Column " + fieldNamesMSA[j] + " of table " + tabName + " has datatype \"" + fieldTypesMSA[j] + "\""); 
+									 System.exit(-1);
+
+
+								 }
+							 }
+
+							 if(fieldTypesMSA[j].equalsIgnoreCase("DOUBLE")){
+								 if(!columnAnnotatedFieldType.equalsIgnoreCase("int")){
+
+									 System.out.println("Field  with annotation: @Column(name=\"" + columnAnnotatedField.name().trim() + "\" has datatype \"" + columnAnnotatedFieldType +
+											 "\" but Column " + fieldNamesMSA[j] + " of table " + tabName + " has datatype \"" + fieldTypesMSA[j] + "\""); 
+									 System.exit(-1);
+
+
+								 }
+							 }
+
+
+						 }
+					 }
+
+					 if(found == false){
+
+						 System.out.println("No corresponding column in " + tabName + ". for Field: " + declaredFieldList[i].getName() + ", annotation: " + columnAnnotatedField.name());
+						 System.exit(-1);
+
+					 }
+				 }
+			 }
+
+			 // Go through rows, instantiate objects and call their setters with data from table
+
+			 Class[] parameterTypes = new Class[1];
+			 Object [] rowObjects;
+			 Object [] e =  new Object[1];
+			 List a = new ArrayList();
+			 int count = 0;
+
+
+			 while((rs!=null) && (rs.next())){
+
+				 Object outputObject = inputClass.newInstance();  // equivalent to "Object outputObject = new inputClass();"
+
+				 int index1 = 0;
+				 for(int i = 0; i < declaredFieldList.length; i++){
+
+
+					 Column columnAnnotatedField = declaredFieldList[i].getAnnotation(Column.class);
+					 GeneratedValue generatedValue = declaredFieldList[i].getAnnotation(GeneratedValue.class);				
+
+					 if(columnAnnotatedField != null && generatedValue == null){ // It is one of our "COLUMN=XXXX"-annotated fields
+
+						 // Make ready to invoke the setter of the annotated Field's variable
+
+						 // Set parameter list, only one parameter for setter, with datatype depending on  Field's type
+
+
+						 //System.out.println("index1 = " + index1);
+						 //System.out.println("columnAnnotatedVariableToMSAField[index1] = " + columnAnnotatedVariableToMSAField[index1]);
+						 //System.out.println("fieldNamesMSA[columnAnnotatedVariableToMSAField[index1]] =  " + fieldNamesMSA[columnAnnotatedVariableToMSAField[index1]]);
+						 //System.out.println("fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]] =  " + fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]]);
+
+
+						 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("DOUBLE")) 
+							 parameterTypes[0] = Integer.TYPE;
+						 else
+							 parameterTypes[0] = String.class;
+
+
+						 // Create the name of the setter method for this variable ("abcde" -> "setAbcde")
+
+						 String methodName = "set";
+						 methodName += declaredFieldList[i].getName().substring(0,1).toUpperCase();
+						 methodName += declaredFieldList[i].getName().substring(1);
+
+						 // Get the method from inputClass by it's name and signature (number of parameters and their types)
+						 //System.out.println("parameterTypes[0] =  " + parameterTypes[0]);
+
+						 Method  method = inputClass.getDeclaredMethod(methodName, parameterTypes);
+
+
+						 // create object to hold value from MSA Column		
+
+						 e[0] = null;
+
+						 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("DOUBLE")) 
+							 e[0] = rs.getInt(columnAnnotatedVariableToMSAField[index1] + 1);
+
+						 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("VARCHAR")) 
+							 e[0] = rs.getString(columnAnnotatedVariableToMSAField[index1] + 1);
+
+						 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("TIMESTAMP")){
+
+							 Date d = rs.getDate(columnAnnotatedVariableToMSAField[index1] + 1);
+							 if(d != null){
+								 String ss = d.toString();							
+								 String u =  ss.substring(8, 10) + "-" + ss.substring(5, 7) + "-" + ss.substring(0, 4);
+
+								 e[0] = u;
+							 }
+						 }
+
+						 // Next statement is equivalent to: setVarx(rowObject[Y]);
+
+						 Object retObject = null;
+						 if(e[0] != null)
+							 retObject = method.invoke(outputObject,(Object []) e); // retObject contains the return code from the setter method, it is void
+
+						 index1++; // next ColumnAnnotated field
+					 }
+				 }
+
+				 a.add(outputObject);
+				 count++;  // next MSA row
+
+				 //break;
+			 }
+
+			 // close and cleanup
+
+			 System.out.println("Read    " + tabName + " from " + inputDirectory + "\\PK.accdb: " + count + " rows");	
+
+			 s.close();
+			 conn.close();
+
+			 return a;
+		 }
+		 catch (NoSuchMethodException e) {
+			 System.out.println(e.toString());
+			 System.exit(-1);
+		 } catch (IllegalAccessException e1) {
+			 // TODO Auto-generated catch block
+			 e1.printStackTrace();
+		 } catch (SQLException e1) {
+			 // TODO Auto-generated catch block
+			 e1.printStackTrace();
+
+		 } catch (IllegalArgumentException e1) {
+			 // TODO Auto-generated catch block
+			 e1.printStackTrace();
+		 } catch (InvocationTargetException e1) {
+			 // TODO Auto-generated catch block
+			 e1.printStackTrace();
+		 } catch (InstantiationException e1) {
+			 // TODO Auto-generated catch block
+			 e1.printStackTrace();
+		 } catch (ClassNotFoundException e1) {
+			 // TODO Auto-generated catch block
+			 e1.printStackTrace();
+		 }
+
+		 return null;
+
+
+	 }		
+
 
 	 
 	public static EntityManagerFactory getFactory_nieuw() {
