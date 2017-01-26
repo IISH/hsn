@@ -132,7 +132,8 @@ public class StandardizeCivilCertificates  implements Runnable {
         print("Reading and saving input files...");
 
 	    if(!loadDBFTables(inputFiles)){
-        	print("Required input DBF files not found (B2.DBF) ");
+        	print("Required input DBF files not found (DBF or accdb) ");
+        	 print("\nCivil Certificates - Standardize      finished    \n");
         	return;
 	    }
 	    	
@@ -1858,7 +1859,8 @@ public class StandardizeCivilCertificates  implements Runnable {
 		String sex = "";
 
 		for(Huweer huweer1: huweerL){
-			if(huweer1.getIdnr() == idnr && huweer1.getHjaar() == marriage_year && huweer1.getHmaand() == marriage_month && huweer1.getHuwer().equalsIgnoreCase(sex) && huweer1.getVlgnreh() == seqno)
+			//System.out.println("idnr = " + huweer1.getIdnr() + " year = " + huweer1.getHjaar() + " month = " + huweer1.getHmaand() + " sex = " + huweer1.getHuwer() + "seqno = " + huweer1.getVlgnreh());
+			if(huweer1.getIdnr() == idnr && huweer1.getHjaar() == marriage_year && huweer1.getHmaand() == marriage_month && /* huweer1.getHuwer().equalsIgnoreCase(sex) && */ huweer1.getVlgnreh() == seqno)
 				Utils.message(errorBase + Constants.E_DUM3KEY, idnr, 0, "HSN_CIVREC_STD", "M3",  "" + marriage_year + "  " + marriage_month + "   " + sex + "  " + seqno);
 			idnr = huweer1.getIdnr();
 			marriage_year = huweer1.getHjaar();

@@ -69,7 +69,7 @@ public class AlfalabServerConsole implements Runnable {
     private final static String INPUT_DIRECTORY = "temp";
     //public final static String INPUT_DIRECTORY = "temp";
 
-    private final static int MAX_FILE_SIZE = 100 * 1024 * 1024; // = 100 Megabytes
+    private final static int MAX_FILE_SIZE = 200 * 1024 * 1024; // = 100 Megabytes
     private final static int NR_OF_COLUMNS = 2;
     private final static int COLUMN_WIDTH = 50;
     

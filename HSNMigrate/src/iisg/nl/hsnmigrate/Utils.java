@@ -558,9 +558,7 @@ public class Utils {
 
 	 public static List createObjects2(String className, String inputDirectory){ 
 
-		 System.out.println("In create Objects2");
-
-
+		// System.out.println("In create Objects2");
 
 		 try{
 
@@ -765,8 +763,11 @@ public class Utils {
 						 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("DOUBLE")) 
 							 e[0] = rs.getInt(columnAnnotatedVariableToMSAField[index1] + 1);
 
-						 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("VARCHAR")) 
+						 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("VARCHAR")) {
 							 e[0] = rs.getString(columnAnnotatedVariableToMSAField[index1] + 1);
+							
+							 if(e[0] == null) e[0] = ""; // We do this because the old DBF reader did it, and the code above relies on it
+						 }
 
 						 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("TIMESTAMP")){
 
