@@ -843,9 +843,9 @@ public class CreateDBImport {
         "    GEMNAAM    CHAR(50), " +
 //        "    NWINLST    CHAR(1), " +
         "    RecordID   INT NOT NULL AUTO_INCREMENT, " +
-        "    PRIMARY KEY( RecordID ) " +
-//        "    UNIQUE INDEX( GEMNAAM ), " +
-//       "    UNIQUE INDEX( GEMNR, PROVNR )" +
+        "    PRIMARY KEY( RecordID ), " +
+        "    INDEX( GEMNAAM ), " +
+       "    UNIQUE INDEX( GEMNR, PROVNR )" +
         ") Engine=InnoDB;";			
 			
 	
