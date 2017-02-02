@@ -152,7 +152,7 @@ public class M1 {
     	 setM1rpgn(huwknd.getGebsex());
     	 setM1grln(huwknd.getAnmhm());
     	 setM1grpf(huwknd.getTushm());
-    	 setM1grfn(huwknd.getVrn1hm().split("%")[0] + " " + huwknd.getVrn2hm().split("%")[0] + " "  + huwknd.getVrn3hm().split("%")[0]);
+    	 setM1grfn(Utils.combine3FirstNames(huwknd.getVrn1hm(), huwknd.getVrn2hm(), huwknd.getVrn3hm()));
     	 setM1groc(huwknd.getBrphm());
     	 setM1grbl(huwknd.getGebplhm());
     	 setM1grll(huwknd.getAdrhm());
@@ -162,7 +162,7 @@ public class M1 {
     	 setM1grsg(huwknd.getHndhm());
     	 setM1brln(huwknd.getAnmhv());
     	 setM1brpf(huwknd.getTushv());
-    	 setM1brfn(huwknd.getVrn1hv().split("%")[0] + " " + huwknd.getVrn2hv().split("%")[0] + " " + huwknd.getVrn3hv().split("%")[0]);
+    	 setM1brfn(Utils.combine3FirstNames(huwknd.getVrn1hv(), huwknd.getVrn2hv(), huwknd.getVrn3hv()));
     	 setM1broc(huwknd.getBrphv());
     	 setM1brbl(huwknd.getGebplhv());
     	 setM1brll(huwknd.getAdrhv());
@@ -174,7 +174,7 @@ public class M1 {
     	 setM1gfmp(huwknd.getToevrhm());
     	 setM1gfln(huwknd.getAnmvrhm());
     	 setM1gfpf(huwknd.getTusvrhm());
-    	 setM1gffn(huwknd.getVrn1vrhm().split("%")[0] + " " + huwknd.getVrn2vrhm().split("%")[0] + " " + huwknd.getVrn3vrhm().split("%")[0]);
+    	 setM1gffn(Utils.combine3FirstNames(huwknd.getVrn1vrhm(), huwknd.getVrn2vrhm(), huwknd.getVrn3vrhm()));
     	 setM1gfoc(huwknd.getBrpvrhm());
     	 setM1gfll(huwknd.getAdrvrhm());
     	 setM1gfdl(huwknd.getPlovvrhm());
@@ -184,7 +184,7 @@ public class M1 {
     	 setM1gmmp(huwknd.getToemrhm());
     	 setM1gmln(huwknd.getAnmmrhm());
     	 setM1gmpf(huwknd.getTusmrhm());
-    	 setM1gmfn(huwknd.getVrn1mrhm().split("%")[0] + " " + huwknd.getVrn2mrhm().split("%")[0] + " " + huwknd.getVrn3mrhm().split("%")[0]);
+    	 setM1gmfn(Utils.combine3FirstNames(huwknd.getVrn1mrhm(), huwknd.getVrn2mrhm(), huwknd.getVrn3mrhm()));
     	 setM1gmoc(huwknd.getBrpmrhm());
     	 setM1gmll(huwknd.getAdrmrhm());
     	 setM1gmdl(huwknd.getPlovmrhm());
@@ -194,7 +194,7 @@ public class M1 {
     	 setM1bfmp(huwknd.getToevrhv());
     	 setM1bfln(huwknd.getAnmvrhv());
     	 setM1bfpf(huwknd.getTusvrhv());
-    	 setM1bffn(huwknd.getVrn1vrhv().split("%")[0] + " " + huwknd.getVrn2vrhv().split("%")[0] + " " + huwknd.getVrn3vrhv().split("%")[0]);
+    	 setM1bffn(Utils.combine3FirstNames(huwknd.getVrn1vrhv(), huwknd.getVrn2vrhv(), huwknd.getVrn3vrhv()));
     	 setM1bfoc(huwknd.getBrpvrhv());
     	 setM1bfll(huwknd.getAdrvrhv());
     	 setM1bfdl(huwknd.getPlovvrhv());
@@ -204,7 +204,7 @@ public class M1 {
     	 setM1bmmp(huwknd.getToemrhv());
     	 setM1bmln(huwknd.getAnmmrhv());
     	 setM1bmpf(huwknd.getTusmrhv());
-    	 setM1bmfn(huwknd.getVrn1mrhv().split("%")[0] + " " + huwknd.getVrn2mrhv().split("%")[0] + " " + huwknd.getVrn3mrhv().split("%")[0]);
+    	 setM1bmfn(Utils.combine3FirstNames(huwknd.getVrn1mrhv(), huwknd.getVrn2mrhv(), huwknd.getVrn3mrhv()));
     	 setM1bmoc(huwknd.getBrpmrhv());
     	 setM1bmll(huwknd.getAdrmrhv());
     	 setM1bmdl(huwknd.getPlovmrhv());
@@ -716,33 +716,33 @@ public class M1 {
         	 int dif = Utils.dayCount(getMar_cd(), getMar_cm(),getMar_cy()) - Utils.dayCount(huwknd.getGebknd().getGebdag(), huwknd.getGebknd().getGebmnd(), huwknd.getGebknd().getGebjr());
         	 dif = dif / 365;
 
-        	 int age  = getM1rpgn().equalsIgnoreCase("M") ? getM1gray() : getM1bray();
-        	 int agep = getM1rpgn().equalsIgnoreCase("M") ? getM1bray() : getM1gray();
+        	 if(getM1rpgn() != null){
 
-        	 
-        	 String partnerAge ="";
-        	 if(Math.abs(dif - agep) < 1)
-        		 partnerAge = "(leeftijd partner: " + agep + ")";
+        		 int age  = getM1rpgn().equalsIgnoreCase("M") ? getM1gray() : getM1bray();
+        		 int agep = getM1rpgn().equalsIgnoreCase("M") ? getM1bray() : getM1gray();
 
-        	 if(Math.abs(dif - age) > 1){
 
-        		 Utils.message(300700 + Constants.E_ALM1RPAY, getIdnr(), getMar_cy(),"HSN_CIVREC_STD", "M1", huwknd.getGebknd().getGebdag() + "-" + huwknd.getGebknd().getGebmnd() + "-" + huwknd.getGebknd().getGebjr() + 
-        				 "  " + getMar_cd() + "-" + getMar_cm() + "-" + getMar_cy() + "  " + age + " " + partnerAge);
+        		 String partnerAge ="";
+        		 if(Math.abs(dif - agep) < 1)
+        			 partnerAge = "(leeftijd partner: " + agep + ")";
+
+        		 if(Math.abs(dif - age) > 1){
+
+        			 Utils.message(300700 + Constants.E_ALM1RPAY, getIdnr(), getMar_cy(),"HSN_CIVREC_STD", "M1", huwknd.getGebknd().getGebdag() + "-" + huwknd.getGebknd().getGebmnd() + "-" + huwknd.getGebknd().getGebjr() + 
+        					 "  " + getMar_cd() + "-" + getMar_cm() + "-" + getMar_cy() + "  " + age + " " + partnerAge);
+        		 }
+        		 
+                 if(!getM1rpgn().equalsIgnoreCase(huwknd.getGebknd().getGebsex()))
+          	      	Utils.message(300800 + Constants.E_GLM1RPGN, getIdnr(), getMar_cy(),"HSN_CIVREC_STD", "M1", huwknd.getGebknd().getGebsex());
+               
         	 }
          }
 
-         if(!getM1rpgn().equalsIgnoreCase(huwknd.getGebknd().getGebsex()))
- 	      	Utils.message(300800 + Constants.E_GLM1RPGN, getIdnr(), getMar_cy(),"HSN_CIVREC_STD", "M1", huwknd.getGebknd().getGebsex());
-      
 
          if(marCount > 0 && birthDayCount > 0 && marCount < birthDayCount)
            	 Utils.message(300500 + Constants.E_DLB1M1BM, getIdnr(), getMar_cy(),"HSN_CIVREC_STD", "M1", huwknd.getGebknd().getGebdag() + "-" + huwknd.getGebknd().getGebmnd() + "-" + huwknd.getGebknd().getGebjr() + " and " +
            			getMar_cd() + "-" + getMar_cm() + "-" + getMar_cy());
 	 
-         
-         
-         
-         
          
  	}
   

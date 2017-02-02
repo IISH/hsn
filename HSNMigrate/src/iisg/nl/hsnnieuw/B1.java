@@ -82,7 +82,7 @@ public class B1 {
             setB1sdcm(gebknd.getAktemnd());    		
             setB1inln(gebknd.getAnmag());    		
             setB1inpf(gebknd.getTusag());    		
-            setB1infn(gebknd.getVrn1ag().split("%")[0] + " " + gebknd.getVrn2ag().split("%")[0] + " " + gebknd.getVrn3ag().split("%")[0]);    		
+            setB1infn(Utils.combine3FirstNames(gebknd.getVrn1ag(), gebknd.getVrn2ag(), gebknd.getVrn3ag()));    		
             setB1inay(gebknd.getLftag());    		
             setB1inoc(gebknd.getBrpag());    		
             setB1inll(gebknd.getAdrag());    		
@@ -96,13 +96,13 @@ public class B1 {
             setB1rpll(gebknd.getGebadr());    		
             setB1moln(gebknd.getAnmmr());    		
             setB1mopf(gebknd.getTusmr());    		
-            setB1mofn(gebknd.getVrn1mr().split("%")[0] + " " + gebknd.getVrn2mr().split("%")[0] + " " + gebknd.getVrn3mr().split("%")[0]);    		
+            setB1mofn(Utils.combine3FirstNames(gebknd.getVrn1mr(), gebknd.getVrn2mr(), gebknd.getVrn3mr()));    		
             setB1moay(gebknd.getLftmr());    		
             setB1mocs(gebknd.getBrgstmr());    		
             setB1mooc(gebknd.getBrpmr());    		
             setB1rpln(gebknd.getAnmgeb());    		
             setB1rppf(gebknd.getTusgeb());    		
-            setB1rpfn(gebknd.getVrn1geb().split("%")[0] + " " + gebknd.getVrn2geb().split("%")[0] + " " + gebknd.getVrn3geb().split("%")[0]);    		
+            setB1rpfn(Utils.combine3FirstNames(gebknd.getVrn1geb(), gebknd.getVrn2geb(), gebknd.getVrn3geb()));    		
             setD_e_p_l(gebknd.getVersie());    		
             setD_e_p_o(gebknd.getVersieo());    
             setB1moll(gebknd.getAdrmr());

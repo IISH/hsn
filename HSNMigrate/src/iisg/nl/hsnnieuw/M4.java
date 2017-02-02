@@ -48,7 +48,7 @@ public class M4 {
      setM4sdsq(huwgtg.getVlgnrgt());
      setM4w_ln(huwgtg.getAnmgt());
      setM4w_pf(huwgtg.getTusgt());
-     setM4w_fn(huwgtg.getVrn1gt().split("%")[0] + " " + huwgtg.getVrn2gt().split("%")[0] + " " +  huwgtg.getVrn3gt().split("%")[0]);
+     setM4w_fn(Utils.combine3FirstNames(huwgtg.getVrn1gt(), huwgtg.getVrn2gt(), huwgtg.getVrn3gt()));
      setM4w_ay(huwgtg.getLftjgt());
      setM4w_oc(huwgtg.getBrpgt());
      setM4w_ll(huwgtg.getAdrgt());

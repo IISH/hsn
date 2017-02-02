@@ -40,7 +40,7 @@ public class D2 {
      setD2s_sq(ovlech.getVlgech());
      setD2s_ln(ovlech.getAnmeovl());
      setD2s_pf(ovlech.getTuseovl());
-     setD2s_fn(ovlech.getVrn1eovl().split("%")[0] + " " + ovlech.getVrn2eovl().split("%")[0] + " " + ovlech.getVrn3eovl().split("%")[0]);
+     setD2s_fn(Utils.combine3FirstNames(ovlech.getVrn1eovl(), ovlech.getVrn2eovl(), ovlech.getVrn3eovl()));
      setD2s_ca(ovlech.getLeveovl());
      setD2s_ay(ovlech.getLfteovl());
      setD2s_oc(ovlech.getBrpeovl());

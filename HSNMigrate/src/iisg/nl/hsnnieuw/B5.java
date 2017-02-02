@@ -54,7 +54,7 @@ public class B5 {
  	    
  	    setB5faln(gebvdr.getAnmvr());
  	    setB5fapf(gebvdr.getTusvr());
- 	    setB5fafn(gebvdr.getVrn1vr().split("%")[0] + " " +  gebvdr.getVrn2vr().split("%")[0] + " " + gebvdr.getVrn3vr().split("%")[0]);
+ 	    setB5fafn(Utils.combine3FirstNames(gebvdr.getVrn1vr(),  gebvdr.getVrn2vr(), gebvdr.getVrn3vr()));
  	    setB5faay(gebvdr.getLftvr());
  	    setB5faoc(gebvdr.getBrpvr());
  	    setB5fall(gebvdr.getAdrvr());

@@ -63,14 +63,14 @@ public class B4 {
  	    setB4sdml(gebkant.getKhuwgem());
  	    setB4faln(gebkant.getKanmvad());
  	    setB4fapf(gebkant.getKtusvad());
- 	    setB4fafn(gebkant.getKvrn1vad().split("%")[0] + " " + gebkant.getKvrn2vad().split("%")[0] + " " + gebkant.getKvrn3vad().split("%")[0]);
+ 	    setB4fafn(Utils.combine3FirstNames(gebkant.getKvrn1vad(), gebkant.getKvrn2vad(), gebkant.getKvrn3vad()));
  	    setB4sdrd(gebkant.getKwyzdag());
  	    setB4sdrm(gebkant.getKwyzmnd());
  	    setB4sdry(gebkant.getKwyzjr());
  	    setB4sdrs(gebkant.getKwyzkb());
  	    setB4sdrn(gebkant.getKwyzstbl());
  	    setB4rpln(gebkant.getKanmgeb());
- 	    setB4rpfn(gebkant.getKvrn1geb().split("%")[0] + " " + gebkant.getKvrn2geb().split("%")[0] + " " + gebkant.getKvrn3geb().split("%")[0]);
+ 	    setB4rpfn(Utils.combine3FirstNames(gebkant.getKvrn1geb(), gebkant.getKvrn2geb(), gebkant.getKvrn3geb()));
  	    setB4rppf(gebkant.getKtusgeb());
  	    setB4rpgn(gebkant.getKsexgeb());
          

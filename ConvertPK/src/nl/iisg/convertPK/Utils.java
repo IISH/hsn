@@ -415,7 +415,8 @@ public class Utils {
             String connURL = "jdbc:ucanaccess://" + inputDirectory + File.separator + "PK.accdb";
             
             System.out.println("Connection URL = " + connURL);
-			 
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver"); // On windows this is not needed
+
             Connection conn = DriverManager.getConnection(connURL, "", "");
 	        Statement s = conn.createStatement();
 
@@ -568,11 +569,14 @@ public class Utils {
 						
 						if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("TIMESTAMP")){
 							
-							Date d = rs.getDate(columnAnnotatedVariableToMSAField[index1] + 1);
-							String ss = d.toString();							
-							String u =  ss.substring(8, 10) + "-" + ss.substring(5, 7) + "-" + ss.substring(0, 4);
+							if(rs.getDate(columnAnnotatedVariableToMSAField[index1] + 1) != null){
+							
+								Date d = rs.getDate(columnAnnotatedVariableToMSAField[index1] + 1);
+								String ss = d.toString();							
+								String u =  ss.substring(8, 10) + "-" + ss.substring(5, 7) + "-" + ss.substring(0, 4);
 
 							e[0] = u;
+							}
 						}
 					
 						// Next statement is equivalent to: setVarx(rowObject[Y]);

@@ -57,7 +57,7 @@ public class M5 {
      setM5c_sq(huwvrknd.getVlgnrvk());
      setM5c_ln(huwvrknd.getAnmvk());
      setM5c_pf(huwvrknd.getTusvk());
-     setM5c_fn(huwvrknd.getVrn1vk().split("%")[0] + " " + huwvrknd.getVrn2vk().split("%")[0] + " " + huwvrknd.getVrn3vk().split("%")[0]);
+     setM5c_fn(Utils.combine3FirstNames(huwvrknd.getVrn1vk(), huwvrknd.getVrn2vk(), huwvrknd.getVrn3vk()));
      setM5c_bd(huwvrknd.getGbdgvk());
      setM5c_bm(huwvrknd.getGbmdvk());
      setM5c_by(huwvrknd.getGbjrvk());

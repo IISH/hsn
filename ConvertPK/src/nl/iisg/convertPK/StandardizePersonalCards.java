@@ -326,6 +326,10 @@ public class StandardizePersonalCards implements Runnable {
         int i_p8 = 0;
 
         for (PkKnd pkknd : pkkndL) {
+
+            while (i_br < pkbrpL.size() && pkbrpL.get(i_br).getIdnr() < pkknd.getIdnr()) 
+            	i_br++;
+
         	
             while (i_br < pkbrpL.size() && pkbrpL.get(i_br).getIdnr() == pkknd.getIdnr()) {
 
@@ -337,12 +341,21 @@ public class StandardizePersonalCards implements Runnable {
                 i_br++;
             }
 
+
+            while (i_ad < pkadresL.size() && pkadresL.get(i_ad).getIdnr() < pkknd.getIdnr()) 
+                i_ad++;
+
+
             while (i_ad < pkadresL.size() && pkadresL.get(i_ad).getIdnr() == pkknd.getIdnr()) {
 
                 pkknd.getAddresses().add(pkadresL.get(i_ad));  // add address to ArrayList addresses in PkKnd
                 pkadresL.get(i_ad).setPkHolder(pkknd);         // set PK-Holder object in Address Object 
                 i_ad++;
             }
+
+
+            while (i_ek < pkeigkndL.size() && pkeigkndL.get(i_ek).getIdnr() < pkknd.getIdnr())
+                i_ek++;
 
             while (i_ek < pkeigkndL.size() && pkeigkndL.get(i_ek).getIdnr() == pkknd.getIdnr()) {
 
@@ -353,6 +366,9 @@ public class StandardizePersonalCards implements Runnable {
                 i_ek++;
             }
 
+            while (i_hw < pkhuwL.size() && pkhuwL.get(i_hw).getIdnr() < pkknd.getIdnr()) 
+                i_hw++;
+
             while (i_hw < pkhuwL.size() && pkhuwL.get(i_hw).getIdnr() == pkknd.getIdnr()) {
             	
             	//System.out.println("    i_hw =  " + i_hw + " idnr = " + pkhuwL.get(i_hw).getIdnr());
@@ -362,12 +378,20 @@ public class StandardizePersonalCards implements Runnable {
                 i_hw++;
             }
 
+            while (i_bz < pkbyzL.size() && pkbyzL.get(i_bz).getIdnr() < pkknd.getIdnr()) 
+                i_bz++;
+            
+
             while (i_bz < pkbyzL.size() && pkbyzL.get(i_bz).getIdnr() == pkknd.getIdnr()) {
 
                 pkknd.getRemarks().add(pkbyzL.get(i_bz));     // add remark to ArrayList remarks in PkKnd
                 pkbyzL.get(i_bz).setPkHolder(pkknd);          // set PK-Holder object in Remark Object 
                 i_bz++;
             }
+
+            while (i_p7 < p7L.size() && p7L.get(i_p7).getIdnr() < pkknd.getIdnr()) 
+                i_p7++;
+            
 
             while (i_p7 < p7L.size() && p7L.get(i_p7).getIdnr() == pkknd.getIdnr()) {
 
@@ -376,6 +400,10 @@ public class StandardizePersonalCards implements Runnable {
                 i_p7++;
             }
 
+            while (i_p8 < p8L.size() && p8L.get(i_p8).getIdnr() < pkknd.getIdnr()) 
+                i_p8++;
+            
+            
             while (i_p8 < p8L.size() && p8L.get(i_p8).getIdnr() == pkknd.getIdnr()) {
 
                 pkknd.getP8().add(p8L.get(i_p8));             // add P8 to ArrayList remarks in PkKnd

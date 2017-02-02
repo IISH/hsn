@@ -73,9 +73,12 @@ public class PkEigknd {
     	
     	// Last name 
     	
-    	String lastName = getAnmkndp().trim();
+    	String lastName = getAnmkndp();
+    	String prefix = null;
+
     	
     	if(lastName != null){
+    		lastName = lastName.trim(); 
 			if(lastName.split("%").length > 1){
 				lastName = lastName.split("%")[0].trim();
 				b2.setFamilyNameInterpreted(2);  	
@@ -84,18 +87,18 @@ public class PkEigknd {
 				lastName = lastName.split("%")[0].trim();
 				b2.setFamilyNameInterpreted(1);
 			}
+			
+	    	int i = lastName.indexOf(",");
+	    	if(i >= 0){    		
+	       		prefix = lastName.substring(i+1).trim();
+	       		lastName = lastName.substring(0,i).trim();    		
+	    		
+	    	}
+	    	b2.setFamilyName(Utils.standardizeFamilyName(lastName));
+
     	}
 
     	
-    	lastName = lastName.trim();
-    	String prefix = null;
-    	int i = lastName.indexOf(",");
-    	if(i >= 0){    		
-       		prefix = lastName.substring(i+1).trim();
-       		lastName = lastName.substring(0,i).trim();    		
-    		
-    	}
-    	b2.setFamilyName(Utils.standardizeFamilyName(lastName));
 
     	
     	// first name
@@ -153,20 +156,23 @@ public class PkEigknd {
     		b2.setPrefixLastName(Utils.standardizePrefix(getTuskndp()));
     	
     	
-    	if(getRelkndp().trim().equalsIgnoreCase("ZOON") || 
-    			getRelkndp().trim().equalsIgnoreCase("Z") ||
-    			getRelkndp().trim().equalsIgnoreCase("STIEFZOON") ||
-    			getRelkndp().trim().equalsIgnoreCase("SZ"))
-    		b2.setSex("m");
-    	else
-        	if(getRelkndp().trim().equalsIgnoreCase("DOCHTER") || 
-        			getRelkndp().trim().equalsIgnoreCase("D") ||
-        			getRelkndp().trim().equalsIgnoreCase("STIEFDOCHTER") ||
-        			getRelkndp().trim().equalsIgnoreCase("SD"))
-        		b2.setSex("v");
-        	else
-        		if(!getRelkndp().trim().equalsIgnoreCase("KIND"))
-        			message(getIdnr(), "7105", getRelkndp().trim());
+    	
+    	if(getRelkndp() != null){ 
+    		if(getRelkndp().trim().equalsIgnoreCase("ZOON") || 
+    				getRelkndp().trim().equalsIgnoreCase("Z") ||
+    				getRelkndp().trim().equalsIgnoreCase("STIEFZOON") ||
+    				getRelkndp().trim().equalsIgnoreCase("SZ"))
+    			b2.setSex("m");
+    		else
+    			if(getRelkndp().trim().equalsIgnoreCase("DOCHTER") || 
+    					getRelkndp().trim().equalsIgnoreCase("D") ||
+    					getRelkndp().trim().equalsIgnoreCase("STIEFDOCHTER") ||
+    					getRelkndp().trim().equalsIgnoreCase("SD"))
+    				b2.setSex("v");
+    			else
+    				if(!getRelkndp().trim().equalsIgnoreCase("KIND"))
+    					message(getIdnr(), "7105", getRelkndp().trim());
+    	}
 
     	
     	// Birth date
@@ -318,22 +324,25 @@ public class PkEigknd {
 		b313.setDynamicDataType(13);
 		b313.setKeyToRegistrationPersons(b2.getKeyToPersons());
 		
-		if(getRelkndp().trim().equalsIgnoreCase("ZOON") || getRelkndp().trim().equalsIgnoreCase("Z"))
-			b313.setContentOfDynamicData(3);     // Son
-		else
-			if(getRelkndp().trim().equalsIgnoreCase("DOCHTER") || getRelkndp().trim().equalsIgnoreCase("D"))
-				b313.setContentOfDynamicData(4); // Daughter
+		if(getRelkndp() != null){
+
+			if(getRelkndp().trim().equalsIgnoreCase("ZOON") || getRelkndp().trim().equalsIgnoreCase("Z"))
+				b313.setContentOfDynamicData(3);     // Son
 			else
-				if(getRelkndp().trim().equalsIgnoreCase("STIEFZOON") || getRelkndp().trim().equalsIgnoreCase("SZ"))
-					b313.setContentOfDynamicData(8); // Stepson
+				if(getRelkndp().trim().equalsIgnoreCase("DOCHTER") || getRelkndp().trim().equalsIgnoreCase("D"))
+					b313.setContentOfDynamicData(4); // Daughter
 				else
-					if(getRelkndp().trim().equalsIgnoreCase("STIEFDOCHTER") || getRelkndp().trim().equalsIgnoreCase("SD"))
-						b313.setContentOfDynamicData(9); // Stepdaughter
+					if(getRelkndp().trim().equalsIgnoreCase("STIEFZOON") || getRelkndp().trim().equalsIgnoreCase("SZ"))
+						b313.setContentOfDynamicData(8); // Stepson
 					else
-						if(getRelkndp().trim().equalsIgnoreCase("KIND")) 
-							b313.setContentOfDynamicData(133); // Kind PK
+						if(getRelkndp().trim().equalsIgnoreCase("STIEFDOCHTER") || getRelkndp().trim().equalsIgnoreCase("SD"))
+							b313.setContentOfDynamicData(9); // Stepdaughter
 						else
-							b313.setContentOfDynamicData(133); // Kind PK
+							if(getRelkndp().trim().equalsIgnoreCase("KIND")) 
+								b313.setContentOfDynamicData(133); // Kind PK
+							else
+								b313.setContentOfDynamicData(133); // Kind PK
+		}
 
 				
 		b313.setStartDate(b2.getDateOfBirth());

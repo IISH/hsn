@@ -41,7 +41,7 @@ public class D3 {
          setD3i_sq(ovlagv.getVlgnrag());
          setD3i_ln(ovlagv.getAnmagv());
          setD3i_pf(ovlagv.getTusagv());
-         setD3i_fn(ovlagv.getVrn1agv().split("%")[0] + " " + ovlagv.getVrn2agv().split("%")[0] + " " + ovlagv.getVrn3agv().split("%")[0]);
+         setD3i_fn(Utils.combine3FirstNames(ovlagv.getVrn1agv(), ovlagv.getVrn2agv(), ovlagv.getVrn3agv()));
          if(getD3i_fn().length() > 50)
         	 setD3i_fn(getD3i_fn().substring(0,50)); // hack
          setD3i_ls(ovlagv.getRagvovl());

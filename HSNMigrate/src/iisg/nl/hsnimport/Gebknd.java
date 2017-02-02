@@ -167,7 +167,8 @@ public class Gebknd {
 		 for(Gebbyz gebbyz: gebbyzL){
 			 if(gebbyz.getByznr() != seqNr++)
 				 Utils.message(101700 + Constants.E_SQB3SDSQ, getIdnr(), 0, "HSN_CIVREC_STD", "B3");  // 101700 is errorBase for sequence function
-			 byz = byz + gebbyz.getByz().trim() + " ";	
+			 if(gebbyz.getByz() != null)
+				 byz = byz + gebbyz.getByz().trim() + " ";	
 
 			 //if(byz.indexOf("\u00A2") >= 0){
 			 //	 System.out.println("idnr = " + getIdnr() + " index = " + byz.indexOf("\u00A2") + byz);

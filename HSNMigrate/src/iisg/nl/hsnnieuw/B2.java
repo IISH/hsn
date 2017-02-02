@@ -40,7 +40,7 @@ public class B2 {
     	 setIdnr(gebgtg.getIdnr());
     	 setB2w_ln(gebgtg.getAnmgt());
     	 setB2w_pf(gebgtg.getTusgt());
-    	 setB2w_fn(gebgtg.getVrn1gt().split("%")[0] + " " + gebgtg.getVrn2gt().split("%")[0] + " " + gebgtg.getVrn3gt().split("%")[0]);
+    	 setB2w_fn(Utils.combine3FirstNames(gebgtg.getVrn1gt(), gebgtg.getVrn2gt(), gebgtg.getVrn3gt()));
     	 setB2w_ay(gebgtg.getLftgt());
     	 setB2w_oc(gebgtg.getBrpgt());
     	 setB2w_ll(gebgtg.getAdrgt());

@@ -62,14 +62,17 @@ public class PkAdres {
     	
     	// handle renumbering
     	
-    	if(getVernum().equalsIgnoreCase("n"))
-    		b6.setRenumbering(1);
-    	else
-        	if(getVernum().equalsIgnoreCase("v"))
-        		b6.setRenumbering(4);
-            	else
-                	if(getVernum().equalsIgnoreCase("a"))
-                		b6.setRenumbering(5);
+    	if(vernum != null){
+
+    		if(getVernum().equalsIgnoreCase("n"))
+    			b6.setRenumbering(1);
+    		else
+    			if(getVernum().equalsIgnoreCase("v"))
+    				b6.setRenumbering(4);
+    			else
+    				if(getVernum().equalsIgnoreCase("a"))
+    					b6.setRenumbering(5);
+    	}
     	
     	b6.setAddressFlag(4); // PK-version
     	

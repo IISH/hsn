@@ -128,7 +128,7 @@ public void convert(EntityManager em){
 		 ovlech.convert(em);
 	 }
 
-	 if(getAgvvadr().equalsIgnoreCase("J"))
+	 if(getAgvvadr() != null &&  getAgvvadr().equalsIgnoreCase("J"))
 		 seqNr = 2;
 	 else
 		 seqNr = 1;

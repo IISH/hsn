@@ -101,27 +101,30 @@ public class PkHuw {
     	
     	// Last name may still contain prefix, remove it
     	
-    	String lastName = getAnmhuwp().trim();
-    	
+    	String lastName = getAnmhuwp();
+    	String prefix = null;
     	//System.out.println("---> lastName = " + lastName);
     	
     	if(lastName != null){
+    		getAnmhuwp().trim();
 			if(lastName.split("%").length > 1){
 				lastName = lastName.split("%")[0].trim();
 				b2.setFamilyNameInterpreted(2);  	
 			}
 			else
 				b2.setFamilyNameInterpreted(1);	
+			
+		   	
+	    	int i = lastName.indexOf(",");
+	    	if(i >= 0){    		
+	       		prefix = lastName.substring(i+1).trim();
+	       		lastName = lastName.substring(0,i).trim();    		
+	    		
+	    	}
+	 			
+	    	b2.setFamilyName(Utils.standardizeFamilyName(lastName));
+	        		
     	}
-    	lastName = lastName.trim();
-    	String prefix = null;
-    	int i = lastName.indexOf(",");
-    	if(i >= 0){    		
-       		prefix = lastName.substring(i+1).trim();
-       		lastName = lastName.substring(0,i).trim();    		
-    		
-    	}
-    	b2.setFamilyName(Utils.standardizeFamilyName(lastName));
     	
     	// first name
     	
@@ -181,11 +184,13 @@ public class PkHuw {
     	
     	// sex - indirect via partner
     	
-    	if(getPkHolder().getGslperp().equalsIgnoreCase("M"))
-    		b2.setSex("v");
-    	else
-    		if(getPkHolder().getGslperp().equalsIgnoreCase("V"))
-    			b2.setSex("m");
+    	if(getPkHolder().getGslperp() != null){
+    		if(getPkHolder().getGslperp().equalsIgnoreCase("M"))
+    			b2.setSex("v");
+    		else
+    			if(getPkHolder().getGslperp().equalsIgnoreCase("V"))
+    				b2.setSex("m");
+    	}
 
     	// Birth date
     	

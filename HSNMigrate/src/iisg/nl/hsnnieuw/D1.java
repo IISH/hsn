@@ -96,7 +96,7 @@ public class D1 {
      setD1insg(ovlknd.getHndtkv());
      setD1rpln(ovlknd.getAnmovl());
      setD1rppf(ovlknd.getTusovl());
-     setD1rpfn(ovlknd.getVrn1ovl().split("%")[0] + " " + ovlknd.getVrn2ovl().split("%")[0] + " " + ovlknd.getVrn3ovl().split("%")[0]);
+     setD1rpfn(Utils.combine3FirstNames(ovlknd.getVrn1ovl(), ovlknd.getVrn2ovl(), ovlknd.getVrn3ovl()));
      setD1rpoc(ovlknd.getBrpovl());
      setD1rpbc(ovlknd.getGbpovl());
      setD1rpbl(ovlknd.getGgmovl());
@@ -115,14 +115,14 @@ public class D1 {
      setD1rpay(ovlknd.getLftjovl());
      setD1faln(ovlknd.getAnmvovl());
      setD1fapf(ovlknd.getTusvovl());
-     setD1fafn(ovlknd.getVrn1vovl().split("%")[0] + " " + ovlknd.getVrn2vovl().split("%")[0] + " " + ovlknd.getVrn3vovl().split("%")[0]);
+     setD1fafn(Utils.combine3FirstNames(ovlknd.getVrn1vovl(), ovlknd.getVrn2vovl(), ovlknd.getVrn3vovl()));
      setD1faca(ovlknd.getLevvovl());
      setD1faoc(ovlknd.getBrpvovl());
      setD1faay(ovlknd.getLfvrovl());
      setD1fall(ovlknd.getAdrvovl());
      setD1moln(ovlknd.getAnmmovl());
      setD1mopf(ovlknd.getTusmovl());
-     setD1mofn(ovlknd.getVrn1movl().split("%")[0] + " " + ovlknd.getVrn2movl().split("%")[0] + " " + ovlknd.getVrn3movl().split("%")[0]);
+     setD1mofn(Utils.combine3FirstNames(ovlknd.getVrn1movl(), ovlknd.getVrn2movl(), ovlknd.getVrn3movl()));
      setD1moca(ovlknd.getLevmovl());
      setD1mooc(ovlknd.getBrpmovl());
      setD1moay(ovlknd.getLfmrovl());

@@ -55,6 +55,23 @@ public class Utils {
 		
 	}
 	
+	public static String combine3FirstNames(String name1, String name2, String name3){
+		
+		String name = "";
+		
+		if(name1 != null) name = name1.split("%")[0];
+		name += " ";
+
+		if(name2 != null) name += name2.split("%")[0];
+		name += " ";
+
+		if(name3 != null) name += name3.split("%")[0];
+
+		
+		return name.trim();
+		
+		
+	}
 	
 	public static Connection getConnection(String database, String userid, String passwrd) throws Exception {
 		
@@ -609,8 +626,12 @@ public class Utils {
 			 for (final File child : file.listFiles()) {
 				 if(extensionFilter.accept(child)) {
 					 //connURL = "jdbc:ucanaccess://" + inputDirectory + File.separator + "PK.accdb";
-					 connURL = "jdbc:ucanaccess://" + inputDirectory + File.separator + child.getName();				         
+					 
+					 connURL = "jdbc:ucanaccess://" + inputDirectory + File.separator + child.getName();
+					 Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");  // Not needed on Windows
 					 conn = DriverManager.getConnection(connURL, "", "");
+					 
+					 
 					 s = conn.createStatement();
 					 String selTable = "SELECT * FROM " + tabName;
 
@@ -766,7 +787,7 @@ public class Utils {
 						 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("VARCHAR")) {
 							 e[0] = rs.getString(columnAnnotatedVariableToMSAField[index1] + 1);
 							
-							 if(e[0] == null) e[0] = ""; // We do this because the old DBF reader did it, and the code above relies on it
+							 //if(e[0] == null) e[0] = ""; // We do this because the old DBF reader did it, and the code above relies on it
 						 }
 
 						 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("TIMESTAMP")){

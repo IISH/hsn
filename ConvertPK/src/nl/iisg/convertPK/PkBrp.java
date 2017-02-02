@@ -71,14 +71,14 @@ public class PkBrp {
     			posFlag = 3;
     	}
     	else{
-    		if(position.equalsIgnoreCase("o")){
+    		if(position != null && position.equalsIgnoreCase("o")){
     			if(ex == true)
     				posFlag = 12;
     			else
     				posFlag = 2;
     		}
     		else
-    			if(position.equalsIgnoreCase("h")){
+    			if(position != null && position.equalsIgnoreCase("h")){
     				if(ex == true)
     					posFlag = 11;
     				else

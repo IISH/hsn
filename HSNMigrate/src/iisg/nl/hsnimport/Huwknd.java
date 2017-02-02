@@ -190,8 +190,9 @@ public void convert(EntityManager em){
 	 int seqNrMan = 1;
 	 int seqNrWom = 1;
 	 for(Huweer huweer: huweerL){
-		 if((huweer.getHuwer().equalsIgnoreCase("M") && huweer.getVlgnreh() != seqNrMan++) || (huweer.getHuwer().equalsIgnoreCase("V") && huweer.getVlgnreh() != seqNrWom++))
-			 Utils.message(101700 + Constants.E_SQM3SDSQ, getIdnr(), 0, "HSN_CIVREC_STD", "M3");  // 101700 is errorBase for sequence function
+		 if(huweer.getHuwer() != null)
+			 if((huweer.getHuwer().equalsIgnoreCase("M") && huweer.getVlgnreh() != seqNrMan++) || (huweer.getHuwer().equalsIgnoreCase("V") && huweer.getVlgnreh() != seqNrWom++))
+				 Utils.message(101700 + Constants.E_SQM3SDSQ, getIdnr(), 0, "HSN_CIVREC_STD", "M3");  // 101700 is errorBase for sequence function
 		
 		 huweer.convert(em);
 	 }

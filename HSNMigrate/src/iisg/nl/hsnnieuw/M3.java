@@ -45,7 +45,7 @@ public class M3 {
 	     setM3rpgn(huweer.getHuwer());
 	     setM3s_ln(huweer.getAnmeh());
 	     setM3s_pf(huweer.getTuseh());
-	     setM3s_fn(huweer.getVrn1eh().split("%")[0] + " " + huweer.getVrn2eh().split("%")[0] + " " + huweer.getVrn3eh().split("%")[0]);
+	     setM3s_fn(Utils.combine3FirstNames(huweer.getVrn1eh(), huweer.getVrn2eh(), huweer.getVrn3eh()));
 	     setM3s_sr(huweer.getEindeh());
 
 	     

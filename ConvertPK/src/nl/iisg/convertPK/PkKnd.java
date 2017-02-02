@@ -784,7 +784,7 @@ public class PkKnd {
 		
 		if(pkhw != null && pkhw.getHjrhuwp() > 0 && Common1.dayCount(pkhw.getHdghuwp(), pkhw.getHmdhuwp(), pkhw.getHjrhuwp()) > Common1.dayCount(b2pk.getStartDate())){
 
-			if(pkhw.getAnmhuwp().trim().length() == 0)
+			if(pkhw.getAnmhuwp() == null || pkhw.getAnmhuwp().trim().length() == 0)
 				System.out.println("PKHUW: IDNR = " + pkhw.getIdnr() + " Sequence Number " + pkhw.getVnrhuwp() + " heeft geen achternaam, skipped");
 			
 			
@@ -1042,11 +1042,13 @@ public class PkKnd {
     				String profession = pkbrp.getBeroepp();
     				String position   = pkbrp.getBrpposp();
     				
-    				if(!position.equalsIgnoreCase("n")){
-    					
-    					if(!profession.endsWith("(o)") && !profession.endsWith("(h)")){
-    						
-    						profession = profession + " (" + position + ")";
+    				if(position != null){
+    					if(!position.equalsIgnoreCase("n")){
+
+    						if(!profession.endsWith("(o)") && !profession.endsWith("(h)")){
+
+    							profession = profession + " (" + position + ")";
+    						}
     					}
     				}
     				
@@ -1178,7 +1180,11 @@ public class PkKnd {
     						break;
     					}
     					if(dateAfter == 0){
-    						dateAfter = Common1.dayCount(b2pk.getEndDate());
+    						if(b2pk.getEndDate() != null)
+    							dateAfter = Common1.dayCount(b2pk.getEndDate());
+    						else
+    							dateAfter = Common1.dayCount("01-01-2018");
+
     					}
     				}
 

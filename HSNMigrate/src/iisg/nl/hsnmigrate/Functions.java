@@ -418,6 +418,8 @@ public class Functions {
 	
 	public static int lastname_valid_f(String name){
 		
+		if(name == null) return 0;
+		
 		for(int i = 0; i < name.length(); i++)
 			if(!Character.isLetter(name.charAt(i)) && name.charAt(i) != ' ' && name.charAt(i) != ',' && name.charAt(i) != '$' && name.charAt(i) != '!')
 				return 200100;
@@ -589,12 +591,11 @@ public class Functions {
 			return location;
 	}
 
-	public static String[] splitField(String name1){
+	public static String[] splitField(String name){
    	 
 		//System.out.println("name = " + name1);
 		
 		//System.out.println("Splitfield, name =  " + name1);
-    	String name = name1.split("%")[0];
     	 
  		String prefix = null;   // separator = ","
  		String title = null;    // separator = "!"	    
@@ -602,6 +603,8 @@ public class Functions {
  		String remainder = null;
 
  		if(name != null){
+ 	    	name = name.split("%")[0];
+
  			if(name.split(",").length > 1){
  				remainder = name.split(",")[1];
  				name = name.split(",")[0];
