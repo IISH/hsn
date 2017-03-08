@@ -26,6 +26,7 @@ public class Ref_KG {
      @Column(name = "original")      private String    denomination;
    	 @Column(name = "standard")      private String    standard;
 	 @Column(name = "standard_code") private String    code;
+	 @Column(name = "standard_source") private String  source;
      @Transient                      private Boolean   needSave = false;
  
 
@@ -69,6 +70,18 @@ public String getCode() {
 
 public void setCode(String code) {
 	this.code = code;
+}
+
+
+
+public String getSource() {
+	return source;
+}
+
+
+
+public void setSource(String source) {
+	this.source = source;
 }
 
 

@@ -329,6 +329,10 @@ public class StandardizeCivilCertificates  implements Runnable {
 			query.executeUpdate();
 			query = em.createNativeQuery(CreateDBNieuw.M6);
 			query.executeUpdate();
+			
+			query = em.createNativeQuery(CreateDBNieuw.A1);
+			query.executeUpdate();
+
 
 
 			query = em.createNativeQuery(CreateDBNieuw.B0_TRUNCATE);
@@ -368,6 +372,9 @@ public class StandardizeCivilCertificates  implements Runnable {
 			query = em.createNativeQuery(CreateDBNieuw.M5_TRUNCATE);
 			query.executeUpdate();
 			query = em.createNativeQuery(CreateDBNieuw.M6_TRUNCATE);
+			query.executeUpdate();
+			
+			query = em.createNativeQuery(CreateDBNieuw.A1_TRUNCATE);
 			query.executeUpdate();
 
 
@@ -1376,6 +1383,7 @@ public class StandardizeCivilCertificates  implements Runnable {
         query.executeUpdate();
 
 		for(Stpb stpb: stpbL){
+			
 			stpb.convert(em);
 			if(++c%1000 == 0){
 				print("Processed " + c + " IDNR's");

@@ -335,7 +335,7 @@ public class Utils {
 		//String [] s = Utils.getLocationHierarchy(ceCertificate);
 		//int Id_C = Contxt.addCertificate(s[0], s[1], s[2], source, yearCertificate, sequenceNumberCertificate);
 		
-		if(1==1) return;
+		//if(1==1) return;
 		
 		
 		ContextElement ce = Contxt.locateCertificate(source, yearCertificate, sequenceNumberCertificate,  ceCertificate,  "Source");
@@ -362,7 +362,7 @@ public class Utils {
 			String dateType, String estimation, int day, int month, int year){
 
 		
-		if(1==1) return;
+		//if(1==1) return;
 		String [] s = Utils.getLocationHierarchy(ceCertificate);
 		String[] t = {null, null, null, null};
 		if(address != null)

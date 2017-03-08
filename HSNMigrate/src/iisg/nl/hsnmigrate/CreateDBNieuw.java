@@ -1,5 +1,6 @@
 package iisg.nl.hsnmigrate;
 
+
 public class CreateDBNieuw {
 	
 	public static final String[] tables = {"B0",   "B1",     "B2",     "B3",      "B4",      "B5",     "B6",      "D1",     "D2",     "D3",     "D4",     "M1",     "M2",     "M3",
@@ -559,7 +560,7 @@ public class CreateDBNieuw {
 			    "    INDEX        (IDNR)" +
 			    ") Engine=InnoDB;";
 
-
+/*
 	 public static final String A1 = 		
 
 			    
@@ -579,6 +580,65 @@ public class CreateDBNieuw {
 			    "    INDEX        (IDNR)" +
 			    ") Engine=InnoDB;";
 
+	*/
+	 
+	 // This table has been copied from the Population Register Standardization Code
+	 // and adapted for the Civil Certificates
+
+	 public static final String A1 = 
+			 
+			 " CREATE TABLE IF NOT EXISTS a1" +
+			 "  (" +
+
+		//	 " B1IDBG INT, " +
+		//	 " B2DIBG CHAR(10), " + 
+			 " IDNR INT, " +
+
+		//	 " B2RNBG SMALLINT, " +
+		//	 " B6VRNR SMALLINT, " +
+		//	 " B6MDNR CHAR(10), " +
+		//	 " B6MDFG TINYINT, " + 
+
+
+			 " ROLE SMALLINT, " + 
+
+			 " START_DATE CHAR(10), " + 
+			 " START_FLAG SMALLINT, " +
+			 " START_EST  SMALLINT, " +  
+
+			 " END_DATE CHAR(10), " + 
+			 " END_FLAG SMALLINT, " +
+			 " END_EST  SMALLINT, " +
+
+			 " MUNICIPALITY_ST VARCHAR("+ Const.Bigstring + "), " + 
+			 " MUNICIPALITY_NO SMALLINT, " + 
+
+			 " ADDRESS_ID INT, " +
+			 " STREET_ST VARCHAR(" + Const.Bigstring + "), " + 
+			 " QUARTER_ST VARCHAR(" + Const.Bigstring + "), " + 
+			 " PLACE_ST VARCHAR(" + Const.Bigstring + "), " + 
+			 " BOAT_ST VARCHAR(" + Const.Bigstring + "), " +
+			 " BERTH_ST VARCHAR(" + Const.Bigstring + "), " +
+			 " INSTIT_ST VARCHAR(" + Const.Bigstring + "), " +
+			 " LANDLORD_ST VARCHAR(" + Const.Bigstring + "), " +
+			 " OTHER_ST VARCHAR(" + Const.Bigstring + "), " +
+			 " ADDRESS_FG TINYINT, " + 
+
+			 " NUMBER_ST VARCHAR(" + Const.Smallstring + "), " +
+			 " ADDITION_ST VARCHAR(" + Const.Smallstring + "), " +
+
+		//	 " VERSIE VARCHAR(8), " +
+		//	 " ONDRZKO VARCHAR(8), " +
+		//	 " VERSIEO VARCHAR(8), " +
+		//	 " DATUM VARCHAR(10) " +
+		
+			 "    RecordID INT AUTO_INCREMENT, " +
+			 "    Primary Key  (RecordID), " +
+			 "    INDEX        (IDNR)" +
+			 ") Engine=InnoDB;";
+
+			 
+			
 
 
 
@@ -669,6 +729,8 @@ public class CreateDBNieuw {
 	 public static final String D2_TRUNCATE = " TRUNCATE TABLE d2;";
 	 public static final String D3_TRUNCATE = " TRUNCATE TABLE d3;";
 	 public static final String D4_TRUNCATE = " TRUNCATE TABLE d4;";
+	 
+	 public static final String A1_TRUNCATE = " TRUNCATE TABLE a1;";
 
 
 }

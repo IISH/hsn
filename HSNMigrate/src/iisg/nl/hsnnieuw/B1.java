@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import nl.iisg.ref.Ref;
 import nl.iisg.ref.Ref_Municipality;
@@ -63,6 +64,11 @@ public class B1 {
      @Column(name="D_E_P_O")      private String d_e_p_o;
      @Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
      @Column(name="RecordID")     private int recordID;
+     
+     @Transient                   private A1  b1rplla;  
+     @Transient                   private A1  b1molla;
+     @Transient                   private A1  b1inlla;
+
      
      
      public void transform(Gebknd gebknd){	
@@ -262,10 +268,26 @@ public class B1 {
             
             setB1inoc(Functions.profession_r(getB1inoc(), Constants.E_OCB1INOC, getIdnr(), 0, "HSN_CIVREC_STD", "B1"));
             setB1mooc(Functions.profession_r(getB1mooc(), Constants.E_OCB1MOOC, getIdnr(), 0, "HSN_CIVREC_STD", "B1"));
+            
+            
 
-            setB1inll(Functions.location_r(getB1inll(), Constants.E_LOB1INLL, getIdnr(), 0, "HSN_CIVREC_STD", "B1"));
-            setB1moll(Functions.location_r(getB1moll(), Constants.E_LOB1MOLL, getIdnr(), 0, "HSN_CIVREC_STD", "B1"));
-            setB1rpll(Functions.location_r(getB1rpll(), Constants.E_LOB1RPLL, getIdnr(), 0, "HSN_CIVREC_STD", "B1"));
+            //setB1inll(Functions.location_r(getB1inll(), Constants.E_LOB1INLL, getIdnr(), 0, "HSN_CIVREC_STD", "B1"));
+            //setB1moll(Functions.location_r(getB1moll(), Constants.E_LOB1MOLL, getIdnr(), 0, "HSN_CIVREC_STD", "B1"));
+            //setB1rpll(Functions.location_r(getB1rpll(), Constants.E_LOB1RPLL, getIdnr(), 0, "HSN_CIVREC_STD", "B1"));
+            
+            setB1rplla(Functions.location_r2(getB1rpll(), Constants.E_LOB1RPLL, getIdnr(), 0, "HSN_CIVREC_STD", "B1"));
+            if(getB1rplla() != null)
+               getB1rplla().setRole(1);
+            
+            setB1molla(Functions.location_r2(getB1moll(), Constants.E_LOB1MOLL, getIdnr(), 0, "HSN_CIVREC_STD", "B1"));
+            if(getB1molla() != null)
+                getB1molla().setRole(3);
+
+
+            setB1inlla(Functions.location_r2(getB1inll(), Constants.E_LOB1INLL, getIdnr(), 0, "HSN_CIVREC_STD", "B1"));
+            if(getB1inlla() != null)            
+               getB1inlla().setRole(4);
+
 
             // logic checks
             
@@ -703,6 +725,36 @@ public class B1 {
 	}
 	public void setRecordID(int recordID) {
 		this.recordID = recordID;
+	}
+
+
+	public A1 getB1rplla() {
+		return b1rplla;
+	}
+
+
+	public void setB1rplla(A1 b1rplla) {
+		this.b1rplla = b1rplla;
+	}
+
+
+	public A1 getB1molla() {
+		return b1molla;
+	}
+
+
+	public void setB1molla(A1 b1molla) {
+		this.b1molla = b1molla;
+	}
+
+
+	public A1 getB1inlla() {
+		return b1inlla;
+	}
+
+
+	public void setB1inlla(A1 b1inlla) {
+		this.b1inlla = b1inlla;
 	}
      
      

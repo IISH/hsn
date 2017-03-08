@@ -144,6 +144,12 @@ public class Gebknd {
 	 b1.transform(this);
 	 b1.truncate();
 	 em.persist(b1);
+	 
+	 // Save address objects
+	 
+	 if(b1.getB1rplla() != null) em.persist(b1.getB1rplla());
+	 if(b1.getB1molla() != null) em.persist(b1.getB1molla());
+	 if(b1.getB1inlla() != null) em.persist(b1.getB1inlla());
 
 	 seqNr = 1;
 	 for(Gebgtg gebgtg: gebgtgL){
@@ -197,6 +203,8 @@ public class Gebknd {
 
 	 if(ovlknd != null)
 		 ovlknd.convert(em);
+	 
+	 
 
  }
  

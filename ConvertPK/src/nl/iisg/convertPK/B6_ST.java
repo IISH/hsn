@@ -86,7 +86,7 @@ public class B6_ST {
 			setBoat(refAdd.getBoat());
 			setBerth(refAdd.getBerth());
 			setInstitution(refAdd.getInstitution());
-			setLandlord(refAdd.getLandlord());
+			setLandlord(refAdd.getLandlord()); 
 			setOther(refAdd.getOther());
 			setAddressID(refAdd.getAddressID());
 			//setAddressFlag(refAdd.); // new address type

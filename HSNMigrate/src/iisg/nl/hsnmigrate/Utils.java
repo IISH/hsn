@@ -633,7 +633,7 @@ public class Utils {
 					 
 					 
 					 s = conn.createStatement();
-					 String selTable = "SELECT * FROM " + tabName;
+					 String selTable = "SELECT * FROM " + tabName + " WHERE IDNR < 5000";  // test
 
 					 try {
 						 s.execute(selTable);

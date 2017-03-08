@@ -91,6 +91,7 @@
 		</properties>
 	</persistence-unit>
         <persistence-unit name="nieuw" transaction-type="RESOURCE_LOCAL">
+		<class>iisg.nl.hsnnieuw.A1</class>       		
 		<class>iisg.nl.hsnnieuw.B0</class>       		
 		<class>iisg.nl.hsnnieuw.B1</class>       		
 		<class>iisg.nl.hsnnieuw.B2</class>       		

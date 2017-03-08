@@ -76,6 +76,9 @@ public class Ref {
 
 	static    List<Ref_Address>              ref_address = null;
 	static    List<Ref_Address>              ref_address_x = new ArrayList<Ref_Address>();
+	static    HashMap<String, Ref_Address>   ref_address21 = null; // entries read from db 
+	static    HashMap<String, Ref_Address>   ref_address22 = null; // new entries  
+
 
 	static    List<Ref_Housenumber>          ref_housenumber = null;
 	static    List<Ref_Housenumber>          ref_housenumber_x = new ArrayList<Ref_Housenumber>();
@@ -468,14 +471,24 @@ public class Ref {
 		//EntityManager em = getNewEm_ref();	
 		EntityManager em = getEm_ref_2();
 		Query q = em.createQuery("select a from Ref_Address a");
-		ref_address  = q.getResultList();		
+		ref_address  = q.getResultList();
+		
+		ref_address21 = new HashMap<String, Ref_Address>();
+		ref_address22 = new HashMap<String, Ref_Address>();
 
+		
 		int highest_ID = 0;
 		int count = 0;
 		for(Ref_Address a: ref_address){
-			if(a.getAddressID() > highest_ID)
-				highest_ID = a.getAddressID();
-			count++;
+			
+			if(a.getOriginal() != null && a.getOriginal().trim().length() > 0){
+				
+				ref_address21.put(a.getOriginal().trim(), a);
+				
+				if(a.getAddressID() > highest_ID)
+					highest_ID = a.getAddressID();
+				count++;
+			}
 		}
 
 		Ref_Address.setCurrent_ID(highest_ID + 1); 
@@ -719,6 +732,8 @@ public class Ref {
 		kg.setDenomination(kg.getDenomination().trim());
 		//kg.setId_religion(Ref_KG.getCurrent_ID());
 		kg.setNeedSave(true);
+		kg.setSource("HSN");
+	
 
 		ref_KG_x.add(kg);
 
@@ -862,8 +877,9 @@ public class Ref {
 		String name = f.getOriginal().trim().toLowerCase();
 		f.setOriginal(f.getOriginal().trim().toLowerCase());
 		
-		if(getFamilyName(name) == null)
+		if(getFamilyName(name) == null){
 			ref_famName22.put(name, f);
+		}
 		
 		
 		
@@ -1541,7 +1557,43 @@ public class Ref {
 	}
 
 
+	public static Ref_Address getAddress2(String address){
+		
 
+		Ref_Address addressStandardized = ref_address21.get(address.trim());
+
+		if(addressStandardized != null){
+			return addressStandardized;
+		}
+		else{	
+			addressStandardized = ref_address22.get(address.trim());
+
+			if(addressStandardized != null){
+				return addressStandardized;
+			}
+
+		}
+
+		return null;
+		
+		
+	}
+	
+	public static void addAddress2(Ref_Address a){
+		
+		
+		String name = a.getOriginal().trim();
+		a.setOriginal(a.getOriginal().trim());
+		
+		if(getFamilyName(name) == null)
+			ref_address22.put(name, a);
+		
+		
+		
+	}
+
+
+	
 
 	public static Ref_Address getAddress(String street, String quarter, String place, String boat, String berth, String institution, String landlord, String other){
 
@@ -1762,9 +1814,9 @@ public class Ref {
 			Ref.truncateProfession(x);
 
 		if(ref_address != null)
-			for(Ref_Address x: ref_address)
+			for(Ref_Address x: ref_address21.values())
 				Ref.truncateAddress(x);
-		for(Ref_Address x: ref_address_x)
+		for(Ref_Address x: ref_address22.values())
 			Ref.truncateAddress(x);
 
 		if(ref_housenumber != null)
@@ -1812,13 +1864,24 @@ public class Ref {
 		//		count++;
 		//	}
 		
-		for(Ref_Address x: ref_address_x){
-			if(x.getNeedSave() == true){
-				em.persist(x);
+		//for(Ref_Address x: ref_address_x){
+		//	if(x.getNeedSave() == true){
+		//		em.persist(x);
+		//		count++;
+		//	}
+		//}
+		
+		if(ref_address22 != null){
+			for (Ref_Address ref_address : ref_address22.values()) {
 				count++;
+				em.persist(ref_address);
+
 			}
+			
+			ref_address22.clear();
+			
 		}
-		ref_address_x.clear();
+		
 
 		System.out.println("Saved " + count + " rows to Ref_Address");
 

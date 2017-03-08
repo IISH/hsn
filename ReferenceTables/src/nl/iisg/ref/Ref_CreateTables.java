@@ -12,7 +12,10 @@ public class Ref_CreateTables {
 		" create table if not exists ref_adres " +
 		" ( " +
 
-		" ADDRESS_ID int, " +
+		"address_id  int auto_increment," +
+		
+		" ORIGINAL varchar(" + Bigstring + "), " + 
+
 
 		" STREET_OR varchar(" + Bigstring + "), " + 
 		" STREET_ST varchar(" + Bigstring + "), " +
@@ -40,7 +43,11 @@ public class Ref_CreateTables {
 
 		" OA_OR varchar(" + Bigstring + "), " +
 
-		" NIEUWCODE char(1) " +
+		" NIEUWCODE char(1), " +
+		
+		" STANDARD_SOURCE varchar(" + Smallstring + "), " +
+		
+		" primary key (address_id)" +
 
 		");";
 

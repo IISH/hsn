@@ -58,7 +58,7 @@ public class D2 {
 			 Utils.addIndiv(em, getIdnr(), Id_I_FS, "DC D2", "SEX", "Male", "Missing", "Time_invariant", 0, 0, 0);
 			 
 		 
-		 if(getD2s_ca().equalsIgnoreCase("J")){
+		 if(getD2s_ca() != null && getD2s_ca().equalsIgnoreCase("J")){
 
 			 if(getD2s_oc() != null && getD2s_oc().trim().length() > 0)
 				 Utils.addIndiv(em, getIdnr(), Id_I_FS, "DC D2", "OCCUPATION_STANDARD", getD2s_oc(), "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());

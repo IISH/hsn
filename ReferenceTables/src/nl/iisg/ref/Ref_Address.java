@@ -17,6 +17,8 @@ public class Ref_Address {
 
 	@Id @Column(name = "ADDRESS_ID")  private int       addressID;
 	
+	@Column(name = "ORIGINAL")   private String     original;
+	
 	@Column(name = "STREET_OR")   private String    streetOriginal;
 	@Column(name = "STREET_ST")   private String    street;
 	
@@ -45,6 +47,7 @@ public class Ref_Address {
 
 	
 	@Column(name = "NIEUWCODE")   private String    code;
+	@Column(name = "STANDARD_SOURCE")   private String    source;
 	@Transient                    private Boolean   needSave = false;
 
 	
@@ -56,6 +59,15 @@ public class Ref_Address {
 
 	public void setAddressID(int addressID) {
 		this.addressID = addressID;
+	}
+
+		
+	public String getOriginal() {
+		return original;
+	}
+
+	public void setOriginal(String original) {
+		this.original = original;
 	}
 
 	public String getStreetOriginal() {
@@ -192,6 +204,14 @@ public class Ref_Address {
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
 	}
 
 	public static int getCurrent_ID() {

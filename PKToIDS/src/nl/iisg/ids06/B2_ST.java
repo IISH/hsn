@@ -196,41 +196,44 @@ public class B2_ST {
 			B2_ST b2PK = getRegistration().getPersons().get(0);
 			if(b2PK == this) return;
 
-			int birthyearPK = new Integer(b2PK.getDateOfBirth().substring(6, 10)).intValue();
-						
-			for(B313_ST b313: getRelationsToPKHolder()){
+			if(b2PK.getDateOfBirth() != null && b2PK.getDateOfBirth().length() == 10){
 				
-				switch(b313.getContentOfDynamicData()){
+				int birthyearPK = new Integer(b2PK.getDateOfBirth().substring(6, 10)).intValue();
 
-				case 2:  // Spouse
-				case 145:  // Echtgenoot Man
-				case 161:  // Partner
-					
-					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "BIRTH_DATE", null, "Reported", "Estimate [-50/50]", 1 , 1, birthyearPK -50, 1, 1, birthyearPK + 50);
-					break;
-				
-				case 3:  // Son
-				case 4:  // Daughter
-				case 8:  // Step Son
-				case 9:  // Step Daughter
-				case 133:  // Kind
-				case 134:  // Step Daughter
-					
-					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "BIRTH_DATE", null, "Reported", "Estimate [15/100]", 1 , 1, birthyearPK -15, 1, 1, birthyearPK + 15);
-					break;
-				
-				case 11:  // Father
-				case 21:  // Mother
-				case 61:  // Step-Father
-				case 71:  // Step-Mother
-					
-					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "BIRTH_DATE", null, "Reported", "Estimate [-15/-100]", 1 , 1, birthyearPK -100, 1, 1, birthyearPK - 15);
-					break;
+				for(B313_ST b313: getRelationsToPKHolder()){
 
-				default:   
+					switch(b313.getContentOfDynamicData()){
+
+					case 2:  // Spouse
+					case 145:  // Echtgenoot Man
+					case 161:  // Partner
+
+						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "BIRTH_DATE", null, "Reported", "Estimate [-50/50]", 1 , 1, birthyearPK -50, 1, 1, birthyearPK + 50);
+						break;
+
+					case 3:  // Son
+					case 4:  // Daughter
+					case 8:  // Step Son
+					case 9:  // Step Daughter
+					case 133:  // Kind
+					case 134:  // Step Daughter
+
+						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "BIRTH_DATE", null, "Reported", "Estimate [15/100]", 1 , 1, birthyearPK -15, 1, 1, birthyearPK + 15);
+						break;
+
+					case 11:  // Father
+					case 21:  // Mother
+					case 61:  // Step-Father
+					case 71:  // Step-Mother
+
+						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "BIRTH_DATE", null, "Reported", "Estimate [-15/-100]", 1 , 1, birthyearPK -100, 1, 1, birthyearPK - 15);
+						break;
+
+					default:   
+
+					}
 
 				}
-				
 			}
 		}
 		

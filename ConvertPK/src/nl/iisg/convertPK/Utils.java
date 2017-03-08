@@ -27,6 +27,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Table;
 
 import nl.iisg.ref.Ref;
+import nl.iisg.ref.Ref_Address;
 import nl.iisg.ref.Ref_FamilyName;
 import nl.iisg.ref.Ref_FirstName;
 import nl.iisg.ref.Ref_Housenumber;
@@ -422,6 +423,7 @@ public class Utils {
 
 	        // Fetch table
 	        
+	        //String selTable = "SELECT * FROM " + tabName + " where idnr < 10000";
 	        String selTable = "SELECT * FROM " + tabName;
 	        s.execute(selTable);
 	        ResultSet rs = s.getResultSet();
@@ -879,6 +881,23 @@ public class Utils {
 			Ref.addKG(k);
 			return original; 								          // Use the original value instead of the standard
 		}
+
+	}
+
+	public static Ref_Address standardizeAddress(String original){
+		
+		if(original == null || original.trim().length() == 0)
+			return null;
+
+		original = original.trim(); 
+	
+			
+		Ref_Address address = Ref.getAddress2(original);     		 // See if address is in our list
+		if(address != null)                                          // If it is...
+			return address;
+		else
+			return null;
+		
 
 	}
 

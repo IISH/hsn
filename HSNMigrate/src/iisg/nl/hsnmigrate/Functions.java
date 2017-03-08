@@ -563,6 +563,7 @@ public class Functions {
 
 	public static String location_r(String location, int errCode, int idnr, int year, String db, String tbl){
 
+		
 		final int errorBase = 200400; 
 
 
@@ -591,6 +592,42 @@ public class Functions {
 			return location;
 	}
 
+	public static iisg.nl.hsnnieuw.A1 location_r2(String location, int errCode, int idnr, int year, String db, String tbl){
+
+	// This routine will process addresses that are a mix of Places and Addresses
+
+		
+		if(location == null) return null;
+		
+		if(location.split(" ").length == 1){
+			
+			Ref_Location l = Ref.getLocation(location);
+			
+			if(l != null  && l.getStandardCode() != null && (l.getStandardCode().equalsIgnoreCase("y"))){ 
+			
+				iisg.nl.hsnnieuw.A1 a1 = new iisg.nl.hsnnieuw.A1();
+			
+				a1.setMunicipality(l.getMunicipality());
+				
+				a1.setInstitution(location); // For test, save input in output table
+				
+				return a1;
+			
+			}
+			
+		}
+		else{
+			
+			
+			
+			
+			
+		}
+		
+		return null;
+		
+		
+	}
 	public static String[] splitField(String name){
    	 
 		//System.out.println("name = " + name1);

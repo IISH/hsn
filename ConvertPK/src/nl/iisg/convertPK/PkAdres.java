@@ -51,8 +51,8 @@ public class PkAdres {
     	
     	// temp
     	
-    	b6.setInstitution(getPladrp());
-    	b6.setLandlord(getStradrp());
+    	//b6.setInstitution(getPladrp());
+    	//b6.setLandlord(getStradrp());
     	
     	// temp
     	
@@ -83,16 +83,16 @@ public class PkAdres {
 		
 		
 		
-		// First cut of municipality, can be overwritten later
+		// Municipality
 		
 		String municipality = getPladrp();
 		
 		if(municipality == null) return;
 		
-		String [] b = municipality.split("!");  
+		//String [] b = municipality.split("!");  
 		
-		if(b.length > 1)
-			municipality = b[b.length -1];
+		//if(b.length > 1)
+		//	municipality = b[b.length -1];
 			
 		
 		// Combine municipality with country
@@ -101,7 +101,7 @@ public class PkAdres {
 			municipality = municipality + " $" + getLndadrp();
 
     	ArrayList a = Utils.standardizeLocation(municipality);
-    	b6.setMunicipality((String)a.get(0));
+    	b6.setMunicipality((String)a.get(0));    
     	b6.setMunicipalityNumber((Integer)a.get(1));
 				
 
@@ -112,70 +112,71 @@ public class PkAdres {
 		String address = getStradrp();
 		if(address == null) return;
 		
-		// A2: See if address starts with an "&"
+		// See if address already in reference data
 		
-		if(address.length() > 1 &&  address.substring(0,1).equals("&")) return;
+		Ref_Address r = Utils.standardizeAddress(address);
 		
-		// Try Boat
-		
-		address = tryBoatInfo(b6, address);  // this sets boat
-		if(address == null) return;
-		
-		
-		// Try Locality
-		
-		address = tryLocalityInfo(b6, address);  // this sets place
-		if(address == null) return;
-
-		
-		// Try Quarter
-		
-		address = tryQuarterInfo(b6, address);  // this sets quarter
-		if(address == null) return;
-
-				
-		// Try NumberAndAddition
-		
-		address = tryNumberAndAdditionInfo(b6, address);  // this sets number and addition
-		if(address == null) return;
-
-				
-		// Try Street
-		
-		address = tryStreetInfo(b6, address);  // this sets street
-				
-				
-				
-    	// municipality
-    	
-		municipality = getPladrp();
-		
-		if(municipality == null) return;
-		
-		b = municipality.split("!");
-		
-		if(b.length > 1)
-			municipality = b[b.length -1];
+		if(r != null && r.getCode().equalsIgnoreCase("Y")){
 			
+			b6.setStreet(r.getStreet());
+			b6.setQuarter(r.getQuarter());
+			//b6.setPlace(r.getPlace());
+			b6.setBoat(r.getBoat());
+			b6.setBerth(r.getBerth());
+			b6.setInstitution(r.getInstitution());
+			b6.setOther(r.getOther());
+			
+			tryNumberAndAdditionInfo(b6, address); // This is only because ref_address does not save number and addition
+			
+		}
 		
-		// Combine municipality with place
+		else{
 		
-		if(b6.getPlace() != null)
-			municipality = municipality + "!" + b6.getPlace();		
-		
-		// Combine municipality with country
-		
-		if(getLndadrp() != null && !getLndadrp().equalsIgnoreCase("NL"))
-			municipality = municipality + " $" + getLndadrp();
+			// A2: See if address starts with an "&"
 
-    	a = Utils.standardizeLocation(municipality);
-    	b6.setMunicipality((String)a.get(0));
-    	b6.setMunicipalityNumber((Integer)a.get(1));
-				
+			if(address.length() > 1 &&  address.substring(0,1).equals("&")) return;
+
+			// Try Boat
+
+			address = tryBoatInfo(b6, address);  // this sets boat
+
+
+			// Try Quarter
+
+			address = tryQuarterInfo(b6, address);  // this sets quarter
+
+
+			// Try NumberAndAddition
+
+			address = tryNumberAndAdditionInfo(b6, address);  // this sets number and addition
+
+
+			// Try Street
+
+			address = tryStreetInfo(b6, address);  // this sets street
+
+			// Now add this address to reference data
+			
+			if(r == null){
+
+				Ref_Address ra = new Ref_Address();
+
+				ra.setOriginal(getStradrp().trim());
+				ra.setStreetOriginal(b6.getStreet());
+				ra.setQuarterOriginal(b6.getQuarter());
+				ra.setBoatOriginal(b6.getBoat());
+				ra.setCode("x");
+				ra.setSource("HSN PC");
+				Ref.addAddress2(ra);
+			}
+			
+		}	
 				
     }	   
     
     private String tryBoatInfo(B6_ST b6, String address){
+    	
+    	if(address == null) return "";
     	
     	if(address.length() >= 3 && address.substring(0, 3).equalsIgnoreCase("A/b")){ 
     		address = address.substring(3).trim();
@@ -266,7 +267,7 @@ public class PkAdres {
 	 * If it finds it, it sets the appropriate fields in the ras
 	 * A locality may be one element only that does not contain digits
 	 * 
-	 * Example: Bakkum/Straatweg 2 
+	 * Example: Bakkum!Castricum 
 	 * 
 	 */
 
@@ -274,8 +275,10 @@ public class PkAdres {
 	
 	private String tryLocalityInfo(B6_ST b6, String address){
 		
+    	if(address == null) return "";
+
 		
-		String [] a = address.split("[/]");
+		String [] a = address.split("[!]");
 		
 		//System.out.println(a);
 		
@@ -286,7 +289,7 @@ public class PkAdres {
 			
 			//System.out.println(b);
 
-			if(b.length == 1 && b[0].length() > 2){ // We have LOCALITY/ADDRESS 				
+			if(b.length == 1 && b[0].length() > 2){ // We have LOCALITY!MUNICIPALITY 				
 				b6.setPlace(b[0]);
 				
 				address = "";
@@ -313,6 +316,8 @@ public class PkAdres {
 
 		
 	private String tryQuarterInfo(B6_ST b6, String address){
+
+    	if(address == null) return "";
 
 
 		String [] a = address.split("[ ]+");
@@ -360,7 +365,8 @@ public class PkAdres {
 	 */
 	private String tryNumberAndAdditionInfo(B6_ST b6, String address){
 		
-		
+    	if(address == null) return "";
+
 		
 		String [] a = address.split("[ ]+");
 		
@@ -430,6 +436,9 @@ public class PkAdres {
 	
 	
 	private String tryStreetInfo(B6_ST b6, String address){
+		
+    	if(address == null) return "";
+
 		
 		b6.setStreet(address);
 		
