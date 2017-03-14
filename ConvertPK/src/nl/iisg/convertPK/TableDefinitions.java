@@ -459,7 +459,11 @@ public class TableDefinitions {
 
 		 "FTKODE       smallint," +
 		 "FTTYPE       varchar(2)," +
-		 "FOUT         varchar(" + XBigstring + ")" +
+		 "FOUT         varchar(" + XBigstring + "), " +
+		 
+         "RecordID INT AUTO_INCREMENT, " +
+         "    Primary Key( RecordID ), " +
+
 
 		 ");"; 
 	 
