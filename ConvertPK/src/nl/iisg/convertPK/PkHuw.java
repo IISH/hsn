@@ -128,46 +128,9 @@ public class PkHuw {
     	
     	// first name
     	
-    	b2.setFirstNameFlag(1);
-    	String firstName ="";
     	
-    	String firstName1 = getVn1huwp();
-    	
-    	if(firstName1 != null && firstName1.trim().length() > 0){
-			if(firstName1.split("%").length > 1){
-				firstName1 = firstName1.split("%")[0].trim();
-		    	b2.setFirstNameFlag(2);
-			}
+    	Utils.handleFirstNames(b2, getVn1huwp(), getVn2huwp(), getVn3huwp());
 
-			firstName += Utils.standardizeFirstName(firstName1);
-			firstName += " ";
-    	
-    	}    	
-
-    	String firstName2 = getVn2huwp();
-
-    	if(firstName2 != null && firstName2.trim().length() > 0){
-			if(firstName2.split("%").length > 1){
-				firstName2 = firstName2.split("%")[0].trim();
-				b2.setFirstNameFlag(2);  	
-			}
-
-			firstName += Utils.standardizeFirstName(firstName2);
-			firstName += " ";
-    	}    	
-
-    	String firstName3 = getVn3huwp();
-    	
-    	if(firstName3 != null && firstName3.trim().length() > 0){
-			if(firstName3.split("%").length > 1){
-				firstName3 = firstName3.split("%")[0].trim();
-				b2.setFirstNameFlag(2);  	
-			}
-			
-			firstName += Utils.standardizeFirstName(firstName3);
-    	}    	
-    	
-    	b2.setFirstName(firstName.trim());
 
     	// Prefix
     	

@@ -57,6 +57,9 @@ public class Ref {
 
 	static    List<Ref_FirstName>            ref_firstName = null;
 	static    List<Ref_FirstName>            ref_firstName_x = new ArrayList<Ref_FirstName>();
+	static    HashMap<String, Ref_FirstName>        ref_firstName21  = null; // entries read from the database
+	static    HashMap<String, Ref_FirstName>        ref_firstName22  = null; // new entries  
+
 
 	static    List<Ref_AINB>                 ref_AINB  = new ArrayList<Ref_AINB>();
 
@@ -82,9 +85,15 @@ public class Ref {
 
 	static    List<Ref_Housenumber>          ref_housenumber = null;
 	static    List<Ref_Housenumber>          ref_housenumber_x = new ArrayList<Ref_Housenumber>();
+	static    HashMap<String, Ref_Housenumber>        ref_houseNumber21  = null; // entries read from the database
+	static    HashMap<String, Ref_Housenumber>        ref_houseNumber22  = null; // new entries  
+
 
 	static    List<Ref_Housenumberaddition>          ref_housenumberaddition = null;
 	static    List<Ref_Housenumberaddition>          ref_housenumberaddition_x = new ArrayList<Ref_Housenumberaddition>();
+	static    HashMap<String, Ref_Housenumberaddition>        ref_houseNumberAddition21  = null; // entries read from the database
+	static    HashMap<String, Ref_Housenumberaddition>        ref_houseNumberAddition22  = null; // new entries  
+
 
 	static    List<Ref_Municipality>                 ref_Municipality  = new ArrayList<Ref_Municipality>();
 
@@ -303,7 +312,7 @@ public class Ref {
 	}
 
 	
-	public static void loadFirstName(){
+	public static void loadFirstNameOld(){
 
 		System.out.println("Reading Ref_FirstName");
 
@@ -334,6 +343,41 @@ public class Ref {
 		
 
 	}
+
+	public static void loadFirstName(){
+
+		System.out.println("Reading Ref_FirstName");
+
+		EntityManager em = getEm_ref_2();	
+		Query q = em.createQuery("select a from Ref_FirstName a");
+		List<Ref_FirstName> ref_firstName  = q.getResultList();		
+
+		int highest_ID = 0;
+		int count = 0;
+
+		ref_firstName21 = new HashMap<String, Ref_FirstName>();
+		ref_firstName22 = new HashMap<String, Ref_FirstName>();
+		
+		for(Ref_FirstName f: ref_firstName){
+
+			if(f.getOriginal() != null){
+				ref_firstName21.put(f.getOriginal().trim().toLowerCase(), f);
+
+				if(f.getFirstNameID() > highest_ID)
+					highest_ID = f.getFirstNameID();
+				count++;
+
+			}
+
+		}
+			
+		Ref_FirstName.setCurrent_ID(highest_ID + 1);
+		
+		
+		System.out.println("Read    Ref_FirstName " + count + " rows");
+
+	}
+
 
 	public static void loadPrefix(){
 
@@ -499,7 +543,7 @@ public class Ref {
 
 
 
-	public static void loadHousenumber(){
+	public static void loadHousenumberOld(){
 
 		System.out.println("Reading Ref_Housenumber");
 
@@ -533,7 +577,7 @@ public class Ref {
 
 	}
 
-	public static void loadHousenumberaddition(){
+	public static void loadHousenumberadditionOld(){
 
 		System.out.println("Reading Ref_Housenumberaddition");
 
@@ -566,6 +610,77 @@ public class Ref {
 
 
 	}
+	
+	public static void loadHousenumberaddition(){
+
+		System.out.println("Reading Ref_Housenumberaddition");
+
+		EntityManager em = getEm_ref_2();	
+		Query q = em.createQuery("select a from Ref_Housenumberaddition a");
+		List<Ref_Housenumberaddition> ref_housenumberaddition  = q.getResultList();		
+
+		int highest_ID = 0;
+		int count = 0;
+
+		ref_houseNumberAddition21 = new HashMap<String, Ref_Housenumberaddition>();
+		ref_houseNumberAddition22 = new HashMap<String, Ref_Housenumberaddition>();
+		
+		for(Ref_Housenumberaddition f: ref_housenumberaddition){
+
+			if(f.getOriginal() != null){
+				ref_houseNumberAddition21.put(f.getOriginal().trim().toLowerCase(), f);
+
+				if(f.getCurrent_ID() > highest_ID)
+					highest_ID = f.getCurrent_ID();
+				count++;
+
+			}
+
+		}
+			
+		Ref_Housenumberaddition.setCurrent_ID(highest_ID + 1);
+		
+		
+		System.out.println("Read    Ref_Housenumberaddition " + count + " rows");
+
+	}
+	
+	
+
+	public static void loadHousenumber(){
+
+		System.out.println("Reading Ref_Housenumber");
+
+		EntityManager em = getEm_ref_2();	
+		Query q = em.createQuery("select a from Ref_Housenumber a");
+		List<Ref_Housenumber> ref_housenumber  = q.getResultList();		
+
+		int highest_ID = 0;
+		int count = 0;
+
+		ref_houseNumber21 = new HashMap<String, Ref_Housenumber>();
+		ref_houseNumber22 = new HashMap<String, Ref_Housenumber>();
+		
+		for(Ref_Housenumber f: ref_housenumber){
+
+			if(f.getOriginal() != null){
+				ref_houseNumber21.put(f.getOriginal().trim().toLowerCase(), f);
+
+				if(f.getCurrent_ID() > highest_ID)
+					highest_ID = f.getCurrent_ID();
+				count++;
+
+			}
+
+		}
+			
+		Ref_Housenumber.setCurrent_ID(highest_ID + 1);
+		
+		
+		System.out.println("Read    Ref_Housenumber " + count + " rows");
+
+	}
+
 
 	public static void loadMunicipality(){
 
@@ -930,7 +1045,7 @@ public class Ref {
 
 
 
-	public static Ref_FirstName getFirstName(String name){
+	public static Ref_FirstName getFirstNameOld(String name){
 
 		if(name == null || name.trim().length() == 0)
 			return null;
@@ -959,7 +1074,29 @@ public class Ref {
 
 	}
 
-	public static void addFirstName(Ref_FirstName f){
+	public static Ref_FirstName getFirstName(String name){
+		
+
+		Ref_FirstName nameStandardized = ref_firstName21.get(name.trim().toLowerCase());
+
+		if(nameStandardized != null){
+			return nameStandardized;
+		}
+		else{	
+			nameStandardized = ref_firstName22.get(name.trim().toLowerCase());
+
+			if(nameStandardized != null){
+				return nameStandardized;
+			}
+
+		}
+
+		return null;
+		
+		
+	}
+
+	public static void addFirstNameOld(Ref_FirstName f){
 
 		
 		if(f == null || f.getOriginal() == null || f.getOriginal().trim().length() == 0)
@@ -994,6 +1131,21 @@ public class Ref {
 		}
 
 	}
+	
+	public static void addFirstName(Ref_FirstName f){
+		
+		
+		String name = f.getOriginal().trim().toLowerCase();
+		f.setOriginal(f.getOriginal().trim().toLowerCase());
+		
+		if(getFirstName(name) == null){
+			ref_firstName22.put(name, f);
+		}
+		
+		
+		
+	}
+
 
 	public static void truncateFirstName(Ref_FirstName f){
 
@@ -1296,7 +1448,7 @@ public class Ref {
 
 
 
-	public static Ref_Housenumber getHousenumber(String housenumber){
+	public static Ref_Housenumber getHousenumberOld(String housenumber){
 
 		if(housenumber == null || housenumber.trim().length() == 0)
 			return null;
@@ -1326,8 +1478,31 @@ public class Ref {
 		}
 		return null;		
 	}
+	
+	public static Ref_Housenumber getHousenumber(String name){
+		
 
-	public static void addHousenumber(Ref_Housenumber housenumber){
+		Ref_Housenumber numberStandardized = ref_houseNumber21.get(name.trim().toLowerCase());
+
+		if(numberStandardized != null){
+			return numberStandardized;
+		}
+		else{	
+			numberStandardized = ref_houseNumber22.get(name.trim().toLowerCase());
+
+			if(numberStandardized != null){
+				return numberStandardized;
+			}
+
+		}
+
+		return null;
+		
+		
+	}
+
+
+	public static void addHousenumberOld(Ref_Housenumber housenumber){
 
 		if(housenumber == null || housenumber.getOriginal() == null || housenumber.getOriginal().trim().length() == 0)
 			return;
@@ -1357,6 +1532,20 @@ public class Ref {
 			
 		}
 	}
+	
+	public static void addHousenumber(Ref_Housenumber housenumber){
+		
+		if(housenumber == null) return;		
+		
+		String name = housenumber.getOriginal().trim().toLowerCase();
+		housenumber.setOriginal(housenumber.getOriginal().trim().toLowerCase());
+		
+		if(getHousenumber(name) == null){
+			ref_houseNumber22.put(name, housenumber);
+		}
+		
+	}
+
 
 	public static void truncateHousenumber(Ref_Housenumber h){
 
@@ -1372,7 +1561,7 @@ public class Ref {
 
 
 
-	public static void addHousenumberaddition(Ref_Housenumberaddition housenumberaddition){
+	public static void addHousenumberadditionOld(Ref_Housenumberaddition housenumberaddition){
 
 		if(housenumberaddition == null || housenumberaddition.getOriginal() == null || housenumberaddition.getOriginal().trim().length() == 0)
 			return;
@@ -1402,9 +1591,23 @@ public class Ref {
 		
 	}
 
+	public static void addHousenumberaddition(Ref_Housenumberaddition housenumberaddition){
+		
+		if(housenumberaddition == null) return;		
+		
+		String name = housenumberaddition.getOriginal().trim().toLowerCase();
+		housenumberaddition.setOriginal(housenumberaddition.getOriginal().trim().toLowerCase());
+		
+		if(getHousenumberaddition(name) == null){
+			ref_houseNumberAddition22.put(name, housenumberaddition);
+		}
+		
+		
+		
+	}
 
 
-	public static Ref_Housenumberaddition getHousenumberaddition(String housenumberaddition){
+	public static Ref_Housenumberaddition getHousenumberadditionOld(String housenumberaddition){
 
 		if(housenumberaddition == null || housenumberaddition.trim().length() == 0)
 			return null;
@@ -1435,6 +1638,30 @@ public class Ref {
 		}
 		return null;		
 	}
+	
+	public static Ref_Housenumberaddition getHousenumberaddition(String name){
+		
+
+		Ref_Housenumberaddition additionStandardized = ref_houseNumberAddition21.get(name.trim().toLowerCase());
+
+		if(additionStandardized != null){
+			return additionStandardized;
+		}
+		else{	
+			additionStandardized = ref_houseNumberAddition22.get(name.trim().toLowerCase());
+
+			if(additionStandardized != null){
+				return additionStandardized;
+			}
+
+		}
+
+		return null;
+		
+		
+	}
+	
+
 
 	public static void truncateHousenumberaddition(Ref_Housenumberaddition a){
 
@@ -1819,17 +2046,15 @@ public class Ref {
 		for(Ref_Address x: ref_address22.values())
 			Ref.truncateAddress(x);
 
-		if(ref_housenumber != null)
-			for(Ref_Housenumber x: ref_housenumber)
+		
+		if(ref_houseNumber22 != null)
+			for(Ref_Housenumber x: ref_houseNumber22.values())
 				Ref.truncateHousenumber(x);
-		for(Ref_Housenumber x: ref_housenumber_x)
-			Ref.truncateHousenumber(x);
 
-		if(ref_housenumberaddition != null)
-			for(Ref_Housenumberaddition x: ref_housenumberaddition)
+		
+		if(ref_houseNumberAddition22 != null)
+			for(Ref_Housenumberaddition x: ref_houseNumberAddition22.values())
 				Ref.truncateHousenumberaddition(x);
-		for(Ref_Housenumberaddition x: ref_housenumberaddition_x)
-			Ref.truncateHousenumberaddition(x);
 
 		if(ref_KG != null)
 			for(Ref_KG x: ref_KG)
@@ -1850,7 +2075,7 @@ public class Ref {
 		System.out.println("Started saving reference tables");
 		EntityManager em = getEm_ref_2();	
 		
-		em.getTransaction().begin();
+		em.getTransaction().begin();   
 		
 		int count = 0;
 		
@@ -1888,46 +2113,38 @@ public class Ref {
 		
 		// Housenumber
 		
+		
 		count = 0;
-		if(ref_housenumber != null)
-			for(Ref_Housenumber x: ref_housenumber)
-				if(x.getNeedSave() == true){
-					em.persist(x);
-					count++;
-				}
 		
-		for(Ref_Housenumber x: ref_housenumber_x){
-			if(x.getNeedSave() == true){
-				em.persist(x);
+		if(ref_houseNumber22 != null){
+			for (Ref_Housenumber ref_hn : ref_houseNumber22.values()) {
 				count++;
+				em.persist(ref_hn);
+
 			}
+			ref_houseNumber22.clear();
 		}
-		ref_housenumber_x.clear();
+		System.out.println("Saved " + count + " rows to ref_housenumber");
+
+
 		
-		System.out.println("Saved " + count + " rows to Ref_Housenumber");
+
 
 
 		// Housenumberaddition
 		
 		count = 0;
-		if(ref_housenumberaddition != null)
-			for(Ref_Housenumberaddition x: ref_housenumberaddition)
-				if(x.getNeedSave() == true){
-					em.persist(x);
-					count++;
-				}
 		
-		for(Ref_Housenumberaddition x: ref_housenumberaddition_x){
-			if(x.getNeedSave() == true){
-				em.persist(x);
+		if(ref_houseNumberAddition22 != null){
+			for (Ref_Housenumberaddition ref_hna : ref_houseNumberAddition22.values()) {
 				count++;
+				em.persist(ref_hna);
+
 			}
+			ref_houseNumberAddition22.clear();
 		}
-		ref_housenumberaddition_x.clear();
+		System.out.println("Saved " + count + " rows to ref_housenumberaddition");
 
-		System.out.println("Saved " + count + " rows to Ref_Housenumberaddition");
-
-		
 		
         // FamilyName
 		
@@ -1974,22 +2191,14 @@ public class Ref {
 		
 		// FirstName
 
-		count = 0;
-		if(ref_firstName != null)
-			for(Ref_FirstName x: ref_firstName)
-				if(x.getNeedSave() == true){
-					em.persist(x); 
-					count++;
-				}
-		
-		for(Ref_FirstName x: ref_firstName_x){			
-			if(x.getNeedSave() == true){
-				em.persist(x); 
+		if(ref_firstName22 != null){
+			for (Ref_FirstName ref_firstname : ref_firstName22.values()) {
 				count++;
+				em.persist(ref_firstname);
+
 			}
+			ref_firstName22.clear();
 		}
-		
-		ref_firstName_x.clear();
 		System.out.println("Saved " + count + " rows to Ref_FirstName");
 
 		

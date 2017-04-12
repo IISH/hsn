@@ -396,7 +396,9 @@ public class PkAdres {
 					
 				}
 				
-				b6.setNumber(number);
+				// Standardize Number				
+				
+				b6.setNumber(Utils.standardizeHousenumber(number));
 				
 				
 				a[i-1] = "";
@@ -407,7 +409,10 @@ public class PkAdres {
 					addition += a[j];
 					a[j] = "";
 				}
-				b6.setAddition(addition);	
+				
+				// Standardize Addition
+				
+				b6.setAddition(Utils.standardizeHousenumberaddition(addition));	
 				
 				address = "";
 				for (int j = 0; j < a.length; j++)

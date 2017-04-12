@@ -462,7 +462,7 @@ public class TableDefinitions {
 		 "FOUT         varchar(" + XBigstring + "), " +
 		 
          "RecordID INT AUTO_INCREMENT, " +
-         "    Primary Key( RecordID ), " +
+         "    Primary Key( RecordID ) " +
 
 
 		 ");"; 

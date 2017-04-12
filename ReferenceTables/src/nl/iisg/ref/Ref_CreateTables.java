@@ -82,10 +82,11 @@ public class Ref_CreateTables {
 
 	" create table if not exists ref_huisnummer " +
 	" ( " +
-	" ID_HUISNUMMER int, " + 
+	" ID_HUISNUMMER int auto_increment, " + 
 	" ORIGINEEL varchar(" + Smallstring + "), " + 
 	" NUMMER varchar(" + Smallstring + "), " + 
-	" NIEUWCODE char(1) " +
+	" NIEUWCODE char(1), " +
+	" primary key (id_huisnummer)" +
 	" );";
 
 
@@ -93,10 +94,11 @@ public class Ref_CreateTables {
 
 	" create table if not exists ref_huisnummertoevoeging " +
 	" ( " +
-	" ID_HUISNUMMERTOEVOEGING int, " + 
+	" ID_HUISNUMMERTOEVOEGING int auto_increment, " + 
 	" ORIGINEEL varchar(" + Smallstring + "), " + 
 	" TOEVOEGING varchar(" + Smallstring + "), " +  
-	" NIEUWCODE char(1) " +
+	" NIEUWCODE char(1), " +
+	" primary key (id_huisnummertoevoeging)" +
 	" );";
 
 

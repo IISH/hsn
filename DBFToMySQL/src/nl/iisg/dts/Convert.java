@@ -56,10 +56,12 @@ public class Convert{
 
 			String[] a =  inputFile.split("[.\\\\]");
 
+			createTable += "links_temp.";
 			createTable += a[a.length - 2];
 			String tableName = a[a.length - 2];
+			tableName = "links_temp." + tableName;
 
-			System.out.println(tableName);
+			//System.out.println(tableName);
 			createTable += " (";
 
 			int numberOfFields = reader.getFieldCount();
@@ -72,7 +74,7 @@ public class Convert{
 				DBFField field = reader.getField( i);
 
 				createTable += field.getName();
-				//System.out.println(field.getName());
+				//System.out.println(field.getName() + "  " + (char) field.getDataType());
 				createTable += " ";
 				name.add(field.getName());
 
@@ -94,18 +96,23 @@ public class Convert{
 			}
 
 			createTable = createTable.substring(0, createTable.length()-2) + ");";
+			
+			System.out.println(createTable);
 
 			Connection conn = getConnection(database, userid, password);
 			Statement stmt = conn.createStatement();
 
 			String query = createTable;
 			stmt.executeUpdate(query);	  
+			//System.out.println("Return Code = "+ stmt.ge);
+			if(stmt.getWarnings() != null)
+				System.out.println(stmt.getWarnings());
 
 			// Truncate table
 			
 			stmt.executeUpdate("TRUNCATE TABLE " + tableName);	
 			
-			
+			//System.out.println("Start reading");
 			// Now, let us start reading the rows
 
 			Object []rowObjects;
@@ -113,12 +120,16 @@ public class Convert{
 			String insertStmt = "INSERT INTO " + tableName + " values"; 
 			String values = null;
 			int count = 0;
+			//System.out.println("Start reading 2");
 			while( (rowObjects = reader.nextRecord()) != null) {
 
+				//System.out.println("In main loop");
 				values = " (";
 				for( int i=0; i<rowObjects.length; i++) {
 
 					if(rowObjects[i] != null){
+						
+						//System.out.println("Type = " + type.get(i));
 
 						if(type.get(i).equals("N")){
 

@@ -260,7 +260,7 @@ public class PkKnd {
     	
     	
     	// First name
-    	
+    	/*
     	b2.setFamilyNameInterpreted(1);
     	String firstName ="";
     	
@@ -298,7 +298,9 @@ public class PkKnd {
     	}    	
     	
     	b2.setFirstName(firstName.trim());
-
+	    */
+    	
+    	Utils.handleFirstNames(b2, getVnm1perp(), getVnm2perp(), getVnm3perp());
     	
     	// Prefix
     	//System.out.println("++++> prefix = " + prefix + " standardized: "+ Utils.standardizePrefix(prefix));
@@ -523,45 +525,7 @@ public class PkKnd {
     	
     	// First Name
     	
-    	b2.setFirstNameFlag(1);
-    	firstName ="";
-    	
-    	firstName1 = getVnm1vdrp();
-    	
-    	if(firstName1 != null && firstName1.trim().length() > 0){
-			if(firstName1.split("%").length > 1){
-				firstName1 = firstName1.split("%")[0].trim();
-		    	b2.setFirstNameFlag(2);
-			}
-			firstName += Utils.standardizeFirstName(firstName1);
-			firstName += " ";
-    	
-    	}    	
-
-    	firstName2 = getVnm2vdrp();
-
-    	if(firstName2 != null && firstName2.trim().length() > 0){
-			if(firstName2.split("%").length > 1){
-				firstName2 = firstName2.split("%")[0].trim();
-				b2.setFirstNameFlag(2);  	
-			}
-
-			firstName += Utils.standardizeFirstName(firstName2);
-			firstName += " ";
-    	}    	
-
-    	firstName3 = getVnm3vdrp();
-    	
-    	if(firstName3 != null && firstName3.trim().length() > 0){
-			if(firstName3.split("%").length > 1){
-				firstName3 = firstName3.split("%")[0].trim();
-				b2.setFirstNameFlag(2);  	
-			}
-
-			firstName += Utils.standardizeFirstName(firstName3);
-    	}    	
-    	
-    	b2.setFirstName(firstName.trim());
+    	Utils.handleFirstNames(b2, getVnm1vdrp(), getVnm2vdrp(), getVnm3vdrp());
 
     	// prefix
     	
@@ -666,47 +630,9 @@ public class PkKnd {
 
     	// first name
     	
-    	b2.setFirstNameFlag(1);
-    	firstName ="";
-    	
-    	firstName1 = getVnm1mdrp();
-    	
-    	if(firstName1 != null && firstName1.trim().length() > 0){
-			if(firstName1.split("%").length > 1){
-				firstName1 = firstName1.split("%")[0].trim();
-		    	b2.setFirstNameFlag(2);
-			}
+    	Utils.handleFirstNames(b2, getVnm1mdrp(), getVnm2mdrp(), getVnm3mdrp());
 
-			firstName += Utils.standardizeFirstName(firstName1);
-			firstName += " ";
     	
-    	}    	
-
-    	firstName2 = getVnm2mdrp();
-
-    	if(firstName2 != null && firstName2.trim().length() > 0){
-			if(firstName2.split("%").length > 1){
-				firstName2 = firstName2.split("%")[0].trim();
-				b2.setFirstNameFlag(2);  	
-			}
-				
-			firstName += Utils.standardizeFirstName(firstName2);
-			firstName += " ";
-    	}    	
-
-    	firstName3 = getVnm3mdrp();
-    	
-    	if(firstName3 != null && firstName3.trim().length() > 0){
-			if(firstName3.split("%").length > 1){
-				firstName3 = firstName3.split("%")[0].trim();
-				b2.setFirstNameFlag(2);  	
-			}
-				
-			firstName += Utils.standardizeFirstName(firstName3);
-    	}    	
-    	
-    	b2.setFirstName(firstName.trim());
-
     	// Prefix
     	
     	if(getTusmdrp() == null || getTusmdrp().trim().length() == 0){

@@ -322,7 +322,7 @@ public class DBFReader {
 
 							throw new DBFException( "Failed to parse Float: " + e.getMessage());
 						}
-
+  
 						break;
 	
 					case 'N':
@@ -334,7 +334,7 @@ public class DBFReader {
 							t_numeric = Utils.trimLeftSpaces( t_numeric);
 
 							//System.out.println("t_numeric = " + new String( t_numeric));
-							if( t_numeric.length > 0 && !Utils.contains( t_numeric, (byte)'?') && !Utils.contains( t_numeric, (byte)'*')) {
+							if( t_numeric.length > 0 && !Utils.contains( t_numeric, (byte)'?') && !Utils.contains( t_numeric, (byte)'*') && !Utils.contains( t_numeric, (byte)'m')) {
 
 								recordObjects[i] = new Double( new String( t_numeric));
 								//System.out.println(recordObjects[i]);

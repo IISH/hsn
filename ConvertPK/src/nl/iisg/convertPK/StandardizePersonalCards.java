@@ -816,6 +816,7 @@ public class StandardizePersonalCards implements Runnable {
 
 
 		print("Saving Reference tables...");
+		Ref.truncate();
         Ref.finalise();     // write reference files to disk
         
 		print("Saving Message Table...");

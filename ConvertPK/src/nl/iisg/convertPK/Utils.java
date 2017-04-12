@@ -423,8 +423,8 @@ public class Utils {
 
 	        // Fetch table
 	        
-	        //String selTable = "SELECT * FROM " + tabName + " where idnr < 10000";
-	        String selTable = "SELECT * FROM " + tabName;
+	        String selTable = "SELECT * FROM " + tabName + " where idnr < 10000";
+	        //String selTable = "SELECT * FROM " + tabName;
 	        s.execute(selTable);
 	        ResultSet rs = s.getResultSet();
 	        ResultSetMetaData rsmd = rs.getMetaData();
@@ -689,7 +689,8 @@ public class Utils {
 			Ref_FirstName r = new Ref_FirstName();                   // firstName not in our list yet, allocate new one
 			r.setOriginal(original); 	                             // Original is this firstName
 			r.setCode("x");      									 // Indicate it has not yet been validated
-			r.setNeedSave(true);                           			 // Indicate that it must be saved											 
+			r.setNeedSave(true);                           			 // Indicate that it must be saved		
+			r.setSource("HSN_PC");
 			Ref.addFirstName(r);        							 // Add it to our list
 			return original;
 		}
@@ -811,6 +812,8 @@ public class Utils {
 		if(original == null || original.trim().length() == 0)
 			return null;
 		
+		//System.out.println("Standardizing number : " + original);
+		
 		original = original.trim(); 
 
 		Ref_Housenumber housenumber = Ref.getHousenumber(original);  // See if housenumber is already in our list
@@ -901,7 +904,69 @@ public class Utils {
 
 	}
 
+	static  void handleFirstNames(B2_ST b2, String fn1, String fn2, String fn3){
+		
+	
+    	b2.setFamilyNameInterpreted(1);
+    	String firstName ="";
+    	
+    	String firstName1 = fn1;
+    	
+    	if(firstName1 != null && firstName1.trim().length() > 0){
+			if(firstName1.split("%").length > 1){
+				firstName1 = firstName1.split("%")[0].trim();
+				b2.setFamilyNameInterpreted(2);  
+			}
+			// There may be arbitrary many names in firstName1, separated by space or ','
+			
+			for(String fn: firstName1.split(" ")){
+			
+				firstName += standardizeFirstName(fn);
+				firstName += " ";
+			}
+    	
+    	}    	
 
+    	String firstName2 = fn2;
+
+    	if(firstName2 != null && firstName2.trim().length() > 0){
+			if(firstName2.split("%").length > 1){
+				firstName2 = firstName2.split("%")[0].trim();
+				b2.setFamilyNameInterpreted(2);  	
+			}
+			// There may be arbitrary many names in firstName2, separated by space or ','
+			
+			for(String fn: firstName2.split(" ")){
+			
+				firstName += standardizeFirstName(fn);
+				firstName += " ";
+			}
+    	}    	
+
+    	String firstName3 = fn3;
+    	
+    	if(firstName3 != null && firstName3.trim().length() > 0){
+			if(firstName3.split("%").length > 1){
+				firstName3 = firstName3.split("%")[0].trim();
+				b2.setFamilyNameInterpreted(2);  	
+			}
+			
+			// There may be arbitrary many names in firstName3, separated by space or ','
+			
+			for(String fn: firstName3.split(" |,")){
+			
+				firstName += standardizeFirstName(fn);
+				firstName += " ";
+			}
+			
+			
+    	}    	
+    	
+    	b2.setFirstName(firstName.trim());
+
+
+	
+	}
 	
 	public static int[] transformDateFields(int day, int month, int year, int dayCorrected, int monthCorrected, int yearCorrected){
 

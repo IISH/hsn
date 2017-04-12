@@ -102,7 +102,7 @@ public class PkEigknd {
 
     	
     	// first name
-    	
+    	/*
     	b2.setFirstNameFlag(1);
     	String firstName ="";
     	
@@ -143,6 +143,10 @@ public class PkEigknd {
     	}    	
     	
     	b2.setFirstName(firstName.trim());
+    	*/
+    	
+    	Utils.handleFirstNames(b2, getVn1kndp(), getVn2kndp(), getVn3kndp());
+
 
     	
     	// Prefix

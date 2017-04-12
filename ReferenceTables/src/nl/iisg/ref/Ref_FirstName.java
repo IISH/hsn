@@ -26,6 +26,7 @@ public class Ref_FirstName{
 	@Column(name = "original")                private String    original;
 	@Column(name = "standard")                private String    name;
 	@Column(name = "standard_code")           private String    code;
+	@Column(name = "standard_source")         private String    source;
 	@Transient                                private Boolean   needSave = false;
 
 	
@@ -79,6 +80,16 @@ public class Ref_FirstName{
 
 	public void setNeedSave(Boolean needSave) {
 		this.needSave = needSave;
+	}
+
+
+	public String getSource() {
+		return source;
+	}
+
+
+	public void setSource(String source) {
+		this.source = source;
 	}
 
 
