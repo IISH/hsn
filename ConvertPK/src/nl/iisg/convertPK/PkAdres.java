@@ -136,6 +136,10 @@ public class PkAdres {
 
 			if(address.length() > 1 &&  address.substring(0,1).equals("&")) return;
 
+			// Remove [xxxxx]
+
+			address = removeStuff(b6, address);  // this removes stuff
+
 			// Try Boat
 
 			address = tryBoatInfo(b6, address);  // this sets boat
@@ -172,7 +176,47 @@ public class PkAdres {
 			
 		}	
 				
+		if(address != null){
+			String ad = address.trim();
+			if(ad.length() > 0)
+				b6.setRest(ad);			
+		}
     }	   
+    
+    
+    
+    // Remove unwanted stuff from address and park it in b6_st.rest
+    
+    private String removeStuff(B6_ST b6, String address){
+    	
+    	//System.out.println("Adres = " + address);
+    	
+    	if(address == null) return null;
+    	
+    	
+    	String addressOut1 = "";
+    	String addressOut2 = "";
+    	
+    	boolean ignore = false;
+    	
+    	for(int i = 0; i < address.length(); i++){
+    	
+    		if(address.charAt(i) == '[') ignore = true;
+    			
+    			
+    		if(ignore) addressOut2 += address.charAt(i);
+    		else       addressOut1 += address.charAt(i);
+    			
+    		if(address.charAt(i) == ']') ignore = false;
+    		
+    	}
+    	
+    	b6.setRest(addressOut2);
+    	
+    	return addressOut1;
+
+    	
+    }
     
     private String tryBoatInfo(B6_ST b6, String address){
     	
@@ -317,7 +361,7 @@ public class PkAdres {
 		
 	private String tryQuarterInfo(B6_ST b6, String address){
 
-    	if(address == null) return "";
+    	if(address == null  || address.trim().length() == 0) return "";
 
 
 		String [] a = address.split("[ ]+");
@@ -434,7 +478,7 @@ public class PkAdres {
 	
 	/**
 	 * 
-	 * This routine tries to find Street (=Straat) or Boat information from the string address
+	 * This routine tries to find Street (=Straat) information from the string address
 	 * If it finds it, it sets the appropriate fields in the ras
 	 * 
 	 */
@@ -442,12 +486,55 @@ public class PkAdres {
 	
 	private String tryStreetInfo(B6_ST b6, String address){
 		
-    	if(address == null) return "";
+		//b6.setStreet(address);
+		
+		//return null;
+		
+		
+		String [] a = address.split("[ ]+");
+		
+		//System.out.println(address +  "  " + a.length);
+
+		boolean num = false;
+		
+		a: for(int i = a.length  ; i > 0; i--){
+			
+			num = false;
+			for(int j = 0; j < a[i - 1].length(); j++){
+				
+				//num = Character.isDigit(a[i-1].charAt(j));				
+				//if(num) break a;
+				
+				if(a[i- 1].charAt(j) == '['){
+					num = true;
+					break a;
+				}
+				
+				if(a[i- 1].charAt(j) == ']'){
+					num = true;
+					break a;
+				}
+				
+				
+			}
+		}
+			
+		if(num){
+			//b6.setRest(address);
+			return address;
+		}
+		else{
+			b6.setStreet(address);
+			return null;
+		}
+			
+		
+		
+		
+    	
 
 		
-		b6.setStreet(address);
 		
-		return null;
 		
 		
 	}

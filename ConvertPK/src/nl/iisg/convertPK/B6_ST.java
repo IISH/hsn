@@ -52,6 +52,7 @@ public class B6_ST {
 	@Column(name = "INSTIT_ST")   private String    institution;
 	@Column(name = "LANDLORD_ST") private String    landlord;
 	@Column(name = "OTHER_ST")    private String    other;
+	@Column(name = "REST")        private String    rest;
 	@Column(name = "ADDRESS_FG")  private int       addressFlag;
 	
 	@Column(name = "NUMBER_ST")   private String    number;
@@ -231,6 +232,14 @@ public class B6_ST {
 			setOther(field);
 		}
 			
+		field = getRest();
+		allowedSize = TableDefinitions.Bigstring;
+		if(field != null && field.length() > allowedSize){
+			message("1500", "B6_ST", "REST", "" + allowedSize);
+			field = field.substring(0, allowedSize);
+			setRest(field);
+		}
+			
 		field = getNumber();
 		allowedSize = TableDefinitions.Smallstring;
 		if(field != null && field.length() > allowedSize){
@@ -271,6 +280,14 @@ public class B6_ST {
 	}
 
 
+
+	public String getRest() {
+		return rest;
+	}
+
+	public void setRest(String rest) {
+		this.rest = rest;
+	}
 
 	public int getKeyToSourceRegister() {
 		return keyToSourceRegister;

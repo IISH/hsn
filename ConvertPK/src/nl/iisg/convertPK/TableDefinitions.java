@@ -425,6 +425,7 @@ public class TableDefinitions {
 	 " INSTIT_ST VARCHAR(" + Bigstring + "), " +
 	 " LANDLORD_ST VARCHAR(" + Bigstring + "), " +
 	 " OTHER_ST VARCHAR(" + Bigstring + "), " +
+	 " REST VARCHAR(" + Bigstring + "), " +
 	 " ADDRESS_FG TINYINT, " + 
 
 	 " NUMBER_ST VARCHAR(" + Smallstring + "), " +
