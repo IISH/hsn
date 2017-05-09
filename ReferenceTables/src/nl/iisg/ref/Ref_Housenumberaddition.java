@@ -19,7 +19,7 @@ import javax.persistence.Transient;
  */
 
 @Entity
-@Table(name="ref_huisnummertoevoeging")
+@Table(name="ref_addition")
 public class Ref_Housenumberaddition{
 	
 	@Id @Column(name = "id_huisnummertoevoeging")   	private int       housenumberadditionID;

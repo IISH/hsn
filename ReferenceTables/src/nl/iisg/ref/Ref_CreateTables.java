@@ -9,7 +9,7 @@ public class Ref_CreateTables {
 	static final int Smallstring = 20;
 	public static final String Ref_Address  = 
 
-		" create table if not exists ref_adres " +
+		" create table if not exists ref_address " +
 		" ( " +
 
 		"address_id  int auto_increment," +
@@ -80,7 +80,7 @@ public class Ref_CreateTables {
 
 	public static final String Ref_Housenumber  =  
 
-	" create table if not exists ref_huisnummer " +
+	" create table if not exists ref_housenumber " +
 	" ( " +
 	" ID_HUISNUMMER int auto_increment, " + 
 	" ORIGINEEL varchar(" + Smallstring + "), " + 
@@ -92,7 +92,7 @@ public class Ref_CreateTables {
 
 	public static final String Ref_Housenumberaddition  =  
 
-	" create table if not exists ref_huisnummertoevoeging " +
+	" create table if not exists ref_addition " +
 	" ( " +
 	" ID_HUISNUMMERTOEVOEGING int auto_increment, " + 
 	" ORIGINEEL varchar(" + Smallstring + "), " + 

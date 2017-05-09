@@ -126,7 +126,15 @@ public class PkAdres {
 			b6.setInstitution(r.getInstitution());
 			b6.setOther(r.getOther());
 			
+			// This is a bit tricky: Ref_Address does not save number/addition
+			// So we analyze the address again and find the original number/addition 
+			// Next, we standardize them.
+			
 			tryNumberAndAdditionInfo(b6, address); // This is only because ref_address does not save number and addition
+			
+			
+			b6.setNumber(Utils.standardizeHousenumber(b6.getNumber()));             // Because it must still be standardized
+			b6.setAddition(Utils.standardizeHousenumberaddition((b6.getAddition()))); // Because it must still be standardized
 			
 		}
 		
@@ -175,12 +183,12 @@ public class PkAdres {
 			}
 			
 		}	
+		
+		if(address != null && address.trim().length() > 0)
+			b6.setRest(b6.getRest() + "++++" + address);
+		
 				
-		if(address != null){
-			String ad = address.trim();
-			if(ad.length() > 0)
-				b6.setRest(ad);			
-		}
+		
     }	   
     
     
@@ -211,7 +219,8 @@ public class PkAdres {
     		
     	}
     	
-    	b6.setRest(addressOut2);
+    	if(addressOut2.trim().length() > 0)
+    		b6.setRest(addressOut2.trim());
     	
     	return addressOut1;
 
@@ -456,7 +465,11 @@ public class PkAdres {
 				
 				// Standardize Addition
 				
-				b6.setAddition(Utils.standardizeHousenumberaddition(addition));	
+				
+				
+				b6.setAddition(Utils.standardizeHousenumberaddition(addition));
+				
+				//System.out.println(addition +  "   " + b6.getAddition());
 				
 				address = "";
 				for (int j = 0; j < a.length; j++)

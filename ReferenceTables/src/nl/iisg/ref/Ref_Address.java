@@ -12,7 +12,7 @@ import javax.persistence.Transient;
  */
 
 @Entity
-@Table(name="ref_adres")
+@Table(name="ref_address")
 public class Ref_Address {
 
 	@Id @Column(name = "ADDRESS_ID")  private int       addressID;

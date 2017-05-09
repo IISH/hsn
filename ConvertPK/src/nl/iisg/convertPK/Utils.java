@@ -840,12 +840,14 @@ public class Utils {
 			return null;
 			
 		
-		original = original.trim(); 
-
+		original = original.trim();
+		
+		
 		Ref_Housenumberaddition housenumberaddition = Ref.getHousenumberaddition(original);  // See if housenumberaddition is already in our list
 		if(housenumberaddition != null){       					                             // If it is...
 			if(housenumberaddition.getCode().equalsIgnoreCase("Y") || housenumberaddition.getCode().equalsIgnoreCase("U"))	  // .. See if it has been validated (by HSN Staff)
 				return housenumberaddition.getAddition(); 	    		 					 // Use the standardized value
+				
 			else                                                     						 // It is there, but not validated    
 				return original; 							         						 // Use the original value instead of the standard 
 		 }
