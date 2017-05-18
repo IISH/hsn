@@ -1809,11 +1809,11 @@ public class Ref {
 	public static void addAddress2(Ref_Address a){
 		
 		
-		String name = a.getOriginal().trim();
+		
 		a.setOriginal(a.getOriginal().trim());
 		
-		if(getFamilyName(name) == null)
-			ref_address22.put(name, a);
+		if(getAddress(a.getStreet(), a.getQuarter(), a.getPlace(), a.getBoat(), a.getBerth(), a.getInstitution(), a.getLandlord(), a.getOther()) == null)
+			ref_address22.put(a.getOriginal(), a);
 		
 		
 		
@@ -1933,8 +1933,16 @@ public class Ref {
 
 	public static void truncateAddress(Ref_Address a){
 
-		String field = a.getStreetOriginal();
+		String field = a.getOriginal();
 		int allowedSize = Bigstring;
+		if(field != null && field.length() > allowedSize){
+			message("1500", "REF_ADRES", "STREET_OR", "" + allowedSize);
+			field = field.substring(0, allowedSize);
+			a.setStreetOriginal(field);
+		}
+
+		field = a.getStreetOriginal();
+		allowedSize = Bigstring;
 		if(field != null && field.length() > allowedSize){
 			message("1500", "REF_ADRES", "STREET_OR", "" + allowedSize);
 			field = field.substring(0, allowedSize);
@@ -2040,11 +2048,9 @@ public class Ref {
 		for(Ref_Profession x: ref_profession_x)
 			Ref.truncateProfession(x);
 
-		if(ref_address != null)
-			for(Ref_Address x: ref_address21.values())
+		if(ref_address22 != null)
+			for(Ref_Address x: ref_address22.values())
 				Ref.truncateAddress(x);
-		for(Ref_Address x: ref_address22.values())
-			Ref.truncateAddress(x);
 
 		
 		if(ref_houseNumber22 != null)
@@ -2100,6 +2106,7 @@ public class Ref {
 			for (Ref_Address ref_address : ref_address22.values()) {
 				count++;
 				em.persist(ref_address);
+				//System.out.println(ref_address.getOriginal());
 
 			}
 			

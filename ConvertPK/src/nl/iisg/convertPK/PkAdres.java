@@ -114,7 +114,13 @@ public class PkAdres {
 		
 		// See if address already in reference data
 		
-		Ref_Address r = Utils.standardizeAddress(address);
+		String address2 = address;
+		
+		//System.out.println("0 "+ address);
+		
+		address2 = tryNumberAndAdditionInfo(b6, address2);  // remove number/addition
+		
+		Ref_Address r = Utils.standardizeAddress(address2);
 		
 		if(r != null && r.getCode().equalsIgnoreCase("Y")){
 			
@@ -130,7 +136,7 @@ public class PkAdres {
 			// So we analyze the address again and find the original number/addition 
 			// Next, we standardize them.
 			
-			tryNumberAndAdditionInfo(b6, address); // This is only because ref_address does not save number and addition
+			//tryNumberAndAdditionInfo(b6, address); // This is only because ref_address does not save number and addition
 			
 			
 			b6.setNumber(Utils.standardizeHousenumber(b6.getNumber()));             // Because it must still be standardized
@@ -146,8 +152,19 @@ public class PkAdres {
 
 			// Remove [xxxxx]
 
-			address = removeStuff(b6, address);  // this removes stuff
+			//address = removeStuff(b6, address);  // this removes stuff
 
+			// Try NumberAndAddition
+			
+			//System.out.println("1 " +  address);
+
+			address = tryNumberAndAdditionInfo(b6, address);  // this sets number and addition
+
+			//System.out.println("2 " +  address);
+
+			
+			address2 = address; // save address without number/addition
+			
 			// Try Boat
 
 			address = tryBoatInfo(b6, address);  // this sets boat
@@ -156,11 +173,9 @@ public class PkAdres {
 			// Try Quarter
 
 			address = tryQuarterInfo(b6, address);  // this sets quarter
-
-
-			// Try NumberAndAddition
-
-			address = tryNumberAndAdditionInfo(b6, address);  // this sets number and addition
+			
+			
+			//System.out.println("3 "+ b6.getQuarter());
 
 
 			// Try Street
@@ -169,11 +184,13 @@ public class PkAdres {
 
 			// Now add this address to reference data
 			
-			if(r == null){
+			if(r == null && address2 != null && address2.trim().length() > 0){
 
 				Ref_Address ra = new Ref_Address();
 
-				ra.setOriginal(getStradrp().trim());
+				//System.out.println("4 "+ b6.getQuarter());
+				
+				ra.setOriginal(address2.trim());
 				ra.setStreetOriginal(b6.getStreet());
 				ra.setQuarterOriginal(b6.getQuarter());
 				ra.setBoatOriginal(b6.getBoat());
