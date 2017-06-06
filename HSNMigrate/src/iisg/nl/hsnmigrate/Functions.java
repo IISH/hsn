@@ -608,6 +608,7 @@ public class Functions {
 				iisg.nl.hsnnieuw.A1 a1 = new iisg.nl.hsnnieuw.A1();
 			
 				a1.setMunicipality(l.getMunicipality());
+				a1.setMunicipalityNumber(l.getLocationNo() + "");
 				
 				a1.setInstitution(location); // For test, save input in output table
 				
@@ -617,10 +618,7 @@ public class Functions {
 			
 		}
 		else{
-			
-			
-			
-			
+			location_r(location, errCode, idnr,  year, db, tbl);
 			
 		}
 		

@@ -112,6 +112,7 @@ public class Ref {
 	public static final int XBigstring = 256;
 	public static final int Bigstring = 80;
 	public static final int Smallstring = 15;
+	public static final int Mediumstring = 30;
 	
 	
 	
@@ -1359,7 +1360,7 @@ public class Ref {
 	public static void truncatePrefix(Ref_Prefix p){
 
 		String field = p.getOriginal();
-		int allowedSize = Smallstring;
+		int allowedSize = Mediumstring;
 		if(field != null && field.length() > allowedSize){
 			message("1500", "REF_PREFIX", "ORIGINEEL", "" + allowedSize);
 			field = field.substring(0, allowedSize);
@@ -1808,11 +1809,11 @@ public class Ref {
 	
 	public static void addAddress2(Ref_Address a){
 		
-		
+		//System.out.println("Add address2, count = " + ref_address22.size());
 		
 		a.setOriginal(a.getOriginal().trim());
 		
-		if(getAddress(a.getStreet(), a.getQuarter(), a.getPlace(), a.getBoat(), a.getBerth(), a.getInstitution(), a.getLandlord(), a.getOther()) == null)
+		if(getAddress2(a.getOriginal()) == null)
 			ref_address22.put(a.getOriginal(), a);
 		
 		
@@ -2101,6 +2102,9 @@ public class Ref {
 		//		count++;
 		//	}
 		//}
+		
+		
+		//System.out.println("ref_address22 count = "+ ref_address22.size());
 		
 		if(ref_address22 != null){
 			for (Ref_Address ref_address : ref_address22.values()) {
