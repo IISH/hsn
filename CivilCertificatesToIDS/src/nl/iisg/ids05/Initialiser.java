@@ -17,7 +17,7 @@ public class Initialiser {
 		EntityManagerFactory              factory = Persistence.createEntityManagerFactory("hsnnieuw");
 		EntityManager                     em      = factory.createEntityManager(); 
 
-		String [] tables = {"B0", "B1", "B2", "B3", "B4", "B5", "B6", "M1", "M2", "M3", "M4", "M5", "M6", "D1", "D2", "D3", "D4"};
+		String [] tables = {"A1", "B0", "B1", "B2", "B3", "B4", "B5", "B6", "M1", "M2", "M3", "M4", "M5", "M6", "D1", "D2", "D3", "D4"};
 		
 		
 		for(int i = 0; i < tables.length; i++){
@@ -83,9 +83,25 @@ public class Initialiser {
 
 	public void linkObjects(ArrayList<ArrayList> all){
 		
+		// Sort A1 table  
+
+		ArrayList<A1> a1List = all.get(0);
+				
+		Collections.sort(a1List, new Comparator<A1>()
+				{public int compare(A1 a11, A1 a12){
+					if(a11.getIdnr() < a12.getIdnr())
+						return -1;
+					if(a11.getIdnr() > a12.getIdnr())
+						return  1;
+					if(a11.getRole() < a12.getRole())
+						return -1;
+					if(a11.getRole() > a12.getRole())
+						return  1;
+					return 0;}});
+		
 		// Sort B* tables  
 
-		ArrayList<B0> b0List = all.get(0);
+		ArrayList<B0> b0List = all.get(1);
 		
 		Collections.sort(b0List, new Comparator<B0>()
 				{public int compare(B0 b01, B0 b02){
@@ -95,7 +111,7 @@ public class Initialiser {
 						return 1;
 					return 0;}});
 		
-		ArrayList<B1> b1List = all.get(1);
+		ArrayList<B1> b1List = all.get(2);
 		
 		Collections.sort(b1List, new Comparator<B1>()
 				{public int compare(B1 b11, B1 b12){
@@ -105,7 +121,7 @@ public class Initialiser {
 						return 1;
 					return 0;}});	
 		
-		ArrayList<B2> b2List = all.get(2);
+		ArrayList<B2> b2List = all.get(3);
 		
 		Collections.sort(b2List, new Comparator<B2>()
 				{public int compare(B2 b21, B2 b22){
@@ -113,9 +129,13 @@ public class Initialiser {
 						return -1;
 					if(b21.getIdnr() > b22.getIdnr())
 						return 1;
+					if(b21.getB2w_sq() < b22.getB2w_sq())
+						return -1;
+					if(b21.getB2w_sq() > b22.getB2w_sq())
+						return 1;
 					return 0;}});	
 		
-		ArrayList<B3> b3List = all.get(3);
+		ArrayList<B3> b3List = all.get(4);
 		
 		Collections.sort(b3List, new Comparator<B3>()
 				{public int compare(B3 b31, B3 b32){
@@ -125,7 +145,7 @@ public class Initialiser {
 						return 1;
 					return 0;}});	
 		
-		ArrayList<B4> b4List = all.get(4);
+		ArrayList<B4> b4List = all.get(5);
 		
 		Collections.sort(b4List, new Comparator<B4>()
 				{public int compare(B4 b41, B4 b42){
@@ -135,7 +155,7 @@ public class Initialiser {
 						return 1;
 					return 0;}});	
 		
-		ArrayList<B5> b5List = all.get(5);
+		ArrayList<B5> b5List = all.get(6);
 		
 		Collections.sort(b5List, new Comparator<B5>()
 				{public int compare(B5 b51, B5 b52){
@@ -146,7 +166,7 @@ public class Initialiser {
 					return 0;}});	
 		
 
-		ArrayList<B6> b6List = all.get(6);
+		ArrayList<B6> b6List = all.get(7);
 		
 		Collections.sort(b6List, new Comparator<B6>()
 				{public int compare(B6 b61, B6 b62){
@@ -160,7 +180,7 @@ public class Initialiser {
 
 		// sort M* tables
 		
-		ArrayList<M1> m1List = all.get(7);
+		ArrayList<M1> m1List = all.get(8);
 		
 		Collections.sort(m1List, new Comparator<M1>()
 				{public int compare(M1 m11, M1 m12){
@@ -175,7 +195,7 @@ public class Initialiser {
 					return 0;}});	
 		
 
-		ArrayList<M2> m2List = all.get(8);
+		ArrayList<M2> m2List = all.get(9);
 		
 		Collections.sort(m2List, new Comparator<M2>()
 				{public int compare(M2 m21, M2 m22){
@@ -189,7 +209,7 @@ public class Initialiser {
 						return 1;
 					return 0;}});	
 		
-		ArrayList<M3> m3List = all.get(9);
+		ArrayList<M3> m3List = all.get(10);
 		
 		Collections.sort(m3List, new Comparator<M3>()
 				{public int compare(M3 m31, M3 m32){
@@ -203,7 +223,7 @@ public class Initialiser {
 						return 1;
 					return 0;}});	
 		
-		ArrayList<M4> m4List = all.get(10);
+		ArrayList<M4> m4List = all.get(11);
 		
 		Collections.sort(m4List, new Comparator<M4>()
 				{public int compare(M4 m41, M4 m42){
@@ -217,7 +237,7 @@ public class Initialiser {
 						return 1;
 					return 0;}});	
 		
-		ArrayList<M5> m5List = all.get(11);
+		ArrayList<M5> m5List = all.get(12);
 		
 		Collections.sort(m5List, new Comparator<M5>()
 				{public int compare(M5 m51, M5 m52){
@@ -231,7 +251,7 @@ public class Initialiser {
 						return 1;
 					return 0;}});	
 		
-		ArrayList<M6> m6List = all.get(12);
+		ArrayList<M6> m6List = all.get(13);
 		
 		Collections.sort(m6List, new Comparator<M6>()
 				{public int compare(M6 m61, M6 m62){
@@ -248,7 +268,7 @@ public class Initialiser {
 		
 		// Sort D* tables
 		
-		ArrayList<D1> d1List = all.get(13);
+		ArrayList<D1> d1List = all.get(14);
 		
 		Collections.sort(d1List, new Comparator<D1>()
 				{public int compare(D1 d11, D1 d12){
@@ -258,7 +278,7 @@ public class Initialiser {
 						return 1;
 					return 0;}});	
 		
-		ArrayList<D2> d2List = all.get(14);
+		ArrayList<D2> d2List = all.get(15);
 		
 		Collections.sort(d2List, new Comparator<D2>()
 				{public int compare(D2 d21, D2 d22){
@@ -268,7 +288,7 @@ public class Initialiser {
 						return 1;
 					return 0;}});	
 		
-		ArrayList<D3> d3List = all.get(15);
+		ArrayList<D3> d3List = all.get(16);
 		
 		Collections.sort(d3List, new Comparator<D3>()
 				{public int compare(D3 d31, D3 d32){
@@ -278,7 +298,7 @@ public class Initialiser {
 						return 1;
 					return 0;}});	
 		
-		ArrayList<D4> d4List = all.get(16);
+		ArrayList<D4> d4List = all.get(17);
 		
 		Collections.sort(d4List, new Comparator<D4>()
 				{public int compare(D4 d41, D4 d42){
@@ -290,6 +310,8 @@ public class Initialiser {
 		
 
 
+		int i_a1 = 0;
+		
 		int i_b1 = 0;
 		int i_b2 = 0;
 		int i_b3 = 0;

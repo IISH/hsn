@@ -1,6 +1,9 @@
 package iisg.nl.hsnmigrate;
 
 import iisg.nl.hsnlog.Log;
+import nl.iisg.ref.Ref;
+import nl.iisg.ref.Ref_Housenumber;
+import nl.iisg.ref.Ref_Housenumberaddition;
 
 import java.io.EOFException;
 import java.io.File;
@@ -633,7 +636,7 @@ public class Utils {
 					 
 					 
 					 s = conn.createStatement();
-					 String selTable = "SELECT * FROM " + tabName + " WHERE IDNR < 5000";  // test
+					 String selTable = "SELECT * FROM " + tabName + " WHERE IDNR < 15000";  // test
 
 					 try {
 						 s.execute(selTable);
@@ -855,6 +858,61 @@ public class Utils {
 
 	 }		
 
+		public static String standardizeHousenumber(String original){
+			
+			
+			if(original == null || original.trim().length() == 0)
+				return null;
+			
+			//System.out.println("Standardizing number : " + original);
+			
+			original = original.trim(); 
+
+			Ref_Housenumber housenumber = Ref.getHousenumber(original);  // See if housenumber is already in our list
+			if(housenumber != null){                                     // If it is...
+				if(housenumber.getCode().equalsIgnoreCase("Y") || housenumber.getCode().equalsIgnoreCase("U"))	// .. See if it has been validated (by HSN Staff)
+					return housenumber.getHousenumber(); 	    		 // Use the standardized value
+				else                                                     // It is there, but not validated    
+					return original; 							         // Use the original value instead of the standard 
+			 }
+			else{
+				Ref_Housenumber r = new Ref_Housenumber();               // housenumber not in our list yet, allocate new one
+				r.setOriginal(original); 	                             // Original is this housenumber
+				r.setCode("x");      									 // Indicate it has not yet been validated
+				r.setNeedSave(true);                           			 // Indicate that it must be saved											 
+				Ref.addHousenumber(r);        							 // Add it to our list
+				return original;
+			}
+
+		}
+
+		public static String standardizeHousenumberaddition(String original){
+
+			if(original == null || original.trim().length() == 0)
+				return null;
+				
+			
+			original = original.trim();
+			
+			
+			Ref_Housenumberaddition housenumberaddition = Ref.getHousenumberaddition(original);  // See if housenumberaddition is already in our list
+			if(housenumberaddition != null){       					                             // If it is...
+				if(housenumberaddition.getCode().equalsIgnoreCase("Y") || housenumberaddition.getCode().equalsIgnoreCase("U"))	  // .. See if it has been validated (by HSN Staff)
+					return housenumberaddition.getAddition(); 	    		 					 // Use the standardized value
+					
+				else                                                     						 // It is there, but not validated    
+					return original; 							         						 // Use the original value instead of the standard 
+			 }
+			else{
+				Ref_Housenumberaddition r = new Ref_Housenumberaddition();   	                 // housenumberaddition not in our list yet, allocate new one
+				r.setOriginal(original); 	                            						 // Original is this housenumberaddition
+				r.setCode("x");      									 						 // Indicate it has not yet been validated
+				r.setNeedSave(true);                           									 // Indicate that it must be saved											 
+				Ref.addHousenumberaddition(r);        											 // Add it to our list
+				return original;
+			}
+
+		}
 
 	 
 	public static EntityManagerFactory getFactory_nieuw() {

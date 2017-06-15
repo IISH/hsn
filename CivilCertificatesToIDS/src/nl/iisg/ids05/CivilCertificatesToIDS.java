@@ -57,7 +57,7 @@ public class CivilCertificatesToIDS implements Runnable{
   public static void main( String args[]) {
 
 	ArrayList<ArrayList> all = new ArrayList<ArrayList>();
-	String [] tables = {"B0", "B1", "B2", "B3", "B4", "B5", "B6", "M1", "M2", "M3", "M4", "M5", "M6", "D1", "D2", "D3", "D4"};
+	String [] tables = {"A1", "B0", "B1", "B2", "B3", "B4", "B5", "B6", "M1", "M2", "M3", "M4", "M5", "M6", "D1", "D2", "D3", "D4"};
 
     print("\nCivil Certificates - to IDS      started\n");
 

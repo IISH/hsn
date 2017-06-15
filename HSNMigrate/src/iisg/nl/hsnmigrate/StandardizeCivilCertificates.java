@@ -335,6 +335,8 @@ public class StandardizeCivilCertificates  implements Runnable {
 
 
 
+			query = em.createNativeQuery(CreateDBNieuw.A1_TRUNCATE);
+			query.executeUpdate();
 			query = em.createNativeQuery(CreateDBNieuw.B0_TRUNCATE);
 			query.executeUpdate();
 			query = em.createNativeQuery(CreateDBNieuw.B1_TRUNCATE);

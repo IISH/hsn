@@ -1,5 +1,6 @@
 package iisg.nl.hsnmigrate;
 
+import iisg.nl.hsnnieuw.A1;
 import nl.iisg.ref.*;
 
 public class Functions {
@@ -592,40 +593,133 @@ public class Functions {
 			return location;
 	}
 
-	public static iisg.nl.hsnnieuw.A1 location_r2(String location, int errCode, int idnr, int year, String db, String tbl){
+	public static A1 location_r2(String location, int errCode, int idnr, int year, String db, String tbl){
 
 	// This routine will process addresses that are a mix of Places and Addresses
+		
+		iisg.nl.hsnnieuw.A1 a1 = null;
 
-		
-		if(location == null) return null;
-		
-		if(location.split(" ").length == 1){
-			
-			Ref_Location l = Ref.getLocation(location);
-			
+		a1 = new iisg.nl.hsnnieuw.A1();
+
+		String [] a = location.split("[ ,]");
+
+		if(validPlace(a[a.length - 1])){
+
+			Ref_Location l = Ref.getLocation(a[a.length - 1]);
+
 			if(l != null  && l.getStandardCode() != null && (l.getStandardCode().equalsIgnoreCase("y"))){ 
-			
-				iisg.nl.hsnnieuw.A1 a1 = new iisg.nl.hsnnieuw.A1();
-			
+				
 				a1.setMunicipality(l.getMunicipality());
 				a1.setMunicipalityNumber(l.getLocationNo() + "");
-				
-				a1.setInstitution(location); // For test, save input in output table
-				
-				return a1;
+
+				a[a.length - 1] = "";
+
+			}	
+
+			String location2 = "";
+			for(int i = 0; i < a.length; i++)
+				location2 = location2 + a[i] + " ";
+
+			location2 = location2.trim(); 
+
+			if(a1 != null){
+				a1.setBerth(location);
+				a1.setInstitution(location2);
+			}
 			
+			location = location2.trim();
+		}
+		
+		String address;
+		
+		address = tryNumberAndAdditionInf(a1,  location);  // this sets number and addition
+		
+		
+		return a1;
+
+	}
+	
+ 
+
+  
+
+    static  String tryNumberAndAdditionInf(A1 a1, String address) {
+		
+    	if(address == null) return "";
+
+		
+		String [] a = address.split("[ ]+");
+		
+		//System.out.println(address +  "  " + a.length);
+
+		
+		for(int i = a.length  ; i > 0; i--){
+			
+			if(a[i-1].length() == 0) break;
+			
+			if(Character.isDigit(a[i-1].charAt(0)) == true){
+				
+				//b6.setNumber(a[i-1]);
+				
+				boolean setNumber = true;
+				String number = "";
+				String addition = "";
+				for(int j = 0; j < a[i-1].length(); j++){
+					
+					if(Character.isDigit(a[i-1].charAt(j)) == false) setNumber = false;
+					
+					if(setNumber)
+						number += a[i-1].charAt(j);
+					else	
+						addition += a[i-1].charAt(j);
+						
+					
+				}
+				
+				// Standardize Number				
+				
+				a1.setNumber(Utils.standardizeHousenumber(number));
+				
+				
+				a[i-1] = "";
+				
+				// All elements after this addition are also addition
+				
+				for(int j = i-1 ; j < a.length; j++){
+					addition += a[j];
+					a[j] = "";
+				}
+				
+				// Standardize Addition
+				
+				
+				
+				a1.setAddition(Utils.standardizeHousenumberaddition(addition));
+				
+				//System.out.println(addition +  "   " + b6.getAddition());
+				
+				address = "";
+				for (int j = 0; j < a.length; j++)
+					address = address + a[j] + " ";
+
+
+				return address.trim();
+
+				
+				
+				
 			}
 			
 		}
-		else{
-			location_r(location, errCode, idnr,  year, db, tbl);
-			
-		}
 		
-		return null;
-		
+		return address;
 		
 	}
+
+
+		
+	
+
 	public static String[] splitField(String name){
    	 
 		//System.out.println("name = " + name1);
@@ -707,4 +801,95 @@ public class Functions {
     	return a;
     	 
      }
+	
+	static boolean validPlace(String place){
+		
+		if(place == null) return false; 
+		
+		if(place.trim().length() <= 2) return false;
+		
+		for(int i = 0; i < place.length() - 1; i++)
+			if(Character.isAlphabetic(place.charAt(i)) == false)
+				return false;
+		
+		return true;
+		
+	}
+	
+	
+	static String tryNumberAndAdditionInfo2(A1 a1, String address){
+		
+		
+    	if(address == null) return "";
+
+		
+		String [] a = address.split("[ ]+");
+		
+		//System.out.println(address +  "  " + a.length);
+
+		
+		for(int i = a.length  ; i > 0; i--){
+			
+			if(a[i-1].length() == 0) break;
+			
+			if(Character.isDigit(a[i-1].charAt(0)) == true){
+				
+				//b6.setNumber(a[i-1]);
+				
+				boolean setNumber = true;
+				String number = "";
+				String addition = "";
+				for(int j = 0; j < a[i-1].length(); j++){
+					
+					if(Character.isDigit(a[i-1].charAt(j)) == false) setNumber = false;
+					
+					if(setNumber)
+						number += a[i-1].charAt(j);
+					else	
+						addition += a[i-1].charAt(j);
+						
+					
+				}
+				
+				// Standardize Number				
+				
+				a1.setNumber(Utils.standardizeHousenumber(number));
+				
+				
+				a[i-1] = "";
+				
+				// All elements after this addition are also addition
+				
+				for(int j = i-1 ; j < a.length; j++){
+					addition += a[j];
+					a[j] = "";
+				}
+				
+				// Standardize Addition
+				
+				
+				
+				a1.setAddition(Utils.standardizeHousenumberaddition(addition));
+				
+				//System.out.println(addition +  "   " + b6.getAddition());
+				
+				address = "";
+				for (int j = 0; j < a.length; j++)
+					address = address + a[j] + " ";
+
+
+				return address.trim();
+
+				
+				
+				
+			}
+			
+		}
+		
+		return address;
+		
+	}
+
+	
 }
