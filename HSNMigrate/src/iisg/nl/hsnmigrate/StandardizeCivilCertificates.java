@@ -788,12 +788,16 @@ public class StandardizeCivilCertificates  implements Runnable {
 
 
 	private static void loadRefTables(){
+		
+		Ref.createRefTables();
 
 		Ref.loadFamName();
 		Ref.loadFirstName();
 		Ref.loadPrefix();
 		Ref.loadLocation();
 		Ref.loadProfession();
+		Ref.loadHousenumberaddition();
+		Ref.loadHousenumber();
 		//Ref.loadMunicipality();
 
 	}

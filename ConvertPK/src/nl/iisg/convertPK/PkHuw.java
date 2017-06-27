@@ -349,6 +349,8 @@ public class PkHuw {
     	int seqCivil = 1;
 		b32.setDynamicDataSequenceNumber(seqCivil++);
 		
+		B32_ST b32Last = b32;
+		
     	
     	// departure of partner
     	
@@ -377,7 +379,7 @@ public class PkHuw {
     		
     		b37.setDynamicDataSequenceNumber(1);
     		
-    		/*
+    		
     		
     		// new civil status record for spouse with code = 11
     		
@@ -394,8 +396,11 @@ public class PkHuw {
         	
             b32.setDateOfMutation(departureDate);
             b32.setStartDate(departureDate);
+            b32.setStartFlag(0);
+            
+            b32Last.setEndDate(Common1.dateFromDayCount(Common1.dayCount(departureDate) - 1));
         		
-        	*/
+        	
     	}
 
     	

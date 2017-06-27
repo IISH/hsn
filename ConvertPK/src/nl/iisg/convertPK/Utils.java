@@ -423,8 +423,8 @@ public class Utils {
 
 	        // Fetch table
 	        
-	        //String selTable = "SELECT * FROM " + tabName + " where idnr < 20000";
-	        String selTable = "SELECT * FROM " + tabName;
+	        String selTable = "SELECT * FROM " + tabName + " where idnr < 10000";
+	        //String selTable = "SELECT * FROM " + tabName;
 	        s.execute(selTable);
 	        ResultSet rs = s.getResultSet();
 	        ResultSetMetaData rsmd = rs.getMetaData();

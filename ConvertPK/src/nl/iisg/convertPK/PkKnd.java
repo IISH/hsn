@@ -810,7 +810,7 @@ public class PkKnd {
 
         	b32.setDynamicDataSequenceNumber(seqNoCivil++);
         	
-        	B32_ST b32Marriage = b32; // keep marriage 
+        	B32_ST b32Last = b32; // keep marriage 
         	
         	// Check if spouse left, this gives a new Civil status record for the PK-Holder (and for the spouse in PkHuw)
         	
@@ -821,17 +821,8 @@ public class PkKnd {
             	// First check if there already are civil status records
             	// If so, the end date of the last one must be update to 1 day before the start date of this one
         		
-        		
-            	
+           		b32Last.setEndDate(Common1.dateFromDayCount(Common1.dayCount(pkhuw.getAdghuwp(), pkhuw.getAmdhuwp(), pkhuw.getAjrhuwp()) - 1));
             		
-   				String endDate  = String.format("%02d-%02d-%04d", pkhuw.getHdghuwp(), pkhuw.getHmdhuwp(), pkhuw.getHjrhuwp());
-   			
-
-           		b32Marriage.setEndDate(endDate);
-            		
-
-
-        		
         		// new civil status record for PK-Holder with code = 11
         		
         		b32 = new B32_ST();
@@ -849,8 +840,13 @@ public class PkKnd {
                 String departureDate = String.format("%02d-%02d-%04d", pkhuw.getAdghuwp(), pkhuw.getAmdhuwp(), pkhuw.getAjrhuwp());
                 b32.setDateOfMutation(departureDate);
                 b32.setStartDate(departureDate);
+                //b32.setEndDate(b32Marriage.getEndDate());
+                
+                // Update previous status end date
             		
-            	
+                //b32Marriage.setEndDate(Common1.dateFromDayCount(Common1.dayCount(departureDate) - 1));     
+                
+                b32Last = b32; // Now this is last one
 
         	}
 
@@ -867,7 +863,7 @@ public class PkKnd {
             		
         			String endDate  = String.format("%02d-%02d-%04d", pkhuw.getOdghuwp(), pkhuw.getOmdhuwp(), pkhuw.getOjrhuwp());
 
-        			b32Marriage.setEndDate(endDate);
+        			b32Last.setEndDate(endDate);
             		
         		}
 

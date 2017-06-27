@@ -597,49 +597,75 @@ public class Functions {
 
 	// This routine will process addresses that are a mix of Places and Addresses
 		
-		iisg.nl.hsnnieuw.A1 a1 = null;
-
-		a1 = new iisg.nl.hsnnieuw.A1();
+		
+		if(location == null) return null;
+		
+		A1 a1 = new iisg.nl.hsnnieuw.A1();
 
 		String [] a = location.split("[ ,]");
+		
+		String loc = "";
+		
+		if(a.length > 1){			
+			loc = a[a.length - 1] + " " + a[a.length - 2];  // To get places like "De Ham"
 
-		if(validPlace(a[a.length - 1])){
+			if(validPlace(loc)){
 
-			Ref_Location l = Ref.getLocation(a[a.length - 1]);
+				Ref_Location l = Ref.getLocation(loc);
 
-			if(l != null  && l.getStandardCode() != null && (l.getStandardCode().equalsIgnoreCase("y"))){ 
-				
-				a1.setMunicipality(l.getMunicipality());
-				a1.setMunicipalityNumber(l.getLocationNo() + "");
+				if(l != null  && l.getStandardCode() != null && (l.getStandardCode().equalsIgnoreCase("y"))){ 
 
-				a[a.length - 1] = "";
+					a1.setMunicipality(l.getMunicipality());
+					a1.setMunicipalityNumber(l.getLocationNo() + "");
 
-			}	
+					a[a.length - 1] = "";
+					a[a.length - 2] = "";
 
-			String location2 = "";
-			for(int i = 0; i < a.length; i++)
-				location2 = location2 + a[i] + " ";
-
-			location2 = location2.trim(); 
-
-			if(a1 != null){
-				a1.setBerth(location);
-				a1.setInstitution(location2);
+				}	
 			}
-			
-			location = location2.trim();
+		}
+		else
+			if(a.length > 0){			
+				loc = a[a.length - 1];  // To get places like "Amsterdam"
+
+				if(validPlace(loc)){
+
+					Ref_Location l = Ref.getLocation(loc);
+
+					if(l != null  && l.getStandardCode() != null && (l.getStandardCode().equalsIgnoreCase("y"))){ 
+
+						a1.setMunicipality(l.getMunicipality());
+						a1.setMunicipalityNumber(l.getLocationNo() + "");
+
+						a[a.length - 1] = "";
+
+					}	
+				}
+			}
+		
+		
+
+		String location2 = "";
+		for(int i = 0; i < a.length; i++)
+			location2 = location2 + a[i] + " ";
+
+		location2 = location2.trim(); 
+		
+		String address = new String();
+		
+		address= tryNumberAndAdditionInf(a1, location2);  // this sets number and addition
+		
+
+		if(a1 != null){
+			a1.setBerth(location);
+			a1.setInstitution(address);
 		}
 		
-		String address;
-		
-		address = tryNumberAndAdditionInf(a1,  location);  // this sets number and addition
-		
-		
 		return a1;
-
+		
 	}
-	
- 
+
+
 
   
 
@@ -678,25 +704,78 @@ public class Functions {
 				
 				// Standardize Number				
 				
+				//System.out.println(" number = " + number);
+				
 				a1.setNumber(Utils.standardizeHousenumber(number));
 				
 				
 				a[i-1] = "";
 				
+				// Check if element before exists and is like "Nr"
+				
+				if(i - 1 > 0){
+					
+					String [] b = {"Nr", "Nr.", "No", "No.", "Nummer"};
+					for(String x: b){
+						
+						if(x.equalsIgnoreCase(a[i - 2])){
+							a[i -2] = "";
+							break;
+						}
+					}
+					
+				}
+					
+				
 				// All elements after this addition are also addition
 				
 				for(int j = i-1 ; j < a.length; j++){
-					addition += a[j];
-					a[j] = "";
+					addition = addition + " "+ a[j];
+					//a[j] = "";
 				}
+				
+				addition = addition.trim();
 				
 				// Standardize Addition
 				
+				//System.out.println(addition +  "   " + a1.getAddition());
 				
+				boolean additionOK = true;
+				if(addition.length() > 3){
+					
+					additionOK = false;
+					String [] b = {"Rood", "Zwart", "Boven", "Beneden"};
+					for(String x: b){
+						
+						if(x.equalsIgnoreCase(addition)){
+							additionOK = true;
+							break;
+						}
+					}
+				}
 				
-				a1.setAddition(Utils.standardizeHousenumberaddition(addition));
+				if(additionOK){
+
+					String [] bb = {"Al"};
+					for(String x: bb){
+						
+						if(x.equalsIgnoreCase(addition)){
+							additionOK = false;
+							break;
+						}
+					}
+
+
+					if(additionOK){
+						a1.setAddition(Utils.standardizeHousenumberaddition(addition));
+						for(int j = i-1 ; j < a.length; j++){
+							//addition += a[j];
+							a[j] = "";
+						}
+					}
+
+				}
 				
-				//System.out.println(addition +  "   " + b6.getAddition());
 				
 				address = "";
 				for (int j = 0; j < a.length; j++)
@@ -891,5 +970,60 @@ public class Functions {
 		
 	}
 
+	/**
+	 * 
+	 * This routine tries to find Quarter (=Wijk) information from the string address
+	 * If it finds it, it sets the appropriate fields in the ras
+	 * 
+	 * Example: A 155
+	 * 
+	 */
+	
+
+		
+	private String tryQuarterInfo(A1 a1, String address){
+
+    	if(address == null  || address.trim().length() == 0) return "";
+
+
+		String [] a = address.split("[ ]+");
+
+
+		if(a != null && a.length > 0){
+			if(a[0].equalsIgnoreCase("Wijk") || a[0].equalsIgnoreCase("Wk")){
+				if(a.length > 1){
+					a1.setQuarter(a[1]);
+					address = "";
+					for (int i = 2; i < a.length; i++)
+						address = address + a[i] + " ";
+				}
+				return address.trim();
+			}
+
+		}
+
+
+		if((a[0].length() == 1 &&   Character.isUpperCase(a[0].charAt(0)) == true) || (a[0].length() == 2 &&   Character.isUpperCase(a[0].charAt(0)) == true  && Character.isUpperCase(a[0].charAt(1)) == true)){
+			
+			
+			if(!(a.length > 1 && Character.isAlphabetic(a[1].charAt(0)))){ // Not followed by text, eg Q van Uffelenstraat
+			
+				a1.setQuarter(a[0]);
+
+				address = "";
+				for (int i = 1; i < a.length; i++)
+					address = address + a[i] + " ";
+
+
+				return address.trim();
+			}
+
+
+		}
+
+		return address;
+	}
+
+	
 	
 }

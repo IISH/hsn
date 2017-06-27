@@ -1666,6 +1666,9 @@ public class Ref {
 
 	public static void truncateHousenumberaddition(Ref_Housenumberaddition a){
 
+		
+		System.out.println("---->"+ a.getOriginal());
+
 		String field = a.getOriginal();
 		int allowedSize = Smallstring;
 		if(field != null && field.length() > allowedSize){
@@ -2083,6 +2086,9 @@ public class Ref {
 		EntityManager em = getEm_ref_2();	
 		
 		em.getTransaction().begin();   
+		
+		
+		truncate();
 		
 		int count = 0;
 		

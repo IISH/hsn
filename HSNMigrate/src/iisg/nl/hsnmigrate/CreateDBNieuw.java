@@ -625,7 +625,7 @@ public class CreateDBNieuw {
 			 " ADDRESS_FG TINYINT, " + 
 
 			 " NUMBER_ST VARCHAR(" + Const.Smallstring + "), " +
-			 " ADDITION_ST VARCHAR(" + Const.Smallstring + "), " +
+			 " ADDITION_ST VARCHAR(" + Const.Bigstring + "), " +
 
 		//	 " VERSIE VARCHAR(8), " +
 		//	 " ONDRZKO VARCHAR(8), " +
