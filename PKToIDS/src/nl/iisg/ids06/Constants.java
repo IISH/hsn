@@ -159,7 +159,7 @@ public class Constants {
 	    cscode1[8] = "Invalid Code: 8";	    
 	    cscode1[9] = "Invalid Code: 9";	    
 	    cscode1[10] = "Invalid Code: 10";	    
-	    cscode1[11] = "Administrative Departure";   
+	    cscode1[11] = "Married but abandoned";   
 	    cscode1[12] = "End of Marriage, reason unknown";   
 	}
 
