@@ -601,21 +601,32 @@ public class Functions {
 		if(location == null) return null;
 		
 		A1 a1 = new iisg.nl.hsnnieuw.A1();
+		a1.setKeyToRP(idnr);
 
 		String [] a = location.split("[ ,]");
 		
 		String loc = "";
 		
-		if(a.length > 1){			
-			loc = a[a.length - 1] + " " + a[a.length - 2];  // To get places like "De Ham"
+		if(a.length > 1){		
+			
+			loc = a[a.length - 2] + " " + a[a.length - 1];  // To get places like "De Ham"
+			
+			
 
 			if(validPlace(loc)){
 
 				Ref_Location l = Ref.getLocation(loc);
 
+				
+				//if(loc.equalsIgnoreCase("Rhenen")) System.out.println("Found Rhenen, l = " + l);
+				
 				if(l != null  && l.getStandardCode() != null && (l.getStandardCode().equalsIgnoreCase("y"))){ 
 
+					//System.out.println("--> "+ loc);
+					
+					
 					a1.setMunicipality(l.getMunicipality());
+					a1.setPlace(l.getLocation());
 					a1.setMunicipalityNumber(l.getLocationNo() + "");
 
 					a[a.length - 1] = "";
@@ -624,27 +635,33 @@ public class Functions {
 				}	
 			}
 		}
-		else
-			if(a.length > 0){			
-				loc = a[a.length - 1];  // To get places like "Amsterdam"
+				
+		if(a.length > 0 && !a[a.length - 1].equalsIgnoreCase("") ){			
+			loc = a[a.length - 1];  // To get places like "De Ham"
 
-				if(validPlace(loc)){
+			if(validPlace(loc)){
 
-					Ref_Location l = Ref.getLocation(loc);
+				Ref_Location l = Ref.getLocation(loc);
 
-					if(l != null  && l.getStandardCode() != null && (l.getStandardCode().equalsIgnoreCase("y"))){ 
+				
+				//if(loc.equalsIgnoreCase("Rhenen")) System.out.println("Found Rhenen, l = " + l);
+				
+				if(l != null  && l.getStandardCode() != null && (l.getStandardCode().equalsIgnoreCase("y"))){ 
 
-						a1.setMunicipality(l.getMunicipality());
-						a1.setMunicipalityNumber(l.getLocationNo() + "");
+					a1.setMunicipality(l.getMunicipality());
+					a1.setPlace(l.getLocation());
+					a1.setMunicipalityNumber(l.getLocationNo() + "");
 
-						a[a.length - 1] = "";
+					a[a.length - 1] = "";
 
-					}	
-				}
+				}	
 			}
-		
-		
+		}
+				
 
+		
+		
+		
 		String location2 = "";
 		for(int i = 0; i < a.length; i++)
 			location2 = location2 + a[i] + " ";
@@ -654,8 +671,13 @@ public class Functions {
 		String address = new String();
 		
 		address= tryNumberAndAdditionInf(a1, location2);  // this sets number and addition
+		address= tryQuarterInfo(a1, address);             // this sets quarter
 		
+		a1.setStreet(address);                            // rest is street
 
+		
+		// debugging 
+		
 		if(a1 != null){
 			a1.setBerth(location);
 			a1.setInstitution(address);
@@ -981,7 +1003,7 @@ public class Functions {
 	
 
 		
-	private String tryQuarterInfo(A1 a1, String address){
+	private static String tryQuarterInfo(A1 a1, String address){
 
     	if(address == null  || address.trim().length() == 0) return "";
 
@@ -989,17 +1011,21 @@ public class Functions {
 		String [] a = address.split("[ ]+");
 
 
+		
+		
 		if(a != null && a.length > 0){
-			if(a[0].equalsIgnoreCase("Wijk") || a[0].equalsIgnoreCase("Wk")){
-				if(a.length > 1){
-					a1.setQuarter(a[1]);
-					address = "";
-					for (int i = 2; i < a.length; i++)
-						address = address + a[i] + " ";
+			for(int i = 0; i < a.length; i++){
+				if(a[i].equalsIgnoreCase("Wijk") || a[i].equalsIgnoreCase("Wk")){
+					if(i + 1 < a.length){
+						a1.setQuarter(a[i + 1]);
+						address = "";
+						for (int ii = 0; ii < a.length; ii++)
+							if(ii != i && ii != i + 1)
+							    address = address + a[ii] + " ";
+					}
+					return address.trim();
 				}
-				return address.trim();
 			}
-
 		}
 
 

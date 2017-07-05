@@ -82,7 +82,7 @@ public void convert(EntityManager em){
 
 public void resolveAl(){
 	 
-	 if(getKhuwgem().trim().equalsIgnoreCase("AL")) 
+	 if(getKhuwgem() != null && getKhuwgem().trim().equalsIgnoreCase("AL")) 
 		 setKhuwgem(getGebknd().getBirthActLocation());
 	 
 }

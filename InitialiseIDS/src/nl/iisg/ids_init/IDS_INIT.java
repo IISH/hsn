@@ -321,8 +321,8 @@ public class IDS_INIT implements Runnable {
 						addContext(++Id_C, "NAME", location);
 						addContext(  Id_C, "LEVEL", "locality");
 
-						if(rl.getLocationNo() != 0)
-							addContext(Id_C, "HSN_MUNICIPALITY_CODE", "" + rl.getLocationNo());
+						//if(rl.getLocationNo() != 0)
+							//addContext(Id_C, "HSN_MUNICIPALITY_CODE", "" + rl.getLocationNo());
 						
 						Id_C_CurrentLocation     = Id_C;	
 

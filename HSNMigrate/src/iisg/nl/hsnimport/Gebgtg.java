@@ -63,7 +63,7 @@ public class Gebgtg {
  
  public void resolveAl(){
 	 
-	 if(getAdrgt().trim().equalsIgnoreCase("AL")) 
+	 if(getAdrgt() != null && getAdrgt().trim().equalsIgnoreCase("AL")) 
 		 setAdrgt(getGebknd().getBirthActLocation());
 
 	 

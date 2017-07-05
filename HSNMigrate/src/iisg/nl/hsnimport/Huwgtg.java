@@ -70,7 +70,7 @@ public void resolveAl(){
 	
 	
 	
-	if(getAdrgt().equalsIgnoreCase("AL"))
+	if(getAdrgt() != null && getAdrgt().trim().equalsIgnoreCase("AL"))
 		setAdrgt(getHuwknd().getMarriageActPlace());
 
 }

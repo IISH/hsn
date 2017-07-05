@@ -80,13 +80,13 @@ public void resolveAl(){
 	
 	
 	
-	if(getGbplvk().equalsIgnoreCase("AL"))
+	if(getGbplvk() != null && getGbplvk().equalsIgnoreCase("AL"))
 		setGbplvk(getHuwknd().getMarriageActPlace());
 
-	if(getMekplvk().equalsIgnoreCase("AL"))
+	if(getMekplvk() != null && getMekplvk().equalsIgnoreCase("AL"))
 		setMekplvk(getHuwknd().getMarriageActPlace());
 
-	if(getVekplvk().equalsIgnoreCase("AL"))
+	if(getVekplvk() != null && getVekplvk().equalsIgnoreCase("AL"))
 		setVekplvk(getHuwknd().getMarriageActPlace());
 
 }

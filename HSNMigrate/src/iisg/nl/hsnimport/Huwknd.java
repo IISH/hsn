@@ -256,49 +256,49 @@ public void resolveAl(){
 	if(getMarriageActPlace() != null){
 		
 	
-		if(getIplts().trim().equalsIgnoreCase("AL"))
+		if(getIplts() != null && getIplts().trim().equalsIgnoreCase("AL"))
 			setIplts(getMarriageActPlace());
 		
-		if(getOadrhm().trim().equalsIgnoreCase("AL"))
+		if(getOadrhm() != null && getOadrhm().trim().equalsIgnoreCase("AL"))
 			setOadrhm(getMarriageActPlace());
 		
-		if(getOadrehm().trim().equalsIgnoreCase("AL"))
+		if(getOadrehm() != null && getOadrehm().trim().equalsIgnoreCase("AL"))
 			setOadrehm(getMarriageActPlace());
 		
-		if(getGebplhv().trim().equalsIgnoreCase("AL"))
+		if(getGebplhv() != null && getGebplhv().trim().equalsIgnoreCase("AL"))
 			setGebplhv(getMarriageActPlace());
 		
-		if(getAdrhv().trim().equalsIgnoreCase("AL"))
+		if(getAdrhv() != null && getAdrhv().trim().equalsIgnoreCase("AL"))
 			setAdrhv(getMarriageActPlace());
 		
-		if(getOadrhv().trim().equalsIgnoreCase("AL"))
+		if(getOadrhv() != null && getOadrhv().trim().equalsIgnoreCase("AL"))
 			setOadrhv(getMarriageActPlace());
 		
-		if(getOadrehv().trim().equalsIgnoreCase("AL"))
+		if(getOadrehv() != null && getOadrehv().trim().equalsIgnoreCase("AL"))
 			setOadrehv(getMarriageActPlace());
 		
-		if(getAdrvrhm().trim().equalsIgnoreCase("AL"))
+		if(getAdrvrhm() != null && getAdrvrhm().trim().equalsIgnoreCase("AL"))
 			setAdrvrhm(getMarriageActPlace());
 		
-		if(getPlovvrhm().trim().equalsIgnoreCase("AL"))
+		if(getPlovvrhm() != null && getPlovvrhm().trim().equalsIgnoreCase("AL"))
 			setPlovvrhm(getMarriageActPlace());
 		
-		if(getAdrmrhm().trim().equalsIgnoreCase("AL"))
+		if(getAdrmrhm() != null && getAdrmrhm().trim().equalsIgnoreCase("AL"))
 			setAdrmrhm(getMarriageActPlace());
 		
-		if(getPlovmrhm().trim().equalsIgnoreCase("AL"))
+		if(getPlovmrhm() != null && getPlovmrhm().trim().equalsIgnoreCase("AL"))
 			setPlovmrhm(getMarriageActPlace());
 		
-		if(getAdrvrhv().trim().equalsIgnoreCase("AL"))
+		if(getAdrvrhv() != null && getAdrvrhv().trim().equalsIgnoreCase("AL"))
 			setAdrvrhv(getMarriageActPlace());
 		
-		if(getPlovvrhv().trim().equalsIgnoreCase("AL"))
+		if(getPlovvrhv() != null && getPlovvrhv().trim().equalsIgnoreCase("AL"))
 			setPlovvrhv(getMarriageActPlace());
 		
-		if(getAdrmrhv().trim().equalsIgnoreCase("AL"))
+		if(getAdrmrhv() != null && getAdrmrhv().trim().equalsIgnoreCase("AL"))
 			setAdrmrhv(getMarriageActPlace());
 		
-		if(getPlovmrhv().trim().equalsIgnoreCase("AL"))
+		if(getPlovmrhv() != null && getPlovmrhv().trim().equalsIgnoreCase("AL"))
 			setPlovmrhv(getMarriageActPlace());
 		
 		for(Huwafk huwafk: huwafkL)

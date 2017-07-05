@@ -175,16 +175,16 @@ public void resolveAl(){
 	if(getDeathActPlace() != null){
 		
 	
-		if(getAdrovl().trim().equalsIgnoreCase("AL"))
+		if(getAdrovl() != null && getAdrovl().trim().equalsIgnoreCase("AL"))
 			setAdrovl(getDeathActPlace());
 		
-		if(getPloovl().trim().equalsIgnoreCase("AL"))
+		if(getPloovl() != null && getPloovl().trim().equalsIgnoreCase("AL"))
 			setPloovl(getDeathActPlace());
 
-		if(getAdrvovl().trim().equalsIgnoreCase("AL"))
+		if(getAdrvovl() != null && getAdrvovl().trim().equalsIgnoreCase("AL"))
 			setAdrvovl(getDeathActPlace());
 		
-		if(getAdrmovl().trim().equalsIgnoreCase("AL"))
+		if(getAdrmovl() != null && getAdrmovl().trim().equalsIgnoreCase("AL"))
 			setAdrmovl(getDeathActPlace());
 		
 		for(Ovlech ovlech: ovlechL)

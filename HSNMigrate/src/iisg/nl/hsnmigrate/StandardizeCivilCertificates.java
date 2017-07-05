@@ -798,7 +798,7 @@ public class StandardizeCivilCertificates  implements Runnable {
 		Ref.loadProfession();
 		Ref.loadHousenumberaddition();
 		Ref.loadHousenumber();
-		//Ref.loadMunicipality();
+		Ref.loadMunicipality();
 
 	}
 

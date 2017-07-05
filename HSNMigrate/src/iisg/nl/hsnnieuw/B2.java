@@ -6,6 +6,8 @@ import iisg.nl.hsnmigrate.Const;
 import iisg.nl.hsnmigrate.Constants;
 import iisg.nl.hsnmigrate.Functions;
 import iisg.nl.hsnmigrate.Utils;
+import nl.iisg.ref.Ref;
+import nl.iisg.ref.Ref_Municipality;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="b2")
@@ -31,6 +34,9 @@ public class B2 {
      @Column(name="B2W_SG")       private String b2w_sg;
      @Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
      @Column(name="RecordID")    private int recordID;
+     
+     @Transient                   private A1  b2w_lla;
+
      
      
      public void transform(Gebgtg gebgtg){	
@@ -101,7 +107,7 @@ public class B2 {
          setB2w_ll(Functions.location_r(getB2w_ll(), Constants.E_LOB2W_LL, getIdnr(), 0, "HSN_CIVREC_STD", "B2"));
          setB2w_oc(Functions.profession_r(getB2w_oc(), Constants.E_OCM4W_OC, getIdnr(), 0, "HSN_CIVREC_STD", "B2"));
          
-        
+
      }
      
      
@@ -238,6 +244,16 @@ public class B2 {
 	}
 	public void setRecordID(int recordID) {
 		this.recordID = recordID;
+	}
+
+
+	public A1 getB2w_lla() {
+		return b2w_lla;
+	}
+
+
+	public void setB2w_lla(A1 b2w_lla) {
+		this.b2w_lla = b2w_lla;
 	}
      
      

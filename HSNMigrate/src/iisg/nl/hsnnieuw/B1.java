@@ -276,18 +276,50 @@ public class B1 {
             //setB1rpll(Functions.location_r(getB1rpll(), Constants.E_LOB1RPLL, getIdnr(), 0, "HSN_CIVREC_STD", "B1"));
             
             setB1rplla(Functions.location_r2(getB1rpll(), Constants.E_LOB1RPLL, getIdnr(), 0, "HSN_CIVREC_STD", "B1"));
-            if(getB1rplla() != null)
-               getB1rplla().setRole(1);
+            if(getB1rplla() != null){
+            	getB1rplla().setRole(1);
+            	if(getB1rplla().getMunicipalityNumber() == null){
+
+            		Ref_Municipality r = Ref.getMunicipality(getB1sdcc());
+            		if(r!= null && r.getMunicipalityName() != null && r.getMunicipalityName().trim().length() > 0){ 
+            			getB1rplla().setMunicipality(r.getMunicipalityName().trim());
+            			getB1rplla().setMunicipalityNumber(getB1sdcc() + "");
+            			
+            		}
+
+            	}
+            }
             
             setB1molla(Functions.location_r2(getB1moll(), Constants.E_LOB1MOLL, getIdnr(), 0, "HSN_CIVREC_STD", "B1"));
-            if(getB1molla() != null)
-                getB1molla().setRole(3);
+            if(getB1molla() != null){
+            	getB1molla().setRole(3);
+            	if(getB1molla().getMunicipalityNumber() == null){
 
+            		Ref_Municipality r = Ref.getMunicipality(getB1sdcc());
+            		if(r!= null && r.getMunicipalityName() != null && r.getMunicipalityName().trim().length() > 0){ 
+            			getB1molla().setMunicipality(r.getMunicipalityName().trim());
+            			getB1molla().setMunicipalityNumber(getB1sdcc() + "");
+            			
+            		}
 
+            	}
+            }
+            
             setB1inlla(Functions.location_r2(getB1inll(), Constants.E_LOB1INLL, getIdnr(), 0, "HSN_CIVREC_STD", "B1"));
-            if(getB1inlla() != null)            
-               getB1inlla().setRole(4);
+            if(getB1inlla() != null){
+            	getB1inlla().setRole(4);
+            	if(getB1inlla().getMunicipalityNumber() == null){
 
+            		Ref_Municipality r = Ref.getMunicipality(getB1sdcc());
+            		if(r!= null && r.getMunicipalityName() != null && r.getMunicipalityName().trim().length() > 0){ 
+            			getB1inlla().setMunicipality(r.getMunicipalityName().trim());
+            			getB1inlla().setMunicipalityNumber(getB1sdcc() + "");
+            			
+            		}
+
+            	}
+            }
+            
 
             // logic checks
             

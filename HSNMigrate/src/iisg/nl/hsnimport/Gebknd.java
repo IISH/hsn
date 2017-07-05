@@ -112,13 +112,15 @@ public class Gebknd {
 
 	 if(getBirthActLocation() != null){
 		 
-		 if(getAdrag().trim().equalsIgnoreCase("AL")) 
+		 //System.out.println("Resolving 1");
+		 
+		 if(getAdrag() != null && getAdrag().trim().equalsIgnoreCase("AL"))
 			 setAdrag(getBirthActLocation());
 		 
-		 if(getGebadr().trim().equalsIgnoreCase("AL"))
+		 if(getGebadr() != null && getGebadr().trim().equalsIgnoreCase("AL"))
 			 setGebadr(getBirthActLocation());
 		 
-		 if(getAdrmr().trim().equalsIgnoreCase("AL"))
+		 if(getAdrmr() != null && getAdrmr().trim().equalsIgnoreCase("AL"))
 			 setAdrmr(getBirthActLocation());
 		 
 		 for(Gebgtg gebgtg: gebgtgL)
@@ -150,6 +152,7 @@ public class Gebknd {
 	 if(b1.getB1rplla() != null) em.persist(b1.getB1rplla());
 	 if(b1.getB1molla() != null) em.persist(b1.getB1molla());
 	 if(b1.getB1inlla() != null) em.persist(b1.getB1inlla());
+	 
 
 	 seqNr = 1;
 	 for(Gebgtg gebgtg: gebgtgL){

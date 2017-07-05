@@ -68,6 +68,8 @@ public class Ref {
 	static    HashMap<String, Ref_Location>  ref_location21 = null; // entries read from db 
 	static    HashMap<String, Ref_Location>  ref_location22 = null; // new entries  
 	
+	static    HashMap<Integer, String>       ref_location31 = null; 
+	
 	
 	static    List<Ref_KG>                   ref_KG    = new ArrayList<Ref_KG>();
 	static    List<Ref_KG>                   ref_KG_x  = new ArrayList<Ref_KG>();
@@ -454,6 +456,7 @@ public class Ref {
 
 		ref_location21 = new HashMap<String, Ref_Location>();
 		ref_location22 = new HashMap<String, Ref_Location>();
+		ref_location31 = new HashMap<Integer, String>();
 
 		int highest_ID = 0;
 		int count = 0;
@@ -463,6 +466,17 @@ public class Ref {
 			if(f.getOriginal() != null){
 			
 				ref_location21.put(f.getOriginal().trim().toLowerCase(), f);
+				
+				
+				if(f.getLocationNo() > 0){
+					
+					if(f.getLocation() != null && f.getLocation().trim().length() > 0)
+						ref_location31.put(f.getLocationNo(), f.getLocation().trim().toLowerCase());	
+					else
+						if(f.getMunicipality() != null && f.getMunicipality().trim().length() > 0)
+							ref_location31.put(f.getLocationNo(), f.getMunicipality().trim().toLowerCase());	
+					
+				}
 			
 				if(f.getLocationID() > highest_ID)
 					highest_ID = f.getLocationID();
@@ -912,6 +926,7 @@ public class Ref {
 
 	public static Ref_Municipality getMunicipality(int key){
 
+		//System.out.println("Resolving 2");
 
 		Ref_Municipality municipality = new Ref_Municipality();
 		municipality.setCodeMunicipality(key);
@@ -927,7 +942,10 @@ public class Ref {
 			}
 				});
 
+		//System.out.println("Resolving 2 , i = "+ i );
 
+		
+		
 		if(i >= 0){
 			return(ref_Municipality.get(i));
 		}
@@ -1208,6 +1226,14 @@ public class Ref {
 		}
 
 		return null;
+
+
+	}
+
+	public static String getLocation(int locationNo){
+		
+		String locationStandardized = ref_location31.get(locationNo);
+		return locationStandardized;
 
 
 	}

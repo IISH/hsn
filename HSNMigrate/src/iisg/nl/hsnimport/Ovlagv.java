@@ -62,7 +62,7 @@ public void convert(EntityManager em){
 
 public void resolveAl(){
 
-	if(getAdragv().trim().equalsIgnoreCase("AL"))
+	if(getAdragv() != null && getAdragv().trim().equalsIgnoreCase("AL"))
 		setAdragv(getOvlknd().getDeathActPlace());
 }
 

@@ -64,7 +64,7 @@ public void convert(EntityManager em){
 
 public void resolveAl(){
 
-	if(getAdreovl().trim().equalsIgnoreCase("AL")){
+	if(getAdreovl() != null && getAdreovl().trim().equalsIgnoreCase("AL")){
 		//System.out.println("Resolving Al to: " + getOvlknd().getDeathActPlace());
 		setAdreovl(getOvlknd().getDeathActPlace());
 	}

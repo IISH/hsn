@@ -244,6 +244,7 @@
 		<class>nl.iisg.ref.Ref_Relation_B</class>       	
 		<class>nl.iisg.ref.Ref_Relation_C</class>       	
 		<class>nl.iisg.ref.Ref_Location</class>		   		
+		<class>nl.iisg.ref.Ref_Municipality</class>		   		
 		<class>nl.iisg.ref.Ref_Housenumber</class>       	
 		<class>nl.iisg.ref.Ref_Housenumberaddition</class>   
 		<class>nl.iisg.ref.Ref_Address</class>   	
