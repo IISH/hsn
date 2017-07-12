@@ -104,10 +104,17 @@ public class B2 {
          setB2w_fn(Functions.firstname_r(getB2w_fn(), Constants.E_FNB2W_FN, getIdnr(), 0, "HSN_CIVREC_STD", "B2"));
          setB2w_pf(Functions.prefix_r(getB2w_pf(), Constants.E_LNB2W_PF, getIdnr(), 0, "HSN_CIVREC_STD", "B2"));
          setB2w_ln(Functions.familyname_r(getB2w_ln(), Constants.E_LNB2W_LN, getIdnr(), 0, "HSN_CIVREC_STD", "B2"));
-         setB2w_ll(Functions.location_r(getB2w_ll(), Constants.E_LOB2W_LL, getIdnr(), 0, "HSN_CIVREC_STD", "B2"));
+         //setB2w_ll(Functions.location_r(getB2w_ll(), Constants.E_LOB2W_LL, getIdnr(), 0, "HSN_CIVREC_STD", "B2"));
          setB2w_oc(Functions.profession_r(getB2w_oc(), Constants.E_OCM4W_OC, getIdnr(), 0, "HSN_CIVREC_STD", "B2"));
          
-
+         setB2w_lla(Functions.location_r2(getB2w_ll(), Constants.E_LOB2W_LL, getIdnr(), 0, "HSN_CIVREC_STD", "B2"));
+         if(getB2w_lla() != null){
+        	getB2w_lla().setRole(4 + getB2w_sq());  // 5 or 6
+         	if(getB2w_lla().getLocationNumber() == null){
+       			getB2w_lla().setMunicipality(gebgtg.getGebknd().getBirthActLocation());
+       			getB2w_lla().setLocationNumber(gebgtg.getGebknd().getBirthActLocationNo());
+         	}
+         }
      }
      
      

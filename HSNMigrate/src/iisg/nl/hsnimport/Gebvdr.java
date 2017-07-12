@@ -59,6 +59,9 @@ public void convert(EntityManager em){
 	 //em.getTransaction().begin();
 	 b5.truncate();
 	 em.persist(b5);
+	 if(b5.getB5fasla() != null) em.persist(b5.getB5fasla());
+	 if(b5.getB5fadla() != null) em.persist(b5.getB5fadla());
+	 if(b5.getB5falla() != null) em.persist(b5.getB5falla());
 	 //em.getTransaction().commit();
 
 

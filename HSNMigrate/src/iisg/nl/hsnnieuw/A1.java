@@ -24,7 +24,8 @@ public class A1 {
 	@Column(name = "END_EST")     private int       endEst;
 	
 	@Column(name = "MUNICIPALITY_ST")  private String  municipality;
-	@Column(name = "MUNICIPALITY_NO")  private String  municipalityNumber;
+	
+	@Column(name = "MUNICIPALITY_NO")  private String  locationNumber;
 	
 	@Column(name = "ADDRESS_ID")  private int       addressID;
 	
@@ -118,14 +119,18 @@ public class A1 {
 	public void setMunicipality(String municipality) {
 		this.municipality = municipality;
 	}
+	
+	/*
 
 	public String getMunicipalityNumber() {
-		return municipalityNumber;
+		return locationNumber;
 	}
 
 	public void setMunicipalityNumber(String municipalityNumber) {
-		this.municipalityNumber = municipalityNumber;
+		this.locationNumber = municipalityNumber;
 	}
+	
+	*/
 
 	public int getAddressID() {
 		return addressID;
@@ -229,7 +234,15 @@ public class A1 {
 
 	public void setRecordID(int recordID) {
 		this.recordID = recordID;
-	};
+	}
+
+	public String getLocationNumber() {
+		return locationNumber;
+	}
+
+	public void setLocationNumber(String locationNumber) {
+		this.locationNumber = locationNumber;
+	}
 
     
 	

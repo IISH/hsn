@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="b5")
@@ -38,6 +39,11 @@ public class B5 {
      @Column(name="B5FADL")       private String b5fadl;
      @Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
      @Column(name="RecordID")     private int recordID;
+     
+     @Transient                   private A1  b5fasla;  
+     @Transient                   private A1  b5fadla;
+     @Transient                   private A1  b5falla;
+
      
      
      public void transform(Gebvdr gebvdr){
@@ -143,10 +149,41 @@ public class B5 {
          setB5fapf(Functions.prefix_r(getB5fapf(), Constants.E_LNB5FAPF, getIdnr(), 0, "HSN_CIVREC_STD", "B5"));
          setB5faln(Functions.familyname_r(getB5faln(), Constants.E_LNB5FALN, getIdnr(), 0, "HSN_CIVREC_STD", "B5"));
          setB5faoc(Functions.profession_r(getB5faoc(), Constants.E_OCB5FAOC, getIdnr(), 0, "HSN_CIVREC_STD", "B5"));
-         setB5fasl(Functions.location_r(getB5fasl(), Constants.E_LOB5FASL, getIdnr(), 0, "HSN_CIVREC_STD", "B5"));
-         setB5fadl(Functions.location_r(getB5fadl(), Constants.E_LOB5FADL, getIdnr(), 0, "HSN_CIVREC_STD", "B5"));
-         setB5fadl(Functions.location_r(getB5fall(), Constants.E_LOB5FALL, getIdnr(), 0, "HSN_CIVREC_STD", "B5"));
+         //setB5fasl(Functions.location_r(getB5fasl(), Constants.E_LOB5FASL, getIdnr(), 0, "HSN_CIVREC_STD", "B5"));
+         //setB5fadl(Functions.location_r(getB5fadl(), Constants.E_LOB5FADL, getIdnr(), 0, "HSN_CIVREC_STD", "B5"));
+         //setB5fadl(Functions.location_r(getB5fall(), Constants.E_LOB5FALL, getIdnr(), 0, "HSN_CIVREC_STD", "B5"));
 
+         setB5fasla(Functions.location_r2(getB5fasl(), Constants.E_LOB5FASL, getIdnr(), 0, "HSN_CIVREC_STD", "B5"));
+         if(getB5fasla() != null){
+         	getB5fasla().setRole(4);
+         	if(getB5fasla().getLocationNumber() == null){
+         		getB5fasla().setLocationNumber(gebvdr.getGebknd().getBirthActLocationNo());
+         		getB5fasla().setMunicipality(gebvdr.getGebknd().getBirthActLocation());
+         		
+         	}
+         }
+
+         setB5fadla(Functions.location_r2(getB5fadl(), Constants.E_LOB5FADL, getIdnr(), 0, "HSN_CIVREC_STD", "B5"));
+         if(getB5fadla() != null){
+         	getB5fadla().setRole(4);
+         	if(getB5fadla().getLocationNumber() == null){
+         		getB5fadla().setLocationNumber(gebvdr.getGebknd().getBirthActLocationNo());
+         		getB5fadla().setMunicipality(gebvdr.getGebknd().getBirthActLocation());
+         		
+         	}
+         }
+
+         setB5falla(Functions.location_r2(getB5fall(), Constants.E_LOB5FALL, getIdnr(), 0, "HSN_CIVREC_STD", "B5"));
+         if(getB5falla() != null){
+         	getB5falla().setRole(4);
+         	if(getB5falla().getLocationNumber() == null){
+         		getB5falla().setLocationNumber(gebvdr.getGebknd().getBirthActLocationNo());
+         		getB5falla().setMunicipality(gebvdr.getGebknd().getBirthActLocation());
+         		
+         	}
+         }
+
+         
     	 
      }
      
@@ -344,6 +381,36 @@ public class B5 {
 	}
 	public void setRecordID(int recordID) {
 		this.recordID = recordID;
+	}
+
+
+	public A1 getB5fasla() {
+		return b5fasla;
+	}
+
+
+	public void setB5fasla(A1 b5fasla) {
+		this.b5fasla = b5fasla;
+	}
+
+
+	public A1 getB5fadla() {
+		return b5fadla;
+	}
+
+
+	public void setB5fadla(A1 b5fadla) {
+		this.b5fadla = b5fadla;
+	}
+
+
+	public A1 getB5falla() {
+		return b5falla;
+	}
+
+
+	public void setB5falla(A1 b5falla) {
+		this.b5falla = b5falla;
 	}
      
      

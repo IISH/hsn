@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import nl.iisg.ref.Ref;
+import nl.iisg.ref.Ref_Location;
 import nl.iisg.ref.Ref_Municipality;
 
 @Entity
@@ -94,6 +95,7 @@ public class Gebknd {
  @Transient                  private Stpb               stpb;
 
  @Transient					 private String				birthActLocation = null;
+ @Transient					 private String				birthActLocationNo = null;
  
  public void convert(EntityManager em){
 	 
@@ -105,11 +107,16 @@ public class Gebknd {
 	 if(getGemnr() > 0){
 		 
 		 Ref_Municipality r = Ref.getMunicipality(getGemnr());
-		 if(r!= null && r.getMunicipalityName() != null && r.getMunicipalityName().trim().length() >0) 
-			 setBirthActLocation(r.getMunicipalityName().trim());
+		 if(r!= null && r.getMunicipalityName() != null && r.getMunicipalityName().trim().length() >0){ 
+ 			Ref_Location l = Ref.getLocation(r.getMunicipalityName().trim());
+			if(l != null  && l.getStandardCode() != null && (l.getStandardCode().equalsIgnoreCase("y"))){ 
+				setBirthActLocation(l.getMunicipality());
+				setBirthActLocationNo(l.getLocationNo() + "");
+			}    			
+		 }
 	 }
 	 
-
+	 
 	 if(getBirthActLocation() != null){
 		 
 		 //System.out.println("Resolving 1");
@@ -726,6 +733,15 @@ public String getBirthActLocation() {
 
 public void setBirthActLocation(String birthActLocation) {
 	this.birthActLocation = birthActLocation;
+}
+
+public String getBirthActLocationNo() {
+	return birthActLocationNo;
+}
+
+
+public void setBirthActLocationNo(String birthActLocationNo) {
+	this.birthActLocationNo = birthActLocationNo;
 }
 
  

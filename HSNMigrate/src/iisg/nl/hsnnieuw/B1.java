@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import nl.iisg.ref.Ref;
+import nl.iisg.ref.Ref_Location;
 import nl.iisg.ref.Ref_Municipality;
 
 @Entity
@@ -68,7 +69,6 @@ public class B1 {
      @Transient                   private A1  b1rplla;  
      @Transient                   private A1  b1molla;
      @Transient                   private A1  b1inlla;
-
      
      
      public void transform(Gebknd gebknd){	
@@ -278,45 +278,29 @@ public class B1 {
             setB1rplla(Functions.location_r2(getB1rpll(), Constants.E_LOB1RPLL, getIdnr(), 0, "HSN_CIVREC_STD", "B1"));
             if(getB1rplla() != null){
             	getB1rplla().setRole(1);
-            	if(getB1rplla().getMunicipalityNumber() == null){
-
-            		Ref_Municipality r = Ref.getMunicipality(getB1sdcc());
-            		if(r!= null && r.getMunicipalityName() != null && r.getMunicipalityName().trim().length() > 0){ 
-            			getB1rplla().setMunicipality(r.getMunicipalityName().trim());
-            			getB1rplla().setMunicipalityNumber(getB1sdcc() + "");
-            			
-            		}
-
+            	if(getB1rplla().getLocationNumber() == null){
+            		getB1rplla().setLocationNumber(gebknd.getBirthActLocationNo());
+            		getB1rplla().setMunicipality(gebknd.getBirthActLocation());
+            		
             	}
             }
+            		
             
             setB1molla(Functions.location_r2(getB1moll(), Constants.E_LOB1MOLL, getIdnr(), 0, "HSN_CIVREC_STD", "B1"));
             if(getB1molla() != null){
             	getB1molla().setRole(3);
-            	if(getB1molla().getMunicipalityNumber() == null){
-
-            		Ref_Municipality r = Ref.getMunicipality(getB1sdcc());
-            		if(r!= null && r.getMunicipalityName() != null && r.getMunicipalityName().trim().length() > 0){ 
-            			getB1molla().setMunicipality(r.getMunicipalityName().trim());
-            			getB1molla().setMunicipalityNumber(getB1sdcc() + "");
-            			
-            		}
-
+            	if(getB1molla().getLocationNumber() == null){
+            		getB1molla().setMunicipality(gebknd.getBirthActLocation());
+            		getB1molla().setLocationNumber(gebknd.getBirthActLocationNo());
             	}
             }
             
             setB1inlla(Functions.location_r2(getB1inll(), Constants.E_LOB1INLL, getIdnr(), 0, "HSN_CIVREC_STD", "B1"));
             if(getB1inlla() != null){
             	getB1inlla().setRole(4);
-            	if(getB1inlla().getMunicipalityNumber() == null){
-
-            		Ref_Municipality r = Ref.getMunicipality(getB1sdcc());
-            		if(r!= null && r.getMunicipalityName() != null && r.getMunicipalityName().trim().length() > 0){ 
-            			getB1inlla().setMunicipality(r.getMunicipalityName().trim());
-            			getB1inlla().setMunicipalityNumber(getB1sdcc() + "");
-            			
-            		}
-
+            	if(getB1inlla().getLocationNumber() == null){
+           			getB1inlla().setMunicipality(gebknd.getBirthActLocation());
+           			getB1inlla().setLocationNumber(gebknd.getBirthActLocationNo());
             	}
             }
             
@@ -788,13 +772,8 @@ public class B1 {
 	public void setB1inlla(A1 b1inlla) {
 		this.b1inlla = b1inlla;
 	}
-     
-     
-     
-     
-     
-     
-     
+
+
 }
 
 

@@ -54,6 +54,7 @@ public class Gebgtg {
 	 //em.getTransaction().begin();
 	 b2.truncate();
 	 em.persist(b2);
+	 if(b2.getB2w_lla() != null) em.persist(b2.getB2w_lla());
 	 //em.getTransaction().commit();
 
 

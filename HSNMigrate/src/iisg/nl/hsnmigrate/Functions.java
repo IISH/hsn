@@ -608,26 +608,13 @@ public class Functions {
 		String loc = "";
 		
 		if(a.length > 1){		
-			
 			loc = a[a.length - 2] + " " + a[a.length - 1];  // To get places like "De Ham"
-			
-			
-
 			if(validPlace(loc)){
-
 				Ref_Location l = Ref.getLocation(loc);
-
-				
-				//if(loc.equalsIgnoreCase("Rhenen")) System.out.println("Found Rhenen, l = " + l);
-				
 				if(l != null  && l.getStandardCode() != null && (l.getStandardCode().equalsIgnoreCase("y"))){ 
-
-					//System.out.println("--> "+ loc);
-					
-					
 					a1.setMunicipality(l.getMunicipality());
 					a1.setPlace(l.getLocation());
-					a1.setMunicipalityNumber(l.getLocationNo() + "");
+					a1.setLocationNumber(l.getLocationNo() + "");
 
 					a[a.length - 1] = "";
 					a[a.length - 2] = "";
@@ -638,19 +625,13 @@ public class Functions {
 				
 		if(a.length > 0 && !a[a.length - 1].equalsIgnoreCase("") ){			
 			loc = a[a.length - 1];  // To get places like "De Ham"
-
 			if(validPlace(loc)){
-
 				Ref_Location l = Ref.getLocation(loc);
-
-				
-				//if(loc.equalsIgnoreCase("Rhenen")) System.out.println("Found Rhenen, l = " + l);
-				
 				if(l != null  && l.getStandardCode() != null && (l.getStandardCode().equalsIgnoreCase("y"))){ 
 
 					a1.setMunicipality(l.getMunicipality());
 					a1.setPlace(l.getLocation());
-					a1.setMunicipalityNumber(l.getLocationNo() + "");
+					a1.setLocationNumber(l.getLocationNo() + "");
 
 					a[a.length - 1] = "";
 
@@ -658,10 +639,6 @@ public class Functions {
 			}
 		}
 				
-
-		
-		
-		
 		String location2 = "";
 		for(int i = 0; i < a.length; i++)
 			location2 = location2 + a[i] + " ";
@@ -672,9 +649,7 @@ public class Functions {
 		
 		address= tryNumberAndAdditionInf(a1, location2);  // this sets number and addition
 		address= tryQuarterInfo(a1, address);             // this sets quarter
-		
-		a1.setStreet(address);                            // rest is street
-
+		address= tryStreet(a1, address);                  // this sets street
 		
 		// debugging 
 		
@@ -688,6 +663,36 @@ public class Functions {
 	}
 
 
+	private static String tryStreet(A1 a1, String address){
+
+    	if(address == null  || address.trim().length() == 0) return "";
+
+    	String [] toBeRemoved = {"al", "alhier"};
+
+		String [] a = address.split("[ ]+");		
+		
+		if(a != null && a.length > 0){
+			for(int i = 0; i < a.length; i++){
+				for(int j = 0; j < toBeRemoved.length; j++){
+					if(a[i].equalsIgnoreCase(toBeRemoved[j]))
+						a[i] = "";
+					
+				}
+			}
+				
+		}
+
+		
+		address = "";
+		for (int i = 0; i < a.length; i++)
+			address = address + a[i] + " ";
+
+		
+		a1.setStreet(address.trim());
+		
+		return null;
+
+	}
 
   
 
