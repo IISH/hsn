@@ -2,6 +2,7 @@ package iisg.nl.hsnmigrate;
 
 import iisg.nl.hsnlog.Log;
 import nl.iisg.ref.Ref;
+import nl.iisg.ref.Ref_Address;
 import nl.iisg.ref.Ref_Housenumber;
 import nl.iisg.ref.Ref_Housenumberaddition;
 
@@ -913,7 +914,23 @@ public class Utils {
 			}
 
 		}
+		
+		public static Ref_Address standardizeAddress(String original){
+			
+			if(original == null || original.trim().length() == 0)
+				return null;
 
+			original = original.trim(); 
+		
+				
+			Ref_Address address = Ref.getAddress2(original);     		 // See if address is in our list
+			if(address != null)                                          // If it is...
+				return address;
+			else
+				return null;
+			
+
+		}
 	 
 	public static EntityManagerFactory getFactory_nieuw() {
 		return factory_nieuw;

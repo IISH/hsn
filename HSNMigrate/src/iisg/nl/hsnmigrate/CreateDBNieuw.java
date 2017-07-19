@@ -611,7 +611,7 @@ public class CreateDBNieuw {
 			 " END_EST  SMALLINT, " +
 
 			 " MUNICIPALITY_ST VARCHAR("+ Const.Bigstring + "), " + 
-			 " MUNICIPALITY_NO SMALLINT, " + 
+			 " LOCATION_NO SMALLINT, " + 
 
 			 " ADDRESS_ID INT, " +
 			 " STREET_ST VARCHAR(" + Const.Bigstring + "), " + 

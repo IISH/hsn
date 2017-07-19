@@ -25,7 +25,7 @@ public class A1 {
 	
 	@Column(name = "MUNICIPALITY_ST")  private String  municipality;
 	
-	@Column(name = "MUNICIPALITY_NO")  private String  locationNumber;
+	@Column(name = "LOCATION_NO")  private String  locationNumber;
 	
 	@Column(name = "ADDRESS_ID")  private int       addressID;
 	

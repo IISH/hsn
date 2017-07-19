@@ -648,8 +648,60 @@ public class Functions {
 		String address = new String();
 		
 		address= tryNumberAndAdditionInf(a1, location2);  // this sets number and addition
-		address= tryQuarterInfo(a1, address);             // this sets quarter
-		address= tryStreet(a1, address);                  // this sets street
+		String address2 = address; // save address without number/addition
+		
+		// At this point, look if the address (minus number and addition) is in ref_address
+		// This is done at the same place in the code as with the persoonskaarten
+		
+		Ref_Address r = Utils.standardizeAddress(address);
+		
+		if(r != null && r.getCode().equalsIgnoreCase("Y")){
+			
+			a1.setAddressID(r.getAddressID());
+			
+			a1.setStreet(r.getStreet());
+			a1.setQuarter(r.getQuarter());
+			//b6.setPlace(r.getPlace());
+			a1.setBoat(r.getBoat());
+			a1.setBerth(r.getBerth());
+			a1.setInstitution(r.getInstitution());
+			a1.setOther(r.getOther());
+			
+			// This is a bit tricky: Ref_Address does not save number/addition
+			// So we analyze the address again and find the original number/addition 
+			// Next, we standardize them.
+			
+			//tryNumberAndAdditionInfo(b6, address); // This is only because ref_address does not save number and addition
+			a1.setNumber(Utils.standardizeHousenumber(a1.getNumber()));             // Because it must still be standardized
+			a1.setAddition(Utils.standardizeHousenumberaddition((a1.getAddition()))); // Because it must still be standardized
+
+			
+			//a1.setNumber(Utils.standardizeHousenumber(b6.getNumber()));             // Because it must still be standardized
+			//a1.setAddition(Utils.standardizeHousenumberaddition((b6.getAddition()))); // Because it must still be standardized
+			
+		}
+		else{
+			address= tryQuarterInfo(a1, address);             // this sets quarter
+			address= tryStreet(a1, address);                  // this sets street
+			                                                  // tryBoat, tryEtc....
+			// Now add this address to reference data
+			
+			if(r == null && address2 != null && address2.trim().length() > 0){
+
+				Ref_Address ra = new Ref_Address();			
+				
+				ra.setOriginal(address2.trim());
+				ra.setStreetOriginal(a1.getStreet());
+				ra.setQuarterOriginal(a1.getQuarter());
+				ra.setBoatOriginal(a1.getBoat());
+				ra.setCode("x");
+				ra.setSource("HSN CC");
+				Ref.addAddress2(ra);
+			}
+
+			
+			
+		}
 		
 		// debugging 
 		
