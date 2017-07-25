@@ -736,6 +736,7 @@ public class  Constants {
 	public static int E_OCM1BFOC = 12;
 	public static int E_OCM1BMOC = 13;
 	public static int E_OCM4W_OC = 14;
+	
 	public static int E_LOB4SDML = 0;               //gemeente_r
 	public static int E_LOB1INLL = 3;
 	public static int E_LOB1RPLL = 4;
@@ -747,23 +748,47 @@ public class  Constants {
 	public static int E_LOD1SDCL = 10;
 	public static int E_LOD1RPBL = 11;
 	public static int E_LOD1RPDL = 12;
+	
 	public static int E_LOM1SDML = 13;
 	public static int E_LOM1SDSL = 14;
 	public static int E_LOM1SDEL = 15;
-	public static int E_LOM1GRBL = 16;
-	public static int E_LOM1BRBL = 17;
-	public static int E_LOM2U_UL = 18;
-	public static int E_LOM5C_BL = 19;
-	public static int E_LOM5C_OL = 20;
-	public static int E_LOM5C_FL = 21;
-	public static int E_LOM2SD1L = 22;
-	public static int E_LOM2SD2L = 23;
-	public static int E_LOM2SD3L = 24;
-	public static int E_LOM2SD4L = 25;
-	public static int E_LOM2SD5L = 26;
-	public static int E_LOM2SD6L = 27;
-	public static int E_LOM2SD7L = 28;
-	public static int E_LOM2SD8L = 29;
+	
+	public static int E_LOM1GRBL = 16;	
+	public static int E_LOM1GRLL = 17;
+	public static int E_LOM1GRLF = 18;
+	public static int E_LOM1GRLO = 19;
+
+	public static int E_LOM1BRBL = 20;
+	public static int E_LOM1BRLL = 21;
+	public static int E_LOM1BRLF = 22;
+	public static int E_LOM1BRLO = 23;
+
+	public static int E_LOM1GFLL = 24;
+	public static int E_LOM1GFDL = 25;
+	public static int E_LOM1GMLL = 26;
+	public static int E_LOM1GMDL = 27;
+
+	public static int E_LOM1BFLL = 28;
+	public static int E_LOM1BFDL = 29;
+	public static int E_LOM1BMLL = 30;
+	public static int E_LOM1BMDL = 31;
+	
+	
+	public static int E_LOM2U_UL = 12;
+	public static int E_LOM4W_LL = 13;
+	
+	
+	public static int E_LOM5C_BL = 14;
+	public static int E_LOM5C_OL = 25;
+	public static int E_LOM5C_FL = 26;
+	public static int E_LOM2SD1L = 27;
+	public static int E_LOM2SD2L = 28;
+	public static int E_LOM2SD3L = 29;
+	public static int E_LOM2SD4L = 20;
+	public static int E_LOM2SD5L = 21;
+	public static int E_LOM2SD6L = 22;
+	public static int E_LOM2SD7L = 23;
+	public static int E_LOM2SD8L = 24;
 	
 	
 	

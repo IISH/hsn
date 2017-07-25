@@ -114,6 +114,7 @@ public class M4 {
      setM4w_pf(Functions.prefix_r(getM4w_pf(), Constants.E_LNM4W_PF, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M4"));
      setM4w_fn(Functions.firstname_r(getM4w_fn(), Constants.E_FNM4W_FN, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M4"));
      setM4w_oc(Functions.profession_r(getM4w_oc(), Constants.E_OCM4W_OC, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M4"));
+     setM4w_ll(Functions.location_r(getM4w_ll(), Constants.E_LOM4W_LL, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M4"));
 
      
      }

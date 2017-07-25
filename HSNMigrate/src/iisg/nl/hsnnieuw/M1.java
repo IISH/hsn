@@ -655,8 +655,29 @@ public class M1 {
          setM1sdml(Functions.location_r(getM1sdml(), Constants.E_LOM1SDML, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M1"));
          setM1sdsl(Functions.location_r(getM1sdsl(), Constants.E_LOM1SDSL, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M1"));
          setM1sdel(Functions.location_r(getM1sdel(), Constants.E_LOM1SDEL, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M1"));
+         
          setM1grbl(Functions.location_r(getM1grbl(), Constants.E_LOM1GRBL, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M1"));
+         setM1grll(Functions.location_r(getM1grll(), Constants.E_LOM1GRLL, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M1"));
+         setM1grlo(Functions.location_r(getM1grlo(), Constants.E_LOM1GRLO, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M1"));
+         setM1grlf(Functions.location_r(getM1grlf(), Constants.E_LOM1GRLF, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M1"));
+         
          setM1brbl(Functions.location_r(getM1brbl(), Constants.E_LOM1BRBL, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M1"));
+         setM1brll(Functions.location_r(getM1brll(), Constants.E_LOM1BRLL, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M1"));
+         setM1brlo(Functions.location_r(getM1brlo(), Constants.E_LOM1BRLO, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M1"));
+         setM1brlf(Functions.location_r(getM1brlf(), Constants.E_LOM1BRLF, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M1"));
+         
+         setM1gfll(Functions.location_r(getM1gfll(), Constants.E_LOM1GFLL, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M1"));
+         setM1gfdl(Functions.location_r(getM1gfdl(), Constants.E_LOM1GFDL, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M1"));
+         setM1bfll(Functions.location_r(getM1bfll(), Constants.E_LOM1BFLL, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M1"));
+         setM1bfdl(Functions.location_r(getM1bfdl(), Constants.E_LOM1BFDL, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M1"));
+         
+         setM1gmll(Functions.location_r(getM1gmll(), Constants.E_LOM1GMLL, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M1"));
+         setM1gmdl(Functions.location_r(getM1gmdl(), Constants.E_LOM1GMDL, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M1"));
+         setM1bmll(Functions.location_r(getM1bmll(), Constants.E_LOM1BMLL, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M1"));
+         setM1bmdl(Functions.location_r(getM1bmdl(), Constants.E_LOM1BMDL, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M1"));
+         
+         
+         
          
          setM1groc(Functions.profession_r(getM1groc(), Constants.E_OCM1GROC, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M1"));
          setM1broc(Functions.profession_r(getM1broc(), Constants.E_OCM1BROC, getIdnr(), getMar_cy(), "HSN_CIVREC_STD", "M1"));
