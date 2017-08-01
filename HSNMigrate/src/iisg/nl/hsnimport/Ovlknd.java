@@ -117,6 +117,11 @@ public void convert(EntityManager em){
 	 //em.getTransaction().begin();
 	 d1.truncate();
 	 em.persist(d1);
+	 
+	 // Save address objects
+	 
+	 if(d1.getD1sdcla() != null) em.persist(d1.getD1sdcla());
+
 	 //em.getTransaction().commit();
 
 	 

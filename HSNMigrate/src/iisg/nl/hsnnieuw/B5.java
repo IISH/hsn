@@ -156,6 +156,10 @@ public class B5 {
          setB5fasla(Functions.location_r2(getB5fasl(), Constants.E_LOB5FASL, getIdnr(), 0, "HSN_CIVREC_STD", "B5"));
          if(getB5fasla() != null){
          	getB5fasla().setRole(4);
+         	
+        	getB5fasla().setStartDate(String.format("%02d-%02d-%02d", gebvdr.getGebknd().getGebdag(), gebvdr.getGebknd().getGebmnd(), gebvdr.getGebknd().getGebjr()));
+        	getB5fasla().setEndDate(String.format("%02d-%02d-%02d", gebvdr.getGebknd().getGebdag(), gebvdr.getGebknd().getGebmnd(), gebvdr.getGebknd().getGebjr()));
+
          	if(getB5fasla().getLocationNumber() == null){
          		getB5fasla().setLocationNumber(gebvdr.getGebknd().getBirthActLocationNo());
          		getB5fasla().setMunicipality(gebvdr.getGebknd().getBirthActLocation());
@@ -166,6 +170,10 @@ public class B5 {
          setB5fadla(Functions.location_r2(getB5fadl(), Constants.E_LOB5FADL, getIdnr(), 0, "HSN_CIVREC_STD", "B5"));
          if(getB5fadla() != null){
          	getB5fadla().setRole(4);
+         	
+        	getB5fadla().setStartDate(String.format("%02d-%02d-%02d", gebvdr.getGebknd().getGebdag(), gebvdr.getGebknd().getGebmnd(), gebvdr.getGebknd().getGebjr()));
+        	getB5fadla().setEndDate(String.format("%02d-%02d-%02d", gebvdr.getGebknd().getGebdag(), gebvdr.getGebknd().getGebmnd(), gebvdr.getGebknd().getGebjr()));
+
          	if(getB5fadla().getLocationNumber() == null){
          		getB5fadla().setLocationNumber(gebvdr.getGebknd().getBirthActLocationNo());
          		getB5fadla().setMunicipality(gebvdr.getGebknd().getBirthActLocation());
@@ -176,6 +184,11 @@ public class B5 {
          setB5falla(Functions.location_r2(getB5fall(), Constants.E_LOB5FALL, getIdnr(), 0, "HSN_CIVREC_STD", "B5"));
          if(getB5falla() != null){
          	getB5falla().setRole(4);
+         	
+        	getB5falla().setStartDate(String.format("%02d-%02d-%02d", gebvdr.getGebknd().getGebdag(), gebvdr.getGebknd().getGebmnd(), gebvdr.getGebknd().getGebjr()));
+        	getB5falla().setEndDate(String.format("%02d-%02d-%02d", gebvdr.getGebknd().getGebdag(), gebvdr.getGebknd().getGebmnd(), gebvdr.getGebknd().getGebjr()));
+
+         	
          	if(getB5falla().getLocationNumber() == null){
          		getB5falla().setLocationNumber(gebvdr.getGebknd().getBirthActLocationNo());
          		getB5falla().setMunicipality(gebvdr.getGebknd().getBirthActLocation());

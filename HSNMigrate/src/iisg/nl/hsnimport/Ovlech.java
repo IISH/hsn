@@ -56,6 +56,9 @@ public void convert(EntityManager em){
 	 //em.getTransaction().begin();
 	 d2.truncate();
 	 em.persist(d2);
+	 
+	 if(d2.getD2s_lla() != null)
+		 em.persist(d2.getD2s_lla());
 	 //em.getTransaction().commit();
 
 

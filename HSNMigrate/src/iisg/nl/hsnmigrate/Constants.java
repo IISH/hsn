@@ -747,40 +747,46 @@ public class  Constants {
 	public static int E_LOB5FADL = 9;
 	public static int E_LOD1SDCL = 10;
 	public static int E_LOD1RPBL = 11;
-	public static int E_LOD1RPDL = 12;
+	public static int E_LOD1RPLL = 12;
+	public static int E_LOD2S_LL = 13;
+	public static int E_LOD3I_LL = 14;
 	
-	public static int E_LOM1SDML = 13;
-	public static int E_LOM1SDSL = 14;
-	public static int E_LOM1SDEL = 15;
+	public static int E_LOM1SDML = 15;
+	public static int E_LOM1SDSL = 16;
+	public static int E_LOM1SDEL = 17;
 	
-	public static int E_LOM1GRBL = 16;	
-	public static int E_LOM1GRLL = 17;
-	public static int E_LOM1GRLF = 18;
-	public static int E_LOM1GRLO = 19;
+	public static int E_LOM1GRBL = 18;	
+	public static int E_LOM1GRLL = 19;
+	public static int E_LOM1GRLF = 20;
+	public static int E_LOM1GRLO = 21;
 
-	public static int E_LOM1BRBL = 20;
-	public static int E_LOM1BRLL = 21;
-	public static int E_LOM1BRLF = 22;
-	public static int E_LOM1BRLO = 23;
+	public static int E_LOM1BRBL = 22;
+	public static int E_LOM1BRLL = 23;
+	public static int E_LOM1BRLF = 24;
+	public static int E_LOM1BRLO = 25;
 
-	public static int E_LOM1GFLL = 24;
-	public static int E_LOM1GFDL = 25;
-	public static int E_LOM1GMLL = 26;
-	public static int E_LOM1GMDL = 27;
+	public static int E_LOM1GFLL = 26;
+	public static int E_LOM1GFDL = 27;
+	public static int E_LOM1GMLL = 28;
+	public static int E_LOM1GMDL = 29;
 
-	public static int E_LOM1BFLL = 28;
-	public static int E_LOM1BFDL = 29;
-	public static int E_LOM1BMLL = 30;
-	public static int E_LOM1BMDL = 31;
+	public static int E_LOM1BFLL = 30;
+	public static int E_LOM1BFDL = 31;
+	public static int E_LOM1BMLL = 32;
+	public static int E_LOM1BMDL = 33;
 	
 	
-	public static int E_LOM2U_UL = 12;
-	public static int E_LOM4W_LL = 13;
+	public static int E_LOM2U_UL = 34;
+	public static int E_LOM4W_LL = 35;
 	
 	
-	public static int E_LOM5C_BL = 14;
-	public static int E_LOM5C_OL = 25;
-	public static int E_LOM5C_FL = 26;
+	public static int E_LOM5C_BL = 36;
+	public static int E_LOM5C_OL = 37;
+	public static int E_LOM5C_FL = 38;
+	
+	
+	
+	/*
 	public static int E_LOM2SD1L = 27;
 	public static int E_LOM2SD2L = 28;
 	public static int E_LOM2SD3L = 29;
@@ -790,7 +796,7 @@ public class  Constants {
 	public static int E_LOM2SD7L = 23;
 	public static int E_LOM2SD8L = 24;
 	
-	
+	*/
 	
 	public static int E_RED3I_LS = 0;
 

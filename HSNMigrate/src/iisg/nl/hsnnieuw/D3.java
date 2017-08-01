@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="d3")
@@ -33,6 +34,8 @@ public class D3 {
      @Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
      @Column(name="RecordID")     private int recordID;
      
+     @Transient                   private A1  d3i_lla;  
+
      
      public void transform(Ovlagv ovlagv){
          
@@ -98,6 +101,23 @@ public class D3 {
          setD3i_pf(Functions.prefix_r(getD3i_pf(), Constants.E_LND3I_PF, getIdnr(), 0, "HSN_CIVREC_STD", "D3"));
          setD3i_ln(Functions.familyname_r(getD3i_ln(), Constants.E_LND3I_LN, getIdnr(), 0, "HSN_CIVREC_STD", "D3"));
          setD3i_fn(Functions.firstname_r(getD3i_fn(), Constants.E_FND3I_FN, getIdnr(), 0, "HSN_CIVREC_STD", "D3"));
+         
+         setD3i_ll(Functions.location_r(getD3i_ll(), Constants.E_LOD3I_LL, getIdnr(), 0, "HSN_CIVREC_STD", "D3"));
+
+         setD3i_lla(Functions.location_r2(getD3i_ll(), Constants.E_LOD3I_LL, getIdnr(), 0, "HSN_CIVREC_STD", "D3"));
+         if(getD3i_lla() != null){
+        	 getD3i_lla().setRole(10);
+         	
+        	 getD3i_lla().setStartDate(String.format("%02d-%02d-%02d", ovlagv.getOvlknd().getOaktedag(), ovlagv.getOvlknd().getOaktemnd(), ovlagv.getOvlknd().getOaktejr()));
+        	 getD3i_lla().setEndDate(String.format("%02d-%02d-%02d",  ovlagv.getOvlknd().getOaktedag(), ovlagv.getOvlknd().getOaktemnd(), ovlagv.getOvlknd().getOaktejr()));
+         	
+         	if(getD3i_lla().getLocationNumber() == null){
+         		getD3i_lla().setLocationNumber(ovlagv.getOvlknd().getOacgemnr() + "");
+         		getD3i_lla().setMunicipality(ovlagv.getOvlknd().getDeathActPlace());
+         		
+         	}
+         }
+
 
          
      }
@@ -250,6 +270,14 @@ public class D3 {
 	}
 	public void setRecordID(int recordID) {
 		this.recordID = recordID;
+	}
+
+	public A1 getD3i_lla() {
+		return d3i_lla;
+	}
+
+	public void setD3i_lla(A1 d3i_lla) {
+		this.d3i_lla = d3i_lla;
 	}
      
      

@@ -278,6 +278,11 @@ public class B1 {
             setB1rplla(Functions.location_r2(getB1rpll(), Constants.E_LOB1RPLL, getIdnr(), 0, "HSN_CIVREC_STD", "B1"));
             if(getB1rplla() != null){
             	getB1rplla().setRole(1);
+            	
+            	getB1rplla().setStartDate(String.format("%02d-%02d-%02d", getB1sdcd(), getB1sdcm(), getB1sdcy()));
+            	getB1rplla().setEndDate(String.format("%02d-%02d-%02d", getB1sdcd(), getB1sdcm(), getB1sdcy()));
+
+            	
             	if(getB1rplla().getLocationNumber() == null){
             		getB1rplla().setLocationNumber(gebknd.getBirthActLocationNo());
             		getB1rplla().setMunicipality(gebknd.getBirthActLocation());
@@ -289,6 +294,10 @@ public class B1 {
             setB1molla(Functions.location_r2(getB1moll(), Constants.E_LOB1MOLL, getIdnr(), 0, "HSN_CIVREC_STD", "B1"));
             if(getB1molla() != null){
             	getB1molla().setRole(3);
+            	
+            	getB1molla().setStartDate(String.format("%02d-%02d-%02d", getB1sdcd(), getB1sdcm(), getB1sdcy()));
+            	getB1molla().setEndDate(String.format("%02d-%02d-%02d", getB1sdcd(), getB1sdcm(), getB1sdcy()));
+
             	if(getB1molla().getLocationNumber() == null){
             		getB1molla().setMunicipality(gebknd.getBirthActLocation());
             		getB1molla().setLocationNumber(gebknd.getBirthActLocationNo());
@@ -298,6 +307,10 @@ public class B1 {
             setB1inlla(Functions.location_r2(getB1inll(), Constants.E_LOB1INLL, getIdnr(), 0, "HSN_CIVREC_STD", "B1"));
             if(getB1inlla() != null){
             	getB1inlla().setRole(4);
+            	
+            	getB1inlla().setStartDate(String.format("%02d-%02d-%02d", getB1sdcd(), getB1sdcm(), getB1sdcy()));
+            	getB1inlla().setEndDate(String.format("%02d-%02d-%02d", getB1sdcd(), getB1sdcm(), getB1sdcy()));
+
             	if(getB1inlla().getLocationNumber() == null){
            			getB1inlla().setMunicipality(gebknd.getBirthActLocation());
            			getB1inlla().setLocationNumber(gebknd.getBirthActLocationNo());

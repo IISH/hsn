@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="d2")
@@ -32,6 +33,8 @@ public class D2 {
      @Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
      @Column(name="RecordID")     private int recordID;
      
+     @Transient                   private A1  d2s_lla;  
+
      
      public void transform(Ovlech ovlech){
      
@@ -96,6 +99,22 @@ public class D2 {
      setD2s_pf(Functions.prefix_r(getD2s_pf(), Constants.E_LND2S_PX, getIdnr(), 0, "HSN_CIVREC_STD", "D2"));
      setD2s_ln(Functions.familyname_r(getD2s_ln(), Constants.E_LND2S_LN, getIdnr(), 0, "HSN_CIVREC_STD", "D2"));
      setD2s_fn(Functions.firstname_r(getD2s_fn(), Constants.E_FND2S_FN, getIdnr(), 0, "HSN_CIVREC_STD", "D2"));
+     //setD2s_ll(Functions.location_r(getD2s_ll(), Constants.E_LOD2S_LL, getIdnr(), 0, "HSN_CIVREC_STD", "D2"));
+
+     setD2s_lla(Functions.location_r2(getD2s_ll(), Constants.E_LOD2S_LL, getIdnr(), 0, "HSN_CIVREC_STD", "D2"));
+     if(getD2s_lla() != null){
+    	 getD2s_lla().setRole(10);
+     	
+    	 getD2s_lla().setStartDate(String.format("%02d-%02d-%02d", ovlech.getOvlknd().getOaktedag(), ovlech.getOvlknd().getOaktemnd(), ovlech.getOvlknd().getOaktejr()));
+    	 getD2s_lla().setEndDate(String.format("%02d-%02d-%02d",  ovlech.getOvlknd().getOaktedag(), ovlech.getOvlknd().getOaktemnd(), ovlech.getOvlknd().getOaktejr()));
+     	
+     	if(getD2s_lla().getLocationNumber() == null){
+     		getD2s_lla().setLocationNumber(ovlech.getOvlknd().getOacgemnr() + "");
+     		getD2s_lla().setMunicipality(ovlech.getOvlknd().getDeathActPlace());
+     		
+     	}
+     }
+     
 
      
      }
@@ -232,6 +251,14 @@ public class D2 {
 	}
 	public void setRecordID(int recordID) {
 		this.recordID = recordID;
+	}
+
+	public A1 getD2s_lla() {
+		return d2s_lla;
+	}
+
+	public void setD2s_lla(A1 d2s_lla) {
+		this.d2s_lla = d2s_lla;
 	}
 
      

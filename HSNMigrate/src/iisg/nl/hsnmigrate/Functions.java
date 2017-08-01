@@ -602,8 +602,14 @@ public class Functions {
 		
 		A1 a1 = new iisg.nl.hsnnieuw.A1();
 		a1.setKeyToRP(idnr);
+		
+		String ll = location;
 
 		String [] a = location.split("[ ,]");
+		
+		//System.out.println(location);
+		//for(String a12: a) System.out.println(a12);
+		//System.out.println();
 		
 		String loc = "";
 		
@@ -619,12 +625,13 @@ public class Functions {
 					a[a.length - 1] = "";
 					a[a.length - 2] = "";
 
+					//System.out.println("1");
 				}	
 			}
 		}
 				
 		if(a.length > 0 && !a[a.length - 1].equalsIgnoreCase("") ){			
-			loc = a[a.length - 1];  // To get places like "De Ham"
+			loc = a[a.length - 1];  
 			if(validPlace(loc)){
 				Ref_Location l = Ref.getLocation(loc);
 				if(l != null  && l.getStandardCode() != null && (l.getStandardCode().equalsIgnoreCase("y"))){ 
@@ -634,6 +641,7 @@ public class Functions {
 					a1.setLocationNumber(l.getLocationNo() + "");
 
 					a[a.length - 1] = "";
+					//System.out.println("2");
 
 				}	
 			}
@@ -642,8 +650,12 @@ public class Functions {
 		String location2 = "";
 		for(int i = 0; i < a.length; i++)
 			location2 = location2 + a[i] + " ";
+		
+		
 
 		location2 = location2.trim(); 
+		
+		System.out.format("%20s     %20s     %20s%n", ll, a1.getMunicipality(), location2 );
 		
 		String address = new String();
 		
@@ -719,7 +731,7 @@ public class Functions {
 
     	if(address == null  || address.trim().length() == 0) return "";
 
-    	String [] toBeRemoved = {"al", "alhier"};
+    	String [] toBeRemoved = {"al", "alhier", "alh", "alsboven", "id", "ald", "ten zijnen huize", "te zijnen huize", "aldaar"};
 
 		String [] a = address.split("[ ]+");		
 		
@@ -967,7 +979,7 @@ public class Functions {
 		if(place.trim().length() <= 2) return false;
 		
 		for(int i = 0; i < place.length() - 1; i++)
-			if(Character.isAlphabetic(place.charAt(i)) == false)
+			if(Character.isAlphabetic(place.charAt(i)) == false && place.charAt(i) != ' ')
 				return false;
 		
 		return true;

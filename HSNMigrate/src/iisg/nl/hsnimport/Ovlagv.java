@@ -56,7 +56,8 @@ public void convert(EntityManager em){
 	 d3.truncate();
 	 em.persist(d3);
 	 //em.getTransaction().commit();
-
+	 if(d3.getD3i_lla() != null)
+		 em.persist(d3.getD3i_lla());
 	 
  }
 

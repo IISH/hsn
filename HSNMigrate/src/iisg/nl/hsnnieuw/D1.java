@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import nl.iisg.ref.Ref;
 import nl.iisg.ref.Ref_Municipality;
@@ -78,6 +79,11 @@ public class D1 {
      @Column(name="D_E_P_O")      private String d_e_p_o;
      @Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
      @Column(name="RecordID")     private int recordID;
+     
+     @Transient                   private A1  d1sdcla;  
+     @Transient                   private A1  d1rpbla;  
+     @Transient                   private A1  d1rplla;  
+
      
      
      public void transform(Ovlknd ovlknd){
@@ -325,9 +331,60 @@ public class D1 {
      setD1rpoc(Functions.profession_r(getD1rpoc(), Constants.E_OCD1RPOC, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
      setD1faoc(Functions.profession_r(getD1faoc(), Constants.E_OCD1FAOC, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
      setD1mooc(Functions.profession_r(getD1mooc(), Constants.E_OCD1MOOC, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
-     setD1sdcl(Functions.location_r(getD1sdcl(), Constants.E_LOD1SDCL, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
-     setD1rpbl(Functions.location_r(getD1rpbl(), Constants.E_LOD1RPBL, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
-     setD1rpdl(Functions.location_r(getD1rpdl(), Constants.E_LOD1RPDL, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
+     
+     
+     //setD1sdcl(Functions.location_r(getD1sdcl(), Constants.E_LOD1SDCL, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
+     //setD1rpbl(Functions.location_r(getD1rpbl(), Constants.E_LOD1RPBL, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
+     //setD1rpdl(Functions.location_r(getD1rpdl(), Constants.E_LOD1RPDL, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
+     
+     
+     setD1sdcla(Functions.location_r2(getD1sdcl(), Constants.E_LOD1SDCL, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
+     if(getD1sdcla() != null){
+     	getD1sdcla().setRole(10);
+     	
+     	getD1sdcla().setStartDate(String.format("%02d-%02d-%02d", getD1sdcd(), getD1sdcm(), getD1sdcy()));
+     	getD1sdcla().setEndDate(String.format("%02d-%02d-%02d", getD1sdcd(), getD1sdcm(), getD1sdcy()));
+     	
+     	if(getD1sdcla().getLocationNumber() == null){
+     		getD1sdcla().setLocationNumber(ovlknd.getOacgemnr() + "");
+     		getD1sdcla().setMunicipality(ovlknd.getDeathActPlace());
+     		
+     	}
+     }
+     
+     
+
+     setD1rpbla(Functions.location_r2(getD1rpbl(), Constants.E_LOD1RPBL, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
+     if(getD1rpbla() != null){
+     	getD1rpbla().setRole(10);
+     	
+     	getD1rpbla().setStartDate(String.format("%02d-%02d-%02d", getD1sdcd(), getD1sdcm(), getD1sdcy()));
+     	getD1rpbla().setEndDate(String.format("%02d-%02d-%02d", getD1sdcd(), getD1sdcm(), getD1sdcy()));
+     	
+     	if(getD1rpbla().getLocationNumber() == null){
+     		getD1rpbla().setLocationNumber(ovlknd.getOacgemnr() + "");
+     		getD1rpbla().setMunicipality(ovlknd.getDeathActPlace());
+     		
+     	}
+     }
+
+     setD1rplla(Functions.location_r2(getD1rpll(), Constants.E_LOD1RPLL, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
+     if(getD1rplla() != null){
+     	getD1rplla().setRole(10);
+     	
+     	getD1rplla().setStartDate(String.format("%02d-%02d-%02d", getD1sdcd(), getD1sdcm(), getD1sdcy()));
+     	getD1rplla().setEndDate(String.format("%02d-%02d-%02d", getD1sdcd(), getD1sdcm(), getD1sdcy()));
+     	
+     	if(getD1rplla().getLocationNumber() == null){
+     		getD1rplla().setLocationNumber(ovlknd.getOacgemnr() + "");
+     		getD1rplla().setMunicipality(ovlknd.getDeathActPlace());
+     		
+     	}
+     }
+
+     
+     
+     
      setD1rpln(Functions.familyname_r(getD1rpln(), Constants.E_LND1RPLN, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
      setD1rppf(Functions.prefix_r(getD1rppf(), Constants.E_LND1RPPF, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
      setD1rpfn(Functions.firstname_r(getD1rpfn(), Constants.E_FND1RPFN, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
@@ -903,6 +960,36 @@ public class D1 {
 	}
 	public void setRecordID(int recordID) {
 		this.recordID = recordID;
+	}
+
+
+	public A1 getD1sdcla() {
+		return d1sdcla;
+	}
+
+
+	public void setD1sdcla(A1 d1sdcla) {
+		this.d1sdcla = d1sdcla;
+	}
+
+
+	public A1 getD1rpbla() {
+		return d1rpbla;
+	}
+
+
+	public void setD1rpbla(A1 d1rpbla) {
+		this.d1rpbla = d1rpbla;
+	}
+
+
+	public A1 getD1rplla() {
+		return d1rplla;
+	}
+
+
+	public void setD1rplla(A1 d1rplla) {
+		this.d1rplla = d1rplla;
 	}
      
      
