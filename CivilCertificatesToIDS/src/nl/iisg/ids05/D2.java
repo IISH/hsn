@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+
 import nl.iisg.idscontext.ContextElement;
 import nl.iisg.idscontext.Contxt;
 
@@ -31,7 +32,7 @@ public class D2 {
      @Column(name="RecordID")     private int recordID;
      
      @Transient                   private D1   d1  = null;               
-
+     @Transient                   private A1  d2s_lla;  
      
      public void convert(EntityManager em){
     	 
@@ -190,6 +191,16 @@ public class D2 {
 	}
 	public void setD1(D1 d1) {
 		this.d1 = d1;
+	}
+
+
+	public A1 getD2s_lla() {
+		return d2s_lla;
+	}
+
+
+	public void setD2s_lla(A1 d2s_lla) {
+		this.d2s_lla = d2s_lla;
 	}
 
 	

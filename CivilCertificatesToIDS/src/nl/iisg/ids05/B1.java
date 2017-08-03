@@ -15,6 +15,7 @@ import javax.persistence.Persistence;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+
 import nl.iisg.idscontext.ContextElement;
 import nl.iisg.idscontext.Contxt;
 
@@ -76,6 +77,11 @@ public class B1 {
 
 	@Transient                  private ArrayList<M1>  m1L  = new ArrayList<M1>();
 	@Transient                  private           D1   d1  = null;
+	
+    @Transient                   private A1  b1rplla;  
+    @Transient                   private A1  b1molla;
+    @Transient                   private A1  b1inlla;
+
 
 	public void convert(EntityManager em){
 
@@ -582,6 +588,42 @@ public class B1 {
 	}
 	public void setD1(D1 d1) {
 		this.d1 = d1;
+	}
+
+
+
+	public A1 getB1rplla() {
+		return b1rplla;
+	}
+
+
+
+	public void setB1rplla(A1 b1rplla) {
+		this.b1rplla = b1rplla;
+	}
+
+
+
+	public A1 getB1molla() {
+		return b1molla;
+	}
+
+
+
+	public void setB1molla(A1 b1molla) {
+		this.b1molla = b1molla;
+	}
+
+
+
+	public A1 getB1inlla() {
+		return b1inlla;
+	}
+
+
+
+	public void setB1inlla(A1 b1inlla) {
+		this.b1inlla = b1inlla;
 	}
 
 

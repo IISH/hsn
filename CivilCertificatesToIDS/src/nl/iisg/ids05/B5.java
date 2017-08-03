@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+
 import nl.iisg.idscontext.ContextElement;
 import nl.iisg.idscontext.Contxt;
 
@@ -37,7 +38,13 @@ public class B5 {
      @Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
      @Column(name="RecordID")     private int recordID;
      
-     @Transient                  private  B1   b1   = null;               
+     @Transient                  private  B1   b1   = null;         
+     
+     @Transient                   private A1  b5fasla;  
+     @Transient                   private A1  b5fadla;
+     @Transient                   private A1  b5falla;
+
+
 
      public void convert(EntityManager em){
     	 
@@ -257,6 +264,36 @@ public class B5 {
 	}
 	public void setB1(B1 b1) {
 		this.b1 = b1;
+	}
+
+
+	public A1 getB5fasla() {
+		return b5fasla;
+	}
+
+
+	public void setB5fasla(A1 b5fasla) {
+		this.b5fasla = b5fasla;
+	}
+
+
+	public A1 getB5fadla() {
+		return b5fadla;
+	}
+
+
+	public void setB5fadla(A1 b5fadla) {
+		this.b5fadla = b5fadla;
+	}
+
+
+	public A1 getB5falla() {
+		return b5falla;
+	}
+
+
+	public void setB5falla(A1 b5falla) {
+		this.b5falla = b5falla;
 	}
      
      

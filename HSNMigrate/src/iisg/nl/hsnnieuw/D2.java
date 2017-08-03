@@ -103,7 +103,7 @@ public class D2 {
 
      setD2s_lla(Functions.location_r2(getD2s_ll(), Constants.E_LOD2S_LL, getIdnr(), 0, "HSN_CIVREC_STD", "D2"));
      if(getD2s_lla() != null){
-    	 getD2s_lla().setRole(10);
+    	 getD2s_lla().setRole(200 + getD2s_sq());
      	
     	 getD2s_lla().setStartDate(String.format("%02d-%02d-%02d", ovlech.getOvlknd().getOaktedag(), ovlech.getOvlknd().getOaktemnd(), ovlech.getOvlknd().getOaktejr()));
     	 getD2s_lla().setEndDate(String.format("%02d-%02d-%02d",  ovlech.getOvlknd().getOaktedag(), ovlech.getOvlknd().getOaktemnd(), ovlech.getOvlknd().getOaktejr()));

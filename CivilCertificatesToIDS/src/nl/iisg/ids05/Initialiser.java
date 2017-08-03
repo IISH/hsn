@@ -286,6 +286,10 @@ public class Initialiser {
 						return -1;
 					if(d21.getIdnr() > d22.getIdnr())
 						return 1;
+					if(d21.getD2s_sq() < d22.getD2s_sq())
+						return -1;
+					if(d21.getD2s_sq() > d22.getD2s_sq())
+						return 1;
 					return 0;}});	
 		
 		ArrayList<D3> d3List = all.get(16);
@@ -295,6 +299,10 @@ public class Initialiser {
 					if(d31.getIdnr() < d32.getIdnr())
 						return -1;
 					if(d31.getIdnr() > d32.getIdnr())
+						return 1;
+					if(d31.getD3i_sq() < d32.getD3i_sq())
+						return -1;
+					if(d31.getD3i_sq() > d32.getD3i_sq())
 						return 1;
 					return 0;}});	
 		
@@ -339,9 +347,57 @@ public class Initialiser {
 				b0.getB1L().add(b1List.get(i_b1));
 				b1List.get(i_b1).setB0(b0);
 				
+				while(i_a1 < a1List.size() && a1List.get(i_a1).getIdnr() == b0.getIdnr() && a1List.get(i_a1).getRole() <= 4){
+					
+					
+					System.out.println("B1 i_a1 = " + i_a1);
+					
+					switch(a1List.get(i_a1).getRole()){
+					
+					case 1:
+						
+						
+						System.out.println("B1 rplla gevonden");
+						b1List.get(i_b1).setB1rplla(a1List.get(i_a1));
+						i_a1++;
+						break;						
+					
+					case 3:
+						
+						System.out.println("B1 molla gevonden");						
+						b1List.get(i_b1).setB1molla(a1List.get(i_a1));
+						i_a1++;
+						break;						
+					
+					case 4:
+						
+						System.out.println("B1 inlla gevonden");
+						b1List.get(i_b1).setB1inlla(a1List.get(i_a1));
+						i_a1++;
+						break;						
+					
+
+					default:
+						
+					
+					}
+					
+					
+				}				
+				
+				
 				while(i_b2 < b2List.size() && b2List.get(i_b2).getIdnr() == b0.getIdnr()){
 					b1List.get(i_b1).getB2L().add(b2List.get(i_b2));
 					b2List.get(i_b2).setB1(b1List.get(i_b1));
+					
+					
+					while(i_a1 < a1List.size() && a1List.get(i_a1).getIdnr() == b0.getIdnr() && a1List.get(i_a1).getRole() <= 20){ // See HSNMigrate
+						System.out.println("B2 w_lla i_a1 = " + i_a1);
+
+						b2List.get(i_b2).setB2w_lla(a1List.get(i_a1));
+						i_a1++;
+					}
+					
 					i_b2++;
 				}				
 				
@@ -360,6 +416,44 @@ public class Initialiser {
 				while(i_b5 < b5List.size() && b5List.get(i_b5).getIdnr() == b0.getIdnr()){
 					b1List.get(i_b1).setB5(b5List.get(i_b5));
 					b5List.get(i_b5).setB1(b1List.get(i_b1));
+					
+					while(i_a1 < a1List.size() && a1List.get(i_a1).getIdnr() == b0.getIdnr() && a1List.get(i_a1).getRole() <= 23){
+						
+						System.out.println("B5 i_a1 = " + i_a1);
+
+
+						switch(a1List.get(i_a1).getRole()){
+
+						case 21:
+
+							System.out.println("B5 fasla gevonden");
+
+							b5List.get(i_b5).setB5fasla(a1List.get(i_a1)); // See HSNMigrate	
+							i_a1++;
+							break;						
+
+						case 22:
+
+							System.out.println("B5 fadla gevonden");
+							b5List.get(i_b5).setB5fadla(a1List.get(i_a1)); // See HSNMigrate	
+							i_a1++;
+							break;						
+
+						case 23:
+							
+							System.out.println("B5 falla gevonden");
+
+							b5List.get(i_b5).setB5falla(a1List.get(i_a1)); // See HSNMigrate	 
+							i_a1++;
+							break;						
+
+
+						default:
+
+
+						}
+
+					}
 					i_b5++;
 				}				
 				
@@ -409,13 +503,65 @@ public class Initialiser {
 				
 				while(i_d1 < d1List.size() && d1List.get(i_d1).getIdnr() == b0.getIdnr()){
 					
+					System.out.println("In D List");
+					
 					b1List.get(i_b1).setD1(d1List.get(i_d1));
 					d1List.get(i_d1).setB1(b1List.get(i_b1));
 					
-					while(i_d2 < d2List.size() && d2List.get(i_d2).getIdnr() == b0.getIdnr()){
+					while(i_a1 < a1List.size() && a1List.get(i_a1).getIdnr() == b0.getIdnr() && a1List.get(i_a1).getRole() <= 102){
+
+
+						System.out.println("D1 i_a1 = " + i_a1);
+
+						switch(a1List.get(i_a1).getRole()){
+
+						case 100: // See HSNMigrate
+
+							System.out.println("D1 sdcla gevonden");
+							d1List.get(i_d1).setD1sdcla(a1List.get(i_a1));
+							i_a1++;
+							break;						
+
+						case 101: // See HSNMigrate
+
+							System.out.println("D1 rpbla gevonden");
+							d1List.get(i_d1).setD1rpbla(a1List.get(i_a1));
+							i_a1++;
+							break;						
+
+						case 102: // See HSNMigrate
+
+							System.out.println("D1 rplla gevonden");
+							d1List.get(i_d1).setD1rplla(a1List.get(i_a1));
+							i_a1++;
+							break;						
+
+
+
+						default:
+
+
+						}
+
+					}
+					
+					while(i_d2 < d2List.size() &&  d2List.get(i_d2).getIdnr() == b0.getIdnr()){
 						
 						d1List.get(i_d1).getD2L().add(d2List.get(i_d2));
 						d2List.get(i_d2).setD1(d1List.get(i_d1));
+						
+						
+
+						while(i_a1 < a1List.size() && a1List.get(i_a1).getIdnr() == b0.getIdnr() && a1List.get(i_a1).getRole() < 300){ // See HSNMigrate		
+							
+							System.out.println("D2 i_a1 = " + i_a1);
+
+							d2List.get(i_d2).setD2s_lla(a1List.get(i_a1));
+							System.out.println("D2 2s_lla gevonden");
+
+							i_a1++;
+						}
+						
 						i_d2++;						
 					}
 					
@@ -423,6 +569,18 @@ public class Initialiser {
 						
 						d1List.get(i_d1).getD3L().add(d3List.get(i_d3));
 						d3List.get(i_d3).setD1(d1List.get(i_d1));
+						
+						
+						while(i_a1 < a1List.size() && a1List.get(i_a1).getIdnr() == b0.getIdnr()){ // See HSNMigrate		
+							
+							System.out.println("D1 i_a1 = " + i_a1);
+
+							System.out.println("D3 i_lla gevonden");
+
+							d3List.get(i_d3).setD3i_lla(a1List.get(i_a1));
+							i_a1++;
+						}
+						
 						i_d3++;						
 					}
 					

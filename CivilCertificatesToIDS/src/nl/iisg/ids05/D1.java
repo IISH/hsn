@@ -80,6 +80,11 @@ public class D1 {
      @Transient                   private ArrayList<D3>  d3L  = new ArrayList<D3>();
      @Transient                   private           D4   d4   = null;               
 
+     @Transient                   private A1  d1sdcla;  
+     @Transient                   private A1  d1rpbla;  
+     @Transient                   private A1  d1rplla;  
+
+
 
 public void convert(EntityManager em){
     	 
@@ -167,7 +172,7 @@ public void convert(EntityManager em){
     	 if(getD1rpbc() > 0)
     		 ceBirthLocation = Contxt.get(getD1rpbc());  // Look up name in Context System
     	 else
-    		 if(getD1rpbl() != null & getD1rpbl().trim().length() > 0)
+    		 if(getD1rpbl() != null && getD1rpbl().trim().length() > 0)
         		 ceBirthLocation = Contxt.get2(getD1rpbl());  // Look up name in Context System
     			 
     		 
@@ -671,6 +676,24 @@ public void convert(EntityManager em){
 	}
 	public void setD4(D4 d4) {
 		this.d4 = d4;
+	}
+	public A1 getD1sdcla() {
+		return d1sdcla;
+	}
+	public void setD1sdcla(A1 d1sdcla) {
+		this.d1sdcla = d1sdcla;
+	}
+	public A1 getD1rpbla() {
+		return d1rpbla;
+	}
+	public void setD1rpbla(A1 d1rpbla) {
+		this.d1rpbla = d1rpbla;
+	}
+	public A1 getD1rplla() {
+		return d1rplla;
+	}
+	public void setD1rplla(A1 d1rplla) {
+		this.d1rplla = d1rplla;
 	}
      
      

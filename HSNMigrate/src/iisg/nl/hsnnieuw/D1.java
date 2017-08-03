@@ -340,7 +340,7 @@ public class D1 {
      
      setD1sdcla(Functions.location_r2(getD1sdcl(), Constants.E_LOD1SDCL, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
      if(getD1sdcla() != null){
-     	getD1sdcla().setRole(10);
+     	getD1sdcla().setRole(100);
      	
      	getD1sdcla().setStartDate(String.format("%02d-%02d-%02d", getD1sdcd(), getD1sdcm(), getD1sdcy()));
      	getD1sdcla().setEndDate(String.format("%02d-%02d-%02d", getD1sdcd(), getD1sdcm(), getD1sdcy()));
@@ -356,7 +356,7 @@ public class D1 {
 
      setD1rpbla(Functions.location_r2(getD1rpbl(), Constants.E_LOD1RPBL, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
      if(getD1rpbla() != null){
-     	getD1rpbla().setRole(10);
+     	getD1rpbla().setRole(101);
      	
      	getD1rpbla().setStartDate(String.format("%02d-%02d-%02d", getD1sdcd(), getD1sdcm(), getD1sdcy()));
      	getD1rpbla().setEndDate(String.format("%02d-%02d-%02d", getD1sdcd(), getD1sdcm(), getD1sdcy()));
@@ -370,7 +370,7 @@ public class D1 {
 
      setD1rplla(Functions.location_r2(getD1rpll(), Constants.E_LOD1RPLL, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
      if(getD1rplla() != null){
-     	getD1rplla().setRole(10);
+     	getD1rplla().setRole(102);
      	
      	getD1rplla().setStartDate(String.format("%02d-%02d-%02d", getD1sdcd(), getD1sdcm(), getD1sdcy()));
      	getD1rplla().setEndDate(String.format("%02d-%02d-%02d", getD1sdcd(), getD1sdcm(), getD1sdcy()));

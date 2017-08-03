@@ -324,6 +324,7 @@
 	</persistence-unit>
 
 	<persistence-unit name="hsnnieuw" transaction-type="RESOURCE_LOCAL">		
+	        <class> nl.iisg.ids05.A1</class>
 	        <class> nl.iisg.ids05.B0</class>
 	        <class> nl.iisg.ids05.B1</class>
 	        <class> nl.iisg.ids05.B2</class>

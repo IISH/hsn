@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+
 import nl.iisg.idscontext.ContextElement;
 import nl.iisg.idscontext.Contxt;
 
@@ -32,6 +33,7 @@ public class B2 {
      
      @Transient                  private   B1   b1   = null;               
 
+     @Transient                   private A1  b2w_lla;
      
      public void convert(EntityManager em){
     	 
@@ -158,6 +160,14 @@ public class B2 {
 	}
 	public void setB1(B1 b1) {
 		this.b1 = b1;
+	}
+
+	public A1 getB2w_lla() {
+		return b2w_lla;
+	}
+
+	public void setB2w_lla(A1 b2w_lla) {
+		this.b2w_lla = b2w_lla;
 	}
      
      
