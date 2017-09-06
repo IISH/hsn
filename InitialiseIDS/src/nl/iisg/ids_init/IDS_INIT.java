@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -18,6 +19,7 @@ import javax.swing.JTextArea;
 import nl.iisg.idscontext.CONTEXT;
 import nl.iisg.idscontext.CONTEXT_CONTEXT;
 import nl.iisg.ref.Ref_Location;
+import nl.iisg.ref.Ref_Municipality;
 
 
 public class IDS_INIT implements Runnable {
@@ -28,6 +30,7 @@ public class IDS_INIT implements Runnable {
 	static EntityManager                     em_context      = factory_context.createEntityManager(); 
 
 	static List<Ref_Location>                ref_location  = null;
+	static List<Ref_Municipality>             ref_municipality  = null;
 	static String version                           = null;
 	
 	
@@ -112,13 +115,44 @@ public class IDS_INIT implements Runnable {
 		 query = em_context.createNativeQuery("TRUNCATE TABLE indiv_context");  
 		 query.executeUpdate();
 
-		String s = "select a from Ref_Location as a "
+		 
+		 
+		 
+		 HashMap<String, Integer> hmap = new HashMap<String, Integer>();
+
+		 
+		 String t = "select a from Ref_Municipality a";
+		 
+		 query = em_ref.createQuery(t);		 
+		 
+		 ref_municipality =  query.getResultList();
+		 
+		 for(Ref_Municipality rm: ref_municipality)			 
+			 hmap.put( rm.getMunicipalityName(), rm.getCodeMunicipality());
+			 
+			 
+		 
+	     
+		 	
+		 
+		 String s = "select a from Ref_Location  a "
 				+ "group by a.country, a.province, a.region, a.municipality, a.location "
 	            + "order by a.country, a.province, a.region, a.municipality, a.location ";
 		 
+		
+		
+		
+		
+		
 		 query = em_ref.createQuery(s);
-	     ref_location =  query.getResultList();
+		 
+		 System.out.println( "Starting query ");
+		 
+		 
+		 ref_location =  query.getResultList();
 	     
+	     
+	     System.out.println("Result"); 
 	     /*
 	     Collections.sort(ref_location, new Comparator<Ref_Location>()
 					{
@@ -290,7 +324,11 @@ public class IDS_INIT implements Runnable {
 						location = "";
 
 						addContext(++Id_C, "NAME", municipality);
-						addContext(  Id_C, "LEVEL", "municipality");
+						addContext(  Id_C, "LEVEL", "Municipality");
+						
+						if(hmap.get(municipality) != null){
+							addContext(Id_C, "HSN_MUNICIPALITY_CODE", "" + hmap.get(municipality));													
+						}
 
 						Id_C_CurrentMunicipality = Id_C;
 						Id_C_CurrentLocation     = -1;	
@@ -319,7 +357,7 @@ public class IDS_INIT implements Runnable {
 						location = rl.getLocation().trim();
 
 						addContext(++Id_C, "NAME", location);
-						addContext(  Id_C, "LEVEL", "locality");
+						addContext(  Id_C, "LEVEL", "Locality");
 
 						//if(rl.getLocationNo() != 0)
 							//addContext(Id_C, "HSN_MUNICIPALITY_CODE", "" + rl.getLocationNo());

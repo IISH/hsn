@@ -73,13 +73,37 @@ public class D3 {
 		 if(ceCertificate != null){
 			 
 	    	 String death_certificate = "Death Certificate";
-			 if(getD1().getD1sdce().equalsIgnoreCase("J"))
+			 if(getD1().getD1sdce() != null && getD1().getD1sdce().equalsIgnoreCase("J"))
 				 death_certificate = "Extract Death Certificate"; 
 			 
-			 Utils.addIndivContextAndContext(getD3i_ll(), ceCertificate, em, getIdnr(), Id_I_IN, "DC D3", "", "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+			 //Utils.addIndivContextAndContext(getD3i_ll(), ceCertificate, em, getIdnr(), Id_I_IN, "DC D3", "", "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
 			 Utils.addIndivContextAndContextCertificate(getD1().getD1sdcy(), getD1().getD1sdcn(), ceCertificate, em, getIdnr(), Id_I_IN, death_certificate, 
 					 "Unknown", "Event", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+			 
+			 // Address
+			 
+			 if(getD3i_lla() != null){
 
+				 ContextElement ceAddress = null;
+
+				 if(getD3i_lla().getMunicipality() != null)
+					 ceAddress = Contxt.get2(getD3i_lla().getMunicipality());
+				 else 
+					 ceAddress = ceCertificate;
+
+				 if(ceAddress != null){
+
+					 int startDay1   = (new Integer(getD3i_lla().getStartDate().substring(0,2))).intValue();
+					 int startMonth1 = (new Integer(getD3i_lla().getStartDate().substring(3,5))).intValue();
+					 int startYear1  = (new Integer(getD3i_lla().getStartDate().substring(6,10))).intValue();
+
+					 Utils.addIndivContextAndContext(getD3i_lla().getQuarter(), getD3i_lla().getStreet(), getD3i_lla().getNumber(), getD3i_lla().getAddition(),
+							 ceAddress, em, getIdnr(), Id_I_IN, "D3 ",  "Address", "Reported", "Exact",  
+							 startDay1, startMonth1, startYear1);
+
+				 }
+
+			 }
 		 }
 
 		 // Relation to RP 

@@ -80,11 +80,46 @@ public class B5 {
     	 if(getB1().getB1sdcc() > 0)
     		 ceCertificate = Contxt.get(getB1().getB1sdcc());  // Look up name in Context System 
 		 
-		 if(ceCertificate != null){    	
-			 if(getB5fall() != null && getB5fall().trim().length() > 0)
-				 Utils.addIndivContextAndContext(getB5fall(), ceCertificate, em, getIdnr(), Id_I_FA, "BC B5", "", "Event", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
-			 Utils.addIndivContextAndContextCertificate(getB1().getB1sdcy(), getB1().getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_FA, 
-					 "Birth Certificate", "Father", "Event", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
+    	 if(ceCertificate != null){    	
+    		 //if(getB5fall() != null && getB5fall().trim().length() > 0)
+    		 //	 Utils.addIndivContextAndContext(getB5fall(), ceCertificate, em, getIdnr(), Id_I_FA, "BC B5", "", "Event", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
+
+    		 if(getB5fasla() != null){
+
+    			 int startDay1   = (new Integer(getB5fasla().getStartDate().substring(0,2))).intValue();
+    			 int startMonth1 = (new Integer(getB5fasla().getStartDate().substring(3,5))).intValue();
+    			 int startYear1  = (new Integer(getB5fasla().getStartDate().substring(6,10))).intValue();
+
+    			 Utils.addIndivContextAndContext(getB5fasla().getQuarter(), getB5fasla().getStreet(), getB5fasla().getNumber(), getB5fasla().getAddition(),
+    					 ceCertificate, em, getIdnr(), Id_I_FA, "B5 ",  "Divorce Location", "Reported", "Exact",  
+    					 startDay1, startMonth1, startYear1);
+    		 }
+
+    		 if(getB5fadla() != null){
+
+    			 int startDay1   = (new Integer(getB5fadla().getStartDate().substring(0,2))).intValue();
+    			 int startMonth1 = (new Integer(getB5fadla().getStartDate().substring(3,5))).intValue();
+    			 int startYear1  = (new Integer(getB5fadla().getStartDate().substring(6,10))).intValue();
+
+    			 Utils.addIndivContextAndContext(getB5fadla().getQuarter(), getB5fadla().getStreet(), getB5fadla().getNumber(), getB5fadla().getAddition(),
+    					 ceCertificate, em, getIdnr(), Id_I_FA, "B5 ",  "Death Location", "Reported", "Exact",  
+    					 startDay1, startMonth1, startYear1);
+    		 }
+
+    		 if(getB5falla() != null){
+
+    			 int startDay1   = (new Integer(getB5falla().getStartDate().substring(0,2))).intValue();
+    			 int startMonth1 = (new Integer(getB5falla().getStartDate().substring(3,5))).intValue();
+    			 int startYear1  = (new Integer(getB5falla().getStartDate().substring(6,10))).intValue();
+
+    			 Utils.addIndivContextAndContext(getB5falla().getQuarter(), getB5falla().getStreet(), getB5falla().getNumber(), getB5falla().getAddition(),
+    					 ceCertificate, em, getIdnr(), Id_I_FA, "B5 ",  "Address", "Reported", "Exact",  
+    					 startDay1, startMonth1, startYear1);
+    		 }
+
+    		 Utils.addIndivContextAndContextCertificate(getB1().getB1sdcy(), getB1().getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_FA, 
+    				 "Birth Certificate", "Father", "Event", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
+			 
 
 		 }
 
@@ -103,15 +138,15 @@ public class B5 {
 			 Utils.addIndiv(em, getIdnr(), 3      , "BC B5", "DIVORCE_DATE", null, "Reported", "Exact", getB5fasd(),  getB5fasm(), getB5fasy());
 		 }
 		 
-    	 ContextElement ceDivorce = null;
-    	 if(getB5fasl() != null)
-    		 ceDivorce = Contxt.get2(getB5fasl());
+    	 //ContextElement ceDivorce = null;
+    	 //if(getB5fasl() != null)
+    	 //	 ceDivorce = Contxt.get2(getB5fasl());
     	 
     	 
-		 if(ceDivorce != null){
-			 Utils.addIndivAndContext(null, ceDivorce, em, getIdnr(), Id_I_FA, "BC B5", "DIVORCE_LOCATION", "Reported", "Exact", getB5fasd(),  getB5fasm(), getB5fasy());
-			 Utils.addIndivAndContext(null, ceDivorce, em, getIdnr(), 3      , "BC B5", "DIVORCE_LOCATION", "Reported", "Exact", getB5fasd(),  getB5fasm(), getB5fasy());
-		 }
+		 //if(ceDivorce != null){
+			// Utils.addIndivAndContext(null, ceDivorce, em, getIdnr(), Id_I_FA, "BC B5", "DIVORCE_LOCATION", "Reported", "Exact", getB5fasd(),  getB5fasm(), getB5fasy());
+			 //Utils.addIndivAndContext(null, ceDivorce, em, getIdnr(), 3      , "BC B5", "DIVORCE_LOCATION", "Reported", "Exact", getB5fasd(),  getB5fasm(), getB5fasy());
+		 //}
 
 		 if(getB5fady() > 0){
 			 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B5", "DEATH_DATE", null, "Reported", "Exact", getB5fadd(),  getB5fadm(), getB5fady());
@@ -119,13 +154,13 @@ public class B5 {
 		 
 		 
 		 
-    	 ContextElement ceDeath = null;
-    	 if(getB5fadl() != null)
-    		 ceDivorce = Contxt.get2(getB5fadl());
+    	 //ContextElement ceDeath = null;
+    	 //if(getB5fadl() != null)
+    		// ceDivorce = Contxt.get2(getB5fadl());
     	 
-		 if(ceDeath != null){
-			 Utils.addIndivAndContext(null, ceDeath, em, getIdnr(), Id_I_FA, "BC B5", "DEATH_LOCATION", "Reported", "Exact", getB5fasd(),  getB5fasm(), getB5fasy());
-		 }
+		 //if(ceDeath != null){
+			// Utils.addIndivAndContext(null, ceDeath, em, getIdnr(), Id_I_FA, "BC B5", "DEATH_LOCATION", "Reported", "Exact", getB5fasd(),  getB5fasm(), getB5fasy());
+		 //}
 
 		 
 		 

@@ -54,12 +54,22 @@ public class B2 {
     	 if(getB1().getB1sdcc() > 0)
     		 ceCertificate = Contxt.get(getB1().getB1sdcc());  // Look up name in Context System
     		 
-		 
-		 if(ceCertificate != null){    		 
-			 Utils.addIndivContextAndContextCertificate(getB1().getB1sdcy(), getB1().getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_WN, 
-					 "Birth Certificate", "Unknown", "Event", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
-			 Utils.addIndivContextAndContext(getB2w_ll(), ceCertificate, em, getIdnr(), Id_I_WN, "BC B2", "", "Event", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
-		 }
+
+    	 if(ceCertificate != null){    		 
+    		 Utils.addIndivContextAndContextCertificate(getB1().getB1sdcy(), getB1().getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_WN, 
+    				 "Birth Certificate", "Unknown", "Event", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
+    		 //Utils.addIndivContextAndContext(getB2w_ll(), ceCertificate, em, getIdnr(), Id_I_WN, "BC B2", "", "Event", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
+    		 if(getB2w_lla() != null){
+
+    			 int startDay1   = (new Integer(getB2w_lla().getStartDate().substring(0,2))).intValue();
+    			 int startMonth1 = (new Integer(getB2w_lla().getStartDate().substring(3,5))).intValue();
+    			 int startYear1  = (new Integer(getB2w_lla().getStartDate().substring(6,10))).intValue();
+
+    			 Utils.addIndivContextAndContext(getB2w_lla().getQuarter(), getB2w_lla().getStreet(), getB2w_lla().getNumber(), getB2w_lla().getAddition(),
+    					 ceCertificate, em, getIdnr(), Id_I_WN, "B2 ",  "Address", "Reported", "Exact",  
+    					 startDay1, startMonth1, startYear1);
+    		 }
+    	 }
 		 
 		 if(getB2w_ay() > 0){
 			 Utils.addIndiv(em, getIdnr(), Id_I_WN, "BC B2", "AGE_YEARS", (new Integer(getB2w_ay())).toString(), "Declared", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());

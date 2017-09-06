@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+
 import nl.iisg.idscontext.ContextElement;
 import nl.iisg.idscontext.Contxt;
 
@@ -83,6 +84,9 @@ public class D1 {
      @Transient                   private A1  d1sdcla;  
      @Transient                   private A1  d1rpbla;  
      @Transient                   private A1  d1rplla;  
+     @Transient                   private A1  d1rpdla;  
+     @Transient                   private A1  d1falla;  
+     @Transient                   private A1  d1molla;  
 
 
 
@@ -99,13 +103,16 @@ public void convert(EntityManager em){
     		 if(getD1sdcl() != null && getD1sdcl().trim().length() > 0)
     			 ceCertificate = Contxt.get2(getD1sdcl());
 
+    	 //System.out.println("getD1sdcc = " + getD1sdcc() + "getD1sdcl = " + getD1sdcl() + " ceCertificate = " + ceCertificate);
+    	 
+    	 
     	 String death_certificate = "Death Certificate";
 		 if(ceCertificate != null){
-			 if(getD1sdce().equalsIgnoreCase("J"))
+			 if(getD1sdce() != null && getD1sdce().equalsIgnoreCase("J"))
 				 death_certificate = "Extract Death Certificate"; 
 			 
 			 Utils.addIndivContextAndContextCertificate(getD1sdcy(), getD1sdcn(), ceCertificate, em, getIdnr(), Id_I_RP, death_certificate, "Deceased", "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
-			 Utils.addIndivAndContext(getD1rpdl(), ceCertificate, em, getIdnr(), Id_I_RP, "DC D1", "DEATH_LOCATION", "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+			 //Utils.addIndivAndContext(getD1rpdl(), ceCertificate, em, getIdnr(), Id_I_RP, "DC D1", "DEATH_LOCATION", "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
 		 }
 
 		 
@@ -164,24 +171,104 @@ public void convert(EntityManager em){
 		 
 		 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "HSN_RESEARCH_PERSON", "1", "Missing", "Time_invariant", 0, 0, 0);
 
-    	 if(ceCertificate != null){
-   			 Utils.addIndivContextAndContext(getD1rpll(), ceCertificate, em, getIdnr(), Id_I_RP, "DC D1", "", "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
-    	 }
+    	 //if(ceCertificate != null){
+   		 //	 Utils.addIndivContextAndContext(getD1rpll(), ceCertificate, em, getIdnr(), Id_I_RP, "DC D1", "", "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+    	 //}
 
-    	 ContextElement ceBirthLocation = null;
-    	 if(getD1rpbc() > 0)
-    		 ceBirthLocation = Contxt.get(getD1rpbc());  // Look up name in Context System
-    	 else
-    		 if(getD1rpbl() != null && getD1rpbl().trim().length() > 0)
-        		 ceBirthLocation = Contxt.get2(getD1rpbl());  // Look up name in Context System
+    	
+    	 //if(getD1rpbc() > 0)
+    	//	 ceBirthLocation = Contxt.get(getD1rpbc());  // Look up name in Context System
+    	 //else
+    	//	 if(getD1rpbl() != null && getD1rpbl().trim().length() > 0)
+        //		 ceBirthLocation = Contxt.get2(getD1rpbl());  // Look up name in Context System
     			 
     		 
-   		 if(ceBirthLocation != null)
-   			 Utils.addIndivAndContext(null, ceCertificate, em, getIdnr(), Id_I_RP, "DC D1", "BIRTH_LOCATION", "Missing", "Unavailable", 0, 0, 0);
+   		 //if(ceBirthLocation != null)
+   		//	 Utils.addIndivAndContext(null, ceCertificate, em, getIdnr(), Id_I_RP, "DC D1", "BIRTH_LOCATION", "Missing", "Unavailable", 0, 0, 0);
 
     		 
-    	 
-    	 
+		 // RP Birth Location
+
+		 //System.out.println("getD1rpbla() = "+ getD1rpbla());
+
+		 if(getD1rpbla() != null){
+
+			 ContextElement ceBirthLocation = null;
+
+			 if(getD1rpbla().getMunicipality() != null)
+				 ceBirthLocation = Contxt.get2(getD1rpbla().getMunicipality());
+			 else 
+				 ceBirthLocation = ceCertificate;
+
+			 if(ceBirthLocation != null){
+
+				 int startDay1   = (new Integer(getD1rpbla().getStartDate().substring(0,2))).intValue();
+				 int startMonth1 = (new Integer(getD1rpbla().getStartDate().substring(3,5))).intValue();
+				 int startYear1  = (new Integer(getD1rpbla().getStartDate().substring(6,10))).intValue();
+
+				 Utils.addIndivAndContext(getD1rpbla().getQuarter(), getD1rpbla().getStreet(), getD1rpbla().getNumber(), getD1rpbla().getAddition(),
+						 ceBirthLocation, em, getIdnr(), Id_I_RP, "D1 ",  "Birth Location", "Reported", "Exact",  
+						 startDay1, startMonth1, startYear1);
+
+			 }
+
+		 }
+
+		 // RP Address
+
+		 if(getD1rplla() != null){
+
+			 ContextElement ceAddress = null;
+
+			 if(getD1rplla().getMunicipality() != null)
+				 ceAddress = Contxt.get2(getD1rplla().getMunicipality());
+			 else 
+				 ceAddress = ceCertificate;
+
+			 if(ceAddress != null){
+
+				 int startDay1   = (new Integer(getD1rplla().getStartDate().substring(0,2))).intValue();
+				 int startMonth1 = (new Integer(getD1rplla().getStartDate().substring(3,5))).intValue();
+				 int startYear1  = (new Integer(getD1rplla().getStartDate().substring(6,10))).intValue();
+
+				 Utils.addIndivContextAndContext(getD1rplla().getQuarter(), getD1rplla().getStreet(), getD1rplla().getNumber(), getD1rplla().getAddition(),
+						 ceAddress, em, getIdnr(), Id_I_RP, "D1 ",  "Address", "Reported", "Exact",  
+						 startDay1, startMonth1, startYear1);
+
+			 }
+
+		 }
+
+		 // RP Death Location
+
+		 if(getD1rpdla() != null){
+
+			 ContextElement ceDeathLocation = null;
+
+
+			 if(getD1rpdla().getMunicipality() != null)
+				 ceDeathLocation = Contxt.get2(getD1rpdla().getMunicipality());
+			 else 
+				 ceDeathLocation = ceCertificate;
+
+			 if(ceDeathLocation != null){
+
+				 int startDay1   = (new Integer(getD1rpdla().getStartDate().substring(0,2))).intValue();
+				 int startMonth1 = (new Integer(getD1rpdla().getStartDate().substring(3,5))).intValue();
+				 int startYear1  = (new Integer(getD1rpdla().getStartDate().substring(6,10))).intValue();
+
+				 Utils.addIndivAndContext(getD1rpdla().getQuarter(), getD1rpdla().getStreet(), getD1rpdla().getNumber(), getD1rpdla().getAddition(),
+						 ceDeathLocation, em, getIdnr(), Id_I_RP, "D1 ",  "Death Location", "Reported", "Exact",  
+						 startDay1, startMonth1, startYear1);
+			 }
+
+
+		 }
+
+
+   		 
+   		 
+   		 
     	 // Father dead RP
     	 
 		 int Id_I_FA = 52; // Father Dead RP; 
@@ -218,7 +305,7 @@ public void convert(EntityManager em){
 					 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "BIRTH_DATE", null, "Declared", "Estimated [16/100]", 1, 1, getD1rpdy() - 100, 1, 1, getD1rpdy() - 16);
 
 				 if(ceCertificate != null){
-					 Utils.addIndivContextAndContext(getD1fall(), ceCertificate, em, getIdnr(), Id_I_FA, "DC D1", "", "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+					 //Utils.addIndivContextAndContext(getD1fall(), ceCertificate, em, getIdnr(), Id_I_FA, "DC D1", "", "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
 					 Utils.addIndivContextAndContextCertificate(getD1sdcy(), getD1sdcn(), ceCertificate, em, getIdnr(), Id_I_FA, death_certificate, "Father", "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
 				 }
 			 }
@@ -240,10 +327,35 @@ public void convert(EntityManager em){
 				 Utils.addIndivIndiv(em, getIdnr(), Id_I_RP, Id_I_FA, "DC D1", "Zoon", "Missing", "Time_invariant", 0, 0, 0);
 			 else
 				 Utils.addIndivIndiv(em, getIdnr(), Id_I_RP, Id_I_FA, "DC D1", "Dochter", "Missing", "Time_invariant", 0, 0, 0);
+			 
+	    	 // Father Address
+	   		 
+	   		 if(getD1falla() != null){
+
+	   			 ContextElement ceAddress = null;
+
+	   			 
+	   			 if(getD1falla().getMunicipality() != null)
+	   				ceAddress = Contxt.get2(getD1falla().getMunicipality());
+	   			 else 
+	   				ceAddress = ceCertificate;
+	   			 
+	   			 if(ceAddress != null){
+	   			 
+					int startDay1   = (new Integer(getD1falla().getStartDate().substring(0,2))).intValue();
+					int startMonth1 = (new Integer(getD1falla().getStartDate().substring(3,5))).intValue();
+					int startYear1  = (new Integer(getD1falla().getStartDate().substring(6,10))).intValue();
+
+					Utils.addIndivContextAndContext(getD1falla().getQuarter(), getD1falla().getStreet(), getD1falla().getNumber(), getD1falla().getAddition(),
+							ceAddress, em, getIdnr(), Id_I_FA, "D1 ",  "Address", "Reported", "Exact",  
+							startDay1, startMonth1, startYear1);
+	   			 }
+	   			 
+	   		 }
 		 }
 		 //}
 		 
-		 
+
 		 
 		 
 		 
@@ -282,7 +394,7 @@ public void convert(EntityManager em){
 
 
 				 if(ceCertificate != null){
-					 Utils.addIndivContextAndContext(getD1moll(), ceCertificate, em, getIdnr(), Id_I_MO, "DC  D1", "", "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+					 //Utils.addIndivContextAndContext(getD1moll(), ceCertificate, em, getIdnr(), Id_I_MO, "DC  D1", "", "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
 					 Utils.addIndivContextAndContextCertificate(getD1sdcy(), getD1sdcn(), ceCertificate, em, getIdnr(), Id_I_MO, death_certificate, "Mother", "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
 				 }
 			 }
@@ -312,6 +424,33 @@ public void convert(EntityManager em){
 					 Utils.addIndivIndiv(em, getIdnr(), Id_I_MO, Id_I_FA, "DC D1", "Echtgenote", "Missing", "Time_invariant", 0, 0, 0);
 				 }
 			 }
+			 
+			 
+	    	 // Mother address
+	   		 
+	   		 if(getD1molla() != null){
+
+	   			 ContextElement ceAddress = null;
+
+	   			 
+	   			 if(getD1molla().getMunicipality() != null)
+	   				ceAddress = Contxt.get2(getD1molla().getMunicipality());
+	   			 else 
+	   				ceAddress = ceCertificate;
+	   			 
+	   			 if(ceAddress != null){
+	   			 
+					int startDay1   = (new Integer(getD1molla().getStartDate().substring(0,2))).intValue();
+					int startMonth1 = (new Integer(getD1molla().getStartDate().substring(3,5))).intValue();
+					int startYear1  = (new Integer(getD1molla().getStartDate().substring(6,10))).intValue();
+
+					Utils.addIndivContextAndContext(getD1molla().getQuarter(), getD1molla().getStreet(), getD1molla().getNumber(), getD1molla().getAddition(),
+							ceAddress, em, getIdnr(), Id_I_MO, "D1 ",  "Address", "Reported", "Exact",  
+							startDay1, startMonth1, startYear1);
+	   			 }
+	   			 
+	   		 }
+	   		 
 		 }
 
 		 // down the tree
@@ -694,6 +833,24 @@ public void convert(EntityManager em){
 	}
 	public void setD1rplla(A1 d1rplla) {
 		this.d1rplla = d1rplla;
+	}
+	public A1 getD1rpdla() {
+		return d1rpdla;
+	}
+	public void setD1rpdla(A1 d1rpdla) {
+		this.d1rpdla = d1rpdla;
+	}
+	public A1 getD1falla() {
+		return d1falla;
+	}
+	public void setD1falla(A1 d1falla) {
+		this.d1falla = d1falla;
+	}
+	public A1 getD1molla() {
+		return d1molla;
+	}
+	public void setD1molla(A1 d1molla) {
+		this.d1molla = d1molla;
 	}
      
      

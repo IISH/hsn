@@ -82,9 +82,36 @@ public class D2 {
 					 ceCertificate = Contxt.get2(getD1().getD1sdcl());
 
 
-			 if(ceCertificate != null)
-				 Utils.addIndivContextAndContext(getD2s_ll(), ceCertificate, em, getIdnr(), Id_I_FS, "DC D2", "", "Event", "Exact",
-						 getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+			 //if(ceCertificate != null)
+			//	 Utils.addIndivContextAndContext(getD2s_ll(), ceCertificate, em, getIdnr(), Id_I_FS, "DC D2", "", "Event", "Exact",
+			//			 getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+			 
+			 
+			 // Address 
+			 
+			 
+			 if(getD2s_lla() != null){
+
+				 ContextElement ceAddress = null;
+
+				 if(getD2s_lla().getMunicipality() != null)
+					 ceAddress = Contxt.get2(getD2s_lla().getMunicipality());
+				 else 
+					 ceAddress = ceCertificate;
+
+				 if(ceAddress != null){
+
+					 int startDay1   = (new Integer(getD2s_lla().getStartDate().substring(0,2))).intValue();
+					 int startMonth1 = (new Integer(getD2s_lla().getStartDate().substring(3,5))).intValue();
+					 int startYear1  = (new Integer(getD2s_lla().getStartDate().substring(6,10))).intValue();
+
+					 Utils.addIndivContextAndContext(getD2s_lla().getQuarter(), getD2s_lla().getStreet(), getD2s_lla().getNumber(), getD2s_lla().getAddition(),
+							 ceAddress, em, getIdnr(), Id_I_FS, "D2 ",  "Address", "Reported", "Exact",  
+							 startDay1, startMonth1, startYear1);
+
+				 }
+
+			 }
 		 }
 		 else
 			Utils.addIndiv(em, getIdnr(), Id_I_FS, "DC D2", "BIRTH_DATE", null, "Declared", "Estimated [15/100]", 1, 1, getD1().getD1sdcy() - 100, 1, 1,  getD1().getD1sdcy() - 15);

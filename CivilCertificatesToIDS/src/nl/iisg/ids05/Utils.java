@@ -329,6 +329,7 @@ public class Utils {
 		
 	}
 	
+	
 	public static void addIndivContextAndContextCertificate(int yearCertificate, int sequenceNumberCertificate, ContextElement ceCertificate, EntityManager em, int IDNR, int Id_I, String source, String relation, 
 			String dateType, String estimation, int day, int month, int year){
 
@@ -358,6 +359,8 @@ public class Utils {
 		em.persist(ic);
 		
 	}
+	
+	
 	public static void addIndivContextAndContext(String address, ContextElement ceCertificate, EntityManager em, int IDNR, int Id_I, String source, String relation, 
 			String dateType, String estimation, int day, int month, int year){
 
@@ -393,6 +396,118 @@ public class Utils {
 		em.persist(ic);
 		
 	}
+	
+	
+	// New
+	public static void addIndivContextAndContext(String quarter, String street, String number, String addition, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String relation, 
+			String dateType, String estimation, int day, int month, int year){
+
+		if(ce == null) return;
+
+		
+		ContextElement context1 = ce;
+		ContextElement context2 = null;
+
+		if(quarter != null && quarter.trim().length() > 0)
+			context2 = Contxt.locateQuarter(quarter, context1, "Quarter");
+
+		context1 = (context2 !=  null ? context2 : context1);
+		
+		if(street != null && street.trim().length() > 0)
+			context2 = Contxt.locateStreet(street, number, addition, context1, "Address");
+		
+		context1 = (context2 !=  null ? context2 : context1);
+		
+		
+		//if(context1 == null)
+		//	return;
+		
+		int Id_C = context1.getId_C();
+		
+		
+		INDIV_CONTEXT ic = new INDIV_CONTEXT();
+		ic.setId_D((new Integer(IDNR).toString()));
+		ic.setId_I(Id_I);
+		ic.setId_C(Id_C);
+		ic.setSource("HSN CC " + source);
+
+		
+		ic.setRelation(relation);
+		
+		ic.setDate_type(dateType);
+		ic.setEstimation(estimation);
+		ic.setDay(day);
+		ic.setMonth(month);
+		ic.setYear(year);
+		
+		if(year == 0)
+			ic.setMissing("Time Invariant");
+
+
+		em.persist(ic);
+		
+	}
+	
+	// new
+	public static void addIndivAndContext(String quarter, String street, String number, String addition, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String type, 
+			String dateType, String estimation, int day, int month, int year){
+
+		
+		//System.out.println("ce = " + ce);
+		
+		if(ce == null) return;
+		
+		ContextElement context1 = ce;
+		ContextElement context2 = null;
+
+		if(quarter != null && quarter.trim().length() > 0)
+			context2 = Contxt.locateQuarter(quarter, context1, "Quarter");
+
+		context1 = (context2 !=  null ? context2 : context1);
+		
+		if(street != null && street.trim().length() > 0)
+			context2 = Contxt.locateStreet(street, number, addition, context1, "Address");
+		
+		context1 = (context2 !=  null ? context2 : context1);
+		
+		//if(boat != null && boat.trim().length() > 0)
+		//	context2 = Contxt.locateBoat(boat, street, number, addition, context1, "Address");
+		
+		context1 = (context2 !=  null ? context2 : context1);	
+		
+		int Id_C = context1.getId_C();
+		
+		
+		
+		//System.out.println("addIndivAndContext 3 " + Id_C);
+
+		
+		INDIVIDUAL i = new INDIVIDUAL();
+
+		i.setId_I(Id_I);
+		i.setId_D((new Integer(IDNR).toString()));
+		i.setSource("HSN CC " + source);
+
+		i.setType(type);
+		i.setValue(null);
+		
+		i.setId_C(Id_C);
+		
+		i.setDate_type(dateType);
+		i.setEstimation(estimation);
+		i.setDay(day);
+		i.setMonth(month);
+		i.setYear(year);
+
+		if(year == 0)
+			i.setMissing("Time Invariant");
+
+		
+		em.persist(i);
+
+		
+	}
+	
 	
 	public static void addIndivAndContext(String address, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String type, 
 			String dateType, String estimation, int day, int month, int year){
@@ -436,6 +551,14 @@ public class Utils {
 		
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
 	public static void addIndiv(EntityManager em, int IDNR, int Id_I, String source, String type, String value, 
 			String dateType, String estimation, int day, int month, int year){
 		
@@ -447,7 +570,7 @@ public class Utils {
 		
 		i.setId_I(Id_I);
 		i.setId_D((new Integer(IDNR).toString()));
-		i.setSource("HSN " + source);
+		i.setSource("HSN CC " + source);
 
 		
 		i.setType(type);
@@ -481,7 +604,7 @@ public class Utils {
 		
 		i.setId_I(Id_I);
 		i.setId_D((new Integer(IDNR).toString()));
-		i.setSource("HSN " + source);
+		i.setSource("HSN CC " + source);
 
 		
 		i.setType(type);
@@ -514,7 +637,7 @@ public class Utils {
 		
 		i.setId_I(Id_I);
 		i.setId_D((new Integer(IDNR).toString()));
-		i.setSource("HSN " + source);
+		i.setSource("HSN CC " + source);
 
 		
 		i.setType(type);
@@ -907,14 +1030,14 @@ public class Utils {
     	//System.out.println("xxx1 " + relation);
     	
     	if(relation == null){
-    		System.out.println("yyy0 " + relation);
+    		//System.out.println("yyy0 " + relation);
     		return("Onbekend");
     	}
     	
     	Ref_Relation_B r =  Ref.getRelation_B(relation);
     	
     	if(r == null  || r.getKode() == 0){
-    		System.out.println("yyy1 " + relation);
+    		//System.out.println("yyy1 " + relation);
     		return("Onbekend");
     	}
     	 
@@ -956,7 +1079,8 @@ public class Utils {
     		return (ConstRelations2.b3kode1[reciprokeCode]);
     	}
     	else
-    		System.out.println("yyy4 " + relation + " " + reciprokeCode);
+    		;
+    		//System.out.println("yyy4 " + relation + " " + reciprokeCode);
     		
     	
     	

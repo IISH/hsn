@@ -83,6 +83,9 @@ public class D1 {
      @Transient                   private A1  d1sdcla;  
      @Transient                   private A1  d1rpbla;  
      @Transient                   private A1  d1rplla;  
+     @Transient                   private A1  d1rpdla;  
+     @Transient                   private A1  d1falla;  
+     @Transient                   private A1  d1molla;  
 
      
      
@@ -382,6 +385,48 @@ public class D1 {
      	}
      }
 
+     setD1rpdla(Functions.location_r2(getD1rpll(), Constants.E_LOD1RPDL, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
+     if(getD1rpdla() != null){
+    	 getD1rpdla().setRole(103);
+     	
+    	 getD1rpdla().setStartDate(String.format("%02d-%02d-%02d", getD1sdcd(), getD1sdcm(), getD1sdcy()));
+    	 getD1rpdla().setEndDate(String.format("%02d-%02d-%02d", getD1sdcd(), getD1sdcm(), getD1sdcy()));
+     	
+     	if(getD1rpdla().getLocationNumber() == null){
+     		getD1rpdla().setLocationNumber(ovlknd.getOacgemnr() + "");
+     		getD1rpdla().setMunicipality(ovlknd.getDeathActPlace());
+     		
+     	}
+     }
+
+     setD1falla(Functions.location_r2(getD1fall(), Constants.E_LOD1FALL, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
+     if(getD1falla() != null){
+    	 getD1falla().setRole(104);
+     	
+    	 getD1falla().setStartDate(String.format("%02d-%02d-%02d", getD1sdcd(), getD1sdcm(), getD1sdcy()));
+    	 getD1falla().setEndDate(String.format("%02d-%02d-%02d", getD1sdcd(), getD1sdcm(), getD1sdcy()));
+     	
+     	if(getD1falla().getLocationNumber() == null){
+     		getD1falla().setLocationNumber(ovlknd.getOacgemnr() + "");
+     		getD1falla().setMunicipality(ovlknd.getDeathActPlace());
+     		
+     	}
+     }
+
+     setD1molla(Functions.location_r2(getD1moll(), Constants.E_LOD1MOLL, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
+     if(getD1molla() != null){
+    	 getD1molla().setRole(105);
+     	
+    	 getD1molla().setStartDate(String.format("%02d-%02d-%02d", getD1sdcd(), getD1sdcm(), getD1sdcy()));
+    	 getD1molla().setEndDate(String.format("%02d-%02d-%02d", getD1sdcd(), getD1sdcm(), getD1sdcy()));
+     	
+     	if(getD1molla().getLocationNumber() == null){
+     		getD1molla().setLocationNumber(ovlknd.getOacgemnr() + "");
+     		getD1molla().setMunicipality(ovlknd.getDeathActPlace());
+     		
+     	}
+     }
+
      
      
      
@@ -441,7 +486,39 @@ public class D1 {
      }
     	 
      
-    public void truncate(){
+    public A1 getD1rpdla() {
+		return d1rpdla;
+	}
+
+
+	public void setD1rpdla(A1 d1rpdla) {
+		this.d1rpdla = d1rpdla;
+	}
+
+
+
+
+	public A1 getD1falla() {
+		return d1falla;
+	}
+
+
+	public void setD1falla(A1 d1falla) {
+		this.d1falla = d1falla;
+	}
+
+
+	public A1 getD1molla() {
+		return d1molla;
+	}
+
+
+	public void setD1molla(A1 d1molla) {
+		this.d1molla = d1molla;
+	}
+
+
+	public void truncate(){
        	
        	String field = getD1rpln();
        	int allowedSize = Const.Bigstring;

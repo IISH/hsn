@@ -134,7 +134,22 @@ public class B1 {
 
 		if(ceCertificate != null){
 			Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_RP, "Birth Certificate", "Child", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
-			Utils.addIndivAndContext(getB1rpll(), ceCertificate, em, getIdnr(), Id_I_RP, "BC B1", "BIRTH_LOCATION", "Event", "Exact", getB1rpbd(),  getB1rpbm(), getB1rpby());
+			
+			if(getB1rplla() != null){
+				
+				int startDay1   = (new Integer(getB1rplla().getStartDate().substring(0,2))).intValue();
+				int startMonth1 = (new Integer(getB1rplla().getStartDate().substring(3,5))).intValue();
+				int startYear1  = (new Integer(getB1rplla().getStartDate().substring(6,10))).intValue();
+
+				//addIndivAndContext(String quarter, String street, String number, String addition, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String type, 
+				//String dateType, String estimation, int day, int month, int year)
+				
+				Utils.addIndivAndContext(getB1rplla().getQuarter(), getB1rplla().getStreet(), getB1rplla().getNumber(), getB1rplla().getAddition(),
+						ceCertificate, em, getIdnr(), Id_I_RP, "B1 ",  "Birth Location", "Reported", "Exact",  
+						startDay1, startMonth1, startYear1);
+			}
+				
+			//Utils.addIndivAndContext(getB1rpll(), ceCertificate, em, getIdnr(), Id_I_RP, "BC B1", "BIRTH_LOCATION", "Event", "Exact", getB1rpbd(),  getB1rpbm(), getB1rpby());
 		}
 
 
@@ -197,16 +212,40 @@ public class B1 {
 			Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1", "CIVIL_STATUS", cs, "Declared", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 
 
-			if(ceCertificate != null)    		 
-				Utils.addIndivContextAndContext(getB1inll(), ceCertificate, em, getIdnr(), Id_I_IN, "BC B1", "", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
+			if(ceCertificate != null){    		 
+				//Utils.addIndivContextAndContext(getB1inll(), ceCertificate, em, getIdnr(), Id_I_IN, "BC B1", "", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
+				
+				if(getB1inlla() != null){
+					
+					int startDay1   = (new Integer(getB1inlla().getStartDate().substring(0,2))).intValue();
+					int startMonth1 = (new Integer(getB1inlla().getStartDate().substring(3,5))).intValue();
+					int startYear1  = (new Integer(getB1inlla().getStartDate().substring(6,10))).intValue();
 
+					//addIndivAndContext(String quarter, String street, String number, String addition, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String type, 
+					//String dateType, String estimation, int day, int month, int year)
+					
+					//addIndivContextAndContext(String boat, String quarter, String street, String number, String addition, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String relation, 
+					//		String dateType, String estimation, int day, int month, int year)
+					
+					
+					
+					Utils.addIndivContextAndContext(getB1inlla().getQuarter(), getB1inlla().getStreet(), getB1inlla().getNumber(), getB1inlla().getAddition(),
+							ceCertificate, em, getIdnr(), Id_I_IN, "B1 ",  "Address", "Reported", "Exact",  
+							startDay1, startMonth1, startYear1);
+				}
+
+				
+				
+				
+			}
 
 
 			// Relations
 
 			if(getB1infa().equalsIgnoreCase("J")){
-				if(ceCertificate != null)
+				if(ceCertificate != null){
 					Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_IN, "Birth Certificate", "Father as Informer", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
+				}
 				
 				String relation = "Kind";
 				if(getB1rpgn().equalsIgnoreCase("M")) relation = "Zoon";
@@ -252,7 +291,26 @@ public class B1 {
 			
 
 			if(ceCertificate != null){
-				Utils.addIndivContextAndContext(getB1moll(), ceCertificate, em, getIdnr(), Id_I_MO, "BC B1", "", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
+				//Utils.addIndivContextAndContext(getB1moll(), ceCertificate, em, getIdnr(), Id_I_MO, "BC B1", "", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
+				
+				if(getB1molla() != null){
+					
+					int startDay1   = (new Integer(getB1molla().getStartDate().substring(0,2))).intValue();
+					int startMonth1 = (new Integer(getB1molla().getStartDate().substring(3,5))).intValue();
+					int startYear1  = (new Integer(getB1molla().getStartDate().substring(6,10))).intValue();
+
+					//addIndivAndContext(String quarter, String street, String number, String addition, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String type, 
+					//String dateType, String estimation, int day, int month, int year)
+					
+					//addIndivContextAndContext(String boat, String quarter, String street, String number, String addition, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String relation, 
+					//		String dateType, String estimation, int day, int month, int year)
+					
+					
+					Utils.addIndivContextAndContext(getB1molla().getQuarter(), getB1molla().getStreet(), getB1molla().getNumber(), getB1molla().getAddition(),
+							ceCertificate, em, getIdnr(), Id_I_IN, "B1 ",  "Address", "Reported", "Exact",  
+							startDay1, startMonth1, startYear1);
+				}
+				
 				Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_MO, "Birth Certificate", "Mother", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 			}
 

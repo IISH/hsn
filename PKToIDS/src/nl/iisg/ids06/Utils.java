@@ -76,21 +76,26 @@ public class Utils {
 			String dateType, String estimation, int day, int month, int year){
 
 		
-		ContextElement context1 = null;
+		ContextElement context1 = ce;
+		ContextElement context2 = null;
 
+		if(quarter != null && quarter.trim().length() > 0)
+			context2 = Contxt.locateQuarter(quarter, context1, "Quarter");
+
+		context1 = (context2 !=  null ? context2 : context1);
+		
+		if(street != null && street.trim().length() > 0)
+			context2 = Contxt.locateStreet(street, number, addition, context1, "Address");
+		
+		context1 = (context2 !=  null ? context2 : context1);
 		
 		if(boat != null && boat.trim().length() > 0)
-			context1 = Contxt.locateBoat(boat, street, number, addition, ce, "Address");
-		else
-			if(street != null && street.trim().length() > 0)
-				context1 = Contxt.locateAddress(street, number, addition, ce, "Address");
-			else
-				if(quarter != null && quarter.trim().length() > 0)
-					context1 = Contxt.locateQuarter(quarter, number, addition, ce, "Address");
-
+			context2 = Contxt.locateBoat(boat, street, number, addition, context1, "Address");
 		
-		if(context1 == null)
-			return;
+		context1 = (context2 !=  null ? context2 : context1);		
+		
+		//if(context1 == null)
+		//	return;
 		
 		int Id_C = context1.getId_C();
 		
@@ -121,23 +126,26 @@ public class Utils {
 	public static void addIndivContextAndContext(String boat, String quarter, String street, String number, String addition, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String relation, 
 			String dateType, String estimation, int startDay, int startMonth, int startYear, int endDay, int endMonth, int endYear){
 		
-		//System.out.println("In addIndivContextAndContext");
-		
-		ContextElement context1 = null;
+		ContextElement context1 = ce;
+		ContextElement context2 = null;
 
-		//String [] s = Utils.getLocationHierarchy(ce);
+		if(quarter != null && quarter.trim().length() > 0)
+			context2 = Contxt.locateQuarter(quarter, context1, "Quarter");
+
+		context1 = (context2 !=  null ? context2 : context1);
+		
+		if(street != null && street.trim().length() > 0)
+			context2 = Contxt.locateStreet(street, number, addition, context1, "Address");
+		
+		context1 = (context2 !=  null ? context2 : context1);
+		
 		if(boat != null && boat.trim().length() > 0)
-			context1 = Contxt.locateBoat(boat, street, number, addition, ce, "Address");
-		else
-			if(street != null && street.trim().length() > 0)
-				context1 = Contxt.locateAddress(street, number, addition, ce, "Address");
-			else
-				if(quarter != null && quarter.trim().length() > 0)
-					context1 = Contxt.locateQuarter(quarter, number, addition, ce, "Address");
-
+			context2 = Contxt.locateBoat(boat, street, number, addition, context1, "Address");
 		
-		if(context1 == null)
-			return;
+		context1 = (context2 !=  null ? context2 : context1);		
+		
+		//if(context1 == null)
+		//	return;
 		
 		int Id_C = context1.getId_C();
 		
@@ -173,28 +181,25 @@ public class Utils {
 			String dateType, String estimation, int day, int month, int year){
 
 		
-		//System.out.println("addIndivAndContext 1 " + quarter + "  "+ street);
+		ContextElement context1 = ce;
+		ContextElement context2 = null;
+
+		if(quarter != null && quarter.trim().length() > 0)
+			context2 = Contxt.locateQuarter(quarter, context1, "Quarter");
+
+		context1 = (context2 !=  null ? context2 : context1);
 		
-		//String [] s = Utils.getLocationHierarchy(ce);
-		//int Id_C = Contxt.add(s[0], s[1], s[2], null, quarter, street, number, addition, null);
-		
-		ContextElement context1 = null;
 		if(street != null && street.trim().length() > 0)
-			context1 = Contxt.locateAddress(street, number, addition, ce, "Address");
-		else
-			if(quarter != null && quarter.trim().length() > 0)
-				context1 = Contxt.locateQuarter(quarter, number, addition, ce, "Quarter");
-
-		//System.out.println("addIndivAndContext 2 " + context1 );
-
-		int Id_C = 0;
+			context2 = Contxt.locateStreet(street, number, addition, context1, "Address");
 		
-		if(context1 != null)
-			Id_C = context1.getId_C();
-		else
-			Id_C = ce.getId_C();
+		context1 = (context2 !=  null ? context2 : context1);
 		
+		//if(boat != null && boat.trim().length() > 0)
+		//	context2 = Contxt.locateBoat(boat, street, number, addition, context1, "Address");
 		
+		context1 = (context2 !=  null ? context2 : context1);	
+		
+		int Id_C = context1.getId_C();
 		
 		//System.out.println("addIndivAndContext 3 " + Id_C);
 

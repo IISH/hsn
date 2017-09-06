@@ -282,6 +282,7 @@ public class Contxt {
 			
 			if(cList.get(i).getType().equalsIgnoreCase("HSN_MUNICIPALITY_CODE")){
 				
+				System.out.println("adding to list");
 				int hsn_municipality_code = new Integer(cList.get(i).getValue());
 				LocationID_2_Id_C.put(hsn_municipality_code, ce);
 				
@@ -402,10 +403,12 @@ public class Contxt {
 		
 		//System.out.println("Input " + municipality);
 		
+		if(municipality == null) return null;
+		
 		//ArrayList<String> municipalities  = new ArrayList<String>();
 		//ArrayList<String> levels          = new ArrayList<String>();
 			
-		if(1==1) return null;
+		//if(1==1) return null;
 		
 		int cnt = 0;
 		for(ContextElement ce: ceList){
@@ -646,7 +649,7 @@ public class Contxt {
 		
 		// locate address
 		
-		ContextElement ce = locateAddress(street, number, addition, ce1, level);
+		ContextElement ce = locateStreet(street, number, addition, ce1, level);
 		if(ce != null){
 			ce.types.add("BOAT");
 			ce.values.add(boat);
@@ -656,7 +659,7 @@ public class Contxt {
 		return null;
 	}
 
-	public static ContextElement locateAddress(String street, String number, String addition, ContextElement ce1, String   level){
+	public static ContextElement locateStreet(String street, String number, String addition, ContextElement ce1, String   level){
 		
 		
 		if(street == null || street.trim().length() == 0)
@@ -717,7 +720,7 @@ public class Contxt {
 			
 	}
 	
-	public static ContextElement locateQuarter(String quarter, String number, String addition, ContextElement ce1, String   level){
+	public static ContextElement locateQuarter(String quarter, ContextElement ce1, String   level){
 		
 		
 		if(quarter == null || quarter.trim().length() == 0)
@@ -725,13 +728,13 @@ public class Contxt {
 		
 		//System.out.println("street: " + street + " number: " + number + " addition: " + addition + "level = " + level);
 		
-		// Try to find address
+		// Try to find quarter
 		
 		for(ContextElement ce: ce1.getChildren()){
 			
 			String quarter1 = null;
-			String number1 = null;
-			String addition1 = null;
+			//String number1 = null;
+			//String addition1 = null;
 			String level1 = null;
 			
 			for(int i = 0; i < ce.types.size(); i++){
@@ -739,14 +742,14 @@ public class Contxt {
 					level1 = ce.values.get(i);
 				if(ce.types.get(i).compareTo("NAME") == 0)
 					quarter1 = ce.values.get(i);
-				if(ce.types.get(i).compareTo("HOUSE_NUMBER") == 0)
-					number1 = ce.values.get(i);
-				if(ce.types.get(i).compareTo("HOUSE_NUMBER_EXTENSION") == 0)
-					addition1 = ce.values.get(i);
+				//if(ce.types.get(i).compareTo("HOUSE_NUMBER") == 0)
+					//number1 = ce.values.get(i);
+				//if(ce.types.get(i).compareTo("HOUSE_NUMBER_EXTENSION") == 0)
+					//addition1 = ce.values.get(i);
 				
 			}
 
-			if(comp(level1, "Quarter") == true && comp(quarter1, quarter) == true && comp(number1, number) == true && comp(addition1, addition) == true)
+			if(comp(level1, "Quarter") == true && comp(quarter1, quarter) == true)
 				return ce;
 
 			
@@ -757,16 +760,16 @@ public class Contxt {
 		ContextElement ce = new ContextElement();
 		ce.types.add("LEVEL");
 		ce.values.add(level);
-		ce.types.add("NAME");
+		ce.types.add("QUARTER");
 		ce.values.add(quarter);
-		if(number != null && number.length() > 0){
-			ce.types.add("HOUSE_NUMBER");
-			ce.values.add(number);
-		}
-		if(addition != null && addition.length() > 0){
-			ce.types.add("HOUSE_NUMBER_EXTENSION");
-			ce.values.add(addition);
-		}
+		//if(number != null && number.length() > 0){
+		//	ce.types.add("HOUSE_NUMBER");
+		//	ce.values.add(number);
+		//}
+		//if(addition != null && addition.length() > 0){
+		//	ce.types.add("HOUSE_NUMBER_EXTENSION");
+		//	ce.values.add(addition);
+		//}
 		
 		ce.setId_C(Utils.getId_C());
 		ce.setParent(ce1);
@@ -910,9 +913,9 @@ public class Contxt {
 					if(Locality != null){
 						ContextElement contextLocality = locate(Locality, contextMunicipality, "Locality");
 						if(Quarter != null){
-							ContextElement contextQuarter = locateQuarter(Quarter, Number, Addition, contextLocality, "Quarter");
+							ContextElement contextQuarter = locateQuarter(Quarter, contextLocality, "Quarter");
 							if(Street != null){
-								ContextElement contextAddress = locateAddress(Street, Number, Addition,  contextQuarter, "Address");
+								ContextElement contextAddress = locateStreet(Street, Number, Addition,  contextQuarter, "Address");
 								if(Name != null){
 									ContextElement contextName = locate(Name, contextAddress, "Name");
 									return contextName.getId_C();
@@ -933,7 +936,7 @@ public class Contxt {
 						}
 						else{ //No quarter
 							if(Street != null){
-								ContextElement contextAddress = locateAddress(Street, Number, Addition, contextLocality, "Address");
+								ContextElement contextAddress = locateStreet(Street, Number, Addition, contextLocality, "Address");
 								if(Name != null){
 									ContextElement contextName = locate(Name, contextAddress, "Name");
 									return contextName.getId_C();
@@ -955,9 +958,9 @@ public class Contxt {
 					}  
 					else{ // No locality
 						if(Quarter != null){
-							ContextElement contextQuarter = locateQuarter(Quarter, Number, Addition, contextMunicipality, "Quarter");
+							ContextElement contextQuarter = locateQuarter(Quarter, contextMunicipality, "Quarter");
 							if(Street != null){
-								ContextElement contextAddress = locateAddress(Street, Number, Addition, contextQuarter, "Address");
+								ContextElement contextAddress = locateStreet(Street, Number, Addition, contextQuarter, "Address");
 								if(Name != null){
 									ContextElement contextName = locate(Name, contextAddress, "Name");
 									return contextName.getId_C();
@@ -978,7 +981,7 @@ public class Contxt {
 						}
 						else{ //No quarter
 							if(Street != null){
-								ContextElement contextAddress = locateAddress(Street, Number, Addition, contextMunicipality, "Address");
+								ContextElement contextAddress = locateStreet(Street, Number, Addition, contextMunicipality, "Address");
 								if(Name != null){
 									ContextElement contextName = locate(Name, contextAddress, "Name");
 									return contextName.getId_C();
@@ -1003,9 +1006,9 @@ public class Contxt {
 					if(Locality != null){
 						ContextElement contextLocality = locate(Locality, contextProvince, "Locality");
 						if(Quarter != null){
-							ContextElement contextQuarter = locateQuarter(Quarter, Number, Addition, contextLocality, "Quarter");
+							ContextElement contextQuarter = locateQuarter(Quarter, contextLocality, "Quarter");
 							if(Street != null){
-								ContextElement contextAddress = locateAddress(Street, Number, Addition, contextQuarter, "Address");
+								ContextElement contextAddress = locateStreet(Street, Number, Addition, contextQuarter, "Address");
 								if(Name != null){
 									ContextElement contextName = locate(Name, contextAddress, "Name");
 									return contextName.getId_C();
@@ -1026,7 +1029,7 @@ public class Contxt {
 						}
 						else{ //No quarter
 							if(Street != null){
-								ContextElement contextAddress = locateAddress(Street, Number, Addition, contextLocality, "Address");
+								ContextElement contextAddress = locateStreet(Street, Number, Addition, contextLocality, "Address");
 								if(Name != null){
 									ContextElement contextName = locate(Name, contextAddress, "Name");
 									return contextName.getId_C();
@@ -1048,9 +1051,9 @@ public class Contxt {
 					}  
 					else{ // No locality
 						if(Quarter != null){
-							ContextElement contextQuarter = locateQuarter(Quarter, Number, Addition, contextProvince, "Quarter");
+							ContextElement contextQuarter = locateQuarter(Quarter, contextProvince, "Quarter");
 							if(Street != null){
-								ContextElement contextAddress = locateAddress(Street, Number, Addition, contextQuarter, "Address");
+								ContextElement contextAddress = locateStreet(Street, Number, Addition, contextQuarter, "Address");
 								if(Name != null){
 									ContextElement contextName = locate(Name, contextAddress, "Name");
 									return contextName.getId_C();
@@ -1071,7 +1074,7 @@ public class Contxt {
 						}
 						else{ //No quarter
 							if(Street != null){
-								ContextElement contextAddress = locateAddress(Street, Number, Addition, contextProvince, "Address");
+								ContextElement contextAddress = locateStreet(Street, Number, Addition, contextProvince, "Address");
 								if(Name != null){
 									ContextElement contextName = locate(Name, contextAddress, "Name");
 									return contextName.getId_C();
@@ -1099,9 +1102,9 @@ public class Contxt {
 					if(Locality != null){
 						ContextElement contextLocality = locate(Locality, contextMunicipality, "Locality");
 						if(Quarter != null){
-							ContextElement contextQuarter = locateQuarter(Quarter, Number, Addition, contextLocality, "Quarter");
+							ContextElement contextQuarter = locateQuarter(Quarter, contextLocality, "Quarter");
 							if(Street != null){
-								ContextElement contextAddress = locateAddress(Street, Number, Addition, contextQuarter, "Address");
+								ContextElement contextAddress = locateStreet(Street, Number, Addition, contextQuarter, "Address");
 								if(Name != null){
 									ContextElement contextName = locate(Name, contextAddress, "Name");
 									return contextName.getId_C();
@@ -1122,7 +1125,7 @@ public class Contxt {
 						}
 						else{ //No quarter
 							if(Street != null){
-								ContextElement contextAddress = locateAddress(Street, Number, Addition, contextLocality, "Address");
+								ContextElement contextAddress = locateStreet(Street, Number, Addition, contextLocality, "Address");
 								if(Name != null){
 									ContextElement contextName = locate(Name, contextAddress, "Name");
 									return contextName.getId_C();
@@ -1144,9 +1147,9 @@ public class Contxt {
 					}  
 					else{ // No locality
 						if(Quarter != null){
-							ContextElement contextQuarter = locateQuarter(Quarter, Number, Addition, contextMunicipality, "Quarter");
+							ContextElement contextQuarter = locateQuarter(Quarter, contextMunicipality, "Quarter");
 							if(Street != null){
-								ContextElement contextAddress = locateAddress(Street, Number, Addition, contextQuarter, "Address");
+								ContextElement contextAddress = locateStreet(Street, Number, Addition, contextQuarter, "Address");
 								if(Name != null){
 									ContextElement contextName = locate(Name, contextAddress, "Name");
 									return contextName.getId_C();
@@ -1167,7 +1170,7 @@ public class Contxt {
 						}
 						else{ //No quarter
 							if(Street != null){
-								ContextElement contextAddress = locateAddress(Street, Number, Addition, contextMunicipality, "Address");
+								ContextElement contextAddress = locateStreet(Street, Number, Addition, contextMunicipality, "Address");
 								if(Name != null){
 									ContextElement contextName = locate(Name, contextAddress, "Name");
 									return contextName.getId_C();
@@ -1192,9 +1195,9 @@ public class Contxt {
 					if(Locality != null){
 						ContextElement contextLocality = locate(Locality, contextCountry, "Locality");
 						if(Quarter != null){
-							ContextElement contextQuarter = locateQuarter(Quarter, Number, Addition, contextLocality, "Quarter");
+							ContextElement contextQuarter = locateQuarter(Quarter, contextLocality, "Quarter");
 							if(Street != null){
-								ContextElement contextAddress = locateAddress(Street, Number, Addition, contextQuarter, "Address");
+								ContextElement contextAddress = locateStreet(Street, Number, Addition, contextQuarter, "Address");
 								if(Name != null){
 									ContextElement contextName = locate(Name, contextAddress, "Name");
 									return contextName.getId_C();
@@ -1215,7 +1218,7 @@ public class Contxt {
 						}
 						else{ //No quarter
 							if(Street != null){
-								ContextElement contextAddress = locateAddress(Street, Number, Addition, contextLocality, "Address");
+								ContextElement contextAddress = locateStreet(Street, Number, Addition, contextLocality, "Address");
 								if(Name != null){
 									ContextElement contextName = locate(Name, contextAddress, "Name");
 									return contextName.getId_C();
@@ -1237,9 +1240,9 @@ public class Contxt {
 					}  
 					else{ // No locality
 						if(Quarter != null){
-							ContextElement contextQuarter = locateQuarter(Quarter, Number, Addition, contextCountry, "Quarter");
+							ContextElement contextQuarter = locateQuarter(Quarter, contextCountry, "Quarter");
 							if(Street != null){
-								ContextElement contextAddress = locateAddress(Street, Number, Addition, contextQuarter, "Address");
+								ContextElement contextAddress = locateStreet(Street, Number, Addition, contextQuarter, "Address");
 								if(Name != null){
 									ContextElement contextName = locate(Name, contextAddress, "Name");
 									return contextName.getId_C();
@@ -1260,7 +1263,7 @@ public class Contxt {
 						}
 						else{ //No quarter
 							if(Street != null){
-								ContextElement contextAddress = locateAddress(Street, Number, Addition, contextCountry, "Address");
+								ContextElement contextAddress = locateStreet(Street, Number, Addition, contextCountry, "Address");
 								if(Name != null){
 									ContextElement contextName = locate(Name, contextAddress, "Name");
 									return contextName.getId_C();

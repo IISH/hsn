@@ -579,7 +579,7 @@ public class M1 {
 
 			 if(getM1bmca().equalsIgnoreCase("J")){
 				 if(getM1bfll() != null){
-					 ce = Contxt.get2(getM1bmll());
+					 ce = Contxt.get2(getM1bfll());
 					 if(ce != null)
 						 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_BM, "MC M1", "", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 				 }
