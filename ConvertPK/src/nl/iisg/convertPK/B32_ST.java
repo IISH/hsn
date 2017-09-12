@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="b32_st")
-public class B32_ST extends B3_ST{
+public class B32_ST extends B3_ST{ 
 	
 
 	@Column(name = "B3KODE")        		private int         contentOfDynamicData;

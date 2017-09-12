@@ -10,7 +10,7 @@ import javax.persistence.Transient;
 
 import nl.iisg.hsncommon.Common1;
 
-@Entity
+@Entity 
 @Table(name="pkhuw")
 public class PkHuw {
 	

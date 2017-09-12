@@ -1,6 +1,6 @@
 package nl.iisg.convertPK;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

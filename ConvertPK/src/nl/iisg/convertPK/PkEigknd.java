@@ -11,7 +11,7 @@ import javax.persistence.Transient;
 
 import nl.iisg.hsncommon.Common1;
 
-
+ 
 @Entity
 @Table(name="pkeigknd")
 public class PkEigknd {

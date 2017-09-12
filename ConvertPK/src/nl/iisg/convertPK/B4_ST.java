@@ -13,7 +13,7 @@ import nl.iisg.hsncommon.ConstRelations;
 import nl.iisg.hsncommon.Common1;
 import nl.iisg.hsncommon.ConstRelations2;
 
-@Entity
+@Entity 
 @Table(name="b4_stpk")
 public class B4_ST {
 	

@@ -11,7 +11,7 @@ import javax.persistence.Transient;
 
 
 @MappedSuperclass
-public class B3_ST {
+public class B3_ST { 
 	
 	@Id	@Column(name = "B1IDBG")  	private int   		 keyToSourceRegister;
 	@Id	@Column(name = "B2DIBG")    private String       entryDateHead;      

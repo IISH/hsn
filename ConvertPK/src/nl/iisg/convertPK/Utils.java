@@ -39,7 +39,7 @@ import nl.iisg.ref.Ref_Profession;
 
 import net.ucanaccess.jdbc.UcanaccessDriver;
 
-public class Utils {
+public class Utils { 
 	
     /**
      * 

@@ -12,7 +12,7 @@ public class TableDefinitions {
 	 public static final int Bigstring = 60;
 	 public static final int Smallstring = 15;
 	 
-	
+	 
 	 public static final String B2_ST = 
 		 
 		 "CREATE TABLE IF NOT EXISTS b2_st" +

@@ -12,7 +12,7 @@ import javax.persistence.Transient;
 import nl.iisg.hsncommon.Common1;
 
 @Entity
-@Table(name="pkknd")
+@Table(name="pkknd") 
 public class PkKnd {
 	
  @Id @Column(name="IDNR")      private int     idnr; 		  // ID Number

@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="b33_st")
-public class B33_ST  extends B3_ST{
+public class B33_ST  extends B3_ST{ 
 	
 	@Column(name = "RELIGION_ID")     private int         religionID;
 	@Column(name = "RELIGION_ST")     private String      religionStandardized;

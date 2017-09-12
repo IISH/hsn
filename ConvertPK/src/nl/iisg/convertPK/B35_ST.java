@@ -16,7 +16,7 @@ public class B35_ST extends B3_ST {
 	
 	@Transient                             private B2_ST        person;  
 
-	
+	 
 	B35_ST(){}
 	
 	public void save(EntityManager em){

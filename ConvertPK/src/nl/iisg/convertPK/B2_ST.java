@@ -10,9 +10,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name="b2_st")
+@Table(name="b2_st") 
 public class B2_ST {
-
+ 
 	/**
 	 * 
 	 * This class handles the static attributes of a standardized person (name, date of birth etc.)

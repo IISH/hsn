@@ -7,7 +7,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name="p7")
+@Table(name="p7") 
 public class P7 {
 	
 	 @Id  @Column(name="IDNR")      private  int      idnr; 		    // ID Number

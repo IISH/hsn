@@ -23,7 +23,7 @@ public class B37_ST  extends B3_ST{
 	
 	@Transient                          private B2_ST       person;  
 
-	
+	 
 	
 	B37_ST(){}
 	

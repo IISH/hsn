@@ -23,7 +23,7 @@ public class B36_ST extends B3_ST {
 	
 	
 	B36_ST(){}
-	
+	 
 	/**
 	 * 
 	 * This routine truncates fields that are too long for the corresponding database columns

@@ -12,7 +12,7 @@ public class MessageSkeleton {
 	    @Column(name = "Fouttype_nw") private		String errorType;
 	    @Column(name = "Inhoud")      private       String errorText;
 
-
+ 
 	public String getErrorNumber() {
 		return errorNumber;
 	}

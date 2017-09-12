@@ -12,7 +12,7 @@ import nl.iisg.ref.Ref;
 import nl.iisg.ref.Ref_Address;
 import nl.iisg.ref.Ref_Housenumber;
 import nl.iisg.ref.Ref_Housenumberaddition;
-
+ 
 @Entity
 @Table(name="p8")
 public class P8 {

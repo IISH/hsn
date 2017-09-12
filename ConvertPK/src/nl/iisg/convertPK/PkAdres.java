@@ -15,7 +15,7 @@ import nl.iisg.ref.Ref_Housenumber;
 import nl.iisg.ref.Ref_Housenumberaddition;
 
 @Entity
-@Table(name="pkadres")
+@Table(name="pkadres") 
 public class PkAdres {
 	
 	 @Id @Column(name="IDNR")       private int     idnr; 		  // ID Number

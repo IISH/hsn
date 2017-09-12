@@ -10,7 +10,7 @@ import javax.persistence.Transient;
 
 import nl.iisg.ref.Ref;
 import nl.iisg.ref.Ref_Profession;
-
+ 
 @Entity
 @Table(name="pkbrp")
 public class PkBrp {
