@@ -14,7 +14,7 @@ import nl.iisg.hsncommon.ConstRelations2;
 import nl.iisg.idscontext.ContextElement;
 import nl.iisg.idscontext.Contxt;
 
-@Entity
+@Entity 
 @Table(name="b2_st")
 public class B2_ST {
 

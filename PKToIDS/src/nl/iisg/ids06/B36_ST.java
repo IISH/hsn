@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.Table;
-
+ 
 @Entity
 @Table(name="b36_st")
 public class B36_ST extends B3_ST {

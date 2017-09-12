@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
+ 
 @Entity
 @Table(name="b35_st")
 public class B35_ST extends B3_ST {

@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="indiv_context")
+@Table(name="indiv_context") 
 public class INDIV_CONTEXT {
 	
 	@Id @Column(name = "Id")  		    private int       id;

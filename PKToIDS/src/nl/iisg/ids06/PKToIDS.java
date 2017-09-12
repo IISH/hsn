@@ -41,7 +41,7 @@ public class PKToIDS implements Runnable{
 
     public PKToIDS(DataOutputStream out) {
         setTextArea(textArea);
-        setOut(out);
+        setOut(out); 
     }
 
 

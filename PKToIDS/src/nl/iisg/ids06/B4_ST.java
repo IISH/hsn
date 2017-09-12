@@ -11,7 +11,7 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name="b4_stpk")
-public class B4_ST {
+public class B4_ST { 
 	
 	@Id @Column(name = "B1IDBG")	  	private int       keyToSourceRegister;
 	@Id @Column(name = "B2DIBG")  		private String    entryDateHead;                      

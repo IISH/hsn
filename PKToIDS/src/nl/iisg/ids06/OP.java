@@ -1,8 +1,8 @@
 package nl.iisg.ids06;
 
 import java.util.ArrayList;
-
-
+ 
+ 
 public class OP {
     private int                                     keyToRP;
     private ArrayList<B4_ST>                        RegistrationsStandardizedOfOP = new ArrayList<B4_ST>();

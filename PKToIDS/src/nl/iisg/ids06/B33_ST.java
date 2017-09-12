@@ -9,7 +9,7 @@ import nl.iisg.idscontext.ContextElement;
 import nl.iisg.idscontext.Contxt;
 
 @Entity
-@Table(name="b33_st")
+@Table(name="b33_st") 
 public class B33_ST  extends B3_ST{
 	
 	@Column(name = "RELIGION_ID")     private int         religionID;

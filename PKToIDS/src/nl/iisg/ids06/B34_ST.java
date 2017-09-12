@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="b34_st")
+@Table(name="b34_st") 
 
 public class B34_ST extends B3_ST {
 	

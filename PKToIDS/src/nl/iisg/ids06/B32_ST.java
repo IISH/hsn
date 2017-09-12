@@ -9,7 +9,7 @@ import nl.iisg.idscontext.ContextElement;
 import nl.iisg.idscontext.Contxt;
 
 @Entity
-@Table(name="b32_st")
+@Table(name="b32_st") 
 public class B32_ST extends B3_ST{
 	
 

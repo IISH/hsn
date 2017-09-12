@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name="b6_st")
+@Table(name="b6_st") 
 public class B6_ST {
 	
 	@Id @Column(name = "B1IDBG")  private int       keyToSourceRegister;

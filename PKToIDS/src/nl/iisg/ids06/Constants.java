@@ -5,7 +5,7 @@ public class Constants {
 	public static String [] b3kode1 =        new String[150+1];
 	public static String [] cscode1 =        new String[12+1];
 
-	static{
+	static{ 
 		
 		// B3kode1
 		

@@ -9,7 +9,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-
+ 
 @MappedSuperclass
 public class B3_ST {
 	
