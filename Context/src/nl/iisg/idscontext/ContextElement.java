@@ -10,9 +10,9 @@ import javax.persistence.Persistence;
 public class ContextElement {
 	
 	String name;
-	int level;
+	int level;  //
 	
-	int Id_C;
+	int Id_C; 
 	
 	ArrayList<String> types  = new ArrayList<String>();
 	ArrayList<String> values = new ArrayList<String>();

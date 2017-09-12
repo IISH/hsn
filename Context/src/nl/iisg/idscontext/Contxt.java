@@ -12,7 +12,7 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 
-public class Contxt {
+public class Contxt { 
 
 	static List<ContextElement> topList = null;
 	static List<ContextElement> ceList = null;

@@ -18,7 +18,7 @@ public class CONTEXT {
     
     @Column(name = "Date_type")  		private String    date_type;
     @Column(name = "Estimation")  		private String    estimation;
-    @Column(name = "Day")		  		private int       day;
+    @Column(name = "Day")		  		private int       day; 
     @Column(name = "Month")		  		private int       month;
     @Column(name = "Year")		  		private int       year;
     @Column(name = "Start_day")			private int       start_day;
