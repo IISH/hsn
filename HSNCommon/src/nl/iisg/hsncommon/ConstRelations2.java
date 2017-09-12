@@ -11,7 +11,7 @@ package nl.iisg.hsncommon;
  * 
  * This class contains definitions for constants used throughout the application
  * 
- * 
+ *  
  */
 public class ConstRelations2 {
 	

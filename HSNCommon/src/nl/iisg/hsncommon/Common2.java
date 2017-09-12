@@ -24,7 +24,7 @@ import javax.persistence.Table;
 public class Common2 {
 
 	
-    /**
+    /** 
      * 
      * Name: CreateObjects2
      * 
