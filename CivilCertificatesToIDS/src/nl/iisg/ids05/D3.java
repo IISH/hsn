@@ -72,9 +72,10 @@ public class D3 {
 
 		 if(ceCertificate != null){
 			 
-	    	 String death_certificate = "Death Certificate";
+	    	 //String death_certificate = "Death Certificate";
+	    	 String death_certificate = "DC D3";
 			 if(getD1().getD1sdce() != null && getD1().getD1sdce().equalsIgnoreCase("J"))
-				 death_certificate = "Extract Death Certificate"; 
+				 death_certificate = "DC D3"; //"Extract Death Certificate"; 
 			 
 			 //Utils.addIndivContextAndContext(getD3i_ll(), ceCertificate, em, getIdnr(), Id_I_IN, "DC D3", "", "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
 			 Utils.addIndivContextAndContextCertificate(getD1().getD1sdcy(), getD1().getD1sdcn(), ceCertificate, em, getIdnr(), Id_I_IN, death_certificate, 
