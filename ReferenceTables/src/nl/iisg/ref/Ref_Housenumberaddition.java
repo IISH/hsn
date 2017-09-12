@@ -16,7 +16,7 @@ import javax.persistence.Transient;
  * 
  * This class contains data of one row of profession reference data  
  *
- */
+ */ 
 
 @Entity
 @Table(name="ref_addition")

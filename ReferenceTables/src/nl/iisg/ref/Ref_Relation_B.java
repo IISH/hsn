@@ -22,7 +22,7 @@ public class Ref_Relation_B{
 
 	static int current_ID = 0;
 
-	
+	 
 	
 	
 	public int getRelationID() {

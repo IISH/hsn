@@ -17,7 +17,7 @@ import javax.persistence.Transient;
  * This class contains data of one row of first name reference data  
  *
  */
-
+ 
 @Entity
 @Table(name="ref_firstname")
 public class Ref_FirstName{

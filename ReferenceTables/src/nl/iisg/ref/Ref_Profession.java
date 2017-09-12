@@ -27,7 +27,7 @@ public class Ref_Profession{
 	@Column(name = "standard")               private String    profession;
 	@Column(name = "standard_code")          private String    code;
 	@Transient                               private Boolean   needSave = false;
-
+ 
 	
 	static int current_ID = 0;
 	

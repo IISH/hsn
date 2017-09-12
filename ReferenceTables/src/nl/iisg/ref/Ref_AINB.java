@@ -15,7 +15,7 @@ import javax.persistence.Transient;
  * 
  * This class contains data of one ainb row  
  *
- */
+ */ 
 
 @Entity
 @Table(name="ref_ainb")

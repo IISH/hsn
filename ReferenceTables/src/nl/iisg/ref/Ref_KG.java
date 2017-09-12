@@ -16,7 +16,7 @@ import javax.persistence.Transient;
  * 
  * This class contains data of one KG (=KerkGenootschap, Religious Denomination) reference data  
  *
- */
+ */ 
 @Entity
 @Table(name="ref_religion")
 //@SQLInsert(sql = "INSERT INTO ref_religion (id_religion, standard_code, original, standard) VALUES (?, ?, ?, ?)");

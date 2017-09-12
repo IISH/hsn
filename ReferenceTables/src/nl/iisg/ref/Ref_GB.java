@@ -16,7 +16,7 @@ import javax.persistence.Transient;
  * 
  * This class contains data of one GB (Geboorteregister = birth register) row of reference data  
  *
- */
+ */ 
 @Entity
 @Table(name="ref_gbh")
 public class Ref_GB {

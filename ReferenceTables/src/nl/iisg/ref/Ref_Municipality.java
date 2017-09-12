@@ -27,7 +27,7 @@ public class Ref_Municipality {
 	public void setCodeProvince(int codeProvince) {
 		this.codeProvince = codeProvince;
 	}
-	public int getCodeRegion() {
+	public int getCodeRegion() { 
 		return codeRegion;
 	}
 	public void setCodeRegion(int codeRegion) {

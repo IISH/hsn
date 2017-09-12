@@ -9,7 +9,7 @@ public class Ref_CreateTables {
 	static final int Smallstring = 20;
 	public static final String Ref_Address  = 
 
-		" create table if not exists ref_address " +
+		" create table if not exists ref_address " + 
 		" ( " +
 
 		"address_id  int auto_increment," +
