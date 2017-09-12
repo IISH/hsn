@@ -28,7 +28,7 @@ public class D2 {
      @Column(name="D2S_AY")       private int d2s_ay;
      @Column(name="D2S_OC")       private String d2s_oc;
      @Column(name="D2S_LL")       private String d2s_ll;
-     @Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
+     @Id@GeneratedValue(strategy=GenerationType.IDENTITY)  
      @Column(name="RecordID")     private int recordID;
      
      @Transient                   private D1   d1  = null;               

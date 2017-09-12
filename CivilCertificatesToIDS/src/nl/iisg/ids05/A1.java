@@ -34,7 +34,7 @@ public class A1 {
 	@Column(name = "PLACE_ST")    private String    place;
 	@Column(name = "BOAT_ST")     private String    boat;
 	@Column(name = "BERTH_ST")    private String    berth;
-	@Column(name = "INSTIT_ST")   private String    institution;
+	@Column(name = "INSTIT_ST")   private String    institution;//
 	@Column(name = "LANDLORD_ST") private String    landlord;
 	@Column(name = "OTHER_ST")    private String    other;
 	@Column(name = "ADDRESS_FG")  private int       addressFlag;

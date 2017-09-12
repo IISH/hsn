@@ -13,7 +13,7 @@ import javax.persistence.Transient;
 @Entity
 @Table(name="b0")
 public class B0 {
-	
+	 
 	@Column(name="B0SUHG")    private int b0suhg;
 	@Column(name="B0SUHC")    private int b0suhc;
 	@Column(name="B0SUHY")    private int b0suhy;

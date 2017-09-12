@@ -22,7 +22,7 @@ public class M6 {
      
      @Transient                   private M1   m1   = null;
 
-     
+      
      
      
 	public int getIdnr() {

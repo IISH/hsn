@@ -12,7 +12,7 @@ import javax.persistence.Transient;
 import nl.iisg.idscontext.ContextElement;
 import nl.iisg.idscontext.Contxt;
 
-@Entity
+@Entity 
 @Table(name="m3")
 public class M3 {
 

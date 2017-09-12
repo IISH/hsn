@@ -21,7 +21,7 @@ public class D3 {
      @Column(name="D3I_SQ")       private int d3i_sq;
      @Column(name="D3I_LN")       private String d3i_ln;
      @Column(name="D3I_PF")       private String d3i_pf;
-     @Column(name="D3I_FN")       private String d3i_fn;
+     @Column(name="D3I_FN")       private String d3i_fn; 
      @Column(name="D3I_TT")       private String d3i_tt;
      @Column(name="D3I_PA")       private String d3i_pa;
      @Column(name="D3I_LS")       private String d3i_ls;

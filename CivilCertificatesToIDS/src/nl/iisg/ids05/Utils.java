@@ -429,7 +429,7 @@ public class Utils {
 		ic.setId_D((new Integer(IDNR).toString()));
 		ic.setId_I(Id_I);
 		ic.setId_C(Id_C);
-		ic.setSource("HSN CC " + source);
+		ic.setSource("HSN " + source);
 
 		
 		ic.setRelation(relation);
@@ -486,7 +486,7 @@ public class Utils {
 
 		i.setId_I(Id_I);
 		i.setId_D((new Integer(IDNR).toString()));
-		i.setSource("HSN CC " + source);
+		i.setSource("HSN  " + source);
 
 		i.setType(type);
 		i.setValue(null);
@@ -570,7 +570,7 @@ public class Utils {
 		
 		i.setId_I(Id_I);
 		i.setId_D((new Integer(IDNR).toString()));
-		i.setSource("HSN CC " + source);
+		i.setSource("HSN " + source);
 
 		
 		i.setType(type);
@@ -604,7 +604,7 @@ public class Utils {
 		
 		i.setId_I(Id_I);
 		i.setId_D((new Integer(IDNR).toString()));
-		i.setSource("HSN CC " + source);
+		i.setSource("HSN " + source);
 
 		
 		i.setType(type);
@@ -637,7 +637,7 @@ public class Utils {
 		
 		i.setId_I(Id_I);
 		i.setId_D((new Integer(IDNR).toString()));
-		i.setSource("HSN CC " + source);
+		i.setSource("HSN  " + source);
 
 		
 		i.setType(type);

@@ -7,11 +7,9 @@ import java.util.ArrayList;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Persistence;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -133,7 +131,7 @@ public class B1 {
 		// }
 
 		if(ceCertificate != null){
-			Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_RP, "Birth Certificate", "Child", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
+			Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_RP, "BC B1", "Child", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 			
 			if(getB1rplla() != null){
 				
@@ -244,7 +242,7 @@ public class B1 {
 
 			if(getB1infa().equalsIgnoreCase("J")){
 				if(ceCertificate != null){
-					Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_IN, "Birth Certificate", "Father as Informer", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
+					Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_IN, "BC B1", "Father as Informer", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 				}
 				
 				String relation = "Kind";
@@ -257,7 +255,7 @@ public class B1 {
 			}
 			else{
 				if(ceCertificate != null)
-					Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_IN, "Birth Certificate", "Informer", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
+					Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_IN, "BC B1", "Informer", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 				Utils.addIndivIndiv(em, getIdnr(), Id_I_IN, Id_I_RP, "BC B1", "Onbekend",  "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());// Informer and newly-born RP
 				Utils.addIndivIndiv(em, getIdnr(), Id_I_RP, Id_I_IN, "BC B1", "Onbekend",  "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy()); // Informer and newly-born RP
 			}
@@ -311,7 +309,7 @@ public class B1 {
 							startDay1, startMonth1, startYear1);
 				}
 				
-				Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_MO, "Birth Certificate", "Mother", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
+				Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_MO, "BC B1", "Mother", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 			}
 
 

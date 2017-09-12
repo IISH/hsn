@@ -13,7 +13,7 @@ public class CreateIDSTables {
 				 "Type VARCHAR (50), " +
 				 "Value VARCHAR(100), " +
 				 "Value_Id_C INT, " +
-				 
+				  
 				 "Date_type VARCHAR(15), " +
 				 "Estimation VARCHAR(50), " + 
 				 "Day TINYINT,  " + 

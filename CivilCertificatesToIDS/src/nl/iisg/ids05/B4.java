@@ -26,7 +26,7 @@ public class B4 {
      @Column(name="B4SDMY")       private int b4sdmy;
      @Column(name="B4SDML")       private String b4sdml;
      @Column(name="B4FALN")       private String b4faln;
-     @Column(name="B4FAPF")       private String b4fapf;
+     @Column(name="B4FAPF")       private String b4fapf; 
      @Column(name="B4FAFN")       private String b4fafn;
      @Column(name="B4FATT")       private String b4fatt;
      @Column(name="B4FAPA")       private String b4fapa;

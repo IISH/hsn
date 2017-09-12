@@ -41,7 +41,7 @@ public class INDIV_CONTEXT {
 	}
 	public String getId_D() {
 		return id_D;
-	}
+	} 
 	public void setId_D(String id_D) {
 		this.id_D = id_D;
 	}

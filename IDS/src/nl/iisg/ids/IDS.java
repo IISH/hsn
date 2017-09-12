@@ -161,7 +161,7 @@ public class IDS implements Runnable {
 	}
 	 print("Processed " + idnr + " IDNRs"); 
 	
-	Ref.finalise(); 
+	//Ref.finalise(); 
     Message.finalise();
 
      print("\nIDS - Integrate           finished\n");
@@ -194,7 +194,7 @@ public class IDS implements Runnable {
     	// Sort the person list on (id_i_new, start code)
     	
     	for(Person p: personL){
-    		String id_i_new = p.getId_I_new() == null ? "NuLL" : p.getId_I_new();
+    		String id_i_new = p.getId_I_new() == null ? "NULL" : p.getId_I_new();
     		//if(p.getSource().substring(0,6).equalsIgnoreCase("HSN DC"))
     		//	System.out.println(p.getIdnr() + "  " + p.getSource() + " " + p.getIdWithinGroup() + " " + p.getOriginalRelationRP() +  " " + id_i_new);
     	}

@@ -24,7 +24,7 @@ public class B6 {
 
      
      
-     
+      
 	public int getIdnr() {
 		return idnr;
 	}

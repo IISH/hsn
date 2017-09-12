@@ -5,7 +5,7 @@ import java.util.List;
 
 import nl.iisg.idscontext.ContextElement;
 
-
+ 
 public class Indiv {
 
 	int Id_I;

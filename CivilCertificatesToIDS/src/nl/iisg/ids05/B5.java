@@ -57,7 +57,7 @@ public class B5 {
 		 else
 			 return;
 		 if(getB5fapf() != null && getB5fapf().trim().length() > 0)
-			 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B5 ", "PREFIX_LAST_NAME", getB5fapf(), "Missing", "Time_invariant", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
+			 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B5", "PREFIX_LAST_NAME", getB5fapf(), "Missing", "Time_invariant", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
 		 if(getB5fafn() != null && getB5fafn().trim().length() > 0)
 			 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B5", "FIRST_NAME", getB5fafn(), "Missing", "Time_invariant", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
 		 if(getB5faay() > 0){

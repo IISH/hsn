@@ -19,7 +19,7 @@ public class B3 {
      
      @Transient                   private B1   b1   = null;               
 
-     
+      
      
 	public int getIdnr() {
 		return idnr;

@@ -15,7 +15,7 @@ import nl.iisg.idscontext.Contxt;
 
 @Entity
 @Table(name="b2")
-public class B2 {
+public class B2 { 
 
      @Column(name="IDNR")         private int idnr;
      @Column(name="B2W_SQ")       private int b2w_sq;

@@ -18,7 +18,7 @@ import nl.iisg.idscontext.Contxt;
 import nl.iisg.ref.Ref;
 import nl.iisg.ref.Ref_Relation_B;
 
-@Entity
+@Entity 
 @Table(name="m4")
 public class M4 {
 

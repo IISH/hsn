@@ -2069,8 +2069,9 @@ public class Ref {
 		if(ref_location21 != null)
 			for(Ref_Location x: ref_location21.values())
 				Ref.truncateLocation(x);
-		for(Ref_Location x: ref_location22.values())
-			Ref.truncateLocation(x);
+	//	if(ref_location22 != null)
+			for(Ref_Location x: ref_location22.values())
+				Ref.truncateLocation(x);
 
 		if(ref_profession != null)
 			for(Ref_Profession x: ref_profession)

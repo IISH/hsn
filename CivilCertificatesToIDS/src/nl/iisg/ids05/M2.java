@@ -28,7 +28,7 @@ public class M2 {
      @Transient                   private M1  m1   = null;
 
      
-     
+      
      
 	public int getIdnr() {
 		return idnr;
