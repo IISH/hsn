@@ -18,7 +18,7 @@ public class INDIV_CONTEXT {
     @Column(name = "Id_I")  			private int		  id_I;
     @Column(name = "Id_C")  			private int		  id_C;
     @Column(name = "Source")  			private String    source;
-    @Column(name = "Relation") 			private String    relation;
+    @Column(name = "Relation") 			private String    relation; 
     
     @Column(name = "Date_type")  		private String    date_type;
     @Column(name = "Estimation")  		private String    estimation;

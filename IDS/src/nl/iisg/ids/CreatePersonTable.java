@@ -16,7 +16,7 @@ public class CreatePersonTable {
 		 "Prefix_Familyname VARCHAR(15), " +
 		 "Firstname VARCHAR(80), " +
 		 "Sex CHAR(1), " +
-		 "Original_Relation_RP VARCHAR(100), " +
+		 "Original_Relation_RP VARCHAR(100), " + 
 		 "Relation_RP VARCHAR(100), " +
 		 "Function VARCHAR(20), " +
 		 "Birthday TINYINT, " +

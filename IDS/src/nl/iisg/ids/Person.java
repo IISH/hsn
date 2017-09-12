@@ -12,7 +12,7 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name="persons")
-public class Person {
+public class Person { 
 	
 @Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
 @Column(name = "Id")  				    private int       id; 		// Primary Key

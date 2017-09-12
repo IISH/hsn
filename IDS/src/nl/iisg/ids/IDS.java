@@ -41,7 +41,7 @@ public class IDS implements Runnable {
 	static int indiv_context_count;
 	
     static JTextArea textArea = null;
-    static DataOutputStream out = null;
+    static DataOutputStream out = null; 
 
     public IDS(DataOutputStream out) {
         setTextArea(textArea);

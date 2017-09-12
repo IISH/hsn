@@ -12,7 +12,7 @@ public class CreateIDSTables {
 			 "Source VARCHAR(50), " +
 			 "Type VARCHAR (50), " +
 			 "Value VARCHAR(100), " +
-			 "Value_Id_C INT, " +
+			 "Value_Id_C INT, " + 
 			 
 			 "Date_type VARCHAR(15), " +
 			 "Estimation VARCHAR(50), " + 

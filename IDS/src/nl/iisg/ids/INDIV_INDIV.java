@@ -17,7 +17,7 @@ public class INDIV_INDIV {
     @Column(name = "Id_I_1")  			private int		  id_I_1;
     @Column(name = "Id_I_2")  			private int		  id_I_2;
     @Column(name = "Source")  			private String    source;
-
+ 
     @Column(name = "Relation") 			private String    relation;
     
     @Column(name = "Date_type")  		private String    date_type;
