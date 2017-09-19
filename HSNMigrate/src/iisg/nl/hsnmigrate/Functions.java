@@ -15,6 +15,8 @@ public class Functions {
 	
 	static int c = 0;
 	
+	static String [] toBeRemoved = {"al", "alhier", "alh", "alsboven", "id", "ald", "ten zijnen huize", "te zijnen huize", "aldaar", "N"};
+	
 	public static int date_f(int day, int month, int year){
 
 		final int errorBase = 100500; 
@@ -569,6 +571,31 @@ public class Functions {
 
 
 		if(location != null && location.trim().length() != 0){
+			
+			// Remove stuff
+			
+			String [] a = location.split("[ ]+");		
+			
+			if(a != null && a.length > 0){
+				for(int i = 0; i < a.length; i++){
+					for(int j = 0; j < toBeRemoved.length; j++){
+						if(a[i].equalsIgnoreCase(toBeRemoved[j]))
+							a[i] = "";
+						
+					}
+				}
+					
+			}
+
+			
+			location = "";
+			for (int i = 0; i < a.length; i++)
+				location = location + a[i] + " ";
+
+			
+			// End remove stuff
+			
+			
 			Ref_Location l = Ref.getLocation(location);
 
 			if(l != null  && l.getStandardCode() != null && (l.getStandardCode().equalsIgnoreCase("y") || l.getStandardCode().equalsIgnoreCase("u")) && l.getLocation() != null && l.getLocation().length() > 0){
@@ -731,7 +758,7 @@ public class Functions {
 
     	if(address == null  || address.trim().length() == 0) return "";
 
-    	String [] toBeRemoved = {"al", "alhier", "alh", "alsboven", "id", "ald", "ten zijnen huize", "te zijnen huize", "aldaar"};
+    	//String [] toBeRemoved = {"al", "alhier", "alh", "alsboven", "id", "ald", "ten zijnen huize", "te zijnen huize", "aldaar", "N"};
 
 		String [] a = address.split("[ ]+");		
 		

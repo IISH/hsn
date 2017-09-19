@@ -66,7 +66,7 @@ public class B2 {
     			 int startYear1  = (new Integer(getB2w_lla().getStartDate().substring(6,10))).intValue();
 
     			 Utils.addIndivContextAndContext(getB2w_lla().getQuarter(), getB2w_lla().getStreet(), getB2w_lla().getNumber(), getB2w_lla().getAddition(),
-    					 ceCertificate, em, getIdnr(), Id_I_WN, "B2 ",  "Address", "Reported", "Exact",  
+    					 ceCertificate, em, getIdnr(), Id_I_WN, "BC B2",  "Address", "Reported", "Exact",  
     					 startDay1, startMonth1, startYear1);
     		 }
     	 }

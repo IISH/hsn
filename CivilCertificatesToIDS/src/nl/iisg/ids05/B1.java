@@ -143,7 +143,7 @@ public class B1 {
 				//String dateType, String estimation, int day, int month, int year)
 				
 				Utils.addIndivAndContext(getB1rplla().getQuarter(), getB1rplla().getStreet(), getB1rplla().getNumber(), getB1rplla().getAddition(),
-						ceCertificate, em, getIdnr(), Id_I_RP, "BC B1 ",  "Birth Location", "Reported", "Exact",  
+						ceCertificate, em, getIdnr(), Id_I_RP, "BC B1",  "Birth Location", "Reported", "Exact",  
 						startDay1, startMonth1, startYear1);
 			}
 				
@@ -228,7 +228,7 @@ public class B1 {
 					
 					
 					Utils.addIndivContextAndContext(getB1inlla().getQuarter(), getB1inlla().getStreet(), getB1inlla().getNumber(), getB1inlla().getAddition(),
-							ceCertificate, em, getIdnr(), Id_I_IN, "B1 ",  "Address", "Reported", "Exact",  
+							ceCertificate, em, getIdnr(), Id_I_IN, "BC B1",  "Address", "Reported", "Exact",  
 							startDay1, startMonth1, startYear1);
 				}
 
@@ -305,7 +305,7 @@ public class B1 {
 					
 					
 					Utils.addIndivContextAndContext(getB1molla().getQuarter(), getB1molla().getStreet(), getB1molla().getNumber(), getB1molla().getAddition(),
-							ceCertificate, em, getIdnr(), Id_I_IN, "B1 ",  "Address", "Reported", "Exact",  
+							ceCertificate, em, getIdnr(), Id_I_IN, "BC B1",  "Address", "Reported", "Exact",  
 							startDay1, startMonth1, startYear1);
 				}
 				

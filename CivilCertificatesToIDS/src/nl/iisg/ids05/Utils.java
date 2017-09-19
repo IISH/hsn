@@ -486,7 +486,7 @@ public class Utils {
 
 		i.setId_I(Id_I);
 		i.setId_D((new Integer(IDNR).toString()));
-		i.setSource("HSN  " + source);
+		i.setSource("HSN " + source);
 
 		i.setType(type);
 		i.setValue(null);
@@ -637,7 +637,7 @@ public class Utils {
 		
 		i.setId_I(Id_I);
 		i.setId_D((new Integer(IDNR).toString()));
-		i.setSource("HSN  " + source);
+		i.setSource("HSN " + source);
 
 		
 		i.setType(type);

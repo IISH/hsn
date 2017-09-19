@@ -113,7 +113,7 @@ public class B5 {
     			 int startYear1  = (new Integer(getB5falla().getStartDate().substring(6,10))).intValue();
 
     			 Utils.addIndivContextAndContext(getB5falla().getQuarter(), getB5falla().getStreet(), getB5falla().getNumber(), getB5falla().getAddition(),
-    					 ceCertificate, em, getIdnr(), Id_I_FA, "B5 ",  "Address", "Reported", "Exact",  
+    					 ceCertificate, em, getIdnr(), Id_I_FA, "BC B5",  "Address", "Reported", "Exact",  
     					 startDay1, startMonth1, startYear1);
     		 }
 

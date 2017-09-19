@@ -23,10 +23,10 @@ import java.util.List;
 @Entity
 @Table(name="bfout9ft")
 public class Message {
-	@Column(name = "RecordId")  private int      recordID;   
+	@Id@Column(name = "RECORDID")  private int      recordID;   
 
 
-	@Id @Column(name = "FTCODE") 	private	int    errorNumber;   
+	@Column(name = "FTCODE") 	private	int    errorNumber;   
 	@Column(name = "FTTYPE")	    private	String errorType;
 	@Column(name = "FOUT")          private String errorText;
 
