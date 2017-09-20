@@ -143,7 +143,7 @@ public class B1 {
 				//String dateType, String estimation, int day, int month, int year)
 				
 				Utils.addIndivAndContext(getB1rplla().getQuarter(), getB1rplla().getStreet(), getB1rplla().getNumber(), getB1rplla().getAddition(),
-						ceCertificate, em, getIdnr(), Id_I_RP, "BC B1",  "Birth Location", "Reported", "Exact",  
+						ceCertificate, em, getIdnr(), Id_I_RP, "BC B1",  "BIRTH_LOCATION", "Reported", "Exact",  
 						startDay1, startMonth1, startYear1);
 			}
 				

@@ -282,7 +282,7 @@ public class Contxt {
 			
 			if(cList.get(i).getType().equalsIgnoreCase("HSN_MUNICIPALITY_CODE")){
 				
-				System.out.println("adding to list");
+				//System.out.println("adding to list");
 				int hsn_municipality_code = new Integer(cList.get(i).getValue());
 				LocationID_2_Id_C.put(hsn_municipality_code, ce);
 				
