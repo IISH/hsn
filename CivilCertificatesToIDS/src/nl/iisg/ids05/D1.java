@@ -170,7 +170,7 @@ public void convert(EntityManager em){
 			Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "BIRTH_DATE", null, "Declared", "Estimated [0/100]", 1, 1, getD1sdcy() - 100, 1, 1,  getD1sdcy());
 
 		 
-		 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "HSN_RESEARCH_PERSON", "1", "Missing", "Time_invariant", 0, 0, 0);
+		 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "HSN_RESEARCH_PERSON", "HSN RP", "Missing", "Time_invariant", 0, 0, 0);
 
     	 //if(ceCertificate != null){
    		 //	 Utils.addIndivContextAndContext(getD1rpll(), ceCertificate, em, getIdnr(), Id_I_RP, "DC D1", "", "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());

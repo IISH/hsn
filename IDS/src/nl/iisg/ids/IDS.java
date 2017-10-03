@@ -708,7 +708,7 @@ private static void handler(){
 	// It is somewhere in it's INDIV_INDIV elements
 	// But first we have to know (per IDNR) what the personID of the RP is!
 	// Worse, there can be more than one RP per IDNR because the Civil Certificates 
-	// have RP = 1 at birth, 11/12 at Marriage and 51 at death.
+	// have RP = 1 at birth, xxxxx11/xxxxx12 at Marriage and 51 at death.
 	// So we have to find all RPs
 	
 	
@@ -1174,8 +1174,9 @@ private static void handleMothers(ArrayList<Person> family){
 	}
 	
 	for(Person p: group2){
-		message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getSource(), 
-				preferredPerson.getFirstName() + " " + preferredPerson.getFamilyName(),preferredPerson.getSource());
+		//message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getSource(), 
+		//message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getSource(), 
+			//	preferredPerson.getFirstName() + " " + preferredPerson.getFamilyName(),preferredPerson.getSource());
 		
 		//p.;
 		//p.setId_I_new("-1");  // this indicates that we know the person is removed, so no messages about her
@@ -1218,8 +1219,8 @@ private static void handleFathers(ArrayList<Person> family){
 	}
 	
 	for(Person p: group2){
-		message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getSource(), 
-				preferredPerson.getFirstName() + " " + preferredPerson.getFamilyName(),preferredPerson.getSource());
+		//message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getSource(), 
+			//	preferredPerson.getFirstName() + " " + preferredPerson.getFamilyName(),preferredPerson.getSource());
 		
 		//p.setStartCode(0);
 		//p.setId_I_new("-1"); // this indicates that we know the person is removed, so no messages about him

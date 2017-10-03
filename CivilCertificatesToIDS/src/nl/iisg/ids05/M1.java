@@ -185,7 +185,7 @@ public class M1 {
 
 		 
 		 if(getM1rpgn().equalsIgnoreCase("M"))
-			 Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "HSN_RESEARCH_PERSON", "1", "Missing", "Time_invariant", 0, 0, 0);
+			 Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "HSN_RESEARCH_PERSON", "HSN RP", "Missing", "Time_invariant", 0, 0, 0);
 
 		 
     	 ContextElement ceBirth = null;
@@ -277,7 +277,7 @@ public class M1 {
 
 		 
 		 if(getM1rpgn().equalsIgnoreCase("V"))
-			 Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "HSN_RESEARCH_PERSON", "1", "Missing", "Time_invariant", 0, 0, 0);
+			 Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "HSN_RESEARCH_PERSON", "HSN RP", "Missing", "Time_invariant", 0, 0, 0);
 
 		 
 		 if(getM1brcs() != null && getM1brcs().trim().length() > 0){
