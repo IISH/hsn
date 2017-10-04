@@ -279,8 +279,8 @@ public class B1 {
             if(getB1rplla() != null){
             	getB1rplla().setRole(1);
             	
-            	getB1rplla().setStartDate(String.format("%02d-%02d-%02d", getB1sdcd(), getB1sdcm(), getB1sdcy()));
-            	getB1rplla().setEndDate(String.format("%02d-%02d-%02d", getB1sdcd(), getB1sdcm(), getB1sdcy()));
+            	getB1rplla().setStartDate(String.format("%02d-%02d-%02d", getB1rpbd(),  getB1rpbm(), getB1rpby()));
+            	getB1rplla().setEndDate(String.format("%02d-%02d-%02d", getB1rpbd(),  getB1rpbm(), getB1rpby()));
 
             	
             	if(getB1rplla().getLocationNumber() == null){

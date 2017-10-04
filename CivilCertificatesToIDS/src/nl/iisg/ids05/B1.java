@@ -101,6 +101,7 @@ public class B1 {
 		if(getB1rpgn() != null && getB1rpgn().trim().length() > 0)
 			Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B1", "SEX", Utils.sex(getB1rpgn()), "Event", "Exact", getB1rpbd(), getB1rpbm(), getB1rpby());
 		Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B1", "HSN_RESEARCH_PERSON", "HSN RP", "Missing", "Time_invariant", 0, 0, 0);
+		Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
 
 
@@ -197,6 +198,7 @@ public class B1 {
 
 			}
 
+			Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1", "HSN_RESEARCH_PERSON", "Father RP", "Missing", "Time_invariant", 0, 0, 0);
 
 			String cs = "Unknown";
 			if(getB1infa().equalsIgnoreCase("J")){
@@ -288,6 +290,9 @@ public class B1 {
 				Utils.addIndiv(em, getIdnr(), Id_I_MO, "BC B1", "BIRTH_DATE", null, "Declared", "Estimated [16/100]", 1, 1,  getB1sdcy() - 100, 1, 1,  getB1sdcy() - 16);
 			
 
+			Utils.addIndiv(em, getIdnr(), Id_I_MO, "BC B1", "HSN_RESEARCH_PERSON", "Mother RP", "Missing", "Time_invariant", 0, 0, 0);
+
+			
 			if(ceCertificate != null){
 				//Utils.addIndivContextAndContext(getB1moll(), ceCertificate, em, getIdnr(), Id_I_MO, "BC B1", "", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 				
