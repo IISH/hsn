@@ -159,7 +159,8 @@ public class M1 {
 		 
 
 		 if(ceMarriage != null){
-			 Utils.addIndivAndContext(null, ceMarriage, em, getIdnr(), Id_I_GR, "MC M1", "MARRIAGE_LOCATION", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+			 //Utils.addIndivAndContext(null, ceMarriage, em, getIdnr(), Id_I_GR, "MC M1", "MARRIAGE_LOCATION", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+			 Utils.addIndivAndContext(null, null, null, null, ceMarriage, em, getIdnr(), Id_I_GR, "MC M1", "MARRIAGE_LOCATION", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 			 Utils.addIndivContextAndContextCertificate(getMar_cy(), getM1sdcn(), ceMarriage, em, getIdnr(), Id_I_GR, "MC M1", "Groom", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 		 }
 
@@ -241,7 +242,7 @@ public class M1 {
     	 if(getM1grll() != null){
     		 ce = Contxt.get2(getM1grll());
     		 if(ce != null)
-    			 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_GR, "MC M1", "", "Event", "Exact",  getMar_cd(), getMar_cm(), getMar_cy());
+    			 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_GR, "MC M1", "ADDRESS", "Event", "Exact",  getMar_cd(), getMar_cm(), getMar_cy());
     	 }
     	 
     	 // Bride
@@ -250,7 +251,8 @@ public class M1 {
 		 Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "MARRIAGE_DATE", null, "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 
 		 if(ceMarriage != null){
-			 Utils.addIndivAndContext(null, ceMarriage, em, getIdnr(), Id_I_BR, "MC M1", "MARRIAGE_LOCATION", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+			 //Utils.addIndivAndContext(null, ceMarriage, em, getIdnr(), Id_I_BR, "MC M1", "MARRIAGE_LOCATION", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+			 Utils.addIndivAndContext(null, null, null, null, ceMarriage, em, getIdnr(), Id_I_BR, "MC M1", "MARRIAGE_LOCATION", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 			 Utils.addIndivContextAndContextCertificate(getMar_cy(), getM1sdcn(), ceMarriage, em, getIdnr(), Id_I_BR, "MC M1", "Bride", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 		 }
 		 
@@ -306,7 +308,7 @@ public class M1 {
     	 if(getM1brll() != null && getM1brll().trim().length() > 0){
     		 ce = Contxt.get2(getM1brll());
     		 if(ce != null)
-    			 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_BR, "MC M1", "", "Reported", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+    			 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_BR, "MC M1", "ADDRESS", "Reported", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
     	 }
 
     	 ceBirth = null;
@@ -374,7 +376,7 @@ public class M1 {
 				 if(getM1gfll() != null){
 					 ce = Contxt.get2(getM1gfll());
 					 if(ce != null)
-						 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_GF, "MC M1", "", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+						 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_GF, "MC M1", "ADDRESS", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 				 }
 			 }
 
@@ -437,9 +439,9 @@ public class M1 {
 
 			 if(getM1gmca().equalsIgnoreCase("J")){
 				 if(getM1gmll() != null){
-					 ce = Contxt.get2(getM1gfll());
+					 ce = Contxt.get2(getM1gmll());
 					 if(ce != null)
-						 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_GM, "MC M1", "", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+						 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_GM, "MC M1", "ADDRESS", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 				 }
 			 }
 
@@ -467,7 +469,7 @@ public class M1 {
 			 Utils.addIndivIndiv(em, getIdnr(), Id_I_BR, Id_I_GM, "MC M1", "Schoondochter", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 
 		 }
-		 // Father Groom and Mother Groom get an undate Husband Wife relation (if both are alive)
+		 // Father Groom and Mother Groom get an undated Husband Wife relation (if both are alive)
 		 
 		 if(getM1gfca().equalsIgnoreCase("J") &&  getM1gmca().equalsIgnoreCase("J")){
 			 Utils.addIndivIndiv(em, getIdnr(), Id_I_GM, Id_I_GF, "MC M1", "Echtgenote", "Missing", "Unavailable", 0, 0, 0); 
@@ -514,7 +516,7 @@ public class M1 {
 				 if(getM1bfll() != null){
 					 ce = Contxt.get2(getM1bfll());
 					 if(ce != null)
-						 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_BF, "MC M1", "", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+						 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_BF, "MC M1", "ADDRESS", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 				 }
 			 }
 
@@ -578,10 +580,10 @@ public class M1 {
 
 
 			 if(getM1bmca().equalsIgnoreCase("J")){
-				 if(getM1bfll() != null){
-					 ce = Contxt.get2(getM1bfll());
+				 if(getM1bmll() != null){
+					 ce = Contxt.get2(getM1bmll());
 					 if(ce != null)
-						 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_BM, "MC M1", "", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+						 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_BM, "MC M1", "ADDRESS", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 				 }
 			 }
 

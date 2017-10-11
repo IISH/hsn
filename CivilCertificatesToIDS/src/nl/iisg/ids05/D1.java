@@ -108,19 +108,24 @@ public void convert(EntityManager em){
     	 
     	 //String death_certificate = "Death Certificate";
     	 String death_certificate = "DC D1";
-		 if(ceCertificate != null){
-			 if(getD1sdce() != null && getD1sdce().equalsIgnoreCase("J"))
-				 death_certificate =  "DC D1"; //Extract Death Certificate"; 
-			 
-			 Utils.addIndivContextAndContextCertificate(getD1sdcy(), getD1sdcn(), ceCertificate, em, getIdnr(), Id_I_RP, death_certificate, "Deceased", "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
-			 //Utils.addIndivAndContext(getD1rpdl(), ceCertificate, em, getIdnr(), Id_I_RP, "DC D1", "DEATH_LOCATION", "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
-		 }
 
 		 
 		 if(getD1rpln() != null && getD1rpln().trim().length() > 0  && !getD1rpln().trim().equalsIgnoreCase("N"))
 			 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "LAST_NAME", getD1rpln(), "Missing", "Time_invariant", 0, 0, 0);
 		 else 
 			 return;
+		 
+		 if(ceCertificate != null){
+			 if(getD1sdce() != null && getD1sdce().equalsIgnoreCase("J"))
+				 death_certificate =  "DC D1"; //Extract Death Certificate"; 
+			 
+			 Utils.addIndivContextAndContextCertificate(getD1sdcy(), getD1sdcn(), ceCertificate, em, getIdnr(), Id_I_RP, death_certificate, "Deceased", "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+			 //Utils.addIndivAndContext(getD1rpdl(), ceCertificate, em, getIdnr(), Id_I_RP, "DC D1", "DEATH_LOCATION", "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+			 Utils.addIndivAndContext(null, null, null, null, ceCertificate, em, getIdnr(), Id_I_RP, "DC D1", "DEATH_LOCATION", "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+		 }
+		 
+		 
+		 
 		 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "DEATH_DATE", null, "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
 
 		 if(getD1rppf() != null && getD1rppf().trim().length() > 0)

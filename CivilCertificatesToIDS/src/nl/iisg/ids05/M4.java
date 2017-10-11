@@ -80,7 +80,7 @@ public class M4 {
     	 if(getM4w_ll() != null && getM4w_ll().trim().length() > 0){
     		 ContextElement ce = Contxt.get2(getM4w_ll());
     		 if(ce != null)
-    			 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_WT, "MC M4", "", "Reported", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+    			 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_WT, "MC M4", "ADDRESS", "Reported", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
     	 }
     	 
     	 ContextElement ceMarriage = null;
@@ -89,6 +89,7 @@ public class M4 {
 
     	 if(ceMarriage != null)
     		 Utils.addIndivContextAndContextCertificate(getMar_cy(), getM1().getM1sdcn(), ceMarriage, em, getIdnr(), Id_I_WT, "MC M4", "Witness", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+    	 
 
 		 
 		 // Relation to RP

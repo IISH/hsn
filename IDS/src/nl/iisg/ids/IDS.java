@@ -1255,7 +1255,7 @@ private static void handleSpouses(ArrayList<Person> family){
 		
 	}
 	
-	setIDWithinGroup(group, false);     // this gives one or more different spouses
+	setIDWithinGroup(group, true);     // this gives one or more different spouses, only name compares
 	
 	Collections.sort(group, new Comparator<Person>() 
 			{
