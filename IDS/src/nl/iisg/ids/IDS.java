@@ -309,6 +309,8 @@ public class IDS implements Runnable {
     	String[]  identPerson1 = {"BIRTH_DATE", "BIRTH_LOCATION", "LAST_NAME", "PREFIX_LAST_NAME", "FIRST_NAME", "DEATH_DATE", "DEATH_LOCATION", "HSN_RESEARCH_PERSON", "HSN_IDENTIFIER"};
     	String[]  identPerson  = null;
     	
+    	HashSet<Integer> h = new HashSet<Integer>();
+    	
     	//System.out.println("In write group");
     	
     	int id_prev = -1;
@@ -370,13 +372,25 @@ public class IDS implements Runnable {
 						}
 						
 					}
-					else{
+					else
+						if(ind.getType().equalsIgnoreCase("MARRIAGE_DATE")){ // only once
 							
-						ind.setId_I(new Integer(p.getId_I_new()));
-						ind.setId_D(getVersion());
-						em.persist(ind);
-						indiv_count++;
-					}
+							if(!h.contains(ind.getYear() * 100 + ind.getMonth())){
+								
+								h.add(ind.getYear() * 100 + ind.getMonth());
+								ind.setId_I(new Integer(p.getId_I_new()));
+								ind.setId_D(getVersion());
+								em.persist(ind);
+								indiv_count++;
+							}
+							
+						}
+						else{
+							ind.setId_I(new Integer(p.getId_I_new()));
+							ind.setId_D(getVersion());
+							em.persist(ind);
+							indiv_count++;
+						}
 					
 				}
     		}
@@ -1255,7 +1269,7 @@ private static void handleSpouses(ArrayList<Person> family){
 		
 	}
 	
-	setIDWithinGroup(group, true);     // this gives one or more different spouses, only name compares
+	setIDWithinGroup(group, false);     // this gives one or more different spouses
 	
 	Collections.sort(group, new Comparator<Person>() 
 			{
@@ -1308,7 +1322,6 @@ private static void handleSpouses(ArrayList<Person> family){
 	
 	family.removeAll(group);
 
-	
 }
 
 /**
@@ -1732,6 +1745,21 @@ private static int comparePersons(Person p1, Person p2, boolean onlyNames){
 	
 	boolean familyNameOK = checkFamilyName(p1.getFamilyName(), p2.getFamilyName());
 	boolean firstNameOK = checkFirstName(p1.getFirstName(), p2.getFirstName()); 
+
+	/*
+	if(p1.getFamilyName().length() >= 3 && p1.getFamilyName().substring(0,3).equalsIgnoreCase("kru")){
+	
+		
+	System.out.println("");	
+	System.out.println(p1.getFamilyName());
+	System.out.println(p2.getFamilyName());
+	System.out.println(familyNameOK);
+	System.out.println(p1.getFirstName());
+	System.out.println(p2.getFirstName());
+
+	System.out.println(firstNameOK);
+	}
+	*/
 	
 	if(familyNameOK && firstNameOK && onlyNames)
 		return 0;
@@ -1768,16 +1796,16 @@ private static boolean checkFamilyName(String s1, String s2){
 	
 	if(s1.charAt(0) != s2.charAt(0)) return false;
 	
-	s1 = s1.replaceAll("y", "ij");
-	s2 = s2.replaceAll("ie", "ij");
-	s1 = s1.replaceAll("y", "ij");
-	s2 = s2.replaceAll("ie", "ij");
+	//s1 = s1.replaceAll("y", "ij");
+	//s2 = s2.replaceAll("ie", "ij");
+	//s1 = s1.replaceAll("y", "ij");
+	//s2 = s2.replaceAll("ie", "ij");
 
-	s1 = s1.replaceAll("egt", "echt");
-	s2 = s2.replaceAll("egt", "echt");
+	//s1 = s1.replaceAll("egt", "echt");
+	//s2 = s2.replaceAll("egt", "echt");
 
-	s1 = s1.replaceAll("uys", "ist");
-	s2 = s2.replaceAll("uys", "ist");
+	//s1 = s1.replaceAll("uys", "ist");
+	//s2 = s2.replaceAll("uys", "ist");
 
 	int distance = Common1.LevenshteinDistance(s1, s2);
 	
