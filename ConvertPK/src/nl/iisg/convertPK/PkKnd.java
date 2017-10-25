@@ -797,7 +797,8 @@ public class PkKnd {
         	b32.setCivilLocalityStandardized((String)b.get(0));
         	b32.setCivilLocalityID((Integer)b.get(1));
         	
-        	if(pkhuw.getHjrhuwp() != 0){
+        	if(Utils.dateIsValid(pkhuw.getHdghuwp(), pkhuw.getHmdhuwp(), pkhuw.getHjrhuwp()) == 0){  
+        		
             	String marriageDate = String.format("%02d-%02d-%04d", pkhuw.getHdghuwp(), pkhuw.getHmdhuwp(), pkhuw.getHjrhuwp());
             	b32.setDateOfMutation(marriageDate);
             	b32.setStartDate(marriageDate);

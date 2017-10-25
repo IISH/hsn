@@ -355,8 +355,9 @@ public class PkEigknd {
 
     	// marriage
     	
-    	if(getHjrkndp() > 0){
-    		
+		
+		if(Utils.dateIsValid(getHdgkndp(), getHmdkndp(), getHjrkndp()) == 0){
+		
     		
     		B32_ST b32 = new B32_ST();
         	b2.getCivilStatus().add(b32); // Link B32_ST -> B2_ST
