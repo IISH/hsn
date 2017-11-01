@@ -10,7 +10,6 @@ import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +25,10 @@ public class Message {
 	@Id@Column(name = "RECORDID")  private int      recordID;   
 
 
-	@Column(name = "FTCODE") 	private	int    errorNumber;   
+	@Column(name = "IDNR")      	private	int    IDNR;   
+	@Column(name = "FTCODE") 	    private	int    errorNumber;   
 	@Column(name = "FTTYPE")	    private	String errorType;
-	@Column(name = "FOUT")          private String errorText;
+	@Column(name = "MESSAGE")          private String errorText;
 
 	private static List<MessageSkeleton> messageSkeletons = null;
 	private static List<Message> messages = new ArrayList();
@@ -156,7 +156,25 @@ public class Message {
 		
 		em.getTransaction().begin();
 		
-		Query query = em.createNativeQuery("truncate table hsn_msg.bfout9ft");  
+		String create_bfout9ft = 
+				
+		        "CREATE TABLE IF NOT EXISTS hsn_msg.bfout9ft" +
+		    	        "(" +
+		    	        "    IDNR     INT, " +
+		    	        "    FTCODE   SMALLINT, " +
+		    	        "    FTTYPE   CHAR(1), " +
+		    	        "    MESSAGE  VARCHAR(256), " +
+		    	        "    RecordID INT NOT NULL AUTO_INCREMENT, " +
+		    	        "    Primary Key(RecordID)" +
+		    	        ");";
+		
+		
+		
+		
+		Query query = em.createNativeQuery(create_bfout9ft);  
+		query.executeUpdate();
+		
+		query = em.createNativeQuery("truncate table hsn_msg.bfout9ft");  
 		query.executeUpdate();
 		
 		em.getTransaction().commit();
@@ -189,6 +207,14 @@ public class Message {
 	}
 	public void setErrorText(String errorText) {
 		this.errorText = errorText;
+	}
+	
+	
+	public int getIDNR() {
+		return IDNR;
+	}
+	public void setIDNR(int iDNR) {
+		IDNR = iDNR;
 	}
 	public static List<MessageSkeleton> getMessageSkeletons() {
 		return messageSkeletons;

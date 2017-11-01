@@ -1188,9 +1188,8 @@ private static void handleMothers(ArrayList<Person> family){
 	}
 	
 	for(Person p: group2){
-		//message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getSource(), 
-		//message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getSource(), 
-			//	preferredPerson.getFirstName() + " " + preferredPerson.getFamilyName(),preferredPerson.getSource());
+		message(new Integer(p.getIdnr()), "9105", p.getFirstName() + " " + p.getFamilyName(), p.getSource(),
+				preferredPerson.getFirstName() + " " + preferredPerson.getFamilyName(),preferredPerson.getSource());
 		
 		//p.;
 		//p.setId_I_new("-1");  // this indicates that we know the person is removed, so no messages about her
@@ -2125,7 +2124,7 @@ private static void message(int idnr, String number, String... fills) {
 
     Message m = new Message(number);
 
-    m.setRecordID(idnr);
+    m.setIDNR(idnr);
     m.save(fills);
 }
 
