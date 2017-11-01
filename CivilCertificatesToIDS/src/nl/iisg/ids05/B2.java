@@ -85,6 +85,8 @@ public class B2 {
 			 Utils.addIndiv(em, getIdnr(), Id_I_WN, "BC B2", "OCCUPATION_STANDARD", getB2w_oc(), "Declared", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
 		 if(getB2w_sg() != null && getB2w_sg().trim().length() > 0)
 			 Utils.addIndiv(em, getIdnr(), Id_I_WN, "BC B2", "SIGNATURE", Utils.signature(getB2w_sg()), "Event", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
+         Utils.addIndiv(em, getIdnr(), Id_I_WN, "BC B2", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
+
 
 		 // Witness relations
 		 

@@ -185,6 +185,9 @@ public class M1 {
 			Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "BIRTH_DATE", null, "Declared", "Age_based", 1, 1, getMar_cy() - 100, 1, 1,   getMar_cy() - 15);
 
 		 
+     	 Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
+
+		 
 		 if(getM1rpgn().equalsIgnoreCase("M"))
 			 Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "HSN_RESEARCH_PERSON", "HSN RP", "Missing", "Time_invariant", 0, 0, 0);
 
@@ -276,6 +279,8 @@ public class M1 {
 		 }
 		 else
 			Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "BIRTH_DATE", null, "Declared", "Age_based", 1, 1, getMar_cy() - 100, 1, 1,   getMar_cy() - 15);
+
+		 Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
 		 
 		 if(getM1rpgn().equalsIgnoreCase("V"))
@@ -394,6 +399,9 @@ public class M1 {
 				 ContextElement ce1 = Contxt.get2(getM1gfdl());
 				 Utils.addIndivAndContext(null, ce1, em, getIdnr(), Id_I_GF, "MC M1", "DEATH_LOCATION", "Missing", "Unavailable", 0, 0, 0);
 			 }
+			 
+			 Utils.addIndiv(em, getIdnr(), Id_I_GF, "MC M1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
+
 
 			 // Father Groom relations 
 
@@ -459,6 +467,7 @@ public class M1 {
 				 Utils.addIndivAndContext(null, ce1, em, getIdnr(), Id_I_GM, "MC M1", "DEATH_LOCATION",  "Missing", "Unavailable", 0, 0, 0);
 			 }
 
+			 Utils.addIndiv(em, getIdnr(), Id_I_GM, "MC M1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
 
 			 // Mother Groom relation to IP
@@ -503,6 +512,8 @@ public class M1 {
 			 }
 			 else
 				Utils.addIndiv(em, getIdnr(), Id_I_BF, "MC M1", "BIRTH_DATE", null, "Declared", "Estimated [30/100]", 1, 1, getMar_cy() - 100, 1, 1,   getMar_cy() - 30);
+
+			 Utils.addIndiv(em, getIdnr(), Id_I_BF, "MC M1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
 
 			 if(getM1bray() >= 23 || getM1bfca().equalsIgnoreCase("N"))
@@ -591,6 +602,9 @@ public class M1 {
 				 Utils.addIndiv(em, getIdnr(), Id_I_BM, "MC M1", "ALIVE", "Yes", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 			 else
 				 Utils.addIndiv(em, getIdnr(), Id_I_BM, "MC M1", "ALIVE", "No", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+			 
+			 Utils.addIndiv(em, getIdnr(), Id_I_BM, "MC M1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
+
 
 			 if(ceMarriage != null){
 				 Utils.addIndivContextAndContextCertificate(getMar_cy(), getM1sdcn(), ceMarriage, em, getIdnr(), Id_I_BM, "MC M1", "Mother Bride", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());

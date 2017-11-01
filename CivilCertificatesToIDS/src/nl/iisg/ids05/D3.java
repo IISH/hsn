@@ -63,6 +63,9 @@ public class D3 {
 
 		 Utils.addIndiv(em, getIdnr(), Id_I_IN, "DC D3", "SIGNATURE", Utils.signature(getD3i_sg()), "Event", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
 		 
+         Utils.addIndiv(em, getIdnr(), Id_I_IN, "DC D3", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
+
+		 
     	 ContextElement ceCertificate = null;
     	 if(getD1().getD1sdcc() > 0)
     		 ceCertificate = Contxt.get(getD1().getD1sdcc());  // Look up name in Context System 

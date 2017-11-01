@@ -199,6 +199,8 @@ public class B1 {
 			}
 
 			Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1", "HSN_RESEARCH_PERSON", "Father RP", "Missing", "Time_invariant", 0, 0, 0);
+			Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
+
 
 			String cs = "Unknown";
 			if(getB1infa().equalsIgnoreCase("J")){
@@ -291,6 +293,8 @@ public class B1 {
 			
 
 			Utils.addIndiv(em, getIdnr(), Id_I_MO, "BC B1", "HSN_RESEARCH_PERSON", "Mother RP", "Missing", "Time_invariant", 0, 0, 0);
+			Utils.addIndiv(em, getIdnr(), Id_I_MO, "BC B1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
+
 
 			
 			if(ceCertificate != null){

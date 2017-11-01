@@ -83,6 +83,9 @@ public class M4 {
     			 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_WT, "MC M4", "ADDRESS", "Reported", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
     	 }
     	 
+    	 Utils.addIndiv(em, getIdnr(), Id_I_WT, "MC M4", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
+
+    	 
     	 ContextElement ceMarriage = null;
     	 if(getM1().getM1sdml() != null)
     		 ceMarriage = Contxt.get2(getM1().getM1sdml());
@@ -137,6 +140,8 @@ public class M4 {
 			 Utils.addIndivIndiv(em, getIdnr(), Id_I_GR, Id_I_WT, "MC M4",  "Onbekend", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 		 if(!BR_WT)
 			 Utils.addIndivIndiv(em, getIdnr(), Id_I_BR, Id_I_WT, "MC M4",  "Onbekend", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+		 
+		 
 
      }
 

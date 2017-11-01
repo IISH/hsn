@@ -176,6 +176,7 @@ public void convert(EntityManager em){
 
 		 
 		 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "HSN_RESEARCH_PERSON", "HSN RP", "Missing", "Time_invariant", 0, 0, 0);
+         Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
     	 //if(ceCertificate != null){
    		 //	 Utils.addIndivContextAndContext(getD1rpll(), ceCertificate, em, getIdnr(), Id_I_RP, "DC D1", "", "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
@@ -323,6 +324,7 @@ public void convert(EntityManager em){
 					 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "SIGNATURE", Utils.signature(getD1insg()), "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
 
 			 }
+			 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
 			 // Father relation to RP 
 
@@ -406,7 +408,8 @@ public void convert(EntityManager em){
 			 }
 			 else
 				 Utils.addIndiv(em, getIdnr(), Id_I_MO, "DC D1", "BIRTH_DATE", null, "Declared", "Estimated [15/100]", 1, 1, getD1rpdy() - 100, 1, 1, getD1rpdy() - 15);
-				 
+			 Utils.addIndiv(em, getIdnr(), Id_I_MO, "DC D1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
+
 				 
 			 // Mother relation to RP 
 

@@ -151,7 +151,8 @@ public class B5 {
 		 if(getB5fady() > 0){
 			 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B5", "DEATH_DATE", null, "Reported", "Exact", getB5fadd(),  getB5fadm(), getB5fady());
 		 }
-		 
+     	 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B5", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
+
 		 
 		 
     	 //ContextElement ceDeath = null;

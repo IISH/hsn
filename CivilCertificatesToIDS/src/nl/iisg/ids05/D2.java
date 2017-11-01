@@ -116,6 +116,8 @@ public class D2 {
 		 else
 			Utils.addIndiv(em, getIdnr(), Id_I_FS, "DC D2", "BIRTH_DATE", null, "Declared", "Estimated [15/100]", 1, 1, getD1().getD1sdcy() - 100, 1, 1,  getD1().getD1sdcy() - 15);
 
+		 Utils.addIndiv(em, getIdnr(), Id_I_FS, "DC D2", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
+
 		 // Relation to RP Is former spouse RP
 
 		 if(getD2s_ca() != null && getD2s_ca().trim().equalsIgnoreCase("J")){

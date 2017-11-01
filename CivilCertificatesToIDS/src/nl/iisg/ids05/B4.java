@@ -81,6 +81,8 @@ public class B4 {
 			 Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B4", "FIRST_NAME", getB4rpfn(), "Reported", "Exact", day, month, year);
 		 if(getB4rpgn() != null && getB4rpgn().trim().length() > 0)
 			 Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B4", "SEX", Utils.sex(getB4rpgn()), "Reported", "Exact", day, month, year);
+         Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B4", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
+
 		 
 		 // New Father
 		 
@@ -102,6 +104,8 @@ public class B4 {
 		 // We must give an estimated birthdate for linking purposes
 		 
 		 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B4", "BIRTH_DATE", null, "Declared", "Estimated [15/100]", 1, 1, year - 100, 1, 1,   year - 15);
+   		 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B4", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
+
 
 
 		 
