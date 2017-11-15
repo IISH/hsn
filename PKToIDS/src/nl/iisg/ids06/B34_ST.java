@@ -70,7 +70,7 @@ public class B34_ST extends B3_ST {
 		
 		String m = "";
 		if(getStartFlag() == 88) 
-			m = "Time Invariant";
+			m = "Time_invariant";
 		else
 			if(getStartFlag() == 11)
 				m = "Marriage Related";

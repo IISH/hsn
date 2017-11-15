@@ -1411,6 +1411,7 @@ public class HSNLinksIntegration implements Runnable {
 		
 		if(s1.charAt(0) != s2.charAt(0)) return false;
 		
+		/*
 		s1 = s1.replaceAll("y", "ij");
 		s2 = s2.replaceAll("ie", "ij");
 		s1 = s1.replaceAll("y", "ij");
@@ -1422,6 +1423,8 @@ public class HSNLinksIntegration implements Runnable {
 		s1 = s1.replaceAll("uys", "ist");
 		s2 = s2.replaceAll("uys", "ist");
 
+		 */
+		
 		int distance = Common1.LevenshteinDistance(s1, s2);
 		if(distance > 2)  // greater than 2 not allowed
 			return false;

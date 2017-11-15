@@ -441,7 +441,7 @@ public class Utils {
 		ic.setYear(year);
 		
 		if(year == 0)
-			ic.setMissing("Time Invariant");
+			ic.setMissing("Time_invariant");
 
 
 		em.persist(ic);
@@ -500,7 +500,7 @@ public class Utils {
 		i.setYear(year);
 
 		if(year == 0)
-			i.setMissing("Time Invariant");
+			i.setMissing("Time_invariant");
 
 		
 		em.persist(i);

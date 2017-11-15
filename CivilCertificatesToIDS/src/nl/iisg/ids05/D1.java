@@ -429,8 +429,8 @@ public void convert(EntityManager em){
 			 }
 			 else{
 				 if(fatherLastname == true && motherLastname == true){
-					 Utils.addIndivIndiv(em, getIdnr(), Id_I_FA, Id_I_MO, "DC D1", "Echtgenoot", "Missing", "Time_invariant", 0, 0, 0);
-					 Utils.addIndivIndiv(em, getIdnr(), Id_I_MO, Id_I_FA, "DC D1", "Echtgenote", "Missing", "Time_invariant", 0, 0, 0);
+					 Utils.addIndivIndiv(em, getIdnr(), Id_I_FA, Id_I_MO, "DC D1", "Echtgenoot", "Missing", "Unavailable", 0, 0, 0);
+					 Utils.addIndivIndiv(em, getIdnr(), Id_I_MO, Id_I_FA, "DC D1", "Echtgenote", "Missing", "Unavailable", 0, 0, 0);
 				 }
 			 }
 			 

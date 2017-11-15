@@ -2469,7 +2469,7 @@ public class StandardizePersonalCards implements Runnable {
                 return false;
 
             // replacements are applied before comparing the names
-
+            /*
             name1 = name1.replaceAll("y", "ij");
             name2 = name2.replaceAll("ie", "ij");
             name1 = name1.replaceAll("y", "ij");
@@ -2481,6 +2481,7 @@ public class StandardizePersonalCards implements Runnable {
             name1 = name1.replaceAll("uys", "ist");
             name2 = name2.replaceAll("uys", "ist");
 
+             */
             int distance = Utils.LevenshteinDistance(name1, name2);
 
             if (distance > 2)  // greater than 2 not allowed

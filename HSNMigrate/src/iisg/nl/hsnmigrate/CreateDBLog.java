@@ -6,7 +6,7 @@ public class CreateDBLog {
 	 public static final String log =
 		 
 		 
-	        "CREATE TABLE IF NOT EXISTS log" +
+	        "CREATE TABLE IF NOT EXISTS bfout5ft" +
 	        "(" +	       
 	        "    DB       VARCHAR(15), " +
 	        "    Tbl      VARCHAR(10), " +
@@ -47,7 +47,7 @@ public class CreateDBLog {
 	        "    Primary Key(RecordID)" +
 	        ") Engine=InnoDB;";
 	 
-	 public static final String log_truncate = "TRUNCATE TABLE log";
+	 public static final String log_truncate = "TRUNCATE TABLE bfout5ft";
 	 public static final String logSummary_truncate = "TRUNCATE TABLE summary";
 
 		 

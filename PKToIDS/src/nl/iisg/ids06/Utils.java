@@ -29,7 +29,7 @@ public class Utils {
 		}
 		
 		else
-			iiUp.setMissing("Time Invariant");
+			iiUp.setMissing("Time_invariant");
 		
 		em.persist(iiUp);
 		
@@ -116,7 +116,7 @@ public class Utils {
 		ic.setYear(year);
 		
 		if(year == 0)
-			ic.setMissing("Time Invariant");
+			ic.setMissing("Time_invariant");
 
 
 		em.persist(ic);
@@ -170,7 +170,7 @@ public class Utils {
 		ic.setEnd_year(endYear);
 
 		if(startYear == 0)
-			ic.setMissing("Time Invariant");
+			ic.setMissing("Time_invariant");
 
 		
 		em.persist(ic);
@@ -222,7 +222,7 @@ public class Utils {
 		i.setYear(year);
 
 		if(year == 0)
-			i.setMissing("Time Invariant");
+			i.setMissing("Time_invariant");
 
 		
 		em.persist(i);
@@ -253,7 +253,7 @@ public class Utils {
 		i.setYear(year);
 
 		if(year == 0)
-			i.setMissing("Time Invariant");
+			i.setMissing("Time_invariant");
 		
 		em.persist(i);
 		
@@ -285,7 +285,7 @@ public class Utils {
 		i.setEnd_year(endYear);
 
 		if(startYear == 0)
-			i.setMissing("Time Invariant");
+			i.setMissing("Time_invariant");
 
 		
 		em.persist(i);

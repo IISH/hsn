@@ -679,6 +679,7 @@ private boolean CheckFamilyName(PersonStandardized ps, PersonStandardized pus){
 
 		// replacements are applied before comparing the names
 
+		/*
 		name1 = name1.replaceAll("y", "ij");
 		name2 = name2.replaceAll("y", "ij");
 		
@@ -691,6 +692,8 @@ private boolean CheckFamilyName(PersonStandardized ps, PersonStandardized pus){
 		name1 = name1.replaceAll("uys", "ist");
 		name2 = name2.replaceAll("uys", "ist");
 
+		 */
+		
 		int distance = Common1.LevenshteinDistance(name1, name2);
 
 		if(distance > 2)  // greater than 2 not allowed

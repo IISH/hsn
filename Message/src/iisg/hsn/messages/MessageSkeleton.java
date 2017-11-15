@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="ref_meldingen_in")
+@Table(name="ref_meldingen_ids")
 public class MessageSkeleton {
 	@Id @Column(name = "Foutnr_nw")   private		String errorNumber;
 	    @Column(name = "Fouttype_nw") private		String errorType;

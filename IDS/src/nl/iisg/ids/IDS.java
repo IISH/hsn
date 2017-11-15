@@ -251,13 +251,14 @@ public class IDS implements Runnable {
     	
     	
     	int indexP = 0;
-    	int oldIDNR = -1;;
+    	int oldIDNR = -1;
+    	//String ID_I_New = "";
     	//System.out.println("Number of Persons: " + personL.size());
     	ArrayList<Person> group = new ArrayList<Person>();
     	
     	em.getTransaction().begin();
     	while(indexP < personL.size()){
-    		if(personL.get(indexP).getIdnr() != oldIDNR){ // new group
+    		if(personL.get(indexP).getIdnr()!=oldIDNR){ // new group
     			oldIDNR = personL.get(indexP).getIdnr();
     			idnr++;
     			if(!group.isEmpty())
@@ -325,7 +326,7 @@ public class IDS implements Runnable {
     		}
     		
     		
-//    		System.out.println("P heeft id_i = " + p.getId_I_new());
+    		//System.out.println("P heeft id_i = " + p.getId_I_new());
     		
     		
     		
@@ -399,14 +400,21 @@ public class IDS implements Runnable {
     	
     	
     	for(String x: sources){
+    		//System.out.println("source = " + x);
     		for(Person p1: group){
     			
     			if(p1.getSource() != null && p1.getSource().substring(0, 6).equals(x)){
+    	
+    				
+    				//System.out.println("p1 = " + p1);
     				
         			if(p1.getId_I_new() != null /* && !p1.getId_I_new().equals("0") */){  // Person still valid    			
 
-        				for(INDIV_INDIV ii: p1.getIndiv_indiv())   
+        				for(INDIV_INDIV ii: p1.getIndiv_indiv()){
+            				//System.out.println("ii = " + ii);
+        					
         					ii.setId_I_1(new Integer(p1.getId_I_new()));
+        				}
 
         			}
     			}
@@ -414,11 +422,18 @@ public class IDS implements Runnable {
     			for(Person p2: group){
     				
 	    			if(p2 != p1 && p2.getSource() != null && p2.getSource().substring(0, 6).equals(x) /*!p2.getId_I_new().equals("0") */){
-	    				
+
+	    				//System.out.println("p2 = " + p2);
+
         				for(INDIV_INDIV ii: p2.getIndiv_indiv()){    
         					
-        					if(ii.getId_I_2() == p1.getId_I())
-								ii.setId_I_2(new Integer(p1.getId_I_new()));	
+        					//System.out.println("ii.getId_I_2() = " + ii.getId_I_2() + "   p1.getId_I() =  " + p1.getId_I());
+        					
+        					if(ii.getId_I_2() == p1.getId_I()){
+                				//System.out.println("ii = " + ii);
+
+								ii.setId_I_2(new Integer(p1.getId_I_new()));
+        					}
         				}
 	    			}
     			}
@@ -465,6 +480,7 @@ public class IDS implements Runnable {
 					indiv_indiv_count++;
 				} 
 				else {
+					/*
 					if (!(ii.getId_I_1() == -1 || ii.getId_I_2() == -1)) { // Change!!
 						System.out.println("Skipping INDIV_INDIV, ID_D = "
 								+ ii.getId() + ", ID_I_1 = " + ii.getId_I_1()
@@ -474,6 +490,7 @@ public class IDS implements Runnable {
 						System.out.println("p = " + p.toString());
 						System.out.println("p.getId_I_new = " + p.getId_I_new());
 					}
+					*/
 				}
 			}
 		}
@@ -1261,7 +1278,8 @@ private static void handleSpouses(ArrayList<Person> family){
 					 	 p.getRelationRP().equals("" + ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD) ||
 					 	 p.getRelationRP().equals("" + ConstRelations2.PARTNER) 
 			 	 )){
-		
+			//System.out.println("CRR 1 " +  p.getIdnr() + "  " + p.getFamilyName() + "  " + p.getFirstName() + "  " + p.getRelationRP() + "  " + p.getSource()) ;
+
 			p.setStartCode(2);  // preset
 			group.add(p);
 		}
@@ -1298,8 +1316,11 @@ private static void handleSpouses(ArrayList<Person> family){
 			if(group2.size() > 0){
 				setStartCode(group2); //find preferred source
 				for(Person p2: group2){
+
 					String idnr6 = String.format("%06d", p2.getIdnr());
 					p2.setId_I_new("1" + idnr6 + "02" + p2.getIdWithinGroup());
+					//System.out.println("CRR 1 " +  p.getIdnr() + "  " + p.getFamilyName() + "  " + p.getFirstName() + "  " + p.getRelationRP() + "  " + p.getSource() + "  " + p.getIdWithinGroup() + "  " + p.getId_I_new()) ;
+
 				}
 
 				group2.clear();
@@ -1315,6 +1336,8 @@ private static void handleSpouses(ArrayList<Person> family){
 		for(Person p2: group2){
 			String idnr6 = String.format("%06d", p2.getIdnr());
 			p2.setId_I_new("1" + idnr6 + "02" + p2.getIdWithinGroup());
+			//System.out.println("CRR 1 " +  p2.getIdnr() + "  " + p2.getFamilyName() + "  " + p2.getFirstName() + "  " + p2.getRelationRP() + "  " + p2.getSource() + "  " + p2.getIdWithinGroup() + "  " + p2.getId_I_new()) ;
+
 		}
 
 	}
@@ -1704,7 +1727,7 @@ private static void setIDWithinGroup(ArrayList<Person> group, boolean onlyNames 
 	}
 
 	//for(Person p: group)
-		//System.out.println("Person " + p + " groupid = " + p.getIdWithinGroup());
+		//System.out.println("Person " + p.getFamilyName() + "  " + p.getFirstName() + " groupid = " + p.getIdWithinGroup());
 }
 
 
@@ -1765,7 +1788,18 @@ private static int comparePersons(Person p1, Person p2, boolean onlyNames){
 	
 	boolean birthDateOK = checkBirthDate(p1, p2); 
 
+	/*
+	if(p1.getFamilyName().length() >= 3 && p1.getFamilyName().substring(0,3).equalsIgnoreCase("kru")){
 	
+		
+		if(familyNameOK && firstNameOK && birthDateOK){
+			System.out.println("Same!");
+		}
+		else{
+			System.out.println("Different!");
+		}
+	}
+	*/
 		
 	
 	if(familyNameOK && firstNameOK && birthDateOK){

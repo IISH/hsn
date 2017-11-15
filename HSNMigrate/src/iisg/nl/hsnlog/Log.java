@@ -18,7 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name="log")
+@Table(name="bfout5ft")
 public class Log {
 
      @Column(name="DB")          private String db;
