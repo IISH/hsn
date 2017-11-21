@@ -443,8 +443,8 @@ public class IDS implements Runnable {
 
 		//HashMap<<Integer, Integer>, Boolean> relatives = new <<Integer, Integer>, Boolean>();
     	
-    	INDIV_INDIV[][] relatives = new INDIV_INDIV[1000][1000];
-    	
+    	//INDIV_INDIV[][] relatives = new INDIV_INDIV[1000][1000];
+    	ArrayList<INDIV_INDIV>[][] relations = new ArrayList[1000][1000];
     	
 		for (Person p : group) {
 
@@ -452,43 +452,51 @@ public class IDS implements Runnable {
 
 				if (ii.getId_I_1() > 1000 * 1000 * 1000	&& ii.getId_I_2() > 1000 * 1000 * 1000) { // it has both Id_I update to new value
 
-					
+
 					if (ii.getRelation() != null && ii.getRelation().trim().length() > 0)
 						ii.setRelation(Common1.standardizeRelation(ii.getRelation()));
 
 
-					if(relatives[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000] != null){
+					boolean timeInvariant = false;
+					if(relations[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000] != null){
 
 						//System.out.println(relatives[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000] + "   "+  ii.getRelation());
+						for(INDIV_INDIV ii2: relations[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000]){
 
-						
-						if(!relatives[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000].getRelation().equalsIgnoreCase(ii.getRelation()))
-							message(new Integer(p.getIdnr()), "9106", 
-									relatives[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000].getRelation() + " (" + relatives[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000].getSource() + ") ",
-									ii.getRelation() + " (" + ii.getSource() + ") ");
-						
-						
-						continue outer;
-						
-						
+							if(!ii2.getRelation().equalsIgnoreCase(ii.getRelation()))
+								message(new Integer(p.getIdnr()), "9106", 
+										String.format("%03d", ii.getId_I_1() % 1000),
+										String.format("%03d", ii.getId_I_2() % 1000),
+										ii2.getRelation() + " (" + ii2.getSource() + ") ",
+										ii.getRelation() + " (" + ii.getSource() + ") ");
+
+							if(ii.getMissing() != null && ii.getMissing().equalsIgnoreCase("Time_invariant"))
+								timeInvariant = true;
+						}
+
+						//continue outer;
+
+
 					}
 					else
-						if(ii.getMissing() != null && ii.getMissing().equalsIgnoreCase("Time_Invariant"))
-							relatives[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000] = ii;
-						
-						
-					
+						relations[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000] = new ArrayList<INDIV_INDIV>();
 
-					ii.setId_D(getVersion());
-					em.persist(ii);
+					relations[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000].add(ii);
 
-					// System.out.println("Adding   INDIV_INDIV, ID_D = " +
-					// ii.getId() + ", ID_I_1 = " + ii.getId_I_1() +
-					// ", ID_I_2 = " + ii.getId_I_2() +
-					// ", Source = " + ii.getSource() + ", Relation = " +
-					// ii.getRelation());
+					if(ii.getMissing() != null && ii.getMissing().equalsIgnoreCase("Time_invariant") & timeInvariant == true)
+						continue outer;
+					else{
+						ii.setId_D(getVersion());
+						em.persist(ii);
 
-					indiv_indiv_count++;
+						// System.out.println("Adding   INDIV_INDIV, ID_D = " +
+						// ii.getId() + ", ID_I_1 = " + ii.getId_I_1() +
+						// ", ID_I_2 = " + ii.getId_I_2() +
+						// ", Source = " + ii.getSource() + ", Relation = " +
+						// ii.getRelation());
+
+						indiv_indiv_count++;
+					}
 				} 
 				else {
 					/*
@@ -501,7 +509,7 @@ public class IDS implements Runnable {
 						System.out.println("p = " + p.toString());
 						System.out.println("p.getId_I_new = " + p.getId_I_new());
 					}
-					*/
+					 */
 				}
 			}
 		}
