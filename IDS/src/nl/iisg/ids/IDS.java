@@ -443,7 +443,7 @@ public class IDS implements Runnable {
 
 		//HashMap<<Integer, Integer>, Boolean> relatives = new <<Integer, Integer>, Boolean>();
     	
-    	int[][] relatives = new int[1000][1000];
+    	INDIV_INDIV[][] relatives = new INDIV_INDIV[1000][1000];
     	
     	
 		for (Person p : group) {
@@ -451,23 +451,34 @@ public class IDS implements Runnable {
 			outer: for (INDIV_INDIV ii : p.getIndiv_indiv()) {
 
 				if (ii.getId_I_1() > 1000 * 1000 * 1000	&& ii.getId_I_2() > 1000 * 1000 * 1000) { // it has both Id_I update to new value
+
 					
-					if (ii.getMissing() != null && ii.getMissing().equalsIgnoreCase("Time_Invariant")) { // undated entry					
-						
-						
-						//System.out.println("ii.getId_I_1() % 1000 =  " + ii.getId_I_1() % 1000 + " ii.getId_I_2() % 1000 = " + ii.getId_I_2() % 1000);
-						//System.out.println("(relatives[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000] = " + relatives[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000]);
-						
-						if(relatives[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000] == 1)
-							continue outer;
-						else
-							relatives[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000] = 1;
-						
-					}
-
-
 					if (ii.getRelation() != null && ii.getRelation().trim().length() > 0)
 						ii.setRelation(Common1.standardizeRelation(ii.getRelation()));
+
+
+					if(relatives[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000] != null){
+
+						//System.out.println(relatives[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000] + "   "+  ii.getRelation());
+
+						
+						if(!relatives[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000].getRelation().equalsIgnoreCase(ii.getRelation()))
+							message(new Integer(p.getIdnr()), "9106", 
+									relatives[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000].getRelation() + " (" + relatives[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000].getSource() + ") ",
+									ii.getRelation() + " (" + ii.getSource() + ") ");
+						
+						
+						continue outer;
+						
+						
+					}
+					else
+						if(ii.getMissing() != null && ii.getMissing().equalsIgnoreCase("Time_Invariant"))
+							relatives[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000] = ii;
+						
+						
+					
+
 					ii.setId_D(getVersion());
 					em.persist(ii);
 
