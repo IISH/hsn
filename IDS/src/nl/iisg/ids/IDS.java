@@ -400,18 +400,18 @@ public class IDS implements Runnable {
     	
     	
     	for(String x: sources){
-    		//System.out.println("source = " + x);
+    		System.out.println("source = " + x);
     		for(Person p1: group){
     			
     			if(p1.getSource() != null && p1.getSource().substring(0, 6).equals(x)){
     	
     				
-    				//System.out.println("p1 = " + p1);
+    				System.out.println("P IDNR = " + p1.getIdnr() + "  ID_I_New    " + p1.getId_I_new() + "      " + p1.getSource() +  "  " + p1.getFirstName() + "  "+ p1.getFamilyName());
     				
         			if(p1.getId_I_new() != null /* && !p1.getId_I_new().equals("0") */){  // Person still valid    			
 
         				for(INDIV_INDIV ii: p1.getIndiv_indiv()){
-            				//System.out.println("ii = " + ii);
+            				System.out.println("   ii = " + ii.getId_I_1() +  "  " + ii.getId_I_2() +    "  "+ ii.getRelation());
         					
         					ii.setId_I_1(new Integer(p1.getId_I_new()));
         				}
@@ -423,14 +423,14 @@ public class IDS implements Runnable {
     				
 	    			if(p2 != p1 && p2.getSource() != null && p2.getSource().substring(0, 6).equals(x) /*!p2.getId_I_new().equals("0") */){
 
-	    				//System.out.println("p2 = " + p2);
+	    				System.out.println("   P2 IDNR = " + p2.getIdnr() + "  ID_I_New    " + p2.getId_I_new() + "      " + p2.getSource() +  "  " + p2.getFirstName() + "  "+ p2.getFamilyName());
 
         				for(INDIV_INDIV ii: p2.getIndiv_indiv()){    
         					
-        					//System.out.println("ii.getId_I_2() = " + ii.getId_I_2() + "   p1.getId_I() =  " + p1.getId_I());
+            				System.out.println("      ii = " + ii.getId_I_1() +  "  " + ii.getId_I_2() +    "  "+ ii.getRelation());
         					
         					if(ii.getId_I_2() == p1.getId_I()){
-                				//System.out.println("ii = " + ii);
+                				System.out.println("      match!");
 
 								ii.setId_I_2(new Integer(p1.getId_I_new()));
         					}
@@ -447,8 +447,12 @@ public class IDS implements Runnable {
     	ArrayList<INDIV_INDIV>[][] relations = new ArrayList[1000][1000];
     	
 		for (Person p : group) {
+			
+			//System.out.println("P IDNR = " + p.getIdnr() + "  ID_I_New    " + p.getId_I_new() + "      " + p.getSource() +  "  " + p.getFirstName() + "  "+ p.getFamilyName());
 
 			outer: for (INDIV_INDIV ii : p.getIndiv_indiv()) {
+				
+				//System.out.println("   " + ii.getId_I_1() +    "      " + ii.getId_I_2() + "    "+ ii.getRelation());
 
 				if (ii.getId_I_1() > 1000 * 1000 * 1000	&& ii.getId_I_2() > 1000 * 1000 * 1000) { // it has both Id_I update to new value
 
@@ -463,12 +467,20 @@ public class IDS implements Runnable {
 						//System.out.println(relatives[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000] + "   "+  ii.getRelation());
 						for(INDIV_INDIV ii2: relations[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000]){
 
-							if(!ii2.getRelation().equalsIgnoreCase(ii.getRelation()))
-								message(new Integer(p.getIdnr()), "9106", 
-										String.format("%03d", ii.getId_I_1() % 1000),
-										String.format("%03d", ii.getId_I_2() % 1000),
-										ii2.getRelation() + " (" + ii2.getSource() + ") ",
-										ii.getRelation() + " (" + ii.getSource() + ") ");
+							if(!ii2.getRelation().equalsIgnoreCase(ii.getRelation())){
+								
+								String r1 = ii.getRelation();
+								String r2 = ii2.getRelation();
+								
+								if(!((r1.equalsIgnoreCase("Spouse") && r2.equalsIgnoreCase("Wife")) || (r2.equalsIgnoreCase("Spouse") && r1.equalsIgnoreCase("Wife")) ||
+			                         (r1.equalsIgnoreCase("Unknown")                                ||  r2.equalsIgnoreCase("Unknown"))))
+									
+									message(new Integer(p.getIdnr()), "9106", 
+											String.format("%03d", ii.getId_I_1() % 1000),
+											String.format("%03d", ii.getId_I_2() % 1000),
+											ii2.getRelation() + " (" + ii2.getSource() + ") ",
+											ii.getRelation() + " (" + ii.getSource() + ") ");
+							}
 
 							if(ii.getMissing() != null && ii.getMissing().equalsIgnoreCase("Time_invariant"))
 								timeInvariant = true;
@@ -499,7 +511,7 @@ public class IDS implements Runnable {
 					}
 				} 
 				else {
-					/*
+					
 					if (!(ii.getId_I_1() == -1 || ii.getId_I_2() == -1)) { // Change!!
 						System.out.println("Skipping INDIV_INDIV, ID_D = "
 								+ ii.getId() + ", ID_I_1 = " + ii.getId_I_1()
@@ -509,7 +521,7 @@ public class IDS implements Runnable {
 						System.out.println("p = " + p.toString());
 						System.out.println("p.getId_I_new = " + p.getId_I_new());
 					}
-					 */
+					
 				}
 			}
 		}
