@@ -397,49 +397,51 @@ public class IDS implements Runnable {
     		}
     	}
     	
-    	
-    	
+
+
     	for(String x: sources){
-    		System.out.println("source = " + x);
+    		//System.out.println("source = " + x);
     		for(Person p1: group){
-    			
+
     			if(p1.getSource() != null && p1.getSource().substring(0, 6).equals(x)){
-    	
-    				
-    				System.out.println("P IDNR = " + p1.getIdnr() + "  ID_I_New    " + p1.getId_I_new() + "      " + p1.getSource() +  "  " + p1.getFirstName() + "  "+ p1.getFamilyName());
-    				
-        			if(p1.getId_I_new() != null /* && !p1.getId_I_new().equals("0") */){  // Person still valid    			
 
-        				for(INDIV_INDIV ii: p1.getIndiv_indiv()){
-            				System.out.println("   ii = " + ii.getId_I_1() +  "  " + ii.getId_I_2() +    "  "+ ii.getRelation());
-        					
-        					ii.setId_I_1(new Integer(p1.getId_I_new()));
-        				}
 
-        			}
-    			}
+    				//System.out.println("P IDNR = " + p1.getIdnr() + "  ID_I_New    " + p1.getId_I_new() + "      " + p1.getSource() +  "  " + p1.getFirstName() + "  "+ p1.getFamilyName());
 
-    			for(Person p2: group){
-    				
-	    			if(p2 != p1 && p2.getSource() != null && p2.getSource().substring(0, 6).equals(x) /*!p2.getId_I_new().equals("0") */){
+    				if(p1.getId_I_new() != null /* && !p1.getId_I_new().equals("0") */){  // Person still valid    			
 
-	    				System.out.println("   P2 IDNR = " + p2.getIdnr() + "  ID_I_New    " + p2.getId_I_new() + "      " + p2.getSource() +  "  " + p2.getFirstName() + "  "+ p2.getFamilyName());
+    					for(INDIV_INDIV ii: p1.getIndiv_indiv()){
+    						//System.out.println("   ii = " + ii.getId_I_1() +  "  " + ii.getId_I_2() +    "  "+ ii.getRelation());
 
-        				for(INDIV_INDIV ii: p2.getIndiv_indiv()){    
-        					
-            				System.out.println("      ii = " + ii.getId_I_1() +  "  " + ii.getId_I_2() +    "  "+ ii.getRelation());
-        					
-        					if(ii.getId_I_2() == p1.getId_I()){
-                				System.out.println("      match!");
+    						ii.setId_I_1(new Integer(p1.getId_I_new()));
+    					}
 
-								ii.setId_I_2(new Integer(p1.getId_I_new()));
-        					}
-        				}
-	    			}
+    					//}
+    					//}
+
+    					for(Person p2: group){
+
+    						if(p2 != p1 && p2.getSource() != null && p2.getSource().substring(0, 6).equals(x) /*!p2.getId_I_new().equals("0") */){
+
+    							//System.out.println("   P2 IDNR = " + p2.getIdnr() + "  ID_I_New    " + p2.getId_I_new() + "      " + p2.getSource() +  "  " + p2.getFirstName() + "  "+ p2.getFamilyName());
+
+    							for(INDIV_INDIV ii: p2.getIndiv_indiv()){    
+
+    								//System.out.println("      ii = " + ii.getId_I_1() +  "  " + ii.getId_I_2() +    "  "+ ii.getRelation());
+
+    								if(ii.getId_I_2() == p1.getId_I()){
+    									//System.out.println("      match!");
+
+    									ii.setId_I_2(new Integer(p1.getId_I_new()));
+    								}
+    							}
+    						}
+    					}
+    				}
     			}
     		}
     	}
-    	
+
 
 		//HashMap<<Integer, Integer>, Boolean> relatives = new <<Integer, Integer>, Boolean>();
     	
