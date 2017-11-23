@@ -448,6 +448,102 @@ public class IDS implements Runnable {
     	//INDIV_INDIV[][] relatives = new INDIV_INDIV[1000][1000];
     	ArrayList<INDIV_INDIV>[][] relations = new ArrayList[1000][1000];
     	
+    	
+    	//System.out.println();
+    	for(Person p: group){
+			//System.out.println("P IDNR = " + p.getIdnr() + "  ID_I_New    " + p.getId_I_new() + "      " + p.getSource() +  "  " + p.getFirstName() + "  "+ p.getFamilyName());
+    		for(INDIV_INDIV ii: p.getIndiv_indiv()){
+    			//System.out.println("   " + ii.getId_I_1() +    "      " + ii.getId_I_2() + "    "+ ii.getRelation());
+    			if (ii.getId_I_1() > 1000 * 1000 * 1000	&& ii.getId_I_2() > 1000 * 1000 * 1000 &&
+    					ii.getRelation() != null && ii.getRelation().trim().length() > 0){
+    				//System.out.println("rel in  " + ii.getRelation());
+    				ii.setRelation(Common1.standardizeRelation(ii.getRelation()));
+    				//System.out.println("rel out " + ii.getRelation());
+
+    				if(ii.getRelation() != null){
+    					if(relations[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000] == null)
+    						relations[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000] = new ArrayList<INDIV_INDIV>();
+    						relations[ii.getId_I_1() % 1000] [ii.getId_I_2() % 1000].add(ii);
+    				}
+    			}
+				else{
+					System.out.println("Skipping INDIV_INDIV, ID_D = "
+							+ ii.getId() + ", ID_I_1 = " + ii.getId_I_1()
+							+ ", ID_I_2 = " + ii.getId_I_2()
+							+ ", Source = " + ii.getSource()
+							+ ", Relation = " + ii.getRelation());
+					System.out.println("p = " + p.toString());
+					System.out.println("p.getId_I_new = " + p.getId_I_new());
+				}
+    		}
+    	}
+    	
+    	
+    	for(int i1 = 0; i1 < 1000; i1++)
+    		for(int i2 = 0; i2 < 1000; i2++)
+    			if(relations[i1][i2] != null){
+    				INDIV_INDIV ii1 = null;
+    				// Find first time invariant ii
+    			o1: for(INDIV_INDIV ii: relations[i1][i2]){
+    					//System.out.println(ii.getSource() + "   " + ii.getId_I_1() +    "      " + ii.getId_I_2() + "    "+ ii.getRelation());
+    					if(ii.getMissing() != null && ii.getMissing().equalsIgnoreCase("Time_invariant")){
+    						ii1 = ii;
+    						break o1;
+    					}
+    				}
+    				if(ii1 != null){
+        				// persist first time invariant ii
+						//System.out.println(ii1.getSource() + "   " + ii1.getId_I_1() +    "      " + ii1.getId_I_2() + "    "+ ii1.getRelation());
+
+    					ii1.setId_D(getVersion());
+    					em.persist(ii1);
+						String r1 = ii1.getRelation().trim();
+
+    					// message if different invariant relation
+    					for(INDIV_INDIV ii2: relations[i1][i2]){
+    						//System.out.println("    " + ii2.getSource() + "   " + ii2.getId_I_1() +    "      " + ii2.getId_I_2() + "    "+ ii2.getRelation());
+    						if(ii2.getMissing() != null && ii2.getMissing().equalsIgnoreCase("Time_invariant")){
+    							String r2 = ii2.getRelation().trim();
+
+    							if(!r1.equalsIgnoreCase(r2) /* &&
+    							   !((r1.equalsIgnoreCase("Spouse") && r2.equalsIgnoreCase("Wife")) || (r2.equalsIgnoreCase("Spouse") && r1.equalsIgnoreCase("Wife")) ||
+    								 (r1.equalsIgnoreCase("Unknown")                                ||  r2.equalsIgnoreCase("Unknown"))) */){
+       	    						//System.out.println(ii2.getSource() + "   " + ii2.getId_I_1() +    "      " + ii2.getId_I_2() + "    "+ ii2.getRelation());
+   	    	     					//System.out.println(ii1.getSource() + "   " + ii1.getId_I_1() +    "      " + ii1.getId_I_2() + "    "+ ii1.getRelation());
+
+    								message(new Integer((ii2.getId_I_1() / 1000) - (1000 * 1000)), "9106", 
+    										String.format("%03d", ii2.getId_I_1() % 1000),
+    										String.format("%03d", ii2.getId_I_2() % 1000),
+    										r2 + " (" + ii1.getSource() + ") ",
+    										r1 + " (" + ii2.getSource() + ") ");
+    							}
+    						}
+    					}
+    				}
+    				// write time variant relations
+    				boolean somethingWritten = (ii1 == null) ? false : true;
+    				INDIV_INDIV iiu = null;
+        			for(INDIV_INDIV ii: relations[i1][i2]){
+    					//System.out.println(ii.getSource() + "   " + ii.getId_I_1() +    "      " + ii.getId_I_2() + "    "+ ii.getRelation());
+    					if(ii.getMissing() == null || !ii.getMissing().equalsIgnoreCase("Time_invariant")){
+    						if(ii.getRelation().equalsIgnoreCase("Unknown")){
+    							if(iiu == null)
+    								iiu = ii;
+    						}
+    						else{
+    							somethingWritten = true;
+    	    					ii.setId_D(getVersion());
+    	    					em.persist(ii);
+    						}
+    					}
+    				}
+        			if(somethingWritten == false && iiu != null){
+    					iiu.setId_D(getVersion());
+    					em.persist(iiu);
+        			}
+    			}
+        				
+    	/*
 		for (Person p : group) {
 			
 			//System.out.println("P IDNR = " + p.getIdnr() + "  ID_I_New    " + p.getId_I_new() + "      " + p.getSource() +  "  " + p.getFirstName() + "  "+ p.getFamilyName());
@@ -527,7 +623,7 @@ public class IDS implements Runnable {
 				}
 			}
 		}
-
+        */ 
     	// Write the INDIV_CONTEXT entries
 
     	for(Person p: group){

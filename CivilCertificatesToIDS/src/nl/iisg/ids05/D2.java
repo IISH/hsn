@@ -132,12 +132,12 @@ public class D2 {
 		 }
 		 else{
 			 if(getD1().getB1().getB1rpgn().equalsIgnoreCase("M")){
-				 Utils.addIndivIndiv(em, getIdnr(), 51, Id_I_FS, "DC D2", "Echtgenoot", "Missing", "Time_invariant", 0, 0,0 );
-				 Utils.addIndivIndiv(em, getIdnr(), Id_I_FS, 51, "DC D2", "Echtgenote", "Missing", "Time_invariant", 0, 0,0 );
+				 Utils.addIndivIndiv(em, getIdnr(), 51, Id_I_FS, "DC D2", "Echtgenoot", "Missing", "Unavailable", 0, 0,0 );
+				 Utils.addIndivIndiv(em, getIdnr(), Id_I_FS, 51, "DC D2", "Echtgenote", "Missing", "Unavailable", 0, 0,0 );
 			 }
 			 else{
-				 Utils.addIndivIndiv(em, getIdnr(), 51, Id_I_FS, "DC D2", "Echtgenote", "Missing", "Time_invariant", 0, 0,0 );
-				 Utils.addIndivIndiv(em, getIdnr(), Id_I_FS, 51, "DC D2", "Echtgenoot", "Missing", "Time_invariant", 0, 0,0 );
+				 Utils.addIndivIndiv(em, getIdnr(), 51, Id_I_FS, "DC D2", "Echtgenote", "Missing", "Unavailable", 0, 0,0 );
+				 Utils.addIndivIndiv(em, getIdnr(), Id_I_FS, 51, "DC D2", "Echtgenoot", "Missing", "Unavailable", 0, 0,0 );
 			 }
 		 }
      }
