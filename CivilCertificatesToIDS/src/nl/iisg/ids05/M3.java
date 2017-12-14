@@ -64,13 +64,13 @@ public class M3 {
 		 // Relation to RP
 
 		 if(getM3rpgn().equalsIgnoreCase("M")){
-			 Utils.addIndivIndiv(em, getIdnr(), Id_I_GR, Id_I_FS, "MC M3",  "Echtgenoot", "Missing", "Unavailable",  getMar_cd(), getMar_cm(), getMar_cy());
-			 Utils.addIndivIndiv(em, getIdnr(), Id_I_FS, Id_I_GR,  "MC M3",  "Echtgenote", "Missing", "Unavailable",  getMar_cd(), getMar_cm(), getMar_cy());
+			 Utils.addIndivIndiv(em, getIdnr(), Id_I_GR, Id_I_FS, "MC M3",  "Echtgenoot", "Event", "Exact",  getMar_cd(), getMar_cm(), getMar_cy());
+			 Utils.addIndivIndiv(em, getIdnr(), Id_I_FS, Id_I_GR,  "MC M3",  "Echtgenote", "Event", "Exact",  getMar_cd(), getMar_cm(), getMar_cy());
 		 }
 		 else{
 			 if(getM3rpgn().equalsIgnoreCase("V")){
-				 Utils.addIndivIndiv(em, getIdnr(), Id_I_BR, Id_I_FS, "MC M3",  "Echtgenote", "Missing", "Unavailable",  getMar_cd(), getMar_cm(), getMar_cy());
-				 Utils.addIndivIndiv(em, getIdnr(), Id_I_FS, Id_I_BR,  "MC M3",  "Echtgenoot", "Missing", "Unavailable",  getMar_cd(), getMar_cm(), getMar_cy());
+				 Utils.addIndivIndiv(em, getIdnr(), Id_I_BR, Id_I_FS, "MC M3",  "Echtgenote", "Event", "Exact",  getMar_cd(), getMar_cm(), getMar_cy());
+				 Utils.addIndivIndiv(em, getIdnr(), Id_I_FS, Id_I_BR,  "MC M3",  "Echtgenoot", "Event", "Exact",  getMar_cd(), getMar_cm(), getMar_cy());
 			 }
 		 }
 		 

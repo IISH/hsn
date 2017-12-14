@@ -14,6 +14,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -447,6 +449,7 @@ public class IDS implements Runnable {
     	
     	//INDIV_INDIV[][] relatives = new INDIV_INDIV[1000][1000];
     	ArrayList<INDIV_INDIV>[][] relations = new ArrayList[1000][1000];
+    	Map<Integer, String> s = new HashMap<Integer, String>();
     	
     	
     	//System.out.println();
@@ -522,20 +525,20 @@ public class IDS implements Runnable {
     				}
     				// write time variant relations
     				boolean somethingWritten = (ii1 == null) ? false : true;
+    				s.clear();
     				INDIV_INDIV iiu = null;
-        			for(INDIV_INDIV ii: relations[i1][i2]){
+    				for(INDIV_INDIV ii: relations[i1][i2]){
     					//System.out.println(ii.getSource() + "   " + ii.getId_I_1() +    "      " + ii.getId_I_2() + "    "+ ii.getRelation());
-    					if(ii.getMissing() == null || !ii.getMissing().equalsIgnoreCase("Time_invariant")){
-    						if(ii.getRelation().equalsIgnoreCase("Unknown")){
-    							if(iiu == null)
-    								iiu = ii;
-    						}
-    						else{
-    							somethingWritten = true;
-    	    					ii.setId_D(getVersion());
-    	    					em.persist(ii);
-    						}
+    					int t = ii.getYear() * 10000 + ii.getMonth() * 100 + ii.getDay();
+    					if(t > 0 && s.putIfAbsent(t, ii.getRelation()) == null){
+							somethingWritten = true;
+   							ii.setId_D(getVersion());
+   							em.persist(ii);
     					}
+    					else
+    						if(t == 0)
+    							iiu = ii;
+    						
     				}
         			if(somethingWritten == false && iiu != null){
     					iiu.setId_D(getVersion());
@@ -1448,7 +1451,7 @@ private static void handleSpouses(ArrayList<Person> family){
 
 					String idnr6 = String.format("%06d", p2.getIdnr());
 					p2.setId_I_new("1" + idnr6 + "02" + p2.getIdWithinGroup());
-					//System.out.println("CRR 1 " +  p.getIdnr() + "  " + p.getFamilyName() + "  " + p.getFirstName() + "  " + p.getRelationRP() + "  " + p.getSource() + "  " + p.getIdWithinGroup() + "  " + p.getId_I_new()) ;
+					System.out.println("CRR 1 " +  p.getIdnr() + "  " + p.getIdWithinGroup() + "  " + p.getId_I_new() + "  " + p.getFamilyName() + "  " + p.getFirstName() + "  " + p.getRelationRP() + "  " + p.getSource() + "  " + p.getIdWithinGroup() + "  " + p.getId_I_new()) ;
 
 				}
 
@@ -1465,7 +1468,7 @@ private static void handleSpouses(ArrayList<Person> family){
 		for(Person p2: group2){
 			String idnr6 = String.format("%06d", p2.getIdnr());
 			p2.setId_I_new("1" + idnr6 + "02" + p2.getIdWithinGroup());
-			//System.out.println("CRR 1 " +  p2.getIdnr() + "  " + p2.getFamilyName() + "  " + p2.getFirstName() + "  " + p2.getRelationRP() + "  " + p2.getSource() + "  " + p2.getIdWithinGroup() + "  " + p2.getId_I_new()) ;
+			System.out.println("CRR 1 " +  p2.getIdnr() + "  "  + p2.getIdWithinGroup() + "  " + p2.getId_I_new() + p2.getFamilyName() + "  " + p2.getFirstName() + "  " + p2.getRelationRP() + "  " + p2.getSource() + "  " + p2.getIdWithinGroup() + "  " + p2.getId_I_new()) ;
 
 		}
 
