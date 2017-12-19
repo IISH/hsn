@@ -61,12 +61,12 @@ public class B32_ST extends B3_ST{
 		int rel = getPerson().getRelationsToPKHolder().get(0).getContentOfDynamicData();
 
 		if(getContentOfDynamicData() > 0 && rel != 4 && rel != 5 && rel != 8 && rel != 9){ // not for (step)children
-			Utils.addIndiv(em, getKeyToRP(), getPerson().getPersonID(), "B32_ST ", "CIVIL_STATUS", Constants.cscode1[getContentOfDynamicData()], "Reported", "Exact", startDay, startMonth, startYear, endDay, endMonth, endYear);
+			Utils.addIndiv(em, getKeyToRP(), getPerson().getPersonID(), "B32_ST ", "CIVIL_STATUS", Constants.cscode1[getContentOfDynamicData()], "Reported", "Exact", startDay, startMonth, startYear, endDay, endMonth, endYear, "Unavailable");
 		}
 		
 		if(getContentOfDynamicData() == 5){ //  Marriage
 			if(startYear > 0)
-				Utils.addIndiv(em, getKeyToRP(), getPerson().getPersonID(), "B32_ST ", "MARRIAGE_DATE", null, "Reported", "Exact", startDay, startMonth, startYear);
+				Utils.addIndiv(em, getKeyToRP(), getPerson().getPersonID(), "B32_ST ", "MARRIAGE_DATE", null, "Reported", "Exact", startDay, startMonth, startYear, "Unavailable");
 			if(getCivilLocalityID() > 0){
 				ContextElement ce = Contxt.get(getCivilLocalityID());
 				if(ce != null){

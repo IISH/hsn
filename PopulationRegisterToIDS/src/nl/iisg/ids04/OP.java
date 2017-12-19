@@ -141,6 +141,10 @@ public class OP {
         		}
         	}
         	
+    		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "HSN_IDENTIFIER", "" + getKeyToRP());
+    		
+    		
+        	
         
         	Integer x = null;
         	Integer z = null;
@@ -201,21 +205,23 @@ public class OP {
         	
         	if(a[0] != null && a[0].length() != 0){
 
-        		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "FIRST_NAME", a[0], day, month, year);
+        		//Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "FIRST_NAME", a[0], day, month, year);
+        		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "FIRST_NAME", a[0]);
+
         		//Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "FIRST_NAME_FLAG", a[1], day, month, year);
         	}
 
         	a = Utils.findLastMostCommonValue(lastNames, null);
         	if(a[0] != null && a[0].length() != 0){
 
-        		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "LAST_NAME", a[0], day, month, year);
+        		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "LAST_NAME", a[0]);
         		//Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "LASTN_AME_FLAG", a[1], day, month, year);
         	}
         	
         	a = Utils.findLastMostCommonValue(prefixes, null);
         	if(a[0] != null && a[0].length() != 0){
 
-        		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "PREFIX_LAST_NAME", a[0], day, month, year);
+        		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "PREFIX_LAST_NAME", a[0]);
         		//Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "PREFIX_LASTNAME_FLAG", a[1], day, month, year);
         	}
         	
@@ -231,7 +237,7 @@ public class OP {
             		else
             			sex = "Unknown";
         		
-        		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "SEX", sex, day, month, year);
+        		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "SEX", sex);
         		//Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "SEX_FLAG", a[1], day, month, year);
         	}
         	

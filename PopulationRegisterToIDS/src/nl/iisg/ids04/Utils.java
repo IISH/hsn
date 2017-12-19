@@ -156,6 +156,27 @@ public class Utils {
 		
 	
 	
+	public static void addIndiv(EntityManager em, int IDNR, int Id_I, String source, String type, String value){
+		
+		INDIVIDUAL i = new INDIVIDUAL();
+		
+		i.setId_I(Id_I);
+		i.setId_D((new Integer(IDNR).toString()));
+		i.setSource("HSN PR " + source);
+
+		
+		i.setType(type);
+		i.setValue(value);
+		
+		i.setDate_type("Reported");
+		i.setEstimation("Exact");
+		i.setMissing("Time_invariant");
+		
+		em.persist(i);
+		
+		
+	}
+
 	public static void addIndiv(EntityManager em, int IDNR, int Id_I, String source, String type, String value, int day, int month, int year){
 		
 		INDIVIDUAL i = new INDIVIDUAL();

@@ -133,8 +133,8 @@ public class IDS implements Runnable {
 		loadIDS("HSN PC", i);	
 		handler();
 		
-
-		loadIDS("Population Register", i);	
+		
+		loadIDS("HSN_PR", i);	
 		handler();
 
 		integratePersons();
@@ -974,7 +974,8 @@ private static void loadIDS(String component, int lastDigit){
 		persistence = "hsn_civrec_ids_00";
 	if(component.equalsIgnoreCase("HSN PC"))
 		persistence = "hsn_perscd_ids_00";
-	if(component.equalsIgnoreCase("Population Register"))
+//	if(component.equalsIgnoreCase("Population Register"))
+	if(component.equalsIgnoreCase("HSN_PR"))
 		persistence = "hsn_popreg_total_ids_00";
 	
 	EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistence);

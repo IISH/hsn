@@ -59,19 +59,19 @@ public class PDS_Religion extends PersonDynamicStandardized {
     								religion = ((PDS_Religion)pds).getReligionStandardized().trim();
     					}
     				}
-    				System.out.println("religion = "+ religion);
+    				//System.out.println("religion = "+ religion);
     				if(religion != null){
     	    			setReligionStandardized(religion);
     	    			setReligionFlag(1);
     				}
     				else{
-    					System.out.println( pd.getDynamicData2().trim() + " =====> " + kg.getStandard());
+    					//System.out.println( pd.getDynamicData2().trim() + " =====> " + kg.getStandard());
     	    			setReligionStandardized(kg.getStandard().trim());
     	    			setReligionFlag(0);
     				}
     			}
     			else{
-    				System.out.println( pd.getDynamicData2().trim() + " =====+> " + kg.getStandard());
+    				//System.out.println( pd.getDynamicData2().trim() + " =====+> " + kg.getStandard());
     				setReligionStandardized(kg.getStandard().trim());
     				setReligionFlag(0);
     			}

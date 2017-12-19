@@ -261,6 +261,34 @@ public class Utils {
 	}
 
 	public static void addIndiv(EntityManager em, int IDNR, int Id_I, String source, String type, String value, 
+			String dateType, String estimation, int day, int month, int year, String reasonMissing){
+		
+		//System.out.println("Cr add individual");
+		INDIVIDUAL i = new INDIVIDUAL();
+		
+		i.setId_I(Id_I);
+		i.setId_D((new Integer(IDNR).toString()));
+		i.setSource("HSN PC " + source);
+
+		
+		i.setType(type);
+		i.setValue(value);
+		
+		i.setDate_type(dateType);
+		i.setEstimation(estimation);
+		i.setDay(day);
+		i.setMonth(month);
+		i.setYear(year);
+
+		if(year == 0)
+			i.setMissing(reasonMissing);
+		
+		em.persist(i);
+		
+		
+	}
+
+	public static void addIndiv(EntityManager em, int IDNR, int Id_I, String source, String type, String value, 
 			String dateType, String estimation, int startDay, int startMonth, int startYear, int endDay, int endMonth, int endYear){
 		
 		//System.out.println("Cr add individual");
@@ -286,6 +314,39 @@ public class Utils {
 
 		if(startYear == 0)
 			i.setMissing("Time_invariant");
+
+		
+		em.persist(i);
+		
+		
+	}
+	
+	public static void addIndiv(EntityManager em, int IDNR, int Id_I, String source, String type, String value, 
+			String dateType, String estimation, int startDay, int startMonth, int startYear, int endDay, int endMonth, int endYear, String reasonMissing){
+		
+		//System.out.println("Cr add individual");
+
+		INDIVIDUAL i = new INDIVIDUAL();
+		
+		i.setId_I(Id_I);
+		i.setId_D((new Integer(IDNR).toString()));
+		i.setSource("HSN PC " + source);
+
+		
+		i.setType(type);
+		i.setValue(value);
+		
+		i.setDate_type(dateType);
+		i.setEstimation(estimation);
+		i.setStart_day(startDay);
+		i.setStart_month(startMonth);
+		i.setStart_year(startYear);
+		i.setEnd_day(endDay);
+		i.setEnd_month(endMonth);
+		i.setEnd_year(endYear);
+
+		if(startYear == 0)
+			i.setMissing(reasonMissing);
 
 		
 		em.persist(i);
