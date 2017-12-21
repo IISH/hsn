@@ -778,7 +778,8 @@ static{
     b3kode2[7] = null;
     b3kode2[8] = null;
     b3kode2[9] = "Onbekend -> op onbekend later moment gehuwd";
-    b3kode2[11] = "Partner weg";
+    //b3kode2[10] = null;
+    //b3kode2[11] = "Partner weg";
     	
 
     // Implicit Heads - new codes

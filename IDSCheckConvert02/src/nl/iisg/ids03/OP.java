@@ -201,6 +201,7 @@ public void convert(){
 public void identify(){
 	
 	ArrayList<PersonStandardized> uniquePersons = new ArrayList<PersonStandardized>();
+	setPersonNumber(1);  // restart for each OP
 	
 	for(RegistrationStandardized r : getRegistrationsStandardizedOfOP()){
 		
