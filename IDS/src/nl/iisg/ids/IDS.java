@@ -675,6 +675,7 @@ public class IDS implements Runnable {
  */
 private static void handler(){
 	
+	//System.out.println("Handler 2");
 	
 	int i_i = 0;
 	String  idnrO = "";
@@ -807,7 +808,7 @@ private static void handler(){
 		    if(individualL.get(i).getType().equalsIgnoreCase("HSN_RESEARCH_PERSON")){
 				p.setSource(individualL.get(i).getSource());  // because everybody has this
 				
-				if(individualL.get(i).getValue().equalsIgnoreCase("HSN RP")){
+				if(individualL.get(i).getValue().equalsIgnoreCase("HSN_RP")){
 					if(p.getRelationRP() == null)
 						p.setRelationRP("RP");
 					//personID_RP = individualL.get(i).getId_I();
@@ -829,6 +830,7 @@ private static void handler(){
 	// Now we must link the INDIV_INDIV elements to the Persons
 	// Note: We should still remove the duplicates from INDIV_INDIV
 	// Note: This must be improved on, it is too slow
+	
 	
 	int indexP = getIndexPerson();
 	for(INDIV_INDIV ii: getIndiv_indivL()){
@@ -867,6 +869,7 @@ private static void handler(){
 		}
 	}
 	
+	
 	// Now we must set the relation to the RP of every person
 	// It is somewhere in it's INDIV_INDIV elements
 	// But first we have to know (per IDNR) what the personID of the RP is!
@@ -877,15 +880,25 @@ private static void handler(){
 	
 	indexP = getIndexPerson();  // set to first person in this slot
 	
+	//System.out.println("Handler 3");
+
+	
 	int oldIDNR = -1;
 	ArrayList<Person> t = new ArrayList<Person>(); // will contain all persons for an IDNR
 	while(indexP < personL.size()){
-		if(personL.get(indexP).getIdnr() == new Integer(oldIDNR)){
+		
+		//System.out.println("Handler 3.4, indexP = " + indexP);
+
+		if(personL.get(indexP).getIdnr() != oldIDNR){
+			
 			oldIDNR = personL.get(indexP).getIdnr();
 			if(t.size() > 0){				
+				//System.out.println("Handler 4");
+
 				int iDRP = -1;
 				for(Person p1: t){  // find all RPs
-					if(p1.getRelationRP() != null && p1.getRelationRP().equals("RP")){
+					//System.out.println("Found " + p1.getRelationRP());
+					if(p1.getRelationRP() != null && p1.getRelationRP().equals("RP")){						
 						iDRP = p1.getId_I();
 						for(Person p2: t){ // Check all persons
 							for(INDIV_INDIV ii: p2.getIndiv_indiv()){ // Check all INDIV_INDIV entries
@@ -901,6 +914,7 @@ private static void handler(){
 			t.clear();
 		}
 		t.add(personL.get(indexP));
+		//System.out.println("t.size() = " + t.size());
 
 		//System.out.println("  p  Id_D = " + personL.get(indexP).getIdnr() + " ID_I = " + personL.get(indexP).getId_I());
 		indexP++;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.persistence.EntityManager;
 
+import nl.iisg.hsncommon.ConstRelations2;
 import nl.iisg.ids04.INDIVIDUAL;
 import nl.iisg.ids04.INDIV_CONTEXT;
 import nl.iisg.ids04.INDIV_INDIV;
@@ -38,7 +39,7 @@ public class Utils {
 	}
 	
 	public static void addIndivIndiv(EntityManager em, int IDNR, int id_i_1,  int id_i_2, String source, String relation, int startDay, int startMonth, int startYear, 
-			int endDay, int endMonth, int endYear){
+			int endDay, int endMonth, int endYear, String missing){
 		
 		INDIV_INDIV iiUp = new INDIV_INDIV();
 		
@@ -61,6 +62,11 @@ public class Utils {
 			iiUp.setEnd_year(endYear);
 			
 		}
+		else
+			if(missing != null)
+				iiUp.setMissing(missing);
+			else
+				iiUp.setMissing("Unknown");
 		
 		em.persist(iiUp);
 		
@@ -141,11 +147,15 @@ public class Utils {
 		
 		i.setId_C(Id_C);
 		
+		if(year > 0){
 		i.setDate_type("Event");
 		i.setEstimation("Exact");
 		i.setDay(day);
 		i.setMonth(month);
 		i.setYear(year);
+		}
+		else
+			i.setMissing("Unknown");
 
 		em.persist(i);
 
@@ -188,12 +198,18 @@ public class Utils {
 		
 		i.setType(type);
 		i.setValue(value);
+
+		if(year > 0){
+			i.setDate_type("Event");
+			i.setEstimation("Exact");
+			i.setDay(day);
+			i.setMonth(month);
+			i.setYear(year);
+		}
+		else
+			i.setMissing("Unknown"); 
 		
-		i.setDate_type("Event");
-		i.setEstimation("Exact");
-		i.setDay(day);
-		i.setMonth(month);
-		i.setYear(year);
+		
 		
 		em.persist(i);
 		

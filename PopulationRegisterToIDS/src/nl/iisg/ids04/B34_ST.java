@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.Table;
 
+import nl.iisg.hsncommon.ConstRelations2;
+
 @Entity
 @Table(name="b34_st")
 public class B34_ST extends B3_ST{
@@ -47,7 +49,11 @@ public class B34_ST extends B3_ST{
 							getPersonsStandardizedInRegistration().get(getValueOfRelatedPerson() - 1).getPersonID(); // B34 -> B2 -> B4 -> B2 (RP)
 		
 		//System.out.println("id_i_1 = " + id_i_1 + ", id_i_2 = " + id_i_2 + " relation: " + getContentOfDynamicData());
-		Utils.addIndivIndiv(em, getKeyToRP(), id_i_1,  id_i_2, "B34_ST", "" + getContentOfDynamicData(), startDay, startMonth, startYear, endDay, endMonth, endYear);
+		String missing = null;
+		if(startYear == 0 && ConstRelations2.b3kode1_Related[getContentOfDynamicData()] != null)
+			missing = "Time invariant";
+
+		Utils.addIndivIndiv(em, getKeyToRP(), id_i_1,  id_i_2, "B34_ST", "" + getContentOfDynamicData(), startDay, startMonth, startYear, endDay, endMonth, endYear, missing);
 
 	}
 }
