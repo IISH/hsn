@@ -77,7 +77,24 @@ public class LinksIDS{
 			   
 			System.out.println("Started");
 
-			connection = Utils.connect(Constants.links_ids);
+			if(args.length > 0){
+				String [] a = args[0].split("/");
+				if(a.length > 1){
+					connection = Utils.connect("//194.171.4.70" + "links_ids?user=" + a[0] + "&password=" + a[1]); //194.171.4.70 is the 154
+					if(connection == null){
+						System.out.println("Invalid User/password");
+						System.exit(-1);
+					}
+				}
+				else{
+					System.out.println("Parameter: User/password");
+					System.exit(-1);
+				}
+				System.out.println("Parameter: User/password");
+				System.exit(-1);
+			}
+			
+			
 			
 			// enable backslash escape
 			
