@@ -81,8 +81,8 @@ public class M5 {
     	 }
     	 
     	 String relation = "";
-    	 if(getM5c_rr().equalsIgnoreCase("J")){
-    		 if(getM5c_gn().equalsIgnoreCase("M"))
+    	 if(getM5c_rr() != null && getM5c_rr().equalsIgnoreCase("J")){
+    		 if(getM5c_gn() != null && getM5c_gn().equalsIgnoreCase("M"))
     			 relation = "Zoon";
     		 else
     			 relation = "Dochter";

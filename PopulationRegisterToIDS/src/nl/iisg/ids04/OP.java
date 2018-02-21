@@ -397,7 +397,7 @@ public class OP {
         	
         	
         	if(isRP)
-        		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "HSN_RESEARCH_PERSON", "HSN_RP", day, month, year);
+        		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "HSN_RESEARCH_PERSON", "HSN RP", day, month, year);
 
     	}
     }

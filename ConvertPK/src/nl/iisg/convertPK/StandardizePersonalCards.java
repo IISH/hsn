@@ -804,11 +804,20 @@ public class StandardizePersonalCards implements Runnable {
             EntityManager em = factory.createEntityManager();
             em.getTransaction().begin();
 
-            for (PkKnd pkknd1 : pkkndL)
+            int cnt = 0;
+            for (PkKnd pkknd1 : pkkndL){
             		pkknd1.getB4().save(em);
-
-
+            		cnt++;
+            		if(cnt % 1000 == 0){
+                        em.getTransaction().commit();
+            			print("Saved "+ cnt + " IDNRs"); 
+                        em.clear();
+                        em.getTransaction().begin();
+            			
+            		}
+            }
             em.getTransaction().commit();
+            print("Saved "+ cnt + " IDNRs"); 
             em.clear();
         } catch (Exception e) {
         	e.printStackTrace(System.out);

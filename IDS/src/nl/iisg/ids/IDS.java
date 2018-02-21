@@ -808,7 +808,7 @@ private static void handler(){
 		    if(individualL.get(i).getType().equalsIgnoreCase("HSN_RESEARCH_PERSON")){
 				p.setSource(individualL.get(i).getSource());  // because everybody has this
 				
-				if(individualL.get(i).getValue().equalsIgnoreCase("HSN_RP")){
+				if(individualL.get(i).getValue().equalsIgnoreCase("HSN RP")){
 					if(p.getRelationRP() == null)
 						p.setRelationRP("RP");
 					//personID_RP = individualL.get(i).getId_I();
