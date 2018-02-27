@@ -274,7 +274,7 @@ public class PkHuw {
 
     		if(b2.getStartDate() != null && b2.getEndDate() != null && 
     				Common1.dayCount(b2.getStartDate()) > Common1.dayCount(b2.getEndDate())){
-    			message(b2.getKeyToRP(), "7136", "" + b2.getFirstName() + " " + b2.getFamilyName());
+    			message(b2.getKeyToRP(), "7136", "huw " + b2.getFirstName() + " " + b2.getFamilyName());
     		}
     	}
     		

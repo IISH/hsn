@@ -466,13 +466,15 @@ public class StandardizePersonalCards implements Runnable {
         // But compare only within idnr 
         
         // We create a second list of Pkknd objects, only the males, sorted on idnrP 
+        // We must check that they really are males!
         
         
         List<PkKnd> pkkndL2 = new ArrayList<PkKnd>(); 
         
         for(PkKnd pk: pkkndL)
         	if(pk.getIdnr() > 500000)
-        		pkkndL2.add(pk);
+        		if(pk.getGslperp() != null && pk.getGslperp().equalsIgnoreCase("M"))
+        			pkkndL2.add(pk);
         
        
         

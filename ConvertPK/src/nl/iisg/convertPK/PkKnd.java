@@ -177,20 +177,40 @@ public class PkKnd {
     	b4.setStartDate(startDate);
     	b4.setStartFlag(startFlag);
     	
+    	String eindDate = null;
+    	String strtDate = b4.getStartDate();
     	if(Utils.dateIsValid(getEindagpk(), getEinmndpk(), getEinjarpk()) == 0){
-    		b4.setEndDate(String.format("%02d-%02d-%04d",  getEindagpk(), getEinmndpk(), getEinjarpk()));
+    		eindDate = String.format("%02d-%02d-%04d",  getEindagpk(), getEinmndpk(), getEinjarpk());
+    		b4.setEndDate(eindDate);
     		b4.setEndFlag(31);
+    		if(Common1.dayCount(eindDate) - Common1.dayCount(strtDate) < 0){
+    			strtDate = Common1.dateFromDayCount((Common1.dayCount(eindDate) - 3 * 365));    		
+    			b4.setStartDate(strtDate);
+    			b4.setStartFlag(31);
+    		}
     	}
     	else{
     		if(Utils.dateIsValid(getOdgperp(), getOmdperp(), getOjrperp()) == 0){
-    			b4.setEndDate(String.format("%02d-%02d-%04d",  getOdgperp(), getOmdperp(), getOjrperp()));
-    			b4.setEndFlag(10);
+    			eindDate = String.format("%02d-%02d-%04d",  getOdgperp(), getOmdperp(), getOjrperp());
+        		b4.setEndDate(eindDate);
+        		b4.setEndFlag(10);
+        		if(Common1.dayCount(eindDate) - Common1.dayCount(strtDate) < 0){
+        			strtDate = Common1.dateFromDayCount((Common1.dayCount(eindDate) - 3 * 365));    		
+        			b4.setStartDate(strtDate);
+        			b4.setStartFlag(10);
+        		}
     		}
     		else{ // use latest address date
     			for(PkAdres address: getAddresses()){
     				if(Utils.dateIsValid(address.getDgadrp(), address.getMdadrp(), address.getJradrp()) == 0){
-    	    			b4.setEndDate(String.format("%02d-%02d-%04d",  address.getDgadrp(), address.getMdadrp(), address.getJradrp()));
-    	    			b4.setEndFlag(32);
+    					eindDate = String.format("%02d-%02d-%04d",  address.getDgadrp(), address.getMdadrp(), address.getJradrp());
+    	        		b4.setEndDate(eindDate);
+    	        		b4.setEndFlag(32);
+    	        		if(Common1.dayCount(eindDate) - Common1.dayCount(strtDate) < 0){
+    	        			strtDate = Common1.dateFromDayCount((Common1.dayCount(eindDate) - 3 * 365));    		
+    	        			b4.setStartDate(strtDate);
+    	        			b4.setStartFlag(32);
+    	        		}
     				}
     			}
     		}
@@ -318,10 +338,16 @@ public class PkKnd {
     	
     	//System.out.println("XXXXX  " + b2.getFirstName() + "  " + b2.getPrefixLastName() + "  " + b2.getFamilyName());
     	
-    	if(getGslperp() == null || getGslperp().trim().length() == 0)
-    		message(b2.getKeyToRP(), "7106");
-    	else
+    	if(getGslperp() == null || getGslperp().trim().length() == 0){
+    		if(getPktype() != 8 && getPktype() != 9)  // Person List do not have to have gender
+    			message(b2.getKeyToRP(), "7106");
+    	}
+    	else{    		
+    		if(getIdnr() > 500000 && getGslperp().equalsIgnoreCase("V"))
+        		message(getIdnr(), "7109");
     		b2.setSex(getGslperp().toLowerCase());
+
+    	}
     	
     	// Birth date
     	
@@ -386,7 +412,7 @@ public class PkKnd {
     		
     	if(b2.getStartDate() != null && b2.getEndDate() != null && 
     			Common1.dayCount(b2.getStartDate()) > Common1.dayCount(b2.getEndDate()))
-				message(b2.getKeyToRP(), "7136", "" + b2.getFirstName() + " " + b2.getFamilyName());
+				message(b2.getKeyToRP(), "7136", "knd " + b2.getFirstName() + " " + b2.getFamilyName());
     		
     	
     	// Decease place 

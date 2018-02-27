@@ -303,11 +303,17 @@ public class PkEigknd {
     					b2.setEndFlag(42);
     				}
 
+    		if(b2.getEndDate() != null && Common1.dayCount(b2.getEndDate()) < Common1.dayCount(b2.getStartDate())){
+    			String strtDate = Common1.dateFromDayCount((Common1.dayCount(b2.getEndDate()) - 3 * 365));
+    			b2.setStartDate(strtDate);
+    			b2.setStartFlag(b2.getEndFlag());
+    		}
 
-
+            // This should not happen anymore:
+    		
     		if(b2.getStartDate() != null && b2.getEndDate() != null && 
     				Common1.dayCount(b2.getStartDate()) > Common1.dayCount(b2.getEndDate())){
-    			message(b2.getKeyToRP(), "7136", "" + b2.getFirstName() + " " + b2.getFamilyName());
+    			message(b2.getKeyToRP(), "7136", "eigknd " + b2.getFirstName() + " " + b2.getFamilyName());
 
     			//	b2.setStartDate(null);
     			//	b2.setStartFlag(0);
