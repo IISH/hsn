@@ -61,10 +61,17 @@ public class PersonNumber implements Runnable {
 	private static String sp16                         = sp15 + sp15; // 32768 
 	private static String sp17                         = sp16 + sp16; // 65536 
 	
+	
+	private static String userid;
+	private static String passwd; 
+	private static String db; 
+	private static Connection connection; 
+	
     public void run(){
     	
     	//Connection connection = Utils.connect("//hebe/links_match?user=linksbeta&password=betalinks");
-    	Connection connection = Utils.connect(Constants.links_ids);
+    	//Connection connection = Utils.connect("//194.171.4.70" + "links_match?user=" + userid + "&password=" + passwd); //194.171.4.70 is the 154
+    	Connection connection = Utils.connect(db + "links_match?user=" + userid + "&password=" + passwd); //194.171.4.70 is the 154
     	String name = Thread.currentThread().getName();
     	
     	while(true){
@@ -93,14 +100,33 @@ public class PersonNumber implements Runnable {
     	}
     }    
 
-	public static void personNumber(){
+	public static void personNumber(String[] args){
+		
+		if(args.length > 0){
+			String [] a = args[0].split("/");
+			if(a.length > 1){
+				userid = a[0];
+				passwd = a[1];
+				connection = Utils.connect("//194.171.4.70" + "links_ids?user=" + userid + "&password=" + passwd); //194.171.4.70 is the 154
+				if(connection == null){
+					System.out.println("Invalid User/password");
+					System.exit(-1);
+				}
+			}
+			else{
+				System.out.println("Parameter: User/password");
+				System.exit(-1);
+			}
+			System.out.println("Parameter: User/password");
+			System.exit(-1);
+		}
 		
 		System.out.println("Start");
 		
-    	Connection connection = Utils.connect(Constants.links_ids);
+    	Connection connection = Utils.connect(db + "links_ids?user=" + userid + "&password=" + passwd);
 		initDB(connection);
 		
-    	connection = Utils.connect(Constants.links_match);
+    	connection = Utils.connect(db + "links_match?user=" + userid + "&password=" + passwd);
 
 		System.out.println("Reading matches");
 		

@@ -266,7 +266,45 @@ public class PkEigknd {
     		marriageDays = Common1.dayCount(pkh.getHdghuwp(), pkh.getHmdhuwp(), pkh.getHjrhuwp());
     	}
 
+    	
+    	// Start/End date
+    	
+    	b2.setStartDate(b2.getRegistration().getStartDate());
+		b2.setStartFlag(b2.getRegistration().getStartFlag());
+		b2.setEndDate(b2.getRegistration().getEndDate());
+		b2.setEndFlag(b2.getRegistration().getEndFlag());
+		
+		
+		if(Common1.dateIsValid(getGdgkndp(), getGmdkndp(), getGjrkndp()) == 0 && b2.getStartDate() != null && Common1.dayCount(getGdgkndp(), getGmdkndp(), getGjrkndp()) > Common1.dayCount(b2.getStartDate())){
+			b2.setStartDate(String.format("%02d-%02d-%04d", getGdgkndp(), getGmdkndp(), getGjrkndp()));
+			b2.setStartFlag(22);
+		}
 
+		if(Common1.dateIsValid(getOdgkndp(), getOmdkndp(), getOjrkndp()) == 0 && b2.getEndDate() != null && Common1.dayCount(getOdgkndp(), getOmdkndp(), getOjrkndp()) < Common1.dayCount(b2.getRegistration().getEndDate())){
+			b2.setEndDate(String.format("%02d-%02d-%04d", getOdgkndp(), getOmdkndp(), getOjrkndp()));
+			b2.setEndFlag(40);
+		}
+		else{
+			if(Common1.dateIsValid(getAdgkndp(), getAmdkndp(), getAjrkndp()) == 0 && b2.getEndDate() != null && Common1.dayCount(getAdgkndp(), getAmdkndp(), getAjrkndp()) < Common1.dayCount(b2.getRegistration().getEndDate())){
+				b2.setEndDate(String.format("%02d-%02d-%04d", getAdgkndp(), getAmdkndp(), getAjrkndp()));
+				b2.setEndFlag(41);
+			}
+			else{
+				if(Common1.dateIsValid(getHdgkndp(), getHmdkndp(), getHjrkndp()) == 0 && b2.getEndDate() != null && Common1.dayCount(getHdgkndp(), getHmdkndp(), getHjrkndp()) < Common1.dayCount(b2.getRegistration().getEndDate())){
+					b2.setEndDate(String.format("%02d-%02d-%04d", getHdgkndp(), getHmdkndp(), getHjrkndp()));
+					b2.setEndFlag(42);
+				}
+			}
+		}
+
+        // This should not happen anymore:
+		
+		if(b2.getStartDate() != null && b2.getEndDate() != null && 
+				Common1.dayCount(b2.getStartDate()) > Common1.dayCount(b2.getEndDate()))
+			message(b2.getKeyToRP(), "7136", "eigknd " + b2.getFirstName() + " " + b2.getFamilyName());
+
+		
+		/*
     	if((Common1.dateIsValid(getAdgkndp(), getAmdkndp(), getAjrkndp()) == 0 && Common1.dayCount(getAdgkndp(), getAmdkndp(), getAjrkndp()) < Common1.dayCount(b2.getRegistration().getStartDate()))   ||  
     			(Common1.dateIsValid(getOdgkndp(), getOmdkndp(), getOjrkndp()) == 0 && Common1.dayCount(getOdgkndp(), getOmdkndp(), getOjrkndp()) < Common1.dayCount(b2.getRegistration().getStartDate()))   ||
     			(Common1.dateIsValid(getHdgkndp(), getHmdkndp(), getHjrkndp()) == 0 && Common1.dayCount(getHdgkndp(), getHmdkndp(), getHjrkndp()) < Common1.dayCount(b2.getRegistration().getStartDate()))){		   
@@ -323,6 +361,7 @@ public class PkEigknd {
     		}
 
     	}
+    	*/
 
     	// Relation to PK-Holder
     	

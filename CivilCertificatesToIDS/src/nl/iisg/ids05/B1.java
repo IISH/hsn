@@ -82,6 +82,8 @@ public class B1 {
 
 
 	public void convert(EntityManager em){
+		
+		//System.out.println("Enter B1, idnr = "+ getIdnr());
 
 		// RP
 
@@ -340,21 +342,33 @@ public class B1 {
 
 		// Down the tree
 
+		//if(getIdnr() == 41686) System.out.println("Start b2");
+		
 		for(B2 b2: getB2L())
 			b2.convert(em);
 
+		//if(getIdnr() == 41686) System.out.println("Start b4");
+
 		for(B4 b4: getB4L())
 			b4.convert(em);
+		
+		//if(getIdnr() == 41686) System.out.println("Start b5");
+
 
 		if(getB1infa().equalsIgnoreCase("N") && getB5() != null)
 			getB5().convert(em);
 
+		//if(getIdnr() == 41686) System.out.println("Start m1");
+
 		for(M1 m1: getM1L())
 			m1.convert(em);
+
+		//if(getIdnr() == 41686) System.out.println("Start d1");
 
 		if(getD1() != null)
 			getD1().convert(em);
 
+		//System.out.println("Exit B1, idnr = "+ getIdnr());
 
 	}
 

@@ -165,40 +165,29 @@ public class PkKnd {
         		startFlag = 2;
     		}
     		else{
-    			
-        	//	startDate = Common1.dateFromDayCount(Common1.dayCount(getGdgperp(), getGmdperp(), getGjrperp()) - (3 * 365));
-        	//	System.out.println("" + getGdgperp() +  getGmdperp() +   getGjrperp() + "--------->" + startDate);
-        	//	startFlag = 3;
+    			if(Common1.dateIsValid(getOdgperp(), getOmdperp(), getOjrperp()) == 0){
+    	    		if(Common1.dayCount(getOdgperp(), getOmdperp(), getOjrperp()) < Common1.dayCount(startDate)){
+    	    			startDate = Common1.dateFromDayCount(Common1.dayCount(getOdgperp(), getOmdperp(), getOjrperp()) - (3 * 365));
+    	    			startFlag = 3;
+    	    		}
+    			}
     		}
-    		
-    		
     	}
     	
     	b4.setStartDate(startDate);
     	b4.setStartFlag(startFlag);
     	
     	String eindDate = null;
-    	String strtDate = b4.getStartDate();
     	if(Utils.dateIsValid(getEindagpk(), getEinmndpk(), getEinjarpk()) == 0){
     		eindDate = String.format("%02d-%02d-%04d",  getEindagpk(), getEinmndpk(), getEinjarpk());
     		b4.setEndDate(eindDate);
     		b4.setEndFlag(31);
-    		if(Common1.dayCount(eindDate) - Common1.dayCount(strtDate) < 0){
-    			strtDate = Common1.dateFromDayCount((Common1.dayCount(eindDate) - 3 * 365));    		
-    			b4.setStartDate(strtDate);
-    			b4.setStartFlag(31);
-    		}
     	}
     	else{
     		if(Utils.dateIsValid(getOdgperp(), getOmdperp(), getOjrperp()) == 0){
     			eindDate = String.format("%02d-%02d-%04d",  getOdgperp(), getOmdperp(), getOjrperp());
         		b4.setEndDate(eindDate);
         		b4.setEndFlag(10);
-        		if(Common1.dayCount(eindDate) - Common1.dayCount(strtDate) < 0){
-        			strtDate = Common1.dateFromDayCount((Common1.dayCount(eindDate) - 3 * 365));    		
-        			b4.setStartDate(strtDate);
-        			b4.setStartFlag(10);
-        		}
     		}
     		else{ // use latest address date
     			for(PkAdres address: getAddresses()){
@@ -206,11 +195,6 @@ public class PkKnd {
     					eindDate = String.format("%02d-%02d-%04d",  address.getDgadrp(), address.getMdadrp(), address.getJradrp());
     	        		b4.setEndDate(eindDate);
     	        		b4.setEndFlag(32);
-    	        		if(Common1.dayCount(eindDate) - Common1.dayCount(strtDate) < 0){
-    	        			strtDate = Common1.dateFromDayCount((Common1.dayCount(eindDate) - 3 * 365));    		
-    	        			b4.setStartDate(strtDate);
-    	        			b4.setStartFlag(32);
-    	        		}
     				}
     			}
     		}

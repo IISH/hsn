@@ -138,7 +138,9 @@ public class M1 {
      
      
      
-     public void convert(EntityManager em){   	
+     public void convert(EntityManager em){   
+    	 
+    	 //if(getIdnr() == 41686) System.out.println("Enter m1");
     	 
     	 int uniquifier = getMar_cy() * 100 * 1000 + (getMar_cm() * 1000) ; // The Id_I will be like 184906xxx
     	 
@@ -151,6 +153,9 @@ public class M1 {
     	 ContextElement ceMarriage = null;
     	 if(getM1sdml() != null)
     		 ceMarriage = Contxt.get2(getM1sdml());
+    	 
+		 //if(getIdnr() == 41686) System.out.println("      m1 + Start Groom");
+
     	 
     	 // Groom
 
@@ -191,13 +196,15 @@ public class M1 {
 		 if(getM1rpgn().equalsIgnoreCase("M"))
 			 Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "HSN_RESEARCH_PERSON", "HSN RP", "Missing", "Time_invariant", 0, 0, 0);
 
-		 
+		 //if(getIdnr() == 41686) System.out.println("      m1 +       Groom 1");
+
     	 ContextElement ceBirth = null;
     	 if(getM1grbl() != null)
     		 ceBirth = Contxt.get2(getM1grbl());
     	 if(ceBirth != null)	 
 		     Utils.addIndivAndContext(null, ceBirth, em, getIdnr(), Id_I_GR, "MC M1", "BIRTH_LOCATION", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 
+		 //if(getIdnr() == 41686) System.out.println("      m1 +       Groom 2");
 		 
 		 
 		 if(getM1grcs() != null && getM1grcs().trim().length() > 0){
@@ -212,18 +219,28 @@ public class M1 {
 					 if(getM1grcs().equalsIgnoreCase("3"))
 						 cs = "Divorced";
 
+			 //if(getIdnr() == 41686) System.out.println("      m1 +       Groom 21");
+
+			 //if(getIdnr() == 41686) System.out.println("      m1 +       Groom 211 " + getMar_cd() + "-"+ getMar_cm() + "-"+ getMar_cy());
 			 
-			 String date = Common1.dateFromDayCount(Common1.dayCount(getMar_cd(), getMar_cm(), getMar_cy()) - 1);
-			 
-			 Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "CIVIL_STATUS", cs, "Declared", "Exact",
-						new Integer(date.substring(0, 2)), new Integer(date.substring(3, 5)), new Integer(date.substring(6, 10)));
-			 //Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "CIVIL_STATUS", cs, "Declared", "Exact",
-			 //			0, 0, 0, new Integer(date.substring(0, 2)), new Integer(date.substring(3, 5)), new Integer(date.substring(6, 10)));
-			 //Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "CIVIL_STATUS", "Married", "Declared", "Exact",
-			 //		 getMar_cd(), getMar_cm(), getMar_cy(), 0, 0, 0);
+			 if(Common1.dateIsValid(getMar_cd(), getMar_cm(), getMar_cy()) == 0){
+
+				 String date = Common1.dateFromDayCount(Common1.dayCount(getMar_cd(), getMar_cm(), getMar_cy()) - 1);
+
+				 //if(getIdnr() == 41686) System.out.println("      m1 +       Groom 22");
+
+
+				 Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "CIVIL_STATUS", cs, "Declared", "Exact",
+						 new Integer(date.substring(0, 2)), new Integer(date.substring(3, 5)), new Integer(date.substring(6, 10)));
+				 //Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "CIVIL_STATUS", cs, "Declared", "Exact",
+				 //			0, 0, 0, new Integer(date.substring(0, 2)), new Integer(date.substring(3, 5)), new Integer(date.substring(6, 10)));
+				 //Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "CIVIL_STATUS", "Married", "Declared", "Exact",
+				 //		 getMar_cd(), getMar_cm(), getMar_cy(), 0, 0, 0);
+			 }
 
 		 }
 		 
+		 //if(getIdnr() == 41686) System.out.println("      m1 +       Groom 3");
 
 		 
 		 if(getM1sdse().equalsIgnoreCase("J")){
@@ -241,13 +258,17 @@ public class M1 {
 			 }
 		 }
 		 
+		 //if(getIdnr() == 41686) System.out.println("      m1 +       Groom 4");
+
+		 
 		 ContextElement ce = null;
     	 if(getM1grll() != null){
     		 ce = Contxt.get2(getM1grll());
     		 if(ce != null)
     			 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_GR, "MC M1", "ADDRESS", "Event", "Exact",  getMar_cd(), getMar_cm(), getMar_cy());
     	 }
-    	 
+		 //if(getIdnr() == 41686) System.out.println("      m1 + Start Bride");
+
     	 // Bride
     	 
 		 Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "SEX", "Female", "Missing", "Time_invariant", 0, 0, 0);
@@ -299,14 +320,17 @@ public class M1 {
 					 if(getM1brcs().equalsIgnoreCase("3"))
 						 cs = "Divorced";
 
+			 if(Common1.dateIsValid(getMar_cd(), getMar_cm(), getMar_cy()) == 0){
+
 			 
-			 String date = Common1.dateFromDayCount(Common1.dayCount(getMar_cd(), getMar_cm(), getMar_cy()) - 1);
-			 Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "CIVIL_STATUS", cs, "Declared", "Exact", 
-						new Integer(date.substring(0, 2)), new Integer(date.substring(3, 5)), new Integer(date.substring(6, 10)));
-			 //Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "CIVIL_STATUS", cs, "Declared", "Exact", 
-			 //			0, 0, 0, new Integer(date.substring(0, 2)), new Integer(date.substring(3, 5)), new Integer(date.substring(6, 10)));
-			 //Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "CIVIL_STATUS", "Married", "Declared", "Exact",
-			 //		 getMar_cd(), getMar_cm(), getMar_cy(),0, 0, 0);
+				 String date = Common1.dateFromDayCount(Common1.dayCount(getMar_cd(), getMar_cm(), getMar_cy()) - 1);
+				 Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "CIVIL_STATUS", cs, "Declared", "Exact", 
+						 new Integer(date.substring(0, 2)), new Integer(date.substring(3, 5)), new Integer(date.substring(6, 10)));
+				 //Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "CIVIL_STATUS", cs, "Declared", "Exact", 
+				 //			0, 0, 0, new Integer(date.substring(0, 2)), new Integer(date.substring(3, 5)), new Integer(date.substring(6, 10)));
+				 //Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "CIVIL_STATUS", "Married", "Declared", "Exact",
+				 //		 getMar_cd(), getMar_cm(), getMar_cy(),0, 0, 0);
+			 }
 					 
 		 }
 		 
@@ -343,6 +367,8 @@ public class M1 {
     	 
 		 Utils.addIndivIndiv(em, getIdnr(), Id_I_GR, Id_I_BR, "MC M1", "Echtgenoot", "Event", "Exact",  getMar_cd(), getMar_cm(), getMar_cy());
 		 Utils.addIndivIndiv(em, getIdnr(), Id_I_BR, Id_I_GR, "MC M1", "Echtgenote", "Event", "Exact",  getMar_cd(), getMar_cm(), getMar_cy());
+		 
+		 //if(getIdnr() == 41686) System.out.println("      m1 + Start Father Groom");
 		 
 		 // Father Groom
     	 
@@ -636,14 +662,20 @@ public class M1 {
 		 
 		 // Down the tree
 		 
+		 //if(getIdnr() == 41686) System.out.println("Start m3");
 		 for(M3 m3: getM3L())
 			 m3.convert(em);
 
+		 //if(getIdnr() == 41686) System.out.println("Start m4");
 		 for(M4 m4: getM4L())
 			 m4.convert(em);
+		 
+		 //if(getIdnr() == 41686) System.out.println("Start m5");
 
 		 for(M5 m5: getM5L())
 			 m5.convert(em);
+		 
+		 //if(getIdnr() == 41686) System.out.println("Exit  m1");
 
      }
 

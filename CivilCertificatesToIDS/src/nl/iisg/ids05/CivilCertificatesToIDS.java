@@ -126,7 +126,7 @@ public class CivilCertificatesToIDS implements Runnable{
 	Contxt.initializeContext();  
 
 	print("Converting....");
-	
+	//print("1 heapsize.size() = " +  Runtime.getRuntime().maxMemory()/ (1000*1000) + "    "  + Runtime.getRuntime().totalMemory()/ (1000*1000) + "  " + Runtime.getRuntime().freeMemory()/ (1000*1000));
 	
     
 	em.getTransaction().begin();
@@ -139,14 +139,24 @@ public class CivilCertificatesToIDS implements Runnable{
 	
 	int cnt = 0;
 	
-	for(int j = 0; j < 10; j++){
-		
+	for(int j = 6; j < 10; j++){
+
+		//print("2 heapsize.size() = " +  Runtime.getRuntime().maxMemory()/ (1000*1000) + "    "  + Runtime.getRuntime().totalMemory()/ (1000*1000) + "  " + Runtime.getRuntime().freeMemory()/ (1000*1000));
+
 	    i.loadTables(all, j);
+	    
+		//print("3 heapsize.size() = " +  Runtime.getRuntime().maxMemory()/ (1000*1000) + "    "  + Runtime.getRuntime().totalMemory()/ (1000*1000) + "  " + Runtime.getRuntime().freeMemory()/ (1000*1000));
+
 
 	    i.linkObjects(all);
 
+	    
 
 		List<B0> b0List = all.get(1);
+		
+		//print("b0List.size() = " + b0List.size());
+		
+		
 		for(B0 b0: b0List){
 
 			cnt++;
@@ -158,6 +168,7 @@ public class CivilCertificatesToIDS implements Runnable{
 				em.clear();
 				em.getTransaction().begin();
 				print("Processed " + cnt + " IDNRs");
+				//print("4 heapsize.size() = " +  Runtime.getRuntime().maxMemory()/ (1000*1000) + "    "  + Runtime.getRuntime().totalMemory()/ (1000*1000) + "  " + Runtime.getRuntime().freeMemory()/ (1000*1000));
 				
 				//query = em.createNativeQuery("LOCK TABLES individual WRITE, indiv_indiv WRITE, indiv_context WRITE;");  
 				//query.executeUpdate();  
@@ -194,9 +205,9 @@ public class CivilCertificatesToIDS implements Runnable{
     System.out.println("End Time : " + endTime);
     
     
-    System.out.println("Free Memory:"  + runtime.freeMemory() / (1024 * 1024)); 
-    System.out.println("Total Memory:" + runtime.totalMemory() / (1024 * 1024));
-    System.out.println("Max Memory:" + runtime.maxMemory() / (1024 * 1024));
+    //System.out.println("Free Memory:"  + runtime.freeMemory() / (1024 * 1024)); 
+    //System.out.println("Total Memory:" + runtime.totalMemory() / (1024 * 1024));
+    //System.out.println("Max Memory:" + runtime.maxMemory() / (1024 * 1024));
     
     long runTime = (endTime.getTime() - startTime.getTime())/1000;
 

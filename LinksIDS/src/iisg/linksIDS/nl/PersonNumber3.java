@@ -21,6 +21,9 @@ import org.w3c.dom.stylesheets.LinkStyle;
 //import com.mysql.jdbc.PreparedStatement;
 //import com.mysql.jdbc.Statement;
 // SELECT * FROM links_match.personNumbers as X , links_cleaned.person_c as Y where X.id_person = Y.id_person order by person_number
+
+
+/*
 public class PersonNumber3 implements Runnable {
 
 	//static HashMap<Integer, HashSet<Integer>>   personNumberToP_IDs     = new HashMap<Integer, HashSet<Integer>>();  
@@ -492,3 +495,4 @@ public class PersonNumber3 implements Runnable {
 
 	}
 }
+*/

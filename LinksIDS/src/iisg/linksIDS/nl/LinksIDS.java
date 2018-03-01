@@ -66,6 +66,9 @@ public class LinksIDS{
 	private static ArrayList<String> icList = new ArrayList<String>(); 
 
 
+	private static String userid;
+	private static String passwd;
+	private static String db;
 	
 	public static void main(String[] args) {
 
@@ -79,18 +82,22 @@ public class LinksIDS{
 
 			if(args.length > 0){
 				String [] a = args[0].split("/");
-				if(a.length > 1){
-					connection = Utils.connect("//194.171.4.70" + "links_ids?user=" + a[0] + "&password=" + a[1]); //194.171.4.70 is the 154
+				if(a.length > 2){
+					userid = a[0];
+					passwd = a[1];
+					db     = a[2];
+					//connection = Utils.connect("//194.171.4.70" + "links_ids?user=" + userid + "&password=" + passwd); //194.171.4.70 is the 154
+					connection = Utils.connect(db + "links_ids?user=" + userid + "&password=" + passwd); //194.171.4.70 is the 154
 					if(connection == null){
-						System.out.println("Invalid User/password");
+						System.out.println("Invalid User/password/db");
 						System.exit(-1);
 					}
 				}
 				else{
-					System.out.println("Parameter: User/password");
+					System.out.println("Parameter: User/password/db");
 					System.exit(-1);
 				}
-				System.out.println("Parameter: User/password");
+				System.out.println("Parameter: User/password/db");
 				System.exit(-1);
 			}
 			
@@ -112,7 +119,8 @@ public class LinksIDS{
 			Statement s = (Statement) connection.createStatement ();
 
 
-			PersonNumber.personNumber();		
+			String [] args0 = {userid, passwd, db};
+			PersonNumber.personNumber(args0);		
 			//if(1==1) System.exit(8);
 
 			int previousPersonNumber = -1;
@@ -1317,7 +1325,7 @@ public class LinksIDS{
 			Utils.executeQ(connection, "truncate links_ids.context"); // clear context_context
 			Utils.executeQ(connection, "truncate links_ids.context_context"); // clear context_context
 			
-			connection_ref = Utils.connect(Constants.links_general);  // this is on the reference server
+			connection_ref = Utils.connect("//194.171.4.30" + "links_ids?user=" + userid + "&password=" + passwd); //194.171.4.30 is the 030);  // this is on the reference server
 			Statement t = (Statement) connection_ref.createStatement ();
 			
 			t.executeQuery("select * from links_general.ref_location group by location_no order by " +
