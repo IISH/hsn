@@ -88,25 +88,25 @@ public class M5 {
     			 relation = "Dochter";
     	 }
     	 if(relation.length() != 0){
-    		 if(getM1().getM1rpgn().equalsIgnoreCase("M")){
+    		 if(getM1().getM1rpgn() != null && getM1().getM1rpgn().equalsIgnoreCase("M")){
         		 Utils.addIndivIndiv(em, getIdnr(), Id_I_GR, Id_I_VK, "MC M5", "Vader", "Missing", "Time_invariant", 0, 0, 0);
         		 Utils.addIndivIndiv(em, getIdnr(), Id_I_VK, Id_I_GR, "MC M5", relation, "Missing", "Time_invariant", 0, 0, 0);
 
     		 }
     		 else
-        		 if(getM1().getM1rpgn().equalsIgnoreCase("V")){
+        		 if(getM1().getM1rpgn() != null && getM1().getM1rpgn().equalsIgnoreCase("V")){
             		 Utils.addIndivIndiv(em, getIdnr(), Id_I_GR, Id_I_VK, "MC M5", "Moeder", "Missing", "Time_invariant", 0, 0, 0);
             		 Utils.addIndivIndiv(em, getIdnr(), Id_I_VK, Id_I_GR, "MC M5", relation, "Missing", "Time_invariant", 0, 0, 0);
         		 }
     	 }
     	 else{
-    		 if(getM1().getM1rpgn().equalsIgnoreCase("M")){
+    		 if(getM1().getM1rpgn()!= null && getM1().getM1rpgn().equalsIgnoreCase("M")){
         		 Utils.addIndivIndiv(em, getIdnr(), Id_I_GR, Id_I_VK, "MC M5", "Vader", "Missing", "Time_invariant", 0, 0, 0);
         		 Utils.addIndivIndiv(em, getIdnr(), Id_I_VK, Id_I_GR, "MC M5", "Kind", "Missing", "Time_invariant", 0, 0, 0);
 
     		 }
     		 else
-        		 if(getM1().getM1rpgn().equalsIgnoreCase("V")){
+        		 if(getM1().getM1rpgn() != null && getM1().getM1rpgn().equalsIgnoreCase("V")){
             		 Utils.addIndivIndiv(em, getIdnr(), Id_I_GR, Id_I_VK, "MC M5", "Moeder", "Missing", "Time_invariant", 0, 0, 0);
             		 Utils.addIndivIndiv(em, getIdnr(), Id_I_VK, Id_I_GR, "MC M5", "Kind", "Missing", "Time_invariant", 0, 0, 0);
         		 }
