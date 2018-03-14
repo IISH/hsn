@@ -64,14 +64,14 @@ public class PersonNumber implements Runnable {
 	
 	private static String userid;
 	private static String passwd; 
-	private static String db; 
+	private static String server;
 	private static Connection connection; 
 	
     public void run(){
     	
     	//Connection connection = Utils.connect("//hebe/links_match?user=linksbeta&password=betalinks");
     	//Connection connection = Utils.connect("//194.171.4.70" + "links_match?user=" + userid + "&password=" + passwd); //194.171.4.70 is the 154
-    	Connection connection = Utils.connect(db + "links_match?user=" + userid + "&password=" + passwd); //194.171.4.70 is the 154
+    	Connection connection = Utils.connect2(server, Constants.links_match, userid,  passwd); //194.171.4.70 is the 154
     	String name = Thread.currentThread().getName();
     	
     	while(true){
@@ -102,31 +102,29 @@ public class PersonNumber implements Runnable {
 
 	public static void personNumber(String[] args){
 		
-		if(args.length > 0){
-			String [] a = args[0].split("/");
-			if(a.length > 1){
-				userid = a[0];
-				passwd = a[1];
-				connection = Utils.connect("//194.171.4.70" + "links_ids?user=" + userid + "&password=" + passwd); //194.171.4.70 is the 154
-				if(connection == null){
-					System.out.println("Invalid User/password");
-					System.exit(-1);
-				}
-			}
-			else{
-				System.out.println("Parameter: User/password");
+		if(args.length > 2){
+			server = args[0].trim();
+			userid = args[1].trim();
+			passwd = args[2].trim();
+			//connection = Utils.connect("//194.171.4.70" + "links_ids?user=" + userid + "&password=" + passwd); //194.171.4.70 is the 154
+
+			// Connect to Links_IDS
+			//connection = Utils.connect(db + Constants.links_ids +"?user=" + userid + "&password=" + passwd); //194.171.4.70 is the 154
+			connection = Utils.connect2(server, Constants.links_ids, userid,  passwd); //194.171.4.70 is the 154
+			if(connection == null){
+				System.out.println("Invalid User/password/server");
 				System.exit(-1);
 			}
-			System.out.println("Parameter: User/password");
-			System.exit(-1);
+
 		}
 		
-		System.out.println("Start");
+		System.out.println("personMumber Start");
 		
-    	Connection connection = Utils.connect(db + "links_ids?user=" + userid + "&password=" + passwd);
+    	//Connection connection = Utils.connect(db + "links_ids?user=" + userid + "&password=" + passwd);
 		initDB(connection);
 		
-    	connection = Utils.connect(db + "links_match?user=" + userid + "&password=" + passwd);
+    	//connection = Utils.connect(db + "links_match?user=" + userid + "&password=" + passwd);
+    	connection = Utils.connect2(server, Constants.links_match, userid,  passwd);
 
 		System.out.println("Reading matches");
 		
@@ -378,11 +376,15 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 		
 		try {
 
+			
+			System.out.println("initDB...");
 			// java.sql.Statement statement = connection.createStatement();
 
 			// Next two statements only first time
 			
 			createTable(connection);	
+			
+			System.out.println("Call initializePersonNumbers, connection = " + connection);
 			initializePersonNumbers(connection);
 									
 			int highest_ID_Person = getHighestID_Person(connection);
@@ -513,11 +515,18 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 	private static void createTable(Connection connection){
 		try {
 			
+			System.out.println("create Table, connection = " + connection);
+			
 			java.sql.Statement statement = connection.createStatement();
+			
+			System.out.println("create Table, connection = " + connection);
 
 			
 			Utils.executeQI(connection, "drop table personNumbers");
+			System.out.println("create Table 2");
 			Utils.executeQ(connection, "create table personNumbers (id_person int, person_number int)");
+			System.out.println("create Table 3");
+
 			//String indexNr = "create index nr on links_IDS.personNumbers(person_number)";
 
 			//s = "create unique index i on links_match.personNumbers(id_person)";
@@ -527,6 +536,9 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 
 			
 			connection.commit();
+			
+			System.out.println("create Table 4");
+
 		}  catch (SQLException e) {
 				e.printStackTrace();
 				Utils.closeConnection(connection);
@@ -538,6 +550,7 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 	
 	private static void initializePersonNumbers(Connection connection){
 		
+		System.out.println("insert into links_ids.personNumbers (select id_person, id_person from links_cleaned.person_c where id_person <= " + max_id_person + ")");
 		Utils.executeQ(connection, "insert into links_ids.personNumbers (select id_person, id_person from links_cleaned.person_c where id_person <= " + max_id_person + ")");
 
 	}

@@ -245,7 +245,36 @@ public class Utils {
 
 		
 	}
-	
+
+	public static Connection connect2(String server, String dataBase, String userId, String passWd){
+		
+		//System.out.println("Database = " + dataBase);
+		String connectionURL = "jdbc:mysql://localhost:3306/yourDBName";
+		connectionURL = connectionURL.replace("localhost" , server);
+		connectionURL = connectionURL.replace("yourDBName" , dataBase);
+		
+		System.out.println("connectionURL = "+ connectionURL);
+		
+		Connection c = null;
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			c = (Connection) DriverManager.getConnection(connectionURL, userId, passWd);
+			c.setAutoCommit(false); 
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.exit(-1);
+		
+		}
+		 catch (SQLException e) {
+				e.printStackTrace();
+				System.exit(-1);
+		}
+			
+		return c;
+	}
+
 	public static Connection connect(String dataBase){
 		
 		//System.out.println("Database = " + dataBase);

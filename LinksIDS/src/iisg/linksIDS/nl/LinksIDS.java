@@ -68,7 +68,7 @@ public class LinksIDS{
 
 	private static String userid;
 	private static String passwd;
-	private static String db;
+	private static String server;
 	
 	public static void main(String[] args) {
 
@@ -80,28 +80,23 @@ public class LinksIDS{
 			   
 			System.out.println("Started");
 
-			if(args.length > 0){
-				String [] a = args[0].split("/");
-				if(a.length > 2){
-					userid = a[0];
-					passwd = a[1];
-					db     = a[2];
-					//connection = Utils.connect("//194.171.4.70" + "links_ids?user=" + userid + "&password=" + passwd); //194.171.4.70 is the 154
-					connection = Utils.connect(db + "links_ids?user=" + userid + "&password=" + passwd); //194.171.4.70 is the 154
-					if(connection == null){
-						System.out.println("Invalid User/password/db");
-						System.exit(-1);
-					}
-				}
-				else{
-					System.out.println("Parameter: User/password/db");
+			if(args.length > 2){
+				server = args[0].trim();
+				userid = args[1].trim();
+				passwd = args[2].trim();
+				//connection = Utils.connect("//194.171.4.70" + "links_ids?user=" + userid + "&password=" + passwd); //194.171.4.70 is the 154
+
+				// Connect to Links_IDS
+				//connection = Utils.connect(db + Constants.links_ids +"?user=" + userid + "&password=" + passwd); //194.171.4.70 is the 154
+				connection = Utils.connect2(server, Constants.links_ids, userid,  passwd); //194.171.4.70 is the 154
+				if(connection == null){
+					System.out.println("Invalid User/password/server");
 					System.exit(-1);
 				}
-				System.out.println("Parameter: User/password/db");
-				System.exit(-1);
+
 			}
-			
-			
+
+
 			
 			// enable backslash escape
 			
@@ -119,7 +114,7 @@ public class LinksIDS{
 			Statement s = (Statement) connection.createStatement ();
 
 
-			String [] args0 = {userid, passwd, db};
+			String [] args0 = {server, userid, passwd};
 			PersonNumber.personNumber(args0);		
 			//if(1==1) System.exit(8);
 
@@ -1056,6 +1051,9 @@ public class LinksIDS{
 	
 	public static void flushContext(Connection connection){
 		
+		
+		System.out.println("cList.size() = " + cList.size());
+		
 		if(cList.size() == 0)
 			return;
 		
@@ -1065,7 +1063,7 @@ public class LinksIDS{
 		s = s.substring(0, s.length() -1);
 		String u = "insert into links_ids.context (Id_C, Id_D, type, value) values" + s;
 			
-		//System.out.println(u.substring(0, 120));
+		System.out.println(u.substring(0, 120));
    		Utils.executeQ(connection, u);
 	}
 	
@@ -1325,7 +1323,10 @@ public class LinksIDS{
 			Utils.executeQ(connection, "truncate links_ids.context"); // clear context_context
 			Utils.executeQ(connection, "truncate links_ids.context_context"); // clear context_context
 			
-			connection_ref = Utils.connect("//194.171.4.30" + "links_ids?user=" + userid + "&password=" + passwd); //194.171.4.30 is the 030);  // this is on the reference server
+			//connection_ref = Utils.connect("//194.171.4.30" + "links_ids?user=" + userid + "&password=" + passwd); //194.171.4.30 is the 030);  // this is on the reference server
+			//connection_ref = Utils.connect2(Constants.reference_server, Constants.links_general, userid,  passwd); //194.171.4.30 is the 030);  // this is on the reference server
+			connection_ref = Utils.connect2(Constants.reference_server, Constants.links_general, "cmu", "cmucmu"); //194.171.4.30 is the 030);  // this is on the reference server
+
 			Statement t = (Statement) connection_ref.createStatement ();
 			
 			t.executeQuery("select * from links_general.ref_location group by location_no order by " +
@@ -1485,7 +1486,7 @@ public class LinksIDS{
 					}
 				
 				locNo2Id_C.put((resultSet.getInt("location_no")), Id_C); // To find it back later
-				System.out.println("Location " + resultSet.getInt("location_no") + " has Id_C " + Id_C);
+				//System.out.println("Location " + resultSet.getInt("location_no") + " has Id_C " + Id_C);
 				
 			}				
 			
