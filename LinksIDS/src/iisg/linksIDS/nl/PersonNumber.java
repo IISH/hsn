@@ -31,7 +31,7 @@ public class PersonNumber implements Runnable {
 	//static int []                               personNumber = null;
 	//static HashSet<Integer> []                  id_person = null;
 	static ArrayList<Integer>                     onlySelf = new ArrayList<Integer>();
-	static int                                  max_id_person = 100 * 1000 * 1000;
+	static int                                  max_id_person = 0;
 	static ArrayList<Integer>[]                 aliases = null;
 	
 	
@@ -71,7 +71,7 @@ public class PersonNumber implements Runnable {
     	
     	//Connection connection = Utils.connect("//hebe/links_match?user=linksbeta&password=betalinks");
     	//Connection connection = Utils.connect("//194.171.4.70" + "links_match?user=" + userid + "&password=" + passwd); //194.171.4.70 is the 154
-    	Connection connection = Utils.connect2(server, Constants.links_match, userid,  passwd); //194.171.4.70 is the 154
+    	Connection connection = Utils.connect2(server, Constants.links_ids, userid,  passwd); //194.171.4.70 is the 154
     	String name = Thread.currentThread().getName();
     	
     	while(true){
@@ -133,6 +133,7 @@ public class PersonNumber implements Runnable {
 		int pageSize = 1 * 1000 * 1000;
 outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 			try {
+				System.out.println("Scanning matches with id_matches in [" + i + ", " + (i + pageSize) + ")");
 				java.sql.Statement statement = connection.createStatement();
 				//String select = "select X.ego_id, X.mother_id, X.father_id, Y.ego_id, Y.mother_id, Y.father_id" +
 				//		" from links_match.matches, links_base.links_base as X,  links_base.links_base as Y " +
@@ -155,6 +156,20 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 						" M.id_matches >= " + i + "  and " + 
 						" M.id_matches <  " + (i + pageSize) ;
 				
+                        /*				
+				        + " and (X.ego_id < "     + max_id_person + " or X.ego_id IS NULL)"
+				        + " and (X.mother_id < "  + max_id_person + " or X.mother_id IS NULL)"
+				        + " and (X.father_id < "  + max_id_person + " or X.father_id IS NULL)"
+				        + " and (X.partner_id < " + max_id_person + " or X.partner_id IS NULL)"
+
+				        + " and (Y.ego_id < "     + max_id_person + " or X.ego_id IS NULL)"
+				        + " and (Y.mother_id < "  + max_id_person + " or X.mother_id IS NULL)"
+				        + " and (Y.father_id < "  + max_id_person + " or X.father_id IS NULL)"
+				        + " and (Y.partner_id < " + max_id_person + " or X.partner_id IS NULL)";
+                        */ 
+				        
+
+				
 				System.out.println(select);
 
 				ResultSet r = statement.executeQuery(select);
@@ -167,6 +182,7 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 
 					x = r.getInt("X.ego_id");
 					y = r.getInt("Y.ego_id");
+					System.out.println("X.ego_id = " + x + ", Y.ego_id = " + y);
 					if(x != 0 && y != 0) 
 						effectiveCount += add(x, y);
 
@@ -193,13 +209,13 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 					}
 
 					count++;		  
-					if(count % 1000 == 0)
+					if(count % 100 == 0)
 						System.out.println("Read " + count + " matches");
 
 				}
 
 				totalCount += count;
-				System.out.println("Read total " + totalCount + " matches");
+				//System.out.println("Read total " + totalCount + " matches");
 
 			} catch (SQLException e) {
 
@@ -380,17 +396,18 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 			System.out.println("initDB...");
 			// java.sql.Statement statement = connection.createStatement();
 
-			// Next two statements only first time
+			// Next statements only first time
 			
-			createTable(connection);	
+			createTable(connection);  // only first time	
+			max_id_person = getHighestID_Person(connection);
 			
 			System.out.println("Call initializePersonNumbers, connection = " + connection);
 			initializePersonNumbers(connection);
 									
-			int highest_ID_Person = getHighestID_Person(connection);
+			
 			//id_person = new HashSet[highest_ID_Person + 1]; 
 			//personNumber = new int[highest_ID_Person + 1]; 
-			aliases = new ArrayList[highest_ID_Person + 1]; 
+			aliases = new ArrayList[max_id_person + 1]; 
 			
 			
 			ArrayList<Integer> h = null;
@@ -493,9 +510,15 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 	private static int getHighestID_Person(Connection connection){
 		
 		System.out.println("Identifying highest id_person");
+		
+		//TSM
+		
+		if(1==1) return 8 * 1000 * 1000;
+		
 		ResultSet r = null;
 		try {
-			r = connection.createStatement().executeQuery("select max(id_person) as m FROM links_ids.personNumbers");
+			//r = connection.createStatement().executeQuery("select max(id_person) as m FROM links_ids.personNumbers");
+			r = connection.createStatement().executeQuery("select max(id_person) as m FROM links_cleaned.person_c");
 			while (r.next()) {
 				System.out.println("Highest id_person = " + r.getInt("m"));
 				return(r.getInt("m"));
@@ -515,17 +538,17 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 	private static void createTable(Connection connection){
 		try {
 			
-			System.out.println("create Table, connection = " + connection);
+			//System.out.println("create Table, connection = " + connection);
 			
 			java.sql.Statement statement = connection.createStatement();
 			
-			System.out.println("create Table, connection = " + connection);
+			//System.out.println("create Table, connection = " + connection);
 
 			
 			Utils.executeQI(connection, "drop table personNumbers");
-			System.out.println("create Table 2");
+			//System.out.println("create Table 2");
 			Utils.executeQ(connection, "create table personNumbers (id_person int, person_number int)");
-			System.out.println("create Table 3");
+			//System.out.println("create Table 3");
 
 			//String indexNr = "create index nr on links_IDS.personNumbers(person_number)";
 
@@ -537,7 +560,7 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 			
 			connection.commit();
 			
-			System.out.println("create Table 4");
+			//System.out.println("create Table 4");
 
 		}  catch (SQLException e) {
 				e.printStackTrace();

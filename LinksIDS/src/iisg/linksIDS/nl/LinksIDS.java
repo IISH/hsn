@@ -116,7 +116,7 @@ public class LinksIDS{
 
 			String [] args0 = {server, userid, passwd};
 			PersonNumber.personNumber(args0);		
-			//if(1==1) System.exit(8);
+			if(1==1) System.exit(8);
 
 			int previousPersonNumber = -1;
 
@@ -205,10 +205,12 @@ public class LinksIDS{
 						" R.registration_type, " +
 						" R.registration_seq, " +
 						" R.registration_location_no" +
+						
 						" FROM" +
 						" links_ids.personNumbers       as N,  " +
 						" links_cleaned.person_c        as P, " +
 						" links_cleaned.registration_c  as R " +
+						
 						" WHERE " +
 						" N.id_person = P.id_person and" +
 						" P.id_registration =  R.id_registration and " +
@@ -288,7 +290,7 @@ public class LinksIDS{
 			System.exit(9);
 		}		
 		
-		flushIndiv(connection);
+		saveIndiv(connection);
 
 		//Contxt.save(connection);
 		//Utils.closeConnection(connection);		
@@ -492,8 +494,8 @@ public class LinksIDS{
 			}		
 		}
 		
-		flushIndivContext(connection);
-		flushIndivIndiv(connection);
+		saveIndivContext(connection);
+		saveIndivIndiv(connection);
 		Contxt2.saveContext(connection, cList, ccList);
 	}
 
@@ -928,7 +930,7 @@ public class LinksIDS{
 		iList.add(t);
 		
 		 if(iList.size() > 5000)
-			 flushIndiv(connection);
+			 saveIndiv(connection);
 
 		
 	}
@@ -948,7 +950,7 @@ public class LinksIDS{
 		
 		iiList.add(t);
 		 if(iiList.size() > 5000)
-			 flushIndivIndiv(connection);
+			 saveIndivIndiv(connection);
 
 		
 	}
@@ -963,7 +965,7 @@ public class LinksIDS{
 		icList.add(t);
 		
 		 if(icList.size() > 5000)
-			 flushIndivContext(connection);
+			 saveIndivContext(connection);
 		
 	}
 	
@@ -977,7 +979,7 @@ public class LinksIDS{
 		cList.add(t);
 		
 		 if(cList.size() > 5000)
-			 flushContext(connection);
+			 saveContext(connection);
 
 		
 	}
@@ -992,14 +994,14 @@ public class LinksIDS{
 		ccList.add(t);
 		
 		 if(ccList.size() > 5000)
-			 flushContextContext(connection);
+			 saveContextContext(connection);
 
 		
 	}
 	
 	
 	
-	public static void flushIndiv(Connection connection){
+	public static void saveIndiv(Connection connection){
 		
 		
 		if(iList.size() == 0)
@@ -1021,7 +1023,7 @@ public class LinksIDS{
 
 	}
 		
-	public static void flushIndivIndiv(Connection connection){
+	public static void saveIndivIndiv(Connection connection){
 		
 		if(iiList.size() == 0)
 			return;
@@ -1035,7 +1037,7 @@ public class LinksIDS{
 	}
 	
 	
-	public static void flushIndivContext(Connection connection){
+	public static void saveIndivContext(Connection connection){
 		
 		if(icList.size() == 0)
 			return;
@@ -1049,7 +1051,7 @@ public class LinksIDS{
    		Utils.executeQ(connection, u);
 	}
 	
-	public static void flushContext(Connection connection){
+	public static void saveContext(Connection connection){
 		
 		
 		System.out.println("cList.size() = " + cList.size());
@@ -1067,7 +1069,7 @@ public class LinksIDS{
    		Utils.executeQ(connection, u);
 	}
 	
-	public static void flushContextContext(Connection connection){
+	public static void saveContextContext(Connection connection){
 		
 		if(ccList.size() == 0)
 			return;
@@ -1500,8 +1502,8 @@ public class LinksIDS{
 
 		}	
 		
-		flushContext(connection);
-		flushContextContext(connection);
+		saveContext(connection);
+		saveContextContext(connection);
 		Utils.closeConnection(connection_ref);
 		System.out.println("Populate Context 2");
 
