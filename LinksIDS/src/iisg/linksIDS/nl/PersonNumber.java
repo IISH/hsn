@@ -30,8 +30,9 @@ public class PersonNumber implements Runnable {
 	static String                               insStmt   = null;	
 	//static int []                               personNumber = null;
 	//static HashSet<Integer> []                  id_person = null;
-	static ArrayList<Integer>                     onlySelf = new ArrayList<Integer>();
+	//static ArrayList<Integer>                     onlySelf = new ArrayList<Integer>();
 	static int                                  max_id_person = 0;
+	static int                                  max_id_matches = 100 * 1000 * 1000;
 	static ArrayList<Integer>[]                 aliases = null;
 	
 	
@@ -131,7 +132,7 @@ public class PersonNumber implements Runnable {
 		int totalCount = 0;
 		int effectiveCount = 0;
 		int pageSize = 1 * 1000 * 1000;
-outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
+outer:	for(int i = 0; i < max_id_matches; i += pageSize){
 			try {
 				System.out.println("Scanning matches with id_matches in [" + i + ", " + (i + pageSize) + ")");
 				java.sql.Statement statement = connection.createStatement();
@@ -170,7 +171,7 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 				        
 
 				
-				System.out.println(select);
+				//System.out.println(select);
 
 				ResultSet r = statement.executeQuery(select);
 				int count = 0;
@@ -182,7 +183,7 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 
 					x = r.getInt("X.ego_id");
 					y = r.getInt("Y.ego_id");
-					System.out.println("X.ego_id = " + x + ", Y.ego_id = " + y);
+					//System.out.println("X.ego_id = " + x + ", Y.ego_id = " + y);
 					if(x != 0 && y != 0) 
 						effectiveCount += add(x, y);
 
@@ -209,8 +210,8 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 					}
 
 					count++;		  
-					if(count % 100 == 0)
-						System.out.println("Read " + count + " matches");
+					if(count % 1000 == 0)
+						System.out.println("Read " + count + " matches in this range");
 
 				}
 
@@ -258,7 +259,7 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 			count++;
 			
 			i.add(j);
-			if(aliases[j] == onlySelf)
+			if(aliases[j] == null)
 				i.add(j);
 			else	
 				i.add(aliases[j].get(0));
@@ -353,37 +354,41 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 	private static int add(int x, int y){
 		
 				
-		if(x >= max_id_person  || y >= max_id_person) return(0);
-		if(x == 0      || y == 0 ) return(0);
+		if(x >= max_id_person  || y >= max_id_person) return(0);        // This could happen if table matches is out of synch with table person_c,
+		                                                                // we need to exclude it because it will give an 'array index out of bound' error
+		
+		if(x == 0      || y == 0 ) return(0);                           // id_person starts a 1
 
 		
-		if(aliases[x] != onlySelf && (aliases[x] == aliases[y])) return(0);
+		if(aliases[x] != null && (aliases[x] == aliases[y])) return(0); // This is a 'redundant' match
 		
-		if(aliases[x].size() > 100) return 0;
+		if(aliases[x] != null && aliases[x].size() > 100) return 0;     // This means a person should not occur in more than 100 certificates
 		
-		if(aliases[y].size() > 100) return 0;
+		if(aliases[y] != null && aliases[y].size() > 100) return 0;     // This means a person should not occur in more than 100 certificates
 
 	   ArrayList<Integer> h = null;
 	   
-		if(aliases[x] == onlySelf){
-			h = new ArrayList<Integer>();
-			aliases[x] = h;
-			h.add(x);
+		if(aliases[x] == null){                                         // if x did not have aliases up to now
+			h = new ArrayList<Integer>();                               // aliases[x] needs an ArrayList<Integer> (containing at least x and y) (1) 
+			aliases[x] = h;                                             // indicate that x now has aliases other than x itself 
+			h.add(x);                                                   // add x to it (y will be added to it below (in (2))
 		}
 
-		if(aliases[y] == onlySelf){
-			aliases[y] = aliases[x];
-			aliases[x].add(y);
+		if(aliases[y] == null){                                         // if y did not have aliases up to now
+			aliases[y] = aliases[x];                                    // this gives it an ArrayList<Integer> containing at least x, but possibly more elements if the test (1) was false,
+			                                                            // in which case it will contain all already found aliases of x (including x itself) 
+			aliases[x].add(y);                                          // but y still needs to be added to it (2) We could just as well write 'aliases[y].add(y)'
 			
 		}
-		else{
-			for(Integer y1: aliases[y]){
-				aliases[y1] = aliases[x];
-				aliases[x].add(y1);
+		else{                                                  
+			for(Integer y1: aliases[y]){                                // Loop through all aliases of y
+				aliases[y1] = aliases[x];                               // every alias will from now on use the (common for x and y and all their aliases) aliases set of x... (3)				                                                         
+				aliases[x].add(y1);                                     // ... to which every alias of y must be added 
+				                                                        // the last time (3) is executed the last reference to aliases[y] is overwritten,  aliases[y] -> garbage collection
 			}
 		}
 		
-		if(aliases[1] != onlySelf) System.out.println(1/0);
+		//if(aliases[1] != null) System.out.println(1/0);
 
 		return(1); 
 	}
@@ -396,21 +401,33 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 			System.out.println("initDB...");
 			// java.sql.Statement statement = connection.createStatement();
 
-			// Next statements only first time
-			
-			createTable(connection);  // only first time	
 			max_id_person = getHighestID_Person(connection);
 			
 			System.out.println("Call initializePersonNumbers, connection = " + connection);
-			initializePersonNumbers(connection);
-									
+
+			boolean firstTime = false;
+		    
+		    try {
+		      ResultSet rs = connection.createStatement().executeQuery("select * from personNumbers_save where 1=0");
+		      System.out.println("Not first time");
+		      
+		    }
+		    catch (Exception e ) {
+		      // table does not exist or some other problem
+		      //e.printStackTrace();
+		      System.out.println("First time");
+		      firstTime = true;		      
+		    }
 			
-			//id_person = new HashSet[highest_ID_Person + 1]; 
-			//personNumber = new int[highest_ID_Person + 1]; 
+		    if(firstTime){
+				// Next statements only first time
+				createTable(connection);                 // only first time	
+				initializePersonNumbers(connection);     // only first time	
+		    }
+			
+			
 			aliases = new ArrayList[max_id_person + 1]; 
-			
-			
-			ArrayList<Integer> h = null;
+			ArrayList<Integer> h = new ArrayList<Integer>();
 			int prevPersonNumber = - 1;
 			//java.sql.Statement statement1 = connection.createStatement();
 			
@@ -419,64 +436,49 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 			System.out.println("Reading person numbers");
 			
 			int count = 0;
+			int countpn = 0;
 			int pageSize = 1 * 1000 * 1000;
-			for(int i = 0; i < max_id_person; i += pageSize){
+			for(int i = 0; i <= max_id_person; i += pageSize){
 				String select = "select id_person, person_number from personNumbers where person_number > " + i + " and person_number <= " +  (i + pageSize) + " group by id_person order by person_number"; 
 				System.out.println(select);
-				//ResultSet r = statement.executeQuery(select);
 				ResultSet r = connection.createStatement().executeQuery(select);
-
 				while (r.next()) {
-
 					count++;
 					if(r.getInt("person_number") != prevPersonNumber){
-
-						//personNumberToP_IDs.put(prevPersonNumber, h);
-
-						if(h == null){
-							h = new ArrayList<Integer>();													
+						countpn++;
+						if(h.size() == 1){
+							aliases[prevPersonNumber] = null;
+							h.clear();                     // we can reuse h because it was not inserted into the aliases array
 						}
-						else{
-							if(h.size() == 1){
-								aliases[prevPersonNumber] = onlySelf;
-							}
-							else{							
-								for(Integer y1: h)
-									aliases[y1] = h;
-
-							}
-							h = new ArrayList<Integer>();
+						else{							
+							for(Integer y1: h)
+								aliases[y1] = h;
+							h = new ArrayList<Integer>();  // we can *not* reuse the old h because it was inserted into the aliases array
 						}
 						prevPersonNumber = r.getInt("person_number");
 					}
-
-					//int id_person     = r.getInt("id_person");
-					//int person_number = r.getInt("person_number");
-
-					h.add(r.getInt("id_person"));
+					h.add(r.getInt("id_person")); // h will contain all id_person that have the same person number
 				}
 				if(h != null){
 					if(h.size() == 1){
-						aliases[prevPersonNumber] = onlySelf;
+						aliases[prevPersonNumber] = null;
 					}
 					else{
 						for(Integer y1: h)
 							aliases[y1] = h;
 					}
-					//h = null;
-
 				}
 				r.close();
 				connection.createStatement().close();
 			}
 
-			System.out.println("Read   " + count + " person numbers");
+			System.out.println("Read   " + count + " persons, " + countpn + " peron numbers");
 			
 			// Copy s to s_save and truncate s
 
 			Utils.executeQI(connection, "drop table personNumbers_save ");
 			Utils.executeQ(connection, "rename table personNumbers to personNumbers_save ");
-			createTable(connection);	// recreate the table
+			createTable(connection);	// create new table 'personNumbers'
 			
 			//s = "drop index nr on personNumbers ";
 			//System.out.println(s);
@@ -510,10 +512,6 @@ outer:	for(int i = 0; i < 100 * 1000 * 1000; i += pageSize){
 	private static int getHighestID_Person(Connection connection){
 		
 		System.out.println("Identifying highest id_person");
-		
-		//TSM
-		
-		if(1==1) return 8 * 1000 * 1000;
 		
 		ResultSet r = null;
 		try {
