@@ -132,9 +132,10 @@ public class PersonNumber implements Runnable {
 		int totalCount = 0;
 		int effectiveCount = 0;
 		int pageSize = 1 * 1000 * 1000;
-outer:	for(int i = 0; i < max_id_matches; i += pageSize){
+		
+outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 			try {
-				System.out.println("Scanning matches with id_matches in [" + i + ", " + (i + pageSize) + ")");
+				System.out.println("Scanning matches with id_matches in range [" + i + ", " + (i + pageSize) + ")");
 				java.sql.Statement statement = connection.createStatement();
 				//String select = "select X.ego_id, X.mother_id, X.father_id, Y.ego_id, Y.mother_id, Y.father_id" +
 				//		" from links_match.matches, links_base.links_base as X,  links_base.links_base as Y " +
