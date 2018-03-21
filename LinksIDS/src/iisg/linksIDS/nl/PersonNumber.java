@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -32,8 +33,9 @@ public class PersonNumber implements Runnable {
 	//static HashSet<Integer> []                  id_person = null;
 	//static ArrayList<Integer>                     onlySelf = new ArrayList<Integer>();
 	static int                                  max_id_person = 0;
-	static int                                  max_id_matches = 100 * 1000 * 1000;
+	static int                                  max_id_matches = 0;
 	static ArrayList<Integer>[]                 aliases = null;
+	//static Set<Integer>[]                       aliases = null;
 	
 	
 	
@@ -129,13 +131,17 @@ public class PersonNumber implements Runnable {
 
 		System.out.println("Reading matches");
 		
+		int rangeCount = 0;
 		int totalCount = 0;
 		int effectiveCount = 0;
 		int pageSize = 1 * 1000 * 1000;
 		
+		max_id_matches = getHighestID_Matches(connection);
+		
 outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 			try {
-				System.out.println("Scanning matches with id_matches in range [" + i + ", " + (i + pageSize) + ")");
+				System.out.print("Scanning matches with id_matches in range [" + i + ", " + (i + pageSize) + ")");
+				
 				java.sql.Statement statement = connection.createStatement();
 				//String select = "select X.ego_id, X.mother_id, X.father_id, Y.ego_id, Y.mother_id, Y.father_id" +
 				//		" from links_match.matches, links_base.links_base as X,  links_base.links_base as Y " +
@@ -152,7 +158,7 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 						+ " links_prematch.links_base as X, "
 						+ " links_prematch.links_base as Y " +
 						" where " + 
-						" M.ids = 'y' and " +
+					//	" M.ids = 'y' and " +
 						" X.id_base = id_linksbase_1 and " +
 						" Y.id_base = id_linksbase_2 and " + 
 						" M.id_matches >= " + i + "  and " + 
@@ -210,13 +216,14 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 							effectiveCount += add(x, y);
 					}
 
-					count++;		  
-					if(count % 1000 == 0)
-						System.out.println("Read " + count + " matches in this range");
+					totalCount++;		
+					rangeCount++;
+					//if(count % 1000 == 0)
+						//System.out.println("Read " + count + " matches in this range");
 
 				}
 
-				totalCount += count;
+				
 				//System.out.println("Read total " + totalCount + " matches");
 
 			} catch (SQLException e) {
@@ -225,6 +232,10 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 				Utils.closeConnection(connection);
 				System.exit(-1);
 			}
+			
+			System.out.println(": " + rangeCount + " matches");
+			rangeCount = 0;
+			
 		}
 		
 		System.out.println("Read " + totalCount + " matches");
@@ -250,6 +261,13 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 
 //		for (Entry<Integer, Integer> entry : personNumbers.entrySet()) {		
 		
+		
+		// Copy s to s_save and truncate s
+
+		Utils.executeQI(connection, "drop table personNumbers_save ");
+		Utils.executeQ(connection, "rename table personNumbers to personNumbers_save ");
+		createTable(connection);	// create new table 'personNumbers'
+
 		
 	    for (int j = 0; j < aliases.length; j++) {
 	    	
@@ -350,44 +368,110 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 		
 		
 	}
-	
+	/*
+	 * 
+	 * Example:
+	 * 
+	 * Initial aliases:
+	 * 
+	 *  aliases[1] = null
+	 *  aliases[2] = null
+	 *  aliases[3] = null
+	 *  aliases[4] = null
+	 *  
+	 *  add(1, 2):
+	 * 
+	 *  h1 = {1, 2}
+	 * 
+	 *  aliases[1] = h1
+	 *  aliases[2] = h1
+	 *  aliases[3] = null
+	 *  aliases[4] = null
+	 * 
+	 *  add(3, 4):
+	 * 
+	 *  h1 = {1, 2}
+	 *  h2 = {3, 4}
+	 * 
+	 *  aliases[1] = h1
+	 *  aliases[2] = h1
+	 *  aliases[3] = h2
+	 *  aliases[4] = h2
+	 * 
+	 *  add(4, 2):
+	 * 
+	 *  h1 = lost, up for storage reclaim by garbage collector
+	 *  h2 = {3, 4, 1, 2}
+	 * 
+	 *  aliases[1] = h2
+	 *  aliases[2] = h2
+	 *  aliases[3] = h2
+	 *  aliases[4] = h2
+	 * 
+	 * 
+	 * 
+	 */
 	
 	private static int add(int x, int y){
 		
 				
-		if(x >= max_id_person  || y >= max_id_person) return(0);        // This could happen if table matches is out of synch with table person_c,
-		                                                                // we need to exclude it because it will give an 'array index out of bound' error
-		
-		if(x == 0      || y == 0 ) return(0);                           // id_person starts a 1
+		try{
+			if(x > max_id_person  || y > max_id_person) return(0);          // This could happen if table matches is out of synch with table person_c,
+			// we need to exclude it because it will give an 'array index out of bound' error
 
-		
-		if(aliases[x] != null && (aliases[x] == aliases[y])) return(0); // This is a 'redundant' match
-		
-		if(aliases[x] != null && aliases[x].size() > 100) return 0;     // This means a person should not occur in more than 100 certificates
-		
-		if(aliases[y] != null && aliases[y].size() > 100) return 0;     // This means a person should not occur in more than 100 certificates
-
-	   ArrayList<Integer> h = null;
-	   
-		if(aliases[x] == null){                                         // if x did not have aliases up to now
-			h = new ArrayList<Integer>();                               // aliases[x] needs an ArrayList<Integer> (containing at least x and y) (1) 
-			aliases[x] = h;                                             // indicate that x now has aliases other than x itself 
-			h.add(x);                                                   // add x to it (y will be added to it below (in (2))
-		}
-
-		if(aliases[y] == null){                                         // if y did not have aliases up to now
-			aliases[y] = aliases[x];                                    // this gives it an ArrayList<Integer> containing at least x, but possibly more elements if the test (1) was false,
-			                                                            // in which case it will contain all already found aliases of x (including x itself) 
-			aliases[x].add(y);                                          // but y still needs to be added to it (2) We could just as well write 'aliases[y].add(y)'
+			if(x == 0 || y == 0 ) return(0);                                // id_person starts a 1
 			
-		}
-		else{                                                  
-			for(Integer y1: aliases[y]){                                // Loop through all aliases of y
-				aliases[y1] = aliases[x];                               // every alias will from now on use the (common for x and y and all their aliases) aliases set of x... (3)				                                                         
-				aliases[x].add(y1);                                     // ... to which every alias of y must be added 
-				                                                        // the last time (3) is executed the last reference to aliases[y] is overwritten,  aliases[y] -> garbage collection
+			if(x == y) return(0);                                           // if we let this pass, we get a ConcurrentModificationException
+
+			if(aliases[x] != null && (aliases[x] == aliases[y])) return(0); // This is a 'redundant' match
+
+			if(aliases[x] != null && aliases[x].size() >= 100){
+				//System.out.println("Person with i_person = " + x + " has more than 100 matches" );
+				return 0;     
+			}
+
+			if(aliases[y] != null && aliases[y].size() >= 100){
+				//System.out.println("Person with i_person = " + y + " has more than 100 matches" );
+				return 0;     
+			}
+
+			ArrayList<Integer> h = null;
+
+			if(aliases[x] == null){                                         // if x did not have aliases up to now
+				h = new ArrayList<Integer>();                               // aliases[x] needs an ArrayList<Integer> (containing at least x and y) (1) 
+				aliases[x] = h;                                             // indicate that x now has aliases other than x itself 
+				h.add(x);                                                   // add x to it (y will be added to it below (in (2))
+			}
+
+			if(aliases[y] == null){                                         // if y did not have aliases up to now
+				aliases[y] = aliases[x];                                    // this gives it an ArrayList<Integer> containing at least x, but possibly more elements if the test (1) was false,
+				// in which case it will contain all already found aliases of x (including x itself) 
+				aliases[x].add(y);                                          // but y still needs to be added to it (2) We could just as well write 'aliases[y].add(y)'
+
+			}
+			else{                                                  
+				for(Integer y1: aliases[y]){                                // Loop through all aliases of y
+					aliases[y1] = aliases[x];                               // every alias will from now on use the (common for x and y and all their aliases) aliases set of x... (3)				                                                         
+					aliases[x].add(y1);                                     // ... to which every alias of y must be added 
+					// the last time (3) is executed the last reference to aliases[y] is overwritten,  aliases[y] -> garbage collection
+				}
 			}
 		}
+		catch(Throwable e){
+
+
+			System.out.println("Exception " + e.getMessage());
+			System.out.println("x, y = " + x + ","+ y);
+			System.out.println("aliases[x]:");
+			for(Integer a: aliases[x])
+				System.out.println(a);			
+			System.out.println("aliases[y]:");
+			for(Integer a: aliases[y])
+				System.out.println(a);	
+			System.exit(-2);
+
+		}
+
 		
 		//if(aliases[1] != null) System.out.println(1/0);
 
@@ -406,20 +490,25 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 			
 			System.out.println("Call initializePersonNumbers, connection = " + connection);
 
-			boolean firstTime = false;
+			boolean firstTime = true;
 		    
 		    try {
-		      ResultSet rs = connection.createStatement().executeQuery("select * from personNumbers_save where 1=0");
-		      System.out.println("Not first time");
+		      ResultSet rs = connection.createStatement().executeQuery("select * from personNumbers");
 		      
+				while (rs.next()) {
+					firstTime = false;
+					break;
+				}
+				rs.close();
 		    }
 		    catch (Exception e ) {
 		      // table does not exist or some other problem
 		      //e.printStackTrace();
-		      System.out.println("First time");
-		      firstTime = true;		      
 		    }
-			
+
+            System.out.println("First time = " + firstTime);
+
+		    
 		    if(firstTime){
 				// Next statements only first time
 				createTable(connection);                 // only first time	
@@ -440,8 +529,10 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 			int countpn = 0;
 			int pageSize = 1 * 1000 * 1000;
 			for(int i = 0; i <= max_id_person; i += pageSize){
-				String select = "select id_person, person_number from personNumbers where person_number > " + i + " and person_number <= " +  (i + pageSize) + " group by id_person order by person_number"; 
-				System.out.println(select);
+				String select = "select id_person, person_number from personNumbers where person_number > " + i + " and person_number <= " +  (i + pageSize) + " group by id_person order by person_number";
+				System.out.print("Scanning persons with personNumber in range [" + i + ", " + (i + pageSize) + ")");
+
+				//System.out.println(select);
 				ResultSet r = connection.createStatement().executeQuery(select);
 				while (r.next()) {
 					count++;
@@ -471,15 +562,14 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 				}
 				r.close();
 				connection.createStatement().close();
+				System.out.println(": " + countpn + " personNumbers, " + count + " persons in rang");
+				count = 0;
+				countpn = 0;
+
 			}
 
-			System.out.println("Read   " + count + " persons, " + countpn + " peron numbers");
-			
-			// Copy s to s_save and truncate s
+			System.out.println("Read   " + countpn + " personNumbers, " + count + " personsin total");
 
-			Utils.executeQI(connection, "drop table personNumbers_save ");
-			Utils.executeQ(connection, "rename table personNumbers to personNumbers_save ");
-			createTable(connection);	// create new table 'personNumbers'
 			
 			//s = "drop index nr on personNumbers ";
 			//System.out.println(s);
@@ -520,6 +610,30 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 			r = connection.createStatement().executeQuery("select max(id_person) as m FROM links_cleaned.person_c");
 			while (r.next()) {
 				System.out.println("Highest id_person = " + r.getInt("m"));
+				return(r.getInt("m"));
+			}
+			r.close();
+			//connection.createStatement().close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(0);
+		}
+		
+		return -1;
+		
+	}
+	
+	private static int getHighestID_Matches(Connection connection){
+		
+		System.out.println("Identifying highest id_matches");
+		
+		ResultSet r = null;
+		try {
+			//r = connection.createStatement().executeQuery("select max(id_person) as m FROM links_ids.personNumbers");
+			r = connection.createStatement().executeQuery("select max(id_matches) as m FROM links_match.matches");
+			while (r.next()) {
+				System.out.println("Highest id_matches = " + r.getInt("m"));
 				return(r.getInt("m"));
 			}
 			r.close();
