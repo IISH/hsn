@@ -31,7 +31,7 @@ public class PersonNumber implements Runnable {
 	static String                               insStmt   = null;	
 	//static int []                               personNumber = null;
 	//static HashSet<Integer> []                  id_person = null;
-	//static ArrayList<Integer>                     onlySelf = new ArrayList<Integer>();
+	static ArrayList<Integer>                   onlySelf = new ArrayList<Integer>();
 	static int                                  max_id_person = 0;
 	static int                                  max_id_matches = 0;
 	static ArrayList<Integer>[]                 aliases = null;
@@ -130,15 +130,22 @@ public class PersonNumber implements Runnable {
     	connection = Utils.connect2(server, Constants.links_match, userid,  passwd);
 
 		System.out.println("Reading matches");
-		
+
+		int max_idp = 0;
+		int min_idp = max_id_person;
+
 		int rangeCount = 0;
 		int totalCount = 0;
 		int effectiveCount = 0;
 		int pageSize = 1 * 1000 * 1000;
 		
+		int count0 = 0;
+		int count1 = 0;
+		int countRedundant = 0;
+		
 		max_id_matches = getHighestID_Matches(connection);
 		
-outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
+outer:	for(int i = 173 * 1000 * 1000; i <= max_id_matches; i += pageSize){    // Reduce execution time
 			try {
 				System.out.print("Scanning matches with id_matches in range [" + i + ", " + (i + pageSize) + ")");
 				
@@ -159,6 +166,7 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 						+ " links_prematch.links_base as Y " +
 						" where " + 
 					//	" M.ids = 'y' and " +
+						" M.id_match_process = 99921 and " +   // For testing, these are valid matches wrt links_base
 						" X.id_base = id_linksbase_1 and " +
 						" Y.id_base = id_linksbase_2 and " + 
 						" M.id_matches >= " + i + "  and " + 
@@ -186,38 +194,90 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 				int x = 0;
 				int y = 0;
 				
+				
+				
+				
 				while (r.next()) {
 
 					x = r.getInt("X.ego_id");
 					y = r.getInt("Y.ego_id");
 					//System.out.println("X.ego_id = " + x + ", Y.ego_id = " + y);
-					if(x != 0 && y != 0) 
-						effectiveCount += add(x, y);
+					if(x != 0 && y != 0){
+						//if(x > max_idp ) max_idp = x;
+						//if(y > max_idp ) max_idp = y;
+						//if(x < min_idp ) min_idp = x;
+						//if(y < min_idp ) min_idp = y;
+						
+						switch(add(x, y)){
+						case 0:  count0++;
+						         break;
+						case 1:  count1++;
+						         break;
+						case -1: countRedundant++;
+								 break;
+								 
+								 default:
+						         
+						}
+					}
 
 					if(r.getString("M.value_familyname_mo") != null){
 						x = r.getInt("X.mother_id");
 						y = r.getInt("Y.mother_id"); 
-						if(x != 0 && y != 0) 
-							effectiveCount += add(x, y);
+						if(x != 0 && y != 0){
+							switch(add(x, y)){
+							case 0:  count0++;
+							         break;
+							case 1:  count1++;
+							         break;
+							case -1: countRedundant++;
+									 break;
+									 
+									 default:
+							         
+							}
+						}
 					}
 
 					if(r.getString("M.value_familyname_fa") != null){
 						x = r.getInt("X.father_id");
 						y = r.getInt("Y.father_id");
-						if(x != 0 && y != 0) 
-							effectiveCount += add(x, y);
+						if(x != 0 && y != 0){
+							switch(add(x, y)){
+							case 0:  count0++;
+							         break;
+							case 1:  count1++;
+							         break;
+							case -1: countRedundant++;
+									 break;
+									 
+									 default:
+							         
+							}
+						}
 					}
 
 
 					if(r.getString("M.value_familyname_pa") != null){
 						x = r.getInt("X.partner_id");
 						y = r.getInt("Y.partner_id");
-						if(x != 0 && y != 0) 
-							effectiveCount += add(x, y);
+						if(x != 0 && y != 0){
+							switch(add(x, y)){
+							case 0:  count0++;
+							         break;
+							case 1:  count1++;
+							         break;
+							case -1: countRedundant++;
+									 break;
+									 
+									 default:
+							         
+							}
+						}
 					}
 
 					totalCount++;		
-					rangeCount++;
+					//rangeCount++;
 					//if(count % 1000 == 0)
 						//System.out.println("Read " + count + " matches in this range");
 
@@ -233,19 +293,29 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 				System.exit(-1);
 			}
 			
-			System.out.println(": " + rangeCount + " matches");
+			//System.out.println(": " + rangeCount + " matches");
 			rangeCount = 0;
 			
 		}
 		
-		System.out.println("Read " + totalCount + " matches");
-		System.out.println("" + effectiveCount + " person numbers changed");
+		System.out.println("Read " + totalCount + " matches, effective = " + count1 + ", redundant = " + countRedundant + ", invalid = " + count0);
+		
+		//System.out.println("" + effectiveCount + " person numbers changed");
+		//System.out.println("max_idp = " + max_idp + ", min_idp = " + min_idp);
 		
 		// write person numbers to table
 		
 		//if(1==1) System.exit(0);
 		
 		//Utils.executeQI(connection, "drop index nr on personNumbers");
+
+		// Copy s to s_save and truncate s
+		
+		connection = Utils.connect2(server, Constants.links_ids, userid,  passwd);
+
+		Utils.executeQI(connection, "drop table personNumbers_save ");
+		Utils.executeQ(connection, "rename table personNumbers to personNumbers_save ");
+		createTable(connection);	// create new table 'personNumbers'
 		
 		ArrayList<Thread> a = new ArrayList<Thread>();
 		
@@ -261,14 +331,6 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 
 //		for (Entry<Integer, Integer> entry : personNumbers.entrySet()) {		
 		
-		
-		// Copy s to s_save and truncate s
-
-		Utils.executeQI(connection, "drop table personNumbers_save ");
-		Utils.executeQ(connection, "rename table personNumbers to personNumbers_save ");
-		createTable(connection);	// create new table 'personNumbers'
-
-		
 	    for (int j = 0; j < aliases.length; j++) {
 	    	
 	    	
@@ -278,7 +340,7 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 			count++;
 			
 			i.add(j);
-			if(aliases[j] == null)
+			if(aliases[j] == onlySelf)
 				i.add(j);
 			else	
 				i.add(aliases[j].get(0));
@@ -379,7 +441,7 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 	 *  aliases[3] = null
 	 *  aliases[4] = null
 	 *  
-	 *  add(1, 2):
+	 * add(1, 2):
 	 * 
 	 *  h1 = {1, 2}
 	 * 
@@ -388,7 +450,7 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 	 *  aliases[3] = null
 	 *  aliases[4] = null
 	 * 
-	 *  add(3, 4):
+	 * add(3, 4):
 	 * 
 	 *  h1 = {1, 2}
 	 *  h2 = {3, 4}
@@ -398,7 +460,7 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 	 *  aliases[3] = h2
 	 *  aliases[4] = h2
 	 * 
-	 *  add(4, 2):
+	 * add(4, 2):
 	 * 
 	 *  h1 = lost, up for storage reclaim by garbage collector
 	 *  h2 = {3, 4, 1, 2}
@@ -415,7 +477,25 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 	private static int add(int x, int y){
 		
 				
+		
 		try{
+			
+			
+			//System.out.println( "add("+ x + "," + y + ")");
+			
+			if(aliases[x] == null){
+				System.out.println("aliases[" + x + "] == null!!");
+				System.exit(-2);
+				
+			}
+
+			if(aliases[y] == null){
+				System.out.println("aliases[" + y + "] == null!!");
+				System.exit(-2);
+				
+			}
+
+			
 			if(x > max_id_person  || y > max_id_person) return(0);          // This could happen if table matches is out of synch with table person_c,
 			// we need to exclude it because it will give an 'array index out of bound' error
 
@@ -423,27 +503,32 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 			
 			if(x == y) return(0);                                           // if we let this pass, we get a ConcurrentModificationException
 
-			if(aliases[x] != null && (aliases[x] == aliases[y])) return(0); // This is a 'redundant' match
+			if(aliases[x] != onlySelf && aliases[x] == aliases[y]){
+				System.out.println("Redundant   (" + x + "," + y + ")" );
+				return(-1); // This is a 'redundant' match
+			}
 
-			if(aliases[x] != null && aliases[x].size() >= 100){
+			if(aliases[x].size() >= 100){
 				//System.out.println("Person with i_person = " + x + " has more than 100 matches" );
 				return 0;     
 			}
 
-			if(aliases[y] != null && aliases[y].size() >= 100){
+			if(aliases[y].size() >= 100){
 				//System.out.println("Person with i_person = " + y + " has more than 100 matches" );
 				return 0;     
 			}
 
+			//System.out.println("At 10");
+			
 			ArrayList<Integer> h = null;
 
-			if(aliases[x] == null){                                         // if x did not have aliases up to now
+			if(aliases[x] == onlySelf){                                     // if x did not have aliases up to now
 				h = new ArrayList<Integer>();                               // aliases[x] needs an ArrayList<Integer> (containing at least x and y) (1) 
 				aliases[x] = h;                                             // indicate that x now has aliases other than x itself 
 				h.add(x);                                                   // add x to it (y will be added to it below (in (2))
 			}
 
-			if(aliases[y] == null){                                         // if y did not have aliases up to now
+			if(aliases[y] == onlySelf){                                     // if y did not have aliases up to now
 				aliases[y] = aliases[x];                                    // this gives it an ArrayList<Integer> containing at least x, but possibly more elements if the test (1) was false,
 				// in which case it will contain all already found aliases of x (including x itself) 
 				aliases[x].add(y);                                          // but y still needs to be added to it (2) We could just as well write 'aliases[y].add(y)'
@@ -463,11 +548,18 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 			System.out.println("Exception " + e.getMessage());
 			System.out.println("x, y = " + x + ","+ y);
 			System.out.println("aliases[x]:");
-			for(Integer a: aliases[x])
-				System.out.println(a);			
+			if(aliases[x] != null)
+				for(Integer a: aliases[x])
+					System.out.println(a);
+			else
+				System.out.println("aliases[" + x + "] is null!" );
 			System.out.println("aliases[y]:");
-			for(Integer a: aliases[y])
-				System.out.println(a);	
+			if(aliases[y] != null)
+				for(Integer a: aliases[y])
+					System.out.println(a);
+			else
+				System.out.println("aliases[" + y + "] is null!" );
+
 			System.exit(-2);
 
 		}
@@ -475,6 +567,7 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 		
 		//if(aliases[1] != null) System.out.println(1/0);
 
+		//System.out.println("Returning 1");
 		return(1); 
 	}
 	
@@ -488,7 +581,7 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 
 			max_id_person = getHighestID_Person(connection);
 			
-			System.out.println("Call initializePersonNumbers, connection = " + connection);
+			
 
 			boolean firstTime = true;
 		    
@@ -511,12 +604,14 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 		    
 		    if(firstTime){
 				// Next statements only first time
-				createTable(connection);                 // only first time	
+				createTable(connection);                 // only first time
+				System.out.println("Call initializePersonNumbers, connection = " + connection);
 				initializePersonNumbers(connection);     // only first time	
 		    }
 			
 			
-			aliases = new ArrayList[max_id_person + 1]; 
+			aliases = new ArrayList[max_id_person + 1]; // Array of ArrayLists, position p in array describes person_id p, 
+			                                            // the ArrayList contains all person_id that have the same personNumber as p and is used commonly by all these person_id
 			ArrayList<Integer> h = new ArrayList<Integer>();
 			int prevPersonNumber = - 1;
 			//java.sql.Statement statement1 = connection.createStatement();
@@ -527,10 +622,15 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 			
 			int count = 0;
 			int countpn = 0;
+			int counttot = 0;
 			int pageSize = 1 * 1000 * 1000;
-			for(int i = 0; i <= max_id_person; i += pageSize){
-				String select = "select id_person, person_number from personNumbers where person_number > " + i + " and person_number <= " +  (i + pageSize) + " group by id_person order by person_number";
-				System.out.print("Scanning persons with personNumber in range [" + i + ", " + (i + pageSize) + ")");
+			//for(int i = 0; i <= max_id_person; i += pageSize){
+			for(int i = 0; i <= 1; i += pageSize){  // Time reduce
+				//String select = "select id_person, person_number from personNumbers where person_number > " + i + " and person_number <= " +  (i + pageSize) +
+				String select = "select id_person, person_number from personNumbers where person_number >= 35240945 and person_number <= 38499635 " + // Time reduce 
+         						" order by person_number, id_person";
+				//System.out.print("Scanning persons with personNumber in range [" + i + ", " + (i + pageSize) + ")");
+				System.out.print("Scanning persons with personNumber in range [35240945, 38499635]");  // Time reduce
 
 				//System.out.println(select);
 				ResultSet r = connection.createStatement().executeQuery(select);
@@ -539,7 +639,7 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 					if(r.getInt("person_number") != prevPersonNumber){
 						countpn++;
 						if(h.size() == 1){
-							aliases[prevPersonNumber] = null;
+							aliases[prevPersonNumber] = onlySelf;
 							h.clear();                     // we can reuse h because it was not inserted into the aliases array
 						}
 						else{							
@@ -553,7 +653,7 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 				}
 				if(h != null){
 					if(h.size() == 1){
-						aliases[prevPersonNumber] = null;
+						aliases[prevPersonNumber] = onlySelf;
 					}
 					else{
 						for(Integer y1: h)
@@ -562,13 +662,12 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 				}
 				r.close();
 				connection.createStatement().close();
-				System.out.println(": " + countpn + " personNumbers, " + count + " persons in rang");
+				System.out.println(": " + countpn + " personNumbers, " + count + " persons in range");
+				counttot += count;
 				count = 0;
-				countpn = 0;
-
 			}
 
-			System.out.println("Read   " + countpn + " personNumbers, " + count + " personsin total");
+			System.out.println("Read   " + countpn + " personNumbers, " + counttot + " persons in total");
 
 			
 			//s = "drop index nr on personNumbers ";
@@ -686,8 +785,10 @@ outer:	for(int i = 0; i <= max_id_matches; i += pageSize){
 	
 	private static void initializePersonNumbers(Connection connection){
 		
-		System.out.println("insert into links_ids.personNumbers (select id_person, id_person from links_cleaned.person_c where id_person <= " + max_id_person + ")");
-		Utils.executeQ(connection, "insert into links_ids.personNumbers (select id_person, id_person from links_cleaned.person_c where id_person <= " + max_id_person + ")");
+		//String x = "insert into links_ids.personNumbers (select id_person, id_person from links_cleaned.person_c where id_person <= " + max_id_person + ")";
+		String x = "insert into links_ids.personNumbers (select id_person, id_person from links_cleaned.person_c where id_person >= 35240945 and id_person <=  38499635)"; // Reduce time
+		System.out.println(x);
+		Utils.executeQ(connection, x);
 
 	}
 }
