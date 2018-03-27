@@ -443,6 +443,8 @@ outer:	for(int i = 173 * 1000 * 1000; i <= max_id_matches; i += pageSize){    //
 	 *  
 	 * add(1, 2):
 	 * 
+	 * 
+	 *  Allocate h1, add 1 and 2
 	 *  h1 = {1, 2}
 	 * 
 	 *  aliases[1] = h1
@@ -451,6 +453,8 @@ outer:	for(int i = 173 * 1000 * 1000; i <= max_id_matches; i += pageSize){    //
 	 *  aliases[4] = null
 	 * 
 	 * add(3, 4):
+	 * 
+	 * Allocate h2, add 3 and 4
 	 * 
 	 *  h1 = {1, 2}
 	 *  h2 = {3, 4}
@@ -462,7 +466,8 @@ outer:	for(int i = 173 * 1000 * 1000; i <= max_id_matches; i += pageSize){    //
 	 * 
 	 * add(4, 2):
 	 * 
-	 *  h1 = lost, up for storage reclaim by garbage collector
+	 * add 1 and 2 to h2
+	 *  
 	 *  h2 = {3, 4, 1, 2}
 	 * 
 	 *  aliases[1] = h2
@@ -470,7 +475,7 @@ outer:	for(int i = 173 * 1000 * 1000; i <= max_id_matches; i += pageSize){    //
 	 *  aliases[3] = h2
 	 *  aliases[4] = h2
 	 * 
-	 * 
+	 *  h1 = no reference to h1 anymore, up for storage reclaim by garbage collector
 	 * 
 	 */
 	
@@ -504,7 +509,7 @@ outer:	for(int i = 173 * 1000 * 1000; i <= max_id_matches; i += pageSize){    //
 			if(x == y) return(0);                                           // if we let this pass, we get a ConcurrentModificationException
 
 			if(aliases[x] != onlySelf && aliases[x] == aliases[y]){
-				System.out.println("Redundant   (" + x + "," + y + ")" );
+				//System.out.println("Redundant   (" + x + "," + y + ")" );
 				return(-1); // This is a 'redundant' match
 			}
 

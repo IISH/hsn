@@ -203,37 +203,37 @@ public class Utils {
 	
 	public static void createIDSTables(Connection connection){
 		
-		
+		System.out.println("In createIDSTables");
 		
 		try {
 			Statement s = (Statement) connection.createStatement ();
 			
-			s.execute("use links_ids");
+			//s.execute("use links_ids");
 			
 			String createStatement = CreateIDSTables.INDIVIDUAL;
 			s.execute(createStatement);
-			createStatement = CreateIDSTables.INDIVIDUAL_TRUNCATE;
-			s.execute(createStatement);
+			//createStatement = CreateIDSTables.INDIVIDUAL_TRUNCATE;
+			//s.execute(createStatement);
 			
             createStatement = CreateIDSTables.INDIV_INDIV;
 			s.execute(createStatement);
-			createStatement = CreateIDSTables.INDIV_INDIV_TRUNCATE;
-			s.execute(createStatement);
+			//createStatement = CreateIDSTables.INDIV_INDIV_TRUNCATE;
+			//s.execute(createStatement);
 			
             createStatement = CreateIDSTables.INDIV_CONTEXT;
 			s.execute(createStatement);
-			createStatement = CreateIDSTables.INDIV_CONTEXT_TRUNCATE;
-			s.execute(createStatement);
+			//createStatement = CreateIDSTables.INDIV_CONTEXT_TRUNCATE;
+			//s.execute(createStatement);
 			
             createStatement = CreateIDSTables.CONTEXT;
 			s.execute(createStatement);
-			createStatement = CreateIDSTables.CONTEXT_TRUNCATE;
-			s.execute(createStatement);
+			//createStatement = CreateIDSTables.CONTEXT_TRUNCATE;
+			//s.execute(createStatement);
 			
             createStatement = CreateIDSTables.CONTEXT_CONTEXT;
 			s.execute(createStatement);
-			createStatement = CreateIDSTables.CONTEXT_CONTEXT_TRUNCATE;
-			s.execute(createStatement);
+			//createStatement = CreateIDSTables.CONTEXT_CONTEXT_TRUNCATE;
+			//s.execute(createStatement);
 			
 			
 		} catch (SQLException e) {

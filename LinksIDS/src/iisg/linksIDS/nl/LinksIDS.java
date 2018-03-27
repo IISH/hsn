@@ -35,6 +35,8 @@ public class LinksIDS{
 	private static Integer personsWritten             = 0;
 	public static int phase                           = 0;
 	
+	private static int highest_ID_Person = 0;
+	
 
 	
 	
@@ -100,7 +102,7 @@ public class LinksIDS{
 			
 			// enable backslash escape
 			
-			Utils.executeQ(connection, "SET SESSION sql_mode=''");
+			//Utils.executeQ(connection, "SET SESSION sql_mode=''");
 			
 			
 
@@ -115,8 +117,8 @@ public class LinksIDS{
 
 
 			String [] args0 = {server, userid, passwd};
-			PersonNumber.personNumber(args0);		
-			if(1==1) System.exit(8);
+			//PersonNumber.personNumber(args0);		
+			//if(1==1) System.exit(8);
 
 			int previousPersonNumber = -1;
 
@@ -129,9 +131,9 @@ public class LinksIDS{
 			// SELECT * from links_match.personNumbers as N,  links_cleaned.person_c as P, links_cleaned.registration_c as R where N.id_person = P.id_person and P.id_registration =  R.id_registration and (person_number > 0 and   person_number <=  100000) order by person_number
 
 
-			
+			highest_ID_Person = getHighestID_Person(connection); 
 			System.out.println("Processing Perons");
-			outer: for(int a = 0; a < 100*1000*1000; a += pageSize){
+			outer: for(int a = 0; a <= highest_ID_Person ; a += pageSize){
 				
 				//if(1==1) break outer;
 				//if(1==1)continue;
@@ -219,7 +221,7 @@ public class LinksIDS{
 						" ORDER BY N.person_number, R.registration_maintype, P.role";
 
 				System.out.println("Scanning person_number range [" + a + ", " + (a + pageSize - 1) + "]");
-				System.out.println(q);
+				//System.out.println(q);
 				s.executeQuery(q);
 				resultSet = s.getResultSet ();
 				
@@ -298,8 +300,7 @@ public class LinksIDS{
 		//System.out.println("Program ended");
 		//if(1==1) System.exit(0);
 		
-		relations = new HashMap<Pair, Integer>();
-		int highest_ID_Person = getHighestID_Person(connection); 
+		relations = new HashMap<Pair, Integer>();		
 		relationsX = new HashSet[highest_ID_Person + 1]; 
 		
 		String regType = null;
@@ -1303,31 +1304,42 @@ public class LinksIDS{
 		
 		System.out.println("Populate Context 1");
 	
-		Connection connection_ref = null;
+		// insert into links_ids.context (Id_C, Id_D, type, value) values("1","LINKS","NAME", "Afrika")
+		
+		
 		try{
+			//connection = Utils.connect2(server, Constants.links_ids, userid,  passwd);
 			Statement s = (Statement) connection.createStatement ();
-			s.executeQuery("select count(*) as c from links_ids.context");
+			s.executeQuery("select * from context");
+			//s.executeQuery("select * from links_ids.personNumbers");
 			resultSet = s.getResultSet ();	
+			//System.out.println("c = " + resultSet.getInt("c"));
+			
+			//System.out.println("resultSet.next() = " + resultSet.next());
 			
 			
 			
 			//System.exit(8);
 			//if(1==1) return;
-			int c = 0;
-			while(resultSet.next() == true){			
-				c = resultSet.getInt("c");
-				break;
+			//int c = 0;
+			while(resultSet.next() == true){
+				//System.out.println("c = " + resultSet.getInt("c"));
+
+				//System.out.println("AAAA");
+				//c = resultSet.getInt("Id_C");
+				System.out.println("Table context is alredy populated");
+				return;  // there are elements in context table, so we do not populate
 			}
 			
 			//if(c > 0) return;  // There are already entries in context, so it is not the first time, so we don't populate
 			
 			//System.out.println("Here");
-			Utils.executeQ(connection, "truncate links_ids.context"); // clear context_context
-			Utils.executeQ(connection, "truncate links_ids.context_context"); // clear context_context
+			//Utils.executeQ(connection, "truncate links_ids.context"); // clear context_context
+			//Utils.executeQ(connection, "truncate links_ids.context_context"); // clear context_context
 			
 			//connection_ref = Utils.connect("//194.171.4.30" + "links_ids?user=" + userid + "&password=" + passwd); //194.171.4.30 is the 030);  // this is on the reference server
 			//connection_ref = Utils.connect2(Constants.reference_server, Constants.links_general, userid,  passwd); //194.171.4.30 is the 030);  // this is on the reference server
-			connection_ref = Utils.connect2(Constants.reference_server, Constants.links_general, "cmu", "cmucmu"); //194.171.4.30 is the 030);  // this is on the reference server
+			Connection connection_ref = Utils.connect2(Constants.reference_server, Constants.links_general, "cmu", "cmucmu"); //194.171.4.30 is the 030);  // this is on the reference server
 
 			Statement t = (Statement) connection_ref.createStatement ();
 			
@@ -1492,6 +1504,8 @@ public class LinksIDS{
 				
 			}				
 			
+			if(connection_ref != null)
+				Utils.closeConnection(connection_ref);
 		}
 		catch (Exception e) {
 			System.out.println("In catch");
@@ -1504,7 +1518,14 @@ public class LinksIDS{
 		
 		saveContext(connection);
 		saveContextContext(connection);
-		Utils.closeConnection(connection_ref);
+		
+		try {
+			connection.commit();			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		System.out.println("Populate Context 2");
 
 	}
