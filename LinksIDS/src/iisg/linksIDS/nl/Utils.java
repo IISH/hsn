@@ -203,7 +203,7 @@ public class Utils {
 	
 	public static void createIDSTables(Connection connection){
 		
-		System.out.println("In createIDSTables");
+		//System.out.println("In createIDSTables");
 		
 		try {
 			Statement s = (Statement) connection.createStatement ();
@@ -253,7 +253,7 @@ public class Utils {
 		connectionURL = connectionURL.replace("localhost" , server);
 		connectionURL = connectionURL.replace("yourDBName" , dataBase);
 		
-		System.out.println("connectionURL = "+ connectionURL);
+		//System.out.println("connectionURL = "+ connectionURL);
 		
 		Connection c = null;
 		
@@ -328,6 +328,7 @@ public class Utils {
 		
 		try {
 			java.sql.Statement statement = connection.createStatement();
+			connection.commit();
 
 			statement.execute(s);
 			//connection.commit();
@@ -346,6 +347,7 @@ public class Utils {
 
 		try {
 			java.sql.Statement statement = connection.createStatement();
+			connection.commit();
 			
 			//System.out.println(s);
 
@@ -358,6 +360,7 @@ public class Utils {
 				Utils.closeConnection(connection);
 				System.exit(-1);
 		}
+		
 	}
 
 	public static void executeQI(Connection connection, String s){	

@@ -43,7 +43,7 @@ public static void initializeContext(Connection connection){
 		
 	try {
 		s = (Statement) connection.createStatement ();
-		s.executeQuery("select max(Id_C) as m from links_ids.context");  // Only municipalitie names
+		s.executeQuery("select max(Id_C) as m from links_ids.context");  // Only municipality names
 		resultSet = s.getResultSet();
 		
 		
@@ -104,8 +104,8 @@ public static void  loadContext(Connection connection){
 
 public static void saveContext(Connection connection, ArrayList<String> cL, ArrayList<String> ccL){
 
-	flushContext(cL, connection);
-	flushContextContext(ccL, connection);
+	saveContext(cL, connection);
+	saveContextContext(ccL, connection);
 	System.out.println("Highest Id_C = " + highestContext_ID);
 	
 }
@@ -121,7 +121,7 @@ public static int addCertificate(Connection connection, ArrayList<String> cL, Ar
 		addContext(cL, connection, Id_C_1, source, "PERIOD", "" + yearCertificate, "Event", "Exact", day, month, yearCertificate);		
 		addContext(cL, connection, Id_C_1, source, "SEQUENCE_NUMBER", sequenceNumberCertificate, "Event", "Exact", day, month, yearCertificate);
 		
-		addContextContext(ccL, connection, Id_C_1, Id_C_registration_location, source, "Source and Municipality",  null, null,  yearCertificate, month, day);	
+		addContextContext(ccL, connection, Id_C_1, Id_C_registration_location, source, "Source and Municipality",  null, null,  month, day, yearCertificate);	
 
 		return Id_C_1;
 	
@@ -138,7 +138,7 @@ public static void addContext(ArrayList<String> cL, Connection connection, int I
 	cL.add(t);
 	
 	 if(cL.size() > 10000)
-		 flushContext(cL, connection);
+		 saveContext(cL, connection);
 
 	
 }
@@ -153,12 +153,12 @@ public static void addContextContext(ArrayList<String> ccL, Connection connectio
 	ccL.add(t);
 	
 	 if(ccL.size() > 10000)
-		 flushContextContext(ccL, connection);
+		 saveContextContext(ccL, connection);
 
 	
 }
 
-public static void flushContext(ArrayList<String> lL, Connection connection){
+public static void saveContext(ArrayList<String> lL, Connection connection){
 	
 	if(lL.size() == 0)
 		return;
@@ -172,7 +172,7 @@ public static void flushContext(ArrayList<String> lL, Connection connection){
 	Utils.executeQ(connection, u);
 }
 	
-public static void flushContextContext(ArrayList<String> lL, Connection connection){
+public static void saveContextContext(ArrayList<String> lL, Connection connection){
 	
 	if(lL.size() == 0)
 		return;

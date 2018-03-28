@@ -75,6 +75,7 @@ public class LinksIDS{
 	public static void main(String[] args) {
 
 		int c = 0;
+		int pn = 0;
 		int pageSize = 1000 * 1000;
 
 
@@ -132,10 +133,10 @@ public class LinksIDS{
 
 
 			highest_ID_Person = getHighestID_Person(connection); 
-			System.out.println("Processing Perons");
+			System.out.println("Processing Persons");
 			outer: for(int a = 0; a <= highest_ID_Person ; a += pageSize){
 				
-				//if(1==1) break outer;
+				if(1==1) break outer;
 				//if(1==1)continue;
 
 				//String q = "SELECT * from links_ids.personNumbers as N,  links_cleaned.person_c   as P, links_cleaned.registration_c as R  " +
@@ -170,8 +171,8 @@ public class LinksIDS{
 						" P.death_day_max, " +
 						" P.death_month_max, " +
 						" P.death_year_max, " +
-
-						" P.death_location, " + 
+						" P.death_location, " +
+						
 						" P.role, " + 
 						" P.stillbirth, " + 
 						" P.occupation, " + 
@@ -220,7 +221,7 @@ public class LinksIDS{
 						" N.person_number <=  " + (a + pageSize)  +  
 						" ORDER BY N.person_number, R.registration_maintype, P.role";
 
-				System.out.println("Scanning person_number range [" + a + ", " + (a + pageSize - 1) + "]");
+				System.out.print("Scanning person_number range [" + a + ", " + (a + pageSize) + ")");
 				//System.out.println(q);
 				s.executeQuery(q);
 				resultSet = s.getResultSet ();
@@ -244,11 +245,12 @@ public class LinksIDS{
 					//System.out.println("c = " + c);
 					if(resultSet.getInt("person_number") != previousPersonNumber){
 						
+						pn++;
 						
 						if(persons.size()  != 0){
 							
-							if(c % 10000 == 0)
-								System.out.println("---> processed " + c + " person appearances");
+							//if(c % 10000 == 0)
+							//	System.out.println(",  processed " + c + " person appearances");
 
 							//if(c > 1000 * 1000){								
 								//System.exit(8);
@@ -274,7 +276,7 @@ public class LinksIDS{
 					writeIndividual(h, persons);	
 					persons.clear();
 				}
-				System.out.println("---> processed " + c + " person appearances");
+				System.out.println(", processed " + c + " person appearances, " + pn + " person numbers");
 
 			}
 
@@ -330,15 +332,15 @@ public class LinksIDS{
 						" links_cleaned.person_c         as P, " +
 						" links_cleaned.registration_c   as R  " +
 						" WHERE" +
-						" R.id_source !=  10  and " +    // 10 = HSNRP0002, the 'anchor'
+						" R.id_source !=  10  and " +    // 10 = HSNRPxxx, the 'anchor'
 						" R.id_registration       = P.id_registration and " +
 						" P.id_person             = N.id_person and " +
 						"     (R.id_registration >  " +  a + " and " +	
 						"      R.id_registration <= " + (a + pageSize)  + ")" + 
 						" order by R.id_registration";
 
-				System.out.println(q);
-				System.out.println("Scanning id_registration range [" + a + ", " + (a + pageSize - 1) + "]");
+				//System.out.println(q);
+				System.out.print("Scanning id_registration range [" + a + ", " + (a + pageSize) + ")");
 				Statement s = (Statement) connection.createStatement ();
 				s.executeQuery(q);
 				resultSet = s.getResultSet ();
@@ -433,7 +435,7 @@ public class LinksIDS{
 							}
 						}
 
-						// Add context elemnets for
+						// Add context elements for
 						
 						previousRegistrationNumber = resultSet.getInt("id_registration");
 
@@ -468,8 +470,8 @@ public class LinksIDS{
 						addIndivContext(connection, resultSet.getInt("person_number" ), Id_C,  regType, rol, "Event", "Exact", registration_day, registration_month, registration_year);
 					}
 					c++;
-					if(c % 10000 == 0)
-						System.out.println("---> processed " + c + " person appearances (2)");
+					//if(c % 10000 == 0)
+						//System.out.println("---> processed " + c + " person appearances (2)");
 
 					personNumbers.add(resultSet.getInt("person_number"));
 					roles.add(resultSet.getInt("role"));
@@ -482,7 +484,7 @@ public class LinksIDS{
 					roles.clear();
 				}
 				 
-				System.out.println("---> processed " + c + " person appearances");
+				System.out.println(", processed " + c + " person appearances");
 
 			}
 			catch (Exception e) {
@@ -507,6 +509,7 @@ public class LinksIDS{
 		int birth_day       = 0;
 		int birth_month     = 0;
 		int birth_year      = 0;
+		
 		int birth_day_min   = 0;
 		int birth_month_min = 0;
 		int birth_year_min  = 0;
@@ -519,6 +522,7 @@ public class LinksIDS{
 		int death_day       = 0;
 		int death_month     = 0;
 		int death_year      = 0;
+		
 		int death_day_min   = 0;
 		int death_month_min = 0;
 		int death_year_min  = 0;
@@ -528,15 +532,16 @@ public class LinksIDS{
 		
 		boolean deathDay = false;
 
-		int mar_day = 0;
-		int mar_month = 0;
-		int mar_year = 0;
-		int mar_day_min = 0;
-		int mar_month_min = 0;
-		int mar_year_min = 0;
-		int mar_day_max = 0;
-		int mar_month_max = 0;
-		int mar_year_max = 0;
+		int mar_day 		= 0;
+		int mar_month 		= 0;
+		int mar_year 		= 0;
+		
+		int mar_day_min		= 0;
+		int mar_month_min 	= 0;
+		int mar_year_min	= 0;
+		int mar_day_max		= 0;
+		int mar_month_max 	= 0;
+		int mar_year_max 	= 0;
 		
 		int divorce_day = 0;
 		int divorce_month = 0;
@@ -550,6 +555,7 @@ public class LinksIDS{
 		boolean dl = false;
 		
 		int person_number = 0;
+		
 		int registration_maintype = 0;
 		int registration_day = 0;
 		int registration_month = 0;
@@ -625,7 +631,7 @@ public class LinksIDS{
 				if(stillborn != null && stillborn.trim().equals("1")) birthdate = "STILLBIRTH_DATE";
 
 				if(birth_year != 0){					
-					if(birth_year != 0){
+					if(birth_year_max != 0){
 						
 						birth_day_min   = 0;
 						birth_month_min = 0;
@@ -730,7 +736,7 @@ public class LinksIDS{
 					if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null) death_year_max = new Integer (persons.get(i)[h.get(columnName)]);
 
 					if(death_year != 0){
-						if(death_year != 0){						
+						if(death_year_max != 0){						
 							death_day_min   = 0;
 							death_month_min = 0;
 							death_year_min  = 0;
@@ -826,7 +832,7 @@ public class LinksIDS{
 
 				if(mar_year != 0){
 
-					if(mar_year != 0){						
+					if(mar_year_max != 0){						
 						mar_day_min   = 0;
 						mar_month_min = 0;
 						mar_year_min  = 0;
@@ -1021,6 +1027,7 @@ public class LinksIDS{
 		//String u = "insert into links_ids.context (Id_C, Id_D, Source, Type, Value, date_type, estimation, day, month, year) values" + s;
 			
    		Utils.executeQ(connection, u);
+   		
 
 	}
 		
@@ -1055,7 +1062,7 @@ public class LinksIDS{
 	public static void saveContext(Connection connection){
 		
 		
-		System.out.println("cList.size() = " + cList.size());
+		//System.out.println("cList.size() = " + cList.size());
 		
 		if(cList.size() == 0)
 			return;
@@ -1066,7 +1073,7 @@ public class LinksIDS{
 		s = s.substring(0, s.length() -1);
 		String u = "insert into links_ids.context (Id_C, Id_D, type, value) values" + s;
 			
-		System.out.println(u.substring(0, 120));
+		//System.out.println(u.substring(0, 120));
    		Utils.executeQ(connection, u);
 	}
 	
@@ -1302,7 +1309,7 @@ public class LinksIDS{
 	
 	static void populateContext(){
 		
-		System.out.println("Populate Context 1");
+		//System.out.println("Populate Context 1");
 	
 		// insert into links_ids.context (Id_C, Id_D, type, value) values("1","LINKS","NAME", "Afrika")
 		
@@ -1327,7 +1334,7 @@ public class LinksIDS{
 
 				//System.out.println("AAAA");
 				//c = resultSet.getInt("Id_C");
-				System.out.println("Table context is alredy populated");
+				System.out.println("Table context is alraedy populated");
 				return;  // there are elements in context table, so we do not populate
 			}
 			
@@ -1526,13 +1533,13 @@ public class LinksIDS{
 			e.printStackTrace();
 		}
 		
-		System.out.println("Populate Context 2");
+		//System.out.println("Populate Context 2");
 
 	}
 	
 	private static int getHighestID_Person(Connection connection){
 		
-		System.out.println("Identifying highest id_person");
+		//System.out.println("Identifying highest id_person");
 		ResultSet r = null;
 		try {
 			r = connection.createStatement().executeQuery("select max(id_person) as m FROM links_ids.personNumbers");
