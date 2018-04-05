@@ -116,12 +116,12 @@ public static int addCertificate(Connection connection, ArrayList<String> cL, Ar
 		
 		int Id_C_1 = getNewContextID();
 		
-		addContext(cL, connection, Id_C_1, source, "LEVEL", "Source", "Event", "Exact", day, month, yearCertificate);		
-		addContext(cL, connection, Id_C_1, source, "NAME", source, "Event", "Exact", day, month, yearCertificate);		
-		addContext(cL, connection, Id_C_1, source, "PERIOD", "" + yearCertificate, "Event", "Exact", day, month, yearCertificate);		
-		addContext(cL, connection, Id_C_1, source, "SEQUENCE_NUMBER", sequenceNumberCertificate, "Event", "Exact", day, month, yearCertificate);
+		addContext(cL, connection, Id_C_1, "LINKS "+ source, "LEVEL", "Source", "Event", "Exact", day, month, yearCertificate);		
+		addContext(cL, connection, Id_C_1, "LINKS "+ source, "NAME", source, "Event", "Exact", day, month, yearCertificate);		
+		addContext(cL, connection, Id_C_1, "LINKS "+ source, "PERIOD", "" + yearCertificate, "Event", "Exact", day, month, yearCertificate);		
+		addContext(cL, connection, Id_C_1, "LINKS "+ source, "SEQUENCE_NUMBER", sequenceNumberCertificate, "Event", "Exact", day, month, yearCertificate);
 		
-		addContextContext(ccL, connection, Id_C_1, Id_C_registration_location, source, "Source and Municipality",  null, null,  month, day, yearCertificate);	
+		addContextContext(ccL, connection, Id_C_1, Id_C_registration_location, "LINKS "+ source, "Source and Municipality",  "Event", "Exact",  month, day, yearCertificate);	
 
 		return Id_C_1;
 	

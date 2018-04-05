@@ -23,11 +23,18 @@ import nl.iisg.hsncommon.ConstRelations2;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
+;
+
 
 
  
 
 public class HSNLinksIntegration implements Runnable {
+	
+
+	private static String userid;
+	private static String passwd;
+	private static String server;
 	
     static JTextArea textArea = null;
     static DataOutputStream out = null;
@@ -80,14 +87,24 @@ public class HSNLinksIntegration implements Runnable {
 		try{
 
 			
-		    print("\nIDS - Add LINKS Data started\n");
+			print("Add Links Data started ...");
 
-			System.out.println("Started");
 
-			connection = Utils.connect(Constants.hsn_ids);
+			if(args.length > 2){
+				server = args[0].trim();
+				userid = args[1].trim();
+				passwd = args[2].trim();
+				connection = Utils.connect2(server, Constants.links_hns_ids, userid,  passwd); 
+				if(connection == null){
+					System.out.println("Invalid User/password/server");
+					System.exit(-1);
+				}
+
+			}
+
 			
-			Utils.createMessageTable(connection);
-			Utils.loadMessages(connection);
+			//Utils.createMessageTable(connection);
+			//Utils.loadMessages(connection);
 			//Utils.executeQ(connection, "SET SESSION sql_mode=''"); // enable backslash escape
 			
 			print("Running initial queries,  this takes about 25 minutes... ");

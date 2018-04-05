@@ -106,8 +106,8 @@ public void convert(EntityManager em){
     	 //System.out.println("getD1sdcc = " + getD1sdcc() + "getD1sdcl = " + getD1sdcl() + " ceCertificate = " + ceCertificate);
     	 
     	 
-    	 //String death_certificate = "Death Certificate";
-    	 String death_certificate = "DC D1";
+    	 //String death_certificate = "D1ificate";
+    	 String death_certificate = "D1";
 
 		 
 		 if(getD1rpln() != null && getD1rpln().trim().length() > 0  && !getD1rpln().trim().equalsIgnoreCase("N"))
@@ -117,7 +117,7 @@ public void convert(EntityManager em){
 		 
 		 if(ceCertificate != null){
 			 if(getD1sdce() != null && getD1sdce().equalsIgnoreCase("J"))
-				 death_certificate =  "DC D1"; //Extract Death Certificate"; 
+				 death_certificate =  "D1"; //Extract D1ificate"; 
 			 
 			 Utils.addIndivContextAndContextCertificate(getD1sdcy(), getD1sdcn(), ceCertificate, em, getIdnr(), Id_I_RP, death_certificate, "Deceased", "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
 			 //Utils.addIndivAndContext(getD1rpdl(), ceCertificate, em, getIdnr(), Id_I_RP, "DC D1", "DEATH_LOCATION", "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
@@ -175,7 +175,7 @@ public void convert(EntityManager em){
 			Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "BIRTH_DATE", null, "Declared", "Estimated [0/100]", 1, 1, getD1sdcy() - 100, 1, 1,  getD1sdcy());
 
 		 
-		 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "HSN_RESEARCH_PERSON", "HSN RP", "Missing", "Time_invariant", 0, 0, 0);
+		 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "HSN_RESEARCH_PERSON", "RP", "Missing", "Time_invariant", 0, 0, 0);
          Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
     	 //if(ceCertificate != null){
@@ -355,7 +355,7 @@ public void convert(EntityManager em){
 					int startYear1  = (new Integer(getD1falla().getStartDate().substring(6,10))).intValue();
 
 					Utils.addIndivContextAndContext(getD1falla().getQuarter(), getD1falla().getStreet(), getD1falla().getNumber(), getD1falla().getAddition(),
-							ceAddress, em, getIdnr(), Id_I_FA, "DC D1 ",  "Address", "Reported", "Exact",  
+							ceAddress, em, getIdnr(), Id_I_FA, "D1 ",  "Address", "Reported", "Exact",  
 							startDay1, startMonth1, startYear1);
 	   			 }
 	   			 
@@ -454,7 +454,7 @@ public void convert(EntityManager em){
 					int startYear1  = (new Integer(getD1molla().getStartDate().substring(6,10))).intValue();
 
 					Utils.addIndivContextAndContext(getD1molla().getQuarter(), getD1molla().getStreet(), getD1molla().getNumber(), getD1molla().getAddition(),
-							ceAddress, em, getIdnr(), Id_I_MO, "DC D1 ",  "Address", "Reported", "Exact",  
+							ceAddress, em, getIdnr(), Id_I_MO, "D1 ",  "Address", "Reported", "Exact",  
 							startDay1, startMonth1, startYear1);
 	   			 }
 	   			 

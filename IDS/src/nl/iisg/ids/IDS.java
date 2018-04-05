@@ -2290,7 +2290,7 @@ public static void print(String line) {
 
 
 public static String getVersion() {
-	return version;
+	return "HSN" + version;
 }
 
 

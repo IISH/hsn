@@ -18,7 +18,7 @@ public class Query {
 	" Id_C INT," + 
 //	" LEVEL VARCHAR(6)," + 
 //  " NAME CHAR(1)," + 
-    " SOURCE CHAR(1)," + 
+    " SOURCE CHAR(15)," + 
 	" MUNICIPALITY VARCHAR(50)," + 
 	" YEAR CHAR(4)," + 
 	" SEQUENCE_NUMBER CHAR(10)," +  
@@ -31,7 +31,7 @@ public class Query {
 //  " (Id_C, LEVEL, NAME, MUNICIPALITY, YEAR, SEQUENCE_NUMBER)" + 
     " (Id_C, SOURCE, MUNICIPALITY, YEAR, SEQUENCE_NUMBER)" + 
 	" SELECT c1.Id_C, " +  
-	" MAX(IF(c1.Type = 'NAME' , SUBSTR(c1.Value, 1, 1), null)) as SOURCE," + 
+	" MAX(IF(c1.Type = 'NAME' , SUBSTR(c1.Value, 1, 15), null)) as SOURCE," + 
     " MAX(IF(c2.Type = 'NAME', SUBSTR(c2.Value, 1, 50), null)) as MUNICIPALITY," + 
     " MAX(IF(c1.Type = 'PERIOD', SUBSTR(c1.Value, 1, 4), null)) as YEAR," +  
 	" MAX(IF(c1.Type = 'SEQUENCE_NUMBER', SUBSTR(c1.Value, 1, 10), null)) as SEQUENCE_NUMBER" + 
@@ -130,7 +130,7 @@ public class Query {
 	public static final String createKeyHSNLinks =
 			
 			
-	" CREATE TABLE IF NOT EXISTS hsn_ids.key_hsn_links(" + 
+	" CREATE TABLE IF NOT EXISTS links_hsn_ids.key_hsn_links(" + 
 	" ID              INT NOT NULL AUTO_INCREMENT," +  
 	" Id_I_HSN 	INT," +               
 	" IDNR     	INT," + 
@@ -145,7 +145,7 @@ public class Query {
 			
 	public static final String populateKeyHSNLinks =
 
-	" insert into hsn_ids.key_hsn_links" +  
+	" insert into links_hsn_ids.key_hsn_links" +  
 	" ( Id_I_HSN, IDNR, PERSON_HSN, RELATION, ID_I_LINKS)" +   
 	" select distinct" + 
 
@@ -169,7 +169,7 @@ public class Query {
 	public static final String createCertificatesHSNRP =
 			
 
-	" CREATE TABLE IF NOT EXISTS hsn_ids.certificates_hsn_rp(" + 
+	" CREATE TABLE IF NOT EXISTS links_hsn_ids.certificates_hsn_rp(" + 
 	" ID              INT NOT NULL AUTO_INCREMENT," + 
 	" IDNR     	INT," +
 	" ID_I_HSN 	INT," +              
@@ -182,7 +182,7 @@ public class Query {
 			
 	public static final String populateCertificatesHSNRP =
 	
-	" insert into hsn_ids.certificates_hsn_rp" +  
+	" insert into links_hsn_ids.certificates_hsn_rp" +  
 	" (IDNR, ID_I_HSN, ID_I_LINKS, ID_C_HSN, ID_C_LINKS)" +   
 	" select" +
 	" khl.IDNR        as IDNR," +
@@ -192,8 +192,8 @@ public class Query {
 	" lic.ID_C        as ID_C_LINKS" + 
 
 	" from" +   
-	" hsn_ids.key_hsn_links   as khl," +
-	" hsn_ids.indiv_context   as hic," +
+	" links_hsn_ids.key_hsn_links   as khl," +
+	" links_hsn_ids.indiv_context   as hic," +
 	" links_ids.indiv_context as lic" +
 
 	" where " +
@@ -206,7 +206,7 @@ public class Query {
 	
 	public static final String createOthersHSNLinks =
 			
-    " CREATE TABLE IF NOT EXISTS hsn_ids.other_hsn_links(" +  
+    " CREATE TABLE IF NOT EXISTS links_hsn_ids.other_hsn_links(" +  
 	" ID        INT NOT NULL AUTO_INCREMENT," +
 	" Id_I_HSN 	INT," +              
 	" IDNR     	INT," +
@@ -218,7 +218,7 @@ public class Query {
 	
 	public static final String populateOthersHSNLinks =
 			
-	" INSERT INTO hsn_ids.other_hsn_links_&i" +
+	" INSERT INTO links_hsn_ids.other_hsn_links_&i" +
 	" ( Id_I_HSN, IDNR, PERSON_HSN, RELATION, ID_I_LINKS)" +  
 
 	" SELECT DISTINCT" +
@@ -230,7 +230,7 @@ public class Query {
 	" lii.Id_i_1  as id_i_links " +
 			 
 	" FROM" +
-	" hsn_ids.key_hsn_links as khl," + 
+	" links_hsn_ids.key_hsn_links as khl," + 
 	" links_ids.indiv_indiv as lii" +
 	" where " +
 	" khl.PERSON_HSN = &person and" +
@@ -239,7 +239,7 @@ public class Query {
 	
 	public static final String populateOthersHSNLinks2 =
 			
-	" INSERT INTO hsn_ids.other_hsn_links_1" +
+	" INSERT INTO links_hsn_ids.other_hsn_links_1" +
 	" ( Id_I_HSN, IDNR, PERSON_HSN, RELATION, ID_I_LINKS)" +  
 
 	" SELECT DISTINCT" +
@@ -251,7 +251,7 @@ public class Query {
 	" lii.Id_i_1  as id_i_links " +
 			 
 	" FROM" +
-	" hsn_ids.other_hsn_links_2 as ohl2," + 
+	" links_hsn_ids.other_hsn_links_2 as ohl2," + 
 	" links_ids.indiv_indiv as lii" +
 	" where " +
 	" ohl2.id_i_links = lii.id_i_2 and " + 
@@ -259,15 +259,15 @@ public class Query {
 	
 	public static final String cleanOthersHSNLinks =
 			
-	" delete from hsn_ids.other_hsn_links_1 " +
+	" delete from links_hsn_ids.other_hsn_links_1 " +
 	" where exists(" +  
-	"     select * from hsn_ids.key_hsn_links" +
-	"     where hsn_ids.other_hsn_links_1.ID_I_LINKS = hsn_ids.key_hsn_links.ID_I_LINKS" +
+	"     select * from links_hsn_ids.key_hsn_links" +
+	"     where links_hsn_ids.other_hsn_links_1.ID_I_LINKS = links_hsn_ids.key_hsn_links.ID_I_LINKS" +
 	" )";
 	
 	public static final String createIntegratedPersons =
 			
-			" CREATE TABLE IF NOT EXISTS hsn_ids.integrated_persons" +
+			" CREATE TABLE IF NOT EXISTS links_hsn_ids.integrated_persons" +
 			" (" + 
 			" ID                 INT NOT NULL AUTO_INCREMENT," + 
 			" Source_            VARCHAR(5)," + 
@@ -296,7 +296,7 @@ public class Query {
 	
 	public static final String insertLINKS =
 			
-			" INSERT INTO hsn_ids.integrated_persons" + 
+			" INSERT INTO links_hsn_ids.integrated_persons" + 
 			" (Source_, IDNR, RELATION, Id_I, FIRSTNAME, LASTNAME, SEX, BIRTH_LOCATION, BIRTH_DAY_MIN, BIRTH_MONTH_MIN, BIRTH_YEAR_MIN, "+ 
 			" BIRTH_DAY_MAX, BIRTH_MONTH_MAX, BIRTH_YEAR_MAX, DEATH_LOCATION, DEATH_DAY_MIN, DEATH_MONTH_MIN, DEATH_YEAR_MIN, DEATH_DAY_MAX, DEATH_MONTH_MAX, DEATH_YEAR_MAX)" + 		
 			" SELECT" +
@@ -322,14 +322,14 @@ public class Query {
 			" lps.death_month_max, " +
 			" lps.death_year_max " +					
 			" FROM" +
-			"   hsn_ids.other_hsn_links_1      as ohl, " +
+			"   links_hsn_ids.other_hsn_links_1      as ohl, " +
 			" links_ids.persons_static         as lps  " +
 			" WHERE " +
 			" ohl.id_i_links = lps.id_i";
 	
 	public static final String insertHSN1 =
 
-			" INSERT INTO hsn_ids.integrated_persons" +
+			" INSERT INTO links_hsn_ids.integrated_persons" +
 					" (Source_, IDNR, RELATION, Id_I, FIRSTNAME, LASTNAME, SEX, BIRTH_LOCATION, BIRTH_DAY_MIN, BIRTH_MONTH_MIN, BIRTH_YEAR_MIN, "+ 
 					" BIRTH_DAY_MAX, BIRTH_MONTH_MAX, BIRTH_YEAR_MAX, DEATH_LOCATION, DEATH_DAY_MIN, DEATH_MONTH_MIN, DEATH_YEAR_MIN, DEATH_DAY_MAX, DEATH_MONTH_MAX, DEATH_YEAR_MAX)" + 		
 			" SELECT DISTINCT " +
@@ -355,9 +355,9 @@ public class Query {
 			        " hps.death_month_max," + 
 			        " hps.death_year_max " +  
 					" FROM "+ 
-					" (select * from hsn_ids.other_hsn_links_1 group by idnr)      as ohl," +  
-					" hsn_ids.persons_static                                       as hps,"+   
-					" hsn_ids.indiv_indiv                                          as hii"+ 
+					" (select * from links_hsn_ids.other_hsn_links_1 group by idnr)      as ohl," +  
+					" links_hsn_ids.persons_static                                       as hps,"+   
+					" links_hsn_ids.indiv_indiv                                          as hii"+ 
 					" WHERE" + 
 					" ohl.idnr = abs(substr(hps.id_i, 2, 6)) and" +  
 					" hii.id_i_1 = hps.id_i and" + 
@@ -365,7 +365,7 @@ public class Query {
 			
 	public static final String insertHSN2 =
 
-			" INSERT INTO hsn_ids.integrated_persons" +
+			" INSERT INTO links_hsn_ids.integrated_persons" +
 					" (Source_, IDNR, RELATION, Id_I, FIRSTNAME, LASTNAME, SEX, BIRTH_LOCATION, BIRTH_DAY_MIN, BIRTH_MONTH_MIN, BIRTH_YEAR_MIN, "+ 
 					" BIRTH_DAY_MAX, BIRTH_MONTH_MAX, BIRTH_YEAR_MAX, DEATH_LOCATION, DEATH_DAY_MIN, DEATH_MONTH_MIN, DEATH_YEAR_MIN, DEATH_DAY_MAX, DEATH_MONTH_MAX, DEATH_YEAR_MAX)" + 		
 			" SELECT DISTINCT " +
@@ -391,8 +391,8 @@ public class Query {
 			        " hps.death_month_max," + 
 			        " hps.death_year_max " +  
 					" FROM "+ 
-					" (select * from hsn_ids.other_hsn_links_1 group by idnr)      as ohl," +  
-					" hsn_ids.persons_static                                       as hps"+   
+					" (select * from links_hsn_ids.other_hsn_links_1 group by idnr)      as ohl," +  
+					" links_hsn_ids.persons_static                                       as hps"+   
 					" WHERE" + 
 					" ohl.idnr = abs(substr(hps.id_i, 2, 6)) and" +  
 					" '001'    = abs(substr(hps.id_i, 8, 3)) ";  
@@ -403,12 +403,12 @@ public class Query {
 		
 		
 		
-		// hsn_ids.IntegratedPersons
+		// links_hsn_ids.IntegratedPersons
 
-		System.out.println("Creating hsn_ids.Integrated_persons");
+		System.out.println("Creating links_hsn_ids.Integrated_persons");
 
 		runQuery1(connection,  null, createIntegratedPersons);
-		Utils.executeQ(connection, "TRUNCATE hsn_ids.integrated_persons");
+		Utils.executeQ(connection, "TRUNCATE links_hsn_ids.integrated_persons");
 		
 		runQuery1(connection,  null, insertHSN1);
 		runQuery1(connection,  null, insertHSN2);
@@ -423,12 +423,12 @@ public class Query {
 		
 		// This module handles steps 1 - 7 of the flow diagram
 		
-		/* hsn_ids.sourcesCertificates  (1) */
+		/* links_hsn_ids.sourcesCertificates  (1) */
 		
-		System.out.println("Creating hsn_ids.sourcesCertificates");
-		runQuery1(connection,  "hsn", createSourcesCertificates);
-		Utils.executeQ(connection, "TRUNCATE hsn_ids.sources_certificates");
-		runQuery1(connection,  "hsn", populateSourcesCertificates);
+		System.out.println("Creating links_hsn_ids.sourcesCertificates");
+		runQuery1(connection,  "links_hsn", createSourcesCertificates);
+		Utils.executeQ(connection, "TRUNCATE links_hsn_ids.sources_certificates");
+		runQuery1(connection,  "links_hsn", populateSourcesCertificates);
 		
 		/* links_ids.sourcesCertificates (2) */
 		
@@ -441,13 +441,13 @@ public class Query {
 		
 		
 
-		/* hsn_ids.personStatic (3) */
+		/* links_hsn_ids.personStatic (3) */
 		
-		System.out.println("Creating hsn_ids.personStatic");
-		runQuery1(connection,  "hsn", createPersonStatic);
-		Utils.executeQ(connection, "TRUNCATE hsn_ids.persons_static");
-		runQuery1(connection,  "hsn", populatePersonStatic);
-		Utils.executeQI(connection, "CREATE INDEX ii on hsn_ids.persons_static(id_i)");
+		System.out.println("Creating links_hsn_ids.personStatic");
+		runQuery1(connection,  "links_hsn", createPersonStatic);
+		Utils.executeQ(connection, "TRUNCATE links_hsn_ids.persons_static");
+		runQuery1(connection,  "links_hsn", populatePersonStatic);
+		Utils.executeQI(connection, "CREATE INDEX ii on links_hsn_ids.persons_static(id_i)");
 
 		/* links_ids.personStatic (4) */
 		
@@ -459,21 +459,21 @@ public class Query {
 		
 
 		
-		/* hsn_ids.key_hsn_links (5) */
+		/* links_hsn_ids.key_hsn_links (5) */
 
-		System.out.println("Creating hsn_ids.key_hsn_links");
+		System.out.println("Creating links_hsn_ids.key_hsn_links");
 		runQuery1(connection,  null, createKeyHSNLinks);
-		Utils.executeQ(connection, "TRUNCATE hsn_ids.key_hsn_links");
+		Utils.executeQ(connection, "TRUNCATE links_hsn_ids.key_hsn_links");
 		runQuery1(connection,  null, populateKeyHSNLinks);
 		
 		
-		/* hsn_ids.certificates_hsn_rps (6) */
+		/* links_hsn_ids.certificates_hsn_rps (6) */
 
-		System.out.println("Creating hsn_ids.certificates_hsn_rp");
+		System.out.println("Creating links_hsn_ids.certificates_hsn_rp");
 		runQuery1(connection,  null, createCertificatesHSNRP);
-		Utils.executeQ(connection, "TRUNCATE hsn_ids.certificates_hsn_rp");
-		System.out.println("Creating index on hsn_ids.indiv_context(Id_I)");
-		Utils.executeQI(connection, "CREATE INDEX ic01 ON hsn_ids.indiv_context(Id_I)");
+		Utils.executeQ(connection, "TRUNCATE links_hsn_ids.certificates_hsn_rp");
+		System.out.println("Creating index on links_hsn_ids.indiv_context(Id_I)");
+		Utils.executeQI(connection, "CREATE INDEX ic01 ON links_hsn_ids.indiv_context(Id_I)");
 		System.out.println("Creating index on links_ids.indiv_context(Id_I)");
 		Utils.executeQI(connection, "CREATE INDEX ic01 ON links_ids.indiv_context(Id_I)");
 		runQuery1(connection,  null, populateCertificatesHSNRP);
@@ -484,18 +484,18 @@ public class Query {
 		
 
 		
-		/* hsn_ids.other_hsn_links  (7) */
+		/* links_hsn_ids.other_hsn_links  (7) */
 
-		System.out.println("Creating hsn_ids.others_hsn_links");
+		System.out.println("Creating links_hsn_ids.others_hsn_links");
 		runQuery1(connection,  null, createOthersHSNLinks);
-		Utils.executeQ(connection, "TRUNCATE hsn_ids.other_hsn_links");
+		Utils.executeQ(connection, "TRUNCATE links_hsn_ids.other_hsn_links");
 		
-		Utils.executeQ(connection, "CREATE  TABLE IF NOT EXISTS hsn_ids.other_hsn_links_1 like hsn_ids.other_hsn_links");
+		Utils.executeQ(connection, "CREATE  TABLE IF NOT EXISTS links_hsn_ids.other_hsn_links_1 like links_hsn_ids.other_hsn_links");
 		System.out.println("Creating index on links_ids.indiv_indiv(Id_I_2)");
 		Utils.executeQI(connection, "CREATE INDEX ic01 ON links_ids.indiv_indiv(Id_I_2)");
 		System.out.println("Creating index on links_ids.indiv_indiv(Id_I_2) - done");
 
-		Utils.executeQ(connection, "TRUNCATE hsn_ids.other_hsn_links_1");
+		Utils.executeQ(connection, "TRUNCATE links_hsn_ids.other_hsn_links_1");
 		
 		
 		runQuery2(connection,  populateOthersHSNLinks,"1", "1", "Spouse", "Bride");
@@ -510,7 +510,7 @@ public class Query {
 		//runQuery2(connection,  populateOthersHSNLinks,"1", "1", "Father", "Father");
 		//runQuery2(connection,  populateOthersHSNLinks,"1", "1", "Mother", "Mother");
 		
-		//Utils.executeQ(connection, "insert into hsn_ids.other_hsn_links_1 (Id_I_HSN, IDNR, PERSON_HSN, ID_I_LINKS, Relation ) SELECT Id_I_HSN, IDNR, PERSON_HSN, ID_I_LINKS, Relation FROM hsn_ids.key_hsn_links
+		//Utils.executeQ(connection, "insert into links_hsn_ids.other_hsn_links_1 (Id_I_HSN, IDNR, PERSON_HSN, ID_I_LINKS, Relation ) SELECT Id_I_HSN, IDNR, PERSON_HSN, ID_I_LINKS, Relation FROM links_hsn_ids.key_hsn_links
         //");
 		
 		// Try adding key persons here
@@ -528,8 +528,8 @@ public class Query {
 		
 		// Copy parents in law to separate table 2
 		
-		Utils.executeQ(connection, "CREATE  TABLE IF NOT EXISTS hsn_ids.other_hsn_links_2 like hsn_ids.other_hsn_links");
-		Utils.executeQ(connection, "TRUNCATE hsn_ids.other_hsn_links_2");
+		Utils.executeQ(connection, "CREATE  TABLE IF NOT EXISTS links_hsn_ids.other_hsn_links_2 like links_hsn_ids.other_hsn_links");
+		Utils.executeQ(connection, "TRUNCATE links_hsn_ids.other_hsn_links_2");
 
 		
 		runQuery2(connection,  populateOthersHSNLinks,"2", "1", "Mother-in-law", "Mother-in-law");
@@ -543,17 +543,17 @@ public class Query {
 		runQuery3(connection,  populateOthersHSNLinks2, "Half-Sibling-in-law (partner has same father)", "Child");
 
 		
-		// Now remove persons from hsn_ids.others_hsn_links that already are in hsn_ids.key_hsn_links
+		// Now remove persons from links_hsn_ids.others_hsn_links that already are in links_hsn_ids.key_hsn_links
 		
-		System.out.println("Remove persons from hsn_ids.others_hsn_links_1 that already are in hsn_ids.key_hsn_links");
-		Utils.executeQI(connection, "create index ii on hsn_ids.key_hsn_links(id_i_links)");
+		System.out.println("Remove persons from links_hsn_ids.others_hsn_links_1 that already are in links_hsn_ids.key_hsn_links");
+		Utils.executeQI(connection, "create index ii on links_hsn_ids.key_hsn_links(id_i_links)");
 		Utils.executeQI(connection, cleanOthersHSNLinks);
 		
-		// hsn_ids.IntegratedPersons
+		// links_hsn_ids.IntegratedPersons
 
-		System.out.println("Creating hsn_ids.integrated_persons");
+		System.out.println("Creating links_hsn_ids.integrated_persons");
 		runQuery1(connection,  null, createIntegratedPersons);
-		Utils.executeQ(connection, "TRUNCATE hsn_ids.integrated_persons");
+		Utils.executeQ(connection, "TRUNCATE links_hsn_ids.integrated_persons");
 
 		runQuery1(connection,  null, insertLINKS);
 		runQuery1(connection,  null, insertHSN1);

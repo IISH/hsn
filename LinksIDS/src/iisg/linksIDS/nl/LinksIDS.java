@@ -136,7 +136,7 @@ public class LinksIDS{
 			System.out.println("Processing Persons");
 			outer: for(int a = 0; a <= highest_ID_Person ; a += pageSize){
 				
-				if(1==1) break outer;
+				//if(1==1) break outer;
 				//if(1==1)continue;
 
 				//String q = "SELECT * from links_ids.personNumbers as N,  links_cleaned.person_c   as P, links_cleaned.registration_c as R  " +
@@ -276,10 +276,9 @@ public class LinksIDS{
 					writeIndividual(h, persons);	
 					persons.clear();
 				}
-				System.out.println(", processed " + c + " person appearances, " + pn + " person numbers");
+				System.out.println(", processed " + String.format("%,d", c)  + " person appearances, " + String.format("%,d", pn) + " person numbers");
 
 			}
-
 			//if(1==1) System.exit(0);
 			//s.close ();
 			//Utils.closeConnection(connection);	
@@ -434,6 +433,8 @@ public class LinksIDS{
 										resultSet.getString("registration_seq"));
 							}
 						}
+						else
+							Id_C = 0;
 
 						// Add context elements for
 						
@@ -467,6 +468,8 @@ public class LinksIDS{
 						if(roleIndex < rls.length)
 							rol = rls[roleIndex];
 						
+						
+						
 						addIndivContext(connection, resultSet.getInt("person_number" ), Id_C,  regType, rol, "Event", "Exact", registration_day, registration_month, registration_year);
 					}
 					c++;
@@ -483,8 +486,10 @@ public class LinksIDS{
 					personNumbers.clear();
 					roles.clear();
 				}
+				
+				//  String.format("%,d", c)
 				 
-				System.out.println(", processed " + c + " person appearances");
+				System.out.println(", processed " + String.format("%,d", c) + " person appearances");
 
 			}
 			catch (Exception e) {
@@ -499,7 +504,10 @@ public class LinksIDS{
 		
 		saveIndivContext(connection);
 		saveIndivIndiv(connection);
+		System.out.println("Saving Context...");
 		Contxt2.saveContext(connection, cList, ccList);
+		System.out.println("Program has ended");
+
 	}
 
 	private static void writeIndividual(HashMap<String, Integer> h, ArrayList<String []> persons){
@@ -876,8 +884,10 @@ public class LinksIDS{
 			columnName = "living_location";
 			if(h.get(columnName) != null && persons.get(i)[h.get(columnName)] != null && persons.get(i)[h.get(columnName)].trim().length() > 0){
 				Integer livingLocation = new Integer(persons.get(i)[h.get(columnName)]); 
-				Integer Id_C_l = locNo2Id_C.get(livingLocation);						
-				addIndivContext(connection, person_number, Id_C_l,  regType, "LIVING_LOCATION", "Event", "Exact", registration_day, registration_month, registration_year);
+				Integer Id_C_l = locNo2Id_C.get(livingLocation);	
+				System.out.println("livingLocation = " + livingLocation + "Id_C_l = " +  Id_C_l);
+				if(Id_C_l != null && Id_C_l.intValue() != 0)
+					addIndivContext(connection, person_number, Id_C_l,  regType, "LIVING_LOCATION", "Event", "Exact", registration_day, registration_month, registration_year);
 			}
 
 			// Special processing for HSN Start
@@ -930,6 +940,8 @@ public class LinksIDS{
 	public static void addIndiv(Connection connection, int Id_I, String source, String type, String value, int Id_C,
 			String dateType, String estimation, int day, int month, int year, int min_day, int min_month, int min_year,int max_day, int max_month, int max_year){
 		
+		source = "LINKS " + source;
+		
 		String t = String.format("(\"%d\",\"%s\",\"%s\",\"%s\",\"%s\", \"%d\", \"%s\",\"%s\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\"),",  
 				                    Id_I, "LINKS", source, type, value, Id_C, dateType, estimation, day, month, year, min_day, min_month, min_year, max_day, max_month,  max_year);
 		
@@ -950,6 +962,8 @@ public class LinksIDS{
 		String missing = "";
 		if(year == 0)
 			missing = "Time_invariant";
+
+		source = "LINKS " + source;
 		
 		String t = String.format("(\"%d\",\"%d\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%d\",\"%d\",\"%d\",\"%s\"),",  
 				                    Id_I_1,  Id_I_2, "LINKS", "" + source, relation, dateType, estimation, day, month, year, missing);
@@ -964,12 +978,17 @@ public class LinksIDS{
 	
 	public static void addIndivContext(Connection connection, int Id_I, int Id_C, String source, String relation, 
 			String dateType, String estimation, int day, int month, int year){
+
+		source = "LINKS " + source;
+
 		
 		String t = String.format("(\"%d\",\"%s\",\"%d\",\"%s\",\"%s\",\"%s\",\"%s\",\"%d\",\"%d\",\"%d\"),",  
 				                    Id_I, "LINKS", Id_C, source, relation, dateType, estimation, day, month, year);
 		
 		
 		icList.add(t);
+		
+		//System.out.println("addIndivContext, icList.size() = " + icList.size());
 		
 		 if(icList.size() > 5000)
 			 saveIndivContext(connection);
@@ -978,9 +997,10 @@ public class LinksIDS{
 	
 	public static void addContext(Connection connection, int Id_C, String type, String value){
 		
+
 		
-		String t = String.format("(\"%d\",\"%s\",\"%s\", \"%s\"),",  
-				                    Id_C, "LINKS", type, value);
+		String t = String.format("(\"%d\",\"%s\",\"%s\", \"%s\", \"%s\"),",  
+				                    Id_C, "LINKS", type, value, "Time_invariant");
 		
 		//System.out.println(t);
 		cList.add(t);
@@ -994,8 +1014,8 @@ public class LinksIDS{
 	public static void addContextContext(Connection connection, int Id_C_1, int Id_C_2, String relation){
 		
 		
-		String t = String.format("(\"%d\",\"%d\",\"%s\",\"%s\"),",  
-				                    Id_C_1, Id_C_2, "LINKS", relation);
+		String t = String.format("(\"%d\",\"%d\",\"%s\",\"%s\", \"%s\"),",  
+				                    Id_C_1, Id_C_2, "LINKS", relation, "Time_invariant");
 		
 		//System.out.println(t);
 		ccList.add(t);
@@ -1071,7 +1091,7 @@ public class LinksIDS{
 		//System.out.println(s);
 		cList.clear();
 		s = s.substring(0, s.length() -1);
-		String u = "insert into links_ids.context (Id_C, Id_D, type, value) values" + s;
+		String u = "insert into links_ids.context (Id_C, Id_D, type, value, Missing) values" + s;
 			
 		//System.out.println(u.substring(0, 120));
    		Utils.executeQ(connection, u);
@@ -1086,7 +1106,7 @@ public class LinksIDS{
 		//System.out.println(s);
 		ccList.clear();
 		s = s.substring(0, s.length() -1);
-		String u = "insert into links_ids.context_context (Id_C_1, Id_C_2, Id_D, relation) values" + s;
+		String u = "insert into links_ids.context_context (Id_C_1, Id_C_2, Id_D, relation, Missing) values" + s;
 			
 		//System.out.println(u.substring(0, 120));
    		Utils.executeQ(connection, u);
@@ -1334,7 +1354,7 @@ public class LinksIDS{
 
 				//System.out.println("AAAA");
 				//c = resultSet.getInt("Id_C");
-				System.out.println("Table context is alraedy populated");
+				System.out.println("Table context is already populated");
 				return;  // there are elements in context table, so we do not populate
 			}
 			

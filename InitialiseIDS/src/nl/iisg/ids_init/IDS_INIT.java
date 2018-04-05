@@ -91,7 +91,7 @@ public class IDS_INIT implements Runnable {
 	 }
 	 
 	 static void populateContext(){
-
+		 
 		 
 		 em_context.getTransaction().begin();
 
@@ -115,7 +115,6 @@ public class IDS_INIT implements Runnable {
 		 query = em_context.createNativeQuery("TRUNCATE TABLE indiv_context");  
 		 query.executeUpdate();
 
-		 
 		 
 		 
 		 HashMap<String, Integer> hmap = new HashMap<String, Integer>();
@@ -399,7 +398,7 @@ public class IDS_INIT implements Runnable {
 		 context.setId_C(Id_C);
 		 context.setId_D(version);
 		 //System.out.println(getTypes().get(i));
-		 context.setSource("HSN");
+		 context.setSource("REF_LOCATION");
 		 context.setType(type);
 		 context.setValue(value);
 
@@ -413,7 +412,7 @@ public class IDS_INIT implements Runnable {
 		 
 		 CONTEXT_CONTEXT cc = new CONTEXT_CONTEXT();
 		 cc.setId_D(version);
-		 cc.setSource("HSN");
+		 cc.setSource("REF_LOCATION");
 		 cc.setId_C_1(Id_C_1);  
 		 cc.setId_C_2(Id_C_2);  
 		 cc.setRelation(relation);
