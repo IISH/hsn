@@ -343,7 +343,8 @@ outer:	for(int i = 173 * 1000 * 1000; i <= max_id_matches; i += pageSize){    //
 			if(aliases[j] == onlySelf)
 				i.add(j);
 			else	
-				i.add(aliases[j].get(0));
+				//i.add(aliases[j].get(0));  
+			    i.add(maxx(aliases[j]));  
 			if(count % 16384  == 0){
 				try {
 					queue.put(i);
@@ -397,6 +398,18 @@ outer:	for(int i = 173 * 1000 * 1000; i <= max_id_matches; i += pageSize){    //
 
 		Utils.closeConnection(connection);
 		System.out.println("\nFinished creating person numbers");
+	}
+	
+	private static int maxx(ArrayList<Integer> iL){
+		
+		
+		int mx = 1;
+		for(int i: iL)
+			if(i > mx)
+				mx = i;
+		
+		return mx;
+		
 	}
 	
 	private static void write(ArrayList<Integer> iL, Connection connection){
@@ -632,7 +645,7 @@ outer:	for(int i = 173 * 1000 * 1000; i <= max_id_matches; i += pageSize){    //
 			//for(int i = 0; i <= max_id_person; i += pageSize){
 			for(int i = 0; i <= 1; i += pageSize){  // Time reduce
 				//String select = "select id_person, person_number from personNumbers where person_number > " + i + " and person_number <= " +  (i + pageSize) +
-				String select = "select id_person, person_number from personNumbers where person_number >= 35240945 and person_number <= 38499635 " + // Time reduce 
+				String select = "select id_person, person_number from personNumbers where person_number >= 35240945 and person_number <= 38499635 " + // Time reduce TRM
          						" order by person_number, id_person";
 				//System.out.print("Scanning persons with personNumber in range [" + i + ", " + (i + pageSize) + ")");
 				System.out.print("Scanning persons with personNumber in range [35240945, 38499635]");  // Time reduce

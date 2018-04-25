@@ -36,6 +36,7 @@ public class LinksIDS{
 	public static int phase                           = 0;
 	
 	private static int highest_ID_Person = 0;
+	private static int highest_processed_ID_Person = 0;
 	
 
 	
@@ -118,8 +119,8 @@ public class LinksIDS{
 
 
 			String [] args0 = {server, userid, passwd};
-			//PersonNumber.personNumber(args0);		
-			//if(1==1) System.exit(8);
+			PersonNumber.personNumber(args0);		
+			if(1==1) System.exit(8);
 
 			int previousPersonNumber = -1;
 
@@ -133,7 +134,8 @@ public class LinksIDS{
 
 
 			highest_ID_Person = getHighestID_Person(connection); 
-			System.out.println("Processing Persons");
+			highest_processed_ID_Person = getHighestProcessedID_Person(connection); // from previous run
+			System.out.println("Processing Persons with personID > " + highest_processed_ID_Person);
 			outer: for(int a = 0; a <= highest_ID_Person ; a += pageSize){
 				
 				//if(1==1) break outer;
@@ -218,7 +220,8 @@ public class LinksIDS{
 						" N.id_person = P.id_person and" +
 						" P.id_registration =  R.id_registration and " +
 						" N.person_number >   " + a + " and " +	
-						" N.person_number <=  " + (a + pageSize)  +  
+						" N.person_number <=  " + (a + pageSize)  + " and " +  
+						" N.person_number >  " + highest_processed_ID_Person  +  
 						" ORDER BY N.person_number, R.registration_maintype, P.role";
 
 				System.out.print("Scanning person_number range [" + a + ", " + (a + pageSize) + ")");
@@ -1565,6 +1568,28 @@ public class LinksIDS{
 			r = connection.createStatement().executeQuery("select max(id_person) as m FROM links_ids.personNumbers");
 			while (r.next()) {
 				System.out.println("Highest id_person = " + r.getInt("m"));
+				return(r.getInt("m"));
+			}
+			r.close();
+			//connection.createStatement().close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(0);
+		}
+		
+		return -1;
+		
+	}
+
+	private static int getHighestProcessedID_Person(Connection connection){
+		
+		//System.out.println("Identifying highest id_person");
+		ResultSet r = null;
+		try {
+			r = connection.createStatement().executeQuery("select max(id_i) as m FROM links_ids.individual");
+			while (r.next()) {
+				System.out.println("Highest Processed id_person = " + r.getInt("m"));
 				return(r.getInt("m"));
 			}
 			r.close();

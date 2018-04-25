@@ -139,7 +139,7 @@ public class CivilCertificatesToIDS implements Runnable{
 	
 	int cnt = 0;
 	
-	for(int j = 0; j < 10; j++){
+	for(int j = 0; j < 10; j++){  // TRM
 
 		//print("2 heapsize.size() = " +  Runtime.getRuntime().maxMemory()/ (1000*1000) + "    "  + Runtime.getRuntime().totalMemory()/ (1000*1000) + "  " + Runtime.getRuntime().freeMemory()/ (1000*1000));
 

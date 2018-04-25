@@ -336,7 +336,7 @@ public class Utils {
 		//String [] s = Utils.getLocationHierarchy(ceCertificate);
 		//int Id_C = Contxt.addCertificate(s[0], s[1], s[2], source, yearCertificate, sequenceNumberCertificate);
 		
-		//if(1==1) return;
+		//if(1==1) return; // TRM
 		
 		
 		ContextElement ce = Contxt.locateCertificate(source, yearCertificate, sequenceNumberCertificate,  ceCertificate,  "Source");

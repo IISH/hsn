@@ -665,7 +665,7 @@ public class Contxt {
 		if(street == null || street.trim().length() == 0)
 			return null;
 		
-		//System.out.println("street: " + street + " number: " + number + " addition: " + addition + "level = " + level);
+		//System.out.print("street: " + street + " number: " + number + " addition: " + addition + "level = " + level);
 		
 		// Try to find address
 		
@@ -689,12 +689,15 @@ public class Contxt {
 			}
 
 			if(comp(level1, "Address") == true && comp(street1, street) == true && comp(number1, number) == true && comp(addition1, addition) == true)
+			{
+				//System.out.println(" Found");
 				return ce;
+			}
 
 			
 		}
 		
-		//System.out.println("Not found");
+		//System.out.println(" Not found");
 		
 		ContextElement ce = new ContextElement();
 		ce.types.add("LEVEL");
@@ -726,7 +729,7 @@ public class Contxt {
 		if(quarter == null || quarter.trim().length() == 0)
 			return null;
 		
-		//System.out.println("street: " + street + " number: " + number + " addition: " + addition + "level = " + level);
+		//System.out.println("quarter: " + quarter  + "level = " + level);
 		
 		// Try to find quarter
 		
@@ -740,7 +743,7 @@ public class Contxt {
 			for(int i = 0; i < ce.types.size(); i++){
 				if(ce.types.get(i).compareTo("LEVEL") == 0)
 					level1 = ce.values.get(i);
-				if(ce.types.get(i).compareTo("NAME") == 0)
+				if(ce.types.get(i).compareTo("QUARTER") == 0)
 					quarter1 = ce.values.get(i);
 				//if(ce.types.get(i).compareTo("HOUSE_NUMBER") == 0)
 					//number1 = ce.values.get(i);
@@ -868,6 +871,7 @@ public class Contxt {
 		}
 	}
 
+	/*
 	
 	public static int addCertificate(String Country, String Province, String Municipality, String source, int yearCertificate, int sequenceNumberCertificate){
 		
@@ -885,6 +889,8 @@ public class Contxt {
 		
 		return 0;
 	}
+	
+	*/
 	
 	public static int add(String Country, String Province, String Municipality, String Locality, String Quarter, String Street, String Number, String Addition, String  Name){
 		
