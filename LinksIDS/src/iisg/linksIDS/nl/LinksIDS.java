@@ -35,8 +35,9 @@ public class LinksIDS{
 	private static Integer personsWritten             = 0;
 	public static int phase                           = 0;
 	
-	private static int highest_ID_Person = 0;
-	private static int highest_processed_ID_Person = 0;
+	//private static int highest_ID_Person = 0;
+	//private static int highest_processed_ID_Person = 0;
+	//private static int highest_processed_ID_Registration = 0;
 	
 
 	
@@ -79,6 +80,8 @@ public class LinksIDS{
 		int pn = 0;
 		int pageSize = 1000 * 1000;
 
+		int highest_ID_Person = 0;
+		int highest_processed_ID_Person = 0;
 
 		try{
 			   
@@ -119,8 +122,8 @@ public class LinksIDS{
 
 
 			String [] args0 = {server, userid, passwd};
-			PersonNumber.personNumber(args0);		
-			if(1==1) System.exit(8);
+			//PersonNumber.personNumber(args0);		
+			//if(1==1) System.exit(8);
 
 			int previousPersonNumber = -1;
 
@@ -135,8 +138,8 @@ public class LinksIDS{
 
 			highest_ID_Person = getHighestID_Person(connection); 
 			highest_processed_ID_Person = getHighestProcessedID_Person(connection); // from previous run
-			System.out.println("Processing Persons with personID > " + highest_processed_ID_Person);
-			outer: for(int a = 0; a <= highest_ID_Person ; a += pageSize){
+			System.out.println("Processing Persons with id_person > " + highest_processed_ID_Person);
+			outer: for(int a = (highest_processed_ID_Person/pageSize) * pageSize; a <= highest_ID_Person ; a += pageSize){
 				
 				//if(1==1) break outer;
 				//if(1==1)continue;
@@ -317,9 +320,16 @@ public class LinksIDS{
 		ArrayList<String>  stillborns    = new ArrayList<String>();
 		
 		c = 0;
+		int highest_processed_ID_Registration = getHighestProcessedID_Registration(connection);
+		int highestID_Registration = getHighestID_Registration(connection);
 		System.out.println("Processing Registrations");
 
-		for(int a = 0; a < 100*1000*1000; a += pageSize){
+		
+		System.out.println("--highest_processed_ID_Registration = " + highest_processed_ID_Registration);
+		System.out.println("--(highest_processed_ID_Registration / pageSize) = " + (highest_processed_ID_Registration / pageSize));
+		System.out.println("--((highest_processed_ID_Registration / pageSize) * pageSize) = " + ((highest_processed_ID_Registration / pageSize) * pageSize));
+		
+		for(int a = ((highest_processed_ID_Registration / pageSize) * pageSize); a <= highestID_Registration ; a += pageSize){
 			
 
 			try{
@@ -337,8 +347,9 @@ public class LinksIDS{
 						" R.id_source !=  10  and " +    // 10 = HSNRPxxx, the 'anchor'
 						" R.id_registration       = P.id_registration and " +
 						" P.id_person             = N.id_person and " +
-						"     (R.id_registration >  " +  a + " and " +	
-						"      R.id_registration <= " + (a + pageSize)  + ")" + 
+						" R.id_registration >  " +  a + " and " +	
+						" R.id_registration <= " + (a + pageSize)  + " and " + 
+						" R.id_registration > " + highest_processed_ID_Registration + 
 						" order by R.id_registration";
 
 				//System.out.println(q);
@@ -425,7 +436,7 @@ public class LinksIDS{
 
 							//System.out.println("locNo2Id_C = " +  locNo2Id_C.get(resultSet.getInt("registration_location_no")));
 
-							if(locNo2Id_C.get(resultSet.getInt("registration_location_no")) != null){
+							if(locNo2Id_C.get(resultSet.getInt("registration_location_no")) != 0){
 
 								Id_C = Contxt2.addCertificate(connection, cList, ccList, 
 										regType,
@@ -433,7 +444,8 @@ public class LinksIDS{
 										resultSet.getInt("registration_year"), 
 										resultSet.getInt("registration_month"), 
 										resultSet.getInt("registration_day"), 
-										resultSet.getString("registration_seq"));
+										resultSet.getString("registration_seq"),
+										resultSet.getInt("id_registration") + (1 * 1000 * 1000));  // move them above the location context elements
 							}
 						}
 						else
@@ -1003,7 +1015,7 @@ public class LinksIDS{
 
 		
 		String t = String.format("(\"%d\",\"%s\",\"%s\", \"%s\", \"%s\"),",  
-				                    Id_C, "LINKS", type, value, "Time_invariant");
+				                    Id_C, "REF_LOCATION", type, value, "Time_invariant");
 		
 		//System.out.println(t);
 		cList.add(t);
@@ -1018,7 +1030,7 @@ public class LinksIDS{
 		
 		
 		String t = String.format("(\"%d\",\"%d\",\"%s\",\"%s\", \"%s\"),",  
-				                    Id_C_1, Id_C_2, "LINKS", relation, "Time_invariant");
+				                    Id_C_1, Id_C_2, "REF_LOCATION", relation, "Time_invariant");
 		
 		//System.out.println(t);
 		ccList.add(t);
@@ -1352,13 +1364,17 @@ public class LinksIDS{
 			//System.exit(8);
 			//if(1==1) return;
 			//int c = 0;
+			boolean mustWrite = true;
 			while(resultSet.next() == true){
 				//System.out.println("c = " + resultSet.getInt("c"));
 
 				//System.out.println("AAAA");
 				//c = resultSet.getInt("Id_C");
 				System.out.println("Table context is already populated");
-				return;  // there are elements in context table, so we do not populate
+				mustWrite = false;
+				break;
+				// We must still fill locNo2Id_C
+				//return;  // there are elements in context table, so we do not populate
 			}
 			
 			//if(c > 0) return;  // There are already entries in context, so it is not the first time, so we don't populate
@@ -1421,8 +1437,11 @@ public class LinksIDS{
 				if(resultSet.getString("country") != null && !resultSet.getString("country").equals(country) &&
 						!resultSet.getString("country").equals("Onbekend")){
 					country = resultSet.getString("country");
-					addContext(connection, ++Id_C, "NAME", country);
-					addContext(connection,   Id_C, "LEVEL", "Country");
+					++Id_C;
+					if(mustWrite){
+						addContext(connection,   Id_C, "NAME", country);
+						addContext(connection,   Id_C, "LEVEL", "Country");
+					}
 					Id_C_CurrentCountry = Id_C;
 					Id_C_CurrentRegion       = -1;
 					Id_C_CurrentProvince     = -1;
@@ -1436,13 +1455,18 @@ public class LinksIDS{
 				if(resultSet.getString("region") != null && !resultSet.getString("region").equals(region)
 						&& !resultSet.getString("region").equals("Onbekend")){
 					region = resultSet.getString("region");
-					addContext(connection, ++Id_C, "NAME", region);
-					addContext(connection,   Id_C, "LEVEL", "Region");
+					++Id_C;
+					if(mustWrite){
+						addContext(connection,   Id_C, "NAME", region);
+						addContext(connection,   Id_C, "LEVEL", "Region");
+					}
 					Id_C_CurrentRegion = Id_C;
 					Id_C_CurrentProvince     = -1;
 					Id_C_CurrentMunicipality = -1;
-					Id_C_CurrentLocality     = -1;					
-					addContextContext(connection,   Id_C, Id_C_CurrentCountry, "Region and Country");
+					Id_C_CurrentLocality     = -1;
+					
+					if(mustWrite)
+						addContextContext(connection,   Id_C, Id_C_CurrentCountry, "Region and Country");
 				}
 				else
 					if(resultSet.getString("region") == null || resultSet.getString("region") == "Onbekend"){
@@ -1453,8 +1477,12 @@ public class LinksIDS{
 				if(resultSet.getString("province") != null && !resultSet.getString("province").equals(province) && 
 						!resultSet.getString("province").equals("Onbekend")){
 					province = resultSet.getString("province");
-					addContext(connection, ++Id_C, "NAME", province);
-					addContext(connection,   Id_C, "LEVEL", "Province");
+					++Id_C;
+					if(mustWrite){
+						addContext(connection,   Id_C, "NAME", province);
+						addContext(connection,   Id_C, "LEVEL", "Province");
+					}
+					
 					Id_C_CurrentProvince = Id_C;
 					Id_C_CurrentMunicipality = -1;
 					Id_C_CurrentLocality     = -1;					
@@ -1465,7 +1493,9 @@ public class LinksIDS{
 						Id_C_Temp = Id_C_CurrentCountry;
 						x = "Country";
 					}
-					addContextContext(connection,   Id_C, Id_C_Temp, "Province and " + x);
+					
+					if(mustWrite)
+						addContextContext(connection,   Id_C, Id_C_Temp, "Province and " + x);
 				}
 				else
 					if(resultSet.getString("province") == null || resultSet.getString("province") == "Onbekend"){
@@ -1477,8 +1507,12 @@ public class LinksIDS{
 				if(resultSet.getString("municipality") != null && !resultSet.getString("municipality").equals(municipality)
 						&& !resultSet.getString("municipality").equals("Onbekend")){
 					municipality = resultSet.getString("municipality");
-					addContext(connection, ++Id_C, "NAME", municipality);
-					addContext(connection,   Id_C, "LEVEL", "Municipality");
+					++Id_C;
+					if(mustWrite){
+						addContext(connection,   Id_C, "NAME", municipality);
+						addContext(connection,   Id_C, "LEVEL", "Municipality");
+					}
+					
 					Id_C_CurrentMunicipality = Id_C;
 					Id_C_CurrentLocality     = -1;					
 					
@@ -1492,7 +1526,9 @@ public class LinksIDS{
 						Id_C_Temp = Id_C_CurrentCountry;
 						x = "Country";
 					}
-					addContextContext(connection,   Id_C, Id_C_Temp, "Municipality and " + x);
+					
+					if(mustWrite)
+						addContextContext(connection,   Id_C, Id_C_Temp, "Municipality and " + x);
 				}
 				else
 					if(resultSet.getString("municipality") == null || resultSet.getString("municipality") == "Onbekend" ){
@@ -1503,8 +1539,12 @@ public class LinksIDS{
 				if(resultSet.getString("location") != null && !resultSet.getString("location").equals(locality)
 						&& !resultSet.getString("location").equals("Onbekend")){
 					locality = resultSet.getString("location");
-					addContext(connection, ++Id_C, "NAME", locality);
-					addContext(connection,   Id_C, "LEVEL", "Locality");
+					++Id_C;
+					if(mustWrite){
+						addContext(connection,   Id_C, "NAME", locality);
+						addContext(connection,   Id_C, "LEVEL", "Locality");
+					}
+					
 					Id_C_CurrentLocality = Id_C;
 					
 					int Id_C_Temp = Id_C_CurrentMunicipality;
@@ -1521,7 +1561,8 @@ public class LinksIDS{
 						Id_C_Temp = Id_C_CurrentCountry;
 						x = "Country";
 					}
-					addContextContext(connection,   Id_C, Id_C_Temp, "Locality and " + x);
+					if(mustWrite)
+						addContextContext(connection,   Id_C, Id_C_Temp, "Locality and " + x);
 				}
 				else
 					if(resultSet.getString("location") == null || resultSet.getString("location") == "Onbekend"){
@@ -1529,6 +1570,9 @@ public class LinksIDS{
 						Id_C_CurrentLocality = -1;
 					}
 				
+				
+				//int locNo = resultSet.getInt("location_no");
+				//System.out.println("locNo2Id_C.put((resultSet.getInt(location_no)) = " + locNo + " Id C = " + Id_C); // To find it back later
 				locNo2Id_C.put((resultSet.getInt("location_no")), Id_C); // To find it back later
 				//System.out.println("Location " + resultSet.getInt("location_no") + " has Id_C " + Id_C);
 				
@@ -1578,7 +1622,7 @@ public class LinksIDS{
 			System.exit(0);
 		}
 		
-		return -1;
+		return 0;
 		
 	}
 
@@ -1600,7 +1644,59 @@ public class LinksIDS{
 			System.exit(0);
 		}
 		
-		return -1;
+		return 0;
+		
+	}
+
+	private static int getHighestID_Registration(Connection connection){
+		
+		//System.out.println("Identifying highest id_person");
+		ResultSet r = null;
+		try {
+			r = connection.createStatement().executeQuery("select max(id_registration) as m FROM links_cleaned.registration_c");
+			while (r.next()) {
+				System.out.println("Highest id_registration = " + r.getInt("m"));
+				return(r.getInt("m"));
+			}
+			r.close();
+			//connection.createStatement().close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(0);
+		}
+		
+		return 0;
+		
+	}
+
+
+	
+	private static int getHighestProcessedID_Registration(Connection connection){
+		
+		//System.out.println("Identifying highest id_person");
+		ResultSet r = null;
+		try {
+			r = connection.createStatement().executeQuery("select max(id_c) as m FROM links_ids.context");
+			while (r.next()) {
+				if(r.getInt("m") < 1 * 1000 * 1000){
+					System.out.println("Highest Processed id_registration = 0");
+					return(0);
+				}
+				else{
+					System.out.println("Highest Processed id_registration = " + (r.getInt("m") - 1 * 1000 * 1000));
+					return(r.getInt("m") - (1 * 1000 * 1000));
+				}
+			}
+			r.close();
+			//connection.createStatement().close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(0);
+		}
+		
+		return 0;
 		
 	}
 

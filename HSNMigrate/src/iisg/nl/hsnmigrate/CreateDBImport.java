@@ -794,7 +794,7 @@ public class CreateDBImport {
          "   PSBDGP      SMALLINT, " +
          "   PSBMDP      SMALLINT, " +
          "   PSBJRP      SMALLINT, " +
-         "   PSBNRP      CHAR(10), " +
+         "   PSBNRP      CHAR(20), " +
          "   OPDRNR      CHAR(3), " +
          "   DATUM       CHAR(10), " +
          "   INIT        CHAR(3), " +

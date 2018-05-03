@@ -111,10 +111,13 @@ public static void saveContext(Connection connection, ArrayList<String> cL, Arra
 }
 
 public static int addCertificate(Connection connection, ArrayList<String> cL, ArrayList<String> ccL, String source, int Id_C_registration_location, 
-		int yearCertificate, int month, int day, String sequenceNumberCertificate){
+		int yearCertificate, int month, int day, String sequenceNumberCertificate, int Id_C){
 	
+	
+		//System.out.println("In addCertificate");
 		
-		int Id_C_1 = getNewContextID();
+		//int Id_C_1 = getNewContextID();
+		int Id_C_1 = Id_C;
 		
 		addContext(cL, connection, Id_C_1, "LINKS "+ source, "LEVEL", "Source", "Event", "Exact", day, month, yearCertificate);		
 		addContext(cL, connection, Id_C_1, "LINKS "+ source, "NAME", source, "Event", "Exact", day, month, yearCertificate);		
@@ -130,14 +133,17 @@ public static int addCertificate(Connection connection, ArrayList<String> cL, Ar
 
 public static void addContext(ArrayList<String> cL, Connection connection, int Id_C, String source, String type, String value, 
 		String dateType, String estimation, int day, int month, int year){
+
 	
+	//System.out.println("In addContext");
+
 	String t = String.format("(\"%d\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%d\",\"%d\",\"%d\"),",  
 			                    Id_C, "LINKS", source, type, value, dateType, estimation, day, month, year);
 	
 	
 	cL.add(t);
 	
-	 if(cL.size() > 10000)
+	 if(cL.size() > 5000)
 		 saveContext(cL, connection);
 
 	
@@ -152,7 +158,7 @@ public static void addContextContext(ArrayList<String> ccL, Connection connectio
 	
 	ccL.add(t);
 	
-	 if(ccL.size() > 10000)
+	 if(ccL.size() > 5000)
 		 saveContextContext(ccL, connection);
 
 	
@@ -163,6 +169,8 @@ public static void saveContext(ArrayList<String> lL, Connection connection){
 	if(lL.size() == 0)
 		return;
 	
+	//System.out.println("In saveContext");
+
 	String s = String.format(sp15.substring(0, 2 * lL.size()), lL.toArray());
 	lL.clear();
 	s = s.substring(0, s.length() -1);

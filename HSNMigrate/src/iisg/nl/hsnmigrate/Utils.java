@@ -627,6 +627,7 @@ public class Utils {
 			 final FileNameExtensionFilter extensionFilter = new FileNameExtensionFilter("Access Database", "accdb");			 
 			 final File file = new File(inputDirectory);
 			 
+			 String file1 = "";
 			 for (final File child : file.listFiles()) {
 				 if(extensionFilter.accept(child)) {
 					 //connURL = "jdbc:ucanaccess://" + inputDirectory + File.separator + "PK.accdb";
@@ -642,6 +643,7 @@ public class Utils {
 
 					 try {
 						 s.execute(selTable);
+						 file1 = child.getName();
 					 } catch (SQLException e1) {
 						 // TODO Auto-generated catch block
 						 continue;
@@ -739,7 +741,6 @@ public class Utils {
 			 List a = new ArrayList();
 			 int count = 0;
 
-
 			 while((rs!=null) && (rs.next())){
 
 				 Object outputObject = inputClass.newInstance();  // equivalent to "Object outputObject = new inputClass();"
@@ -757,14 +758,15 @@ public class Utils {
 
 						 // Set parameter list, only one parameter for setter, with datatype depending on  Field's type
 
+						 //if(count == 0){
+							 //System.out.println("index1 = " + index1);
+							 //System.out.println("columnAnnotatedVariableToMSAField[index1] = " + columnAnnotatedVariableToMSAField[index1]);
+							 //System.out.println("fieldNamesMSA[columnAnnotatedVariableToMSAField[index1]] =  " + fieldNamesMSA[columnAnnotatedVariableToMSAField[index1]]);
+							 //System.out.println("fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]] =  " + fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]]);
+						 //}
 
-						 //System.out.println("index1 = " + index1);
-						 //System.out.println("columnAnnotatedVariableToMSAField[index1] = " + columnAnnotatedVariableToMSAField[index1]);
-						 //System.out.println("fieldNamesMSA[columnAnnotatedVariableToMSAField[index1]] =  " + fieldNamesMSA[columnAnnotatedVariableToMSAField[index1]]);
-						 //System.out.println("fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]] =  " + fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]]);
-
-
-						 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("DOUBLE")) 
+						 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("DOUBLE") ||
+								 fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("INTEGER")  ) 
 							 parameterTypes[0] = Integer.TYPE;
 						 else
 							 parameterTypes[0] = String.class;
@@ -824,7 +826,7 @@ public class Utils {
 
 			 // close and cleanup
 
-			 System.out.println("Read    " + tabName + " from " + inputDirectory + "\\PK.accdb: " + count + " rows");	
+			 System.out.println("Read    " + tabName + " from " + inputDirectory + "\\" + file1 +": " + count + " rows");	
 
 			 s.close();
 			 conn.close();

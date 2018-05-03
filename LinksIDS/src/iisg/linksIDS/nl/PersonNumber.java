@@ -147,7 +147,7 @@ public class PersonNumber implements Runnable {
 		
 outer:	for(int i = 173 * 1000 * 1000; i <= max_id_matches; i += pageSize){    // Reduce execution time
 			try {
-				System.out.print("Scanning matches with id_matches in range [" + i + ", " + (i + pageSize) + ")");
+				System.out.println("Scanning matches with id_matches in range [" + i + ", " + (i + pageSize) + ")");
 				
 				java.sql.Statement statement = connection.createStatement();
 				//String select = "select X.ego_id, X.mother_id, X.father_id, Y.ego_id, Y.mother_id, Y.father_id" +
@@ -648,7 +648,7 @@ outer:	for(int i = 173 * 1000 * 1000; i <= max_id_matches; i += pageSize){    //
 				String select = "select id_person, person_number from personNumbers where person_number >= 35240945 and person_number <= 38499635 " + // Time reduce TRM
          						" order by person_number, id_person";
 				//System.out.print("Scanning persons with personNumber in range [" + i + ", " + (i + pageSize) + ")");
-				System.out.print("Scanning persons with personNumber in range [35240945, 38499635]");  // Time reduce
+				System.out.println("Scanning persons with personNumber in range [35240945, 38499635]");  // Time reduce
 
 				//System.out.println(select);
 				ResultSet r = connection.createStatement().executeQuery(select);
