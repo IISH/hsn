@@ -136,8 +136,8 @@ public class LinksIDS{
 			// SELECT * from links_match.personNumbers as N,  links_cleaned.person_c as P, links_cleaned.registration_c as R where N.id_person = P.id_person and P.id_registration =  R.id_registration and (person_number > 0 and   person_number <=  100000) order by person_number
 
 
-			highest_ID_Person = getHighestID_Person(connection); 
-			highest_processed_ID_Person = getHighestProcessedID_Person(connection); // from previous run
+			highest_ID_Person = Utils.getHighestID_Person(connection); 
+			highest_processed_ID_Person = Utils.getHighestProcessedID_Person(connection); // from previous run
 			System.out.println("Processing Persons with id_person > " + highest_processed_ID_Person);
 			outer: for(int a = (highest_processed_ID_Person/pageSize) * pageSize; a <= highest_ID_Person ; a += pageSize){
 				
@@ -320,8 +320,8 @@ public class LinksIDS{
 		ArrayList<String>  stillborns    = new ArrayList<String>();
 		
 		c = 0;
-		int highest_processed_ID_Registration = getHighestProcessedID_Registration(connection);
-		int highestID_Registration = getHighestID_Registration(connection);
+		int highest_processed_ID_Registration = Utils.getHighestProcessedID_Registration(connection);
+		int highestID_Registration = Utils.getHighestID_Registration(connection);
 		System.out.println("Processing Registrations");
 
 		
@@ -1604,102 +1604,7 @@ public class LinksIDS{
 
 	}
 	
-	private static int getHighestID_Person(Connection connection){
-		
-		//System.out.println("Identifying highest id_person");
-		ResultSet r = null;
-		try {
-			r = connection.createStatement().executeQuery("select max(id_person) as m FROM links_ids.personNumbers");
-			while (r.next()) {
-				System.out.println("Highest id_person = " + r.getInt("m"));
-				return(r.getInt("m"));
-			}
-			r.close();
-			//connection.createStatement().close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.exit(0);
-		}
-		
-		return 0;
-		
-	}
-
-	private static int getHighestProcessedID_Person(Connection connection){
-		
-		//System.out.println("Identifying highest id_person");
-		ResultSet r = null;
-		try {
-			r = connection.createStatement().executeQuery("select max(id_i) as m FROM links_ids.individual");
-			while (r.next()) {
-				System.out.println("Highest Processed id_person = " + r.getInt("m"));
-				return(r.getInt("m"));
-			}
-			r.close();
-			//connection.createStatement().close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.exit(0);
-		}
-		
-		return 0;
-		
-	}
-
-	private static int getHighestID_Registration(Connection connection){
-		
-		//System.out.println("Identifying highest id_person");
-		ResultSet r = null;
-		try {
-			r = connection.createStatement().executeQuery("select max(id_registration) as m FROM links_cleaned.registration_c");
-			while (r.next()) {
-				System.out.println("Highest id_registration = " + r.getInt("m"));
-				return(r.getInt("m"));
-			}
-			r.close();
-			//connection.createStatement().close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.exit(0);
-		}
-		
-		return 0;
-		
-	}
-
-
 	
-	private static int getHighestProcessedID_Registration(Connection connection){
-		
-		//System.out.println("Identifying highest id_person");
-		ResultSet r = null;
-		try {
-			r = connection.createStatement().executeQuery("select max(id_c) as m FROM links_ids.context");
-			while (r.next()) {
-				if(r.getInt("m") < 1 * 1000 * 1000){
-					System.out.println("Highest Processed id_registration = 0");
-					return(0);
-				}
-				else{
-					System.out.println("Highest Processed id_registration = " + (r.getInt("m") - 1 * 1000 * 1000));
-					return(r.getInt("m") - (1 * 1000 * 1000));
-				}
-			}
-			r.close();
-			//connection.createStatement().close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.exit(0);
-		}
-		
-		return 0;
-		
-	}
-
 }
 
 

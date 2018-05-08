@@ -758,12 +758,12 @@ public class Utils {
 
 						 // Set parameter list, only one parameter for setter, with datatype depending on  Field's type
 
-						 //if(count == 0){
-							 //System.out.println("index1 = " + index1);
-							 //System.out.println("columnAnnotatedVariableToMSAField[index1] = " + columnAnnotatedVariableToMSAField[index1]);
-							 //System.out.println("fieldNamesMSA[columnAnnotatedVariableToMSAField[index1]] =  " + fieldNamesMSA[columnAnnotatedVariableToMSAField[index1]]);
-							 //System.out.println("fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]] =  " + fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]]);
-						 //}
+						 if(count == 0){
+							 System.out.println("index1 = " + index1);
+							 System.out.println("columnAnnotatedVariableToMSAField[index1] = " + columnAnnotatedVariableToMSAField[index1]);
+							 System.out.println("fieldNamesMSA[columnAnnotatedVariableToMSAField[index1]] =  " + fieldNamesMSA[columnAnnotatedVariableToMSAField[index1]]);
+							 System.out.println("fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]] =  " + fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]]);
+						 }
 
 						 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("DOUBLE") ||
 								 fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("INTEGER")  ) 
@@ -788,7 +788,8 @@ public class Utils {
 
 						 e[0] = null;
 
-						 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("DOUBLE")) 
+						 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("DOUBLE") || 
+								 fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("INTEGER")) 
 							 e[0] = rs.getInt(columnAnnotatedVariableToMSAField[index1] + 1);
 
 						 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("VARCHAR")) {

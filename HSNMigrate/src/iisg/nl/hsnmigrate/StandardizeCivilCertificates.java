@@ -99,6 +99,10 @@ public class StandardizeCivilCertificates  implements Runnable {
 			catch(FileNotFoundException e){}
 		}
 
+		//System.out.println("Statistics...");
+		//statistics();
+		//System.exit(0);
+		
         Runtime runtime = Runtime.getRuntime();
 
 		
@@ -433,11 +437,14 @@ public class StandardizeCivilCertificates  implements Runnable {
 	}
 
 	private static boolean loadDBFTables(String inputFiles){
+		
+		
 	
 		
 		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("import");
 		EntityManager em = emf.createEntityManager();
+		
 		
 		em.getTransaction().begin();
 		List<Stpb> stpbL = Utils.createObjects("iisg.nl.hsnimport.Stpb", inputFiles);
@@ -2032,13 +2039,13 @@ public class StandardizeCivilCertificates  implements Runnable {
 			em.getTransaction().begin();
 
 			Query query = em.createNativeQuery(Statistics.truncateM0);
-			//System.out.println();
-			//System.out.println(Statistics.truncateM0);
+			System.out.println();
+			System.out.println(Statistics.truncateM0);
 
 			query.executeUpdate();
 			query = em.createNativeQuery(Statistics.insertM0);
-			//System.out.println();
-			//System.out.println(Statistics.insertM0);
+			System.out.println();
+			System.out.println(Statistics.insertM0);
 			query.executeUpdate();
 
 			em.getTransaction().commit();
@@ -2050,18 +2057,18 @@ public class StandardizeCivilCertificates  implements Runnable {
 			em2.getTransaction().begin();
 
 			query = em2.createNativeQuery(Statistics.truncateLog);
-			//System.out.println();
-			//System.out.println(Statistics.truncateLog);
+			System.out.println();
+			System.out.println(Statistics.truncateLog);
 
 			query.executeUpdate();
 			query = em2.createNativeQuery(Statistics.insertLog);
-			//System.out.println();
-			//System.out.println(Statistics.insertLog);
+			System.out.println();
+			System.out.println(Statistics.insertLog);
 
 			query.executeUpdate();
 			query = em2.createNativeQuery(Statistics.updateLog1);
-			//System.out.println();
-			//System.out.println(Statistics.updateLog1);
+			System.out.println();
+			System.out.println(Statistics.updateLog1);
 
 			query.executeUpdate();
 

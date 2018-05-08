@@ -106,7 +106,7 @@ public static void saveContext(Connection connection, ArrayList<String> cL, Arra
 
 	saveContext(cL, connection);
 	saveContextContext(ccL, connection);
-	System.out.println("Highest Id_C = " + highestContext_ID);
+	System.out.println("Highest Id_C = " + Utils.getHighestId_C(connection));
 	
 }
 

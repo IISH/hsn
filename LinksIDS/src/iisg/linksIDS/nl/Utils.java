@@ -2,6 +2,7 @@ package iisg.linksIDS.nl;
 
 
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -398,6 +399,123 @@ public class Utils {
 	public static void setId_C(int id_C) {
 		Id_C = id_C;
 	}
+    static int getHighestID_Person(Connection connection){
+		
+		//System.out.println("Identifying highest id_person");
+		ResultSet r = null;
+		try {
+			r = connection.createStatement().executeQuery("select max(id_person) as m FROM links_ids.personNumbers");
+			while (r.next()) {
+				System.out.println("Highest id_person = " + r.getInt("m"));
+				return(r.getInt("m"));
+			}
+			r.close();
+			//connection.createStatement().close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(0);
+		}
+		
+		return 0;
+		
+	}
+
+	static int getHighestProcessedID_Person(Connection connection){
+		
+		//System.out.println("Identifying highest id_person");
+		ResultSet r = null;
+		try {
+			r = connection.createStatement().executeQuery("select max(id_i) as m FROM links_ids.individual");
+			while (r.next()) {
+				System.out.println("Highest Processed id_person = " + r.getInt("m"));
+				return(r.getInt("m"));
+			}
+			r.close();
+			//connection.createStatement().close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(0);
+		}
+		
+		return 0;
+		
+	}
+
+    static int getHighestID_Registration(Connection connection){
+		
+		//System.out.println("Identifying highest id_person");
+		ResultSet r = null;
+		try {
+			r = connection.createStatement().executeQuery("select max(id_registration) as m FROM links_cleaned.registration_c");
+			while (r.next()) {
+				System.out.println("Highest id_registration = " + r.getInt("m"));
+				return(r.getInt("m"));
+			}
+			r.close();
+			//connection.createStatement().close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(0);
+		}
+		
+		return 0;
+		
+	}
+
+
+	
+    static int getHighestProcessedID_Registration(Connection connection){
+		
+  		//System.out.println("Identifying highest id_person");
+  		ResultSet r = null;
+  		try {
+  			r = connection.createStatement().executeQuery("select max(id_c) as m FROM links_ids.context");
+  			while (r.next()) {
+  				if(r.getInt("m") < 1 * 1000 * 1000){
+  					System.out.println("Highest Processed id_registration = 0");
+  					return(0);
+  				}
+  				else{
+  					System.out.println("Highest Processed id_registration = " + (r.getInt("m") - (1 * 1000 * 1000)));
+  					return(r.getInt("m") - (1 * 1000 * 1000));
+  				}
+  			}
+  			r.close();
+  			//connection.createStatement().close();
+  		} catch (SQLException e) {
+  			// TODO Auto-generated catch block
+  			e.printStackTrace();
+  			System.exit(0);
+  		}
+  		
+  		return 0;
+  		
+  	}
+
+    static int getHighestId_C(Connection connection){
+		
+  		//System.out.println("Identifying highest id_person");
+  		ResultSet r = null;
+  		try {
+  			r = connection.createStatement().executeQuery("select max(id_c) as m FROM links_ids.context");
+  			while (r.next()) {
+  					System.out.println("Highest Processed id_registration = " + (r.getInt("m")));
+  					return(r.getInt("m"));
+  			}
+  			r.close();
+  			//connection.createStatement().close();
+  		} catch (SQLException e) {
+  			// TODO Auto-generated catch block
+  			e.printStackTrace();
+  			System.exit(0);
+  		}
+  		
+  		return 0;
+  		
+  	}
 
 }
 
