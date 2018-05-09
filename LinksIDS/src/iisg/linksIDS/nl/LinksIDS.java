@@ -263,6 +263,8 @@ public class LinksIDS{
 							//}
 								
 							writeIndividual(h, persons);	
+							saveIndiv(connection, false); // save conditionally
+
 							
 						}
 
@@ -279,7 +281,8 @@ public class LinksIDS{
 				//resultSet.close ();
 
 				if(persons.size()  != 0){
-					writeIndividual(h, persons);	
+					writeIndividual(h, persons);
+					saveIndiv(connection, false); // save conditionally
 					persons.clear();
 				}
 				System.out.println(", processed " + String.format("%,d", c)  + " person appearances, " + String.format("%,d", pn) + " person numbers");
@@ -299,7 +302,7 @@ public class LinksIDS{
 			System.exit(9);
 		}		
 		
-		saveIndiv(connection);
+		saveIndiv(connection, true); // save unconditionally
 
 		//Contxt.save(connection);
 		//Utils.closeConnection(connection);		
@@ -416,9 +419,10 @@ public class LinksIDS{
 				int Id_C = 0;
 
 				while (resultSet.next()){
-
+					
 					if(resultSet.getInt("id_registration") != previousRegistrationNumber){
 
+						saveRegistration(connection, false);
 
 						if(personNumbers.size() > 0)
 							writeIndivIndiv(personNumbers, roles, stillborns, registration_day, registration_month, registration_year, regType);
@@ -494,14 +498,19 @@ public class LinksIDS{
 					personNumbers.add(resultSet.getInt("person_number"));
 					roles.add(resultSet.getInt("role"));
 					stillborns.add(resultSet.getString("stillbirth"));
+					
+					
+					
 				}
 
 				if(personNumbers.size() > 0){
 					writeIndivIndiv(personNumbers, roles, stillborns, registration_day, registration_month, registration_year, regType);
+					saveRegistration(connection, false);
 					personNumbers.clear();
 					roles.clear();
 				}
 				
+								
 				//  String.format("%,d", c)
 				 
 				System.out.println(", processed " + String.format("%,d", c) + " person appearances");
@@ -516,11 +525,13 @@ public class LinksIDS{
 
 			}		
 		}
-		
-		saveIndivContext(connection);
-		saveIndivIndiv(connection);
-		System.out.println("Saving Context...");
-		Contxt2.saveContext(connection, cList, ccList);
+
+		saveRegistration(connection, true);
+
+		//saveIndivContext(connection);
+		//saveIndivIndiv(connection);
+		//System.out.println("Saving Context...");
+		//Contxt2.saveContext(connection, cList, ccList);
 		System.out.println("Program has ended");
 
 	}
@@ -963,8 +974,8 @@ public class LinksIDS{
 		
 		iList.add(t);
 		
-		 if(iList.size() > 5000)
-			 saveIndiv(connection);
+		 //if(iList.size() > 5000)
+			// saveIndiv(connection);
 
 		
 	}
@@ -985,8 +996,8 @@ public class LinksIDS{
 		
 		
 		iiList.add(t);
-		 if(iiList.size() > 5000)
-			 saveIndivIndiv(connection);
+		 //if(iiList.size() > 5000)
+			// saveIndivIndiv(connection);
 
 		
 	}
@@ -1005,8 +1016,8 @@ public class LinksIDS{
 		
 		//System.out.println("addIndivContext, icList.size() = " + icList.size());
 		
-		 if(icList.size() > 5000)
-			 saveIndivContext(connection);
+		 //if(icList.size() > 5000)
+			// saveIndivContext(connection);
 		
 	}
 	
@@ -1020,8 +1031,8 @@ public class LinksIDS{
 		//System.out.println(t);
 		cList.add(t);
 		
-		 if(cList.size() > 5000)
-			 saveContext(connection);
+		 //if(cList.size() > 5000)
+			// saveContext(connection);
 
 		
 	}
@@ -1035,20 +1046,22 @@ public class LinksIDS{
 		//System.out.println(t);
 		ccList.add(t);
 		
-		 if(ccList.size() > 5000)
-			 saveContextContext(connection);
+		 //if(ccList.size() > 5000)
+			// saveContextContext(connection);
 
 		
 	}
 	
 	
 	
-	public static void saveIndiv(Connection connection){
+	public static void saveIndiv(Connection connection, boolean regardless){
 		
 		
-		if(iList.size() == 0)
+		if(iList.size() == 0 || (iList.size() < 5000 && regardless == false))
 			return;
 		
+		
+		System.out.println("saveIndiv " + iList.size());
 		
 		String s = String.format(sp15.substring(0, 2 * iList.size()), iList.toArray());
 		
@@ -1065,7 +1078,35 @@ public class LinksIDS{
    		
 
 	}
+
+	public static void saveRegistration(Connection connection, boolean regardless) {
 		
+		
+		if(cList.size() == 0 || (cList.size() < 5000 && regardless == false))
+			return;
+		
+		try {
+			connection.setSavepoint();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		saveContext(connection);
+		saveContextContext(connection);
+		saveIndivContext(connection);
+		saveIndivIndiv(connection);
+		
+		try {
+			connection.commit();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+
 	public static void saveIndivIndiv(Connection connection){
 		
 		if(iiList.size() == 0)
