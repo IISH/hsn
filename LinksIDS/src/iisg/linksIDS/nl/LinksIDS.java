@@ -307,8 +307,8 @@ public class LinksIDS{
 		//Contxt.save(connection);
 		//Utils.closeConnection(connection);		
 		
-		//System.out.println("Program ended");
-		//if(1==1) System.exit(0);
+		System.out.println("Program ended");
+		if(1==1) System.exit(0);
 		
 		relations = new HashMap<Pair, Integer>();		
 		relationsX = new HashSet[highest_ID_Person + 1]; 
@@ -1061,7 +1061,9 @@ public class LinksIDS{
 			return;
 		
 		
-		System.out.println("saveIndiv " + iList.size());
+		//System.out.println("saveIndiv " + iList.size());
+		System.out.println("saveIndiv " + iList.get(0).substring(2,10) + " - " +  iList.get(iList.size() - 1).substring(2,10));
+		
 		
 		String s = String.format(sp15.substring(0, 2 * iList.size()), iList.toArray());
 		
