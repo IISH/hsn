@@ -305,10 +305,19 @@ public class LinksIDS{
 		saveIndiv(connection, true); // save unconditionally
 
 		//Contxt.save(connection);
+		
+		
+		
+		try {
+			connection.commit();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		//Utils.closeConnection(connection);		
 		
-		System.out.println("Program ended");
-		if(1==1) System.exit(0);
+		//System.out.println("Program ended");
+		//if(1==1) System.exit(0);
 		
 		relations = new HashMap<Pair, Integer>();		
 		relationsX = new HashSet[highest_ID_Person + 1]; 
@@ -1023,7 +1032,7 @@ public class LinksIDS{
 	
 	public static void addContext(Connection connection, int Id_C, String type, String value){
 		
-
+		System.out.println("Add context, cList.size(); = "+ cList.size());
 		
 		String t = String.format("(\"%d\",\"%s\",\"%s\", \"%s\", \"%s\"),",  
 				                    Id_C, "REF_LOCATION", type, value, "Time_invariant");
@@ -1072,7 +1081,7 @@ public class LinksIDS{
 		s = s.substring(0, s.length() -1);
 
 		String u = "insert into links_ids.individual (Id_I, Id_D, Source, Type, Value, Id_C, date_type, estimation, day, month, year, Start_day, Start_month, Start_year, End_day, End_month, End_year) values" + s;
-		//System.out.println(u.substring(0, 120));
+		System.out.println(u.substring(0, 420));
 
 		//String u = "insert into links_ids.context (Id_C, Id_D, Source, Type, Value, date_type, estimation, day, month, year) values" + s;
 			
@@ -1083,6 +1092,7 @@ public class LinksIDS{
 
 	public static void saveRegistration(Connection connection, boolean regardless) {
 		
+		//System.out.println("saveRegistration, cList.size() = " + cList.size());
 		
 		if(cList.size() == 0 || (cList.size() < 5000 && regardless == false))
 			return;
@@ -1094,8 +1104,10 @@ public class LinksIDS{
 			e.printStackTrace();
 		}
 		
-		saveContext(connection);
+		 
 		saveContextContext(connection);
+		saveContext(connection);
+		
 		saveIndivContext(connection);
 		saveIndivIndiv(connection);
 		
@@ -1618,8 +1630,13 @@ public class LinksIDS{
 				//System.out.println("locNo2Id_C.put((resultSet.getInt(location_no)) = " + locNo + " Id C = " + Id_C); // To find it back later
 				locNo2Id_C.put((resultSet.getInt("location_no")), Id_C); // To find it back later
 				//System.out.println("Location " + resultSet.getInt("location_no") + " has Id_C " + Id_C);
+			
 				
-			}				
+				
+				saveRegistration(connection, false);
+			}
+			saveRegistration(connection, true);
+
 			
 			if(connection_ref != null)
 				Utils.closeConnection(connection_ref);
@@ -1633,15 +1650,14 @@ public class LinksIDS{
 
 		}	
 		
-		saveContext(connection);
-		saveContextContext(connection);
-		
+		/*
 		try {
 			connection.commit();			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 		
 		//System.out.println("Populate Context 2");
 
