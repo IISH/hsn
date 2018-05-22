@@ -1032,7 +1032,7 @@ public class LinksIDS{
 	
 	public static void addContext(Connection connection, int Id_C, String type, String value){
 		
-		System.out.println("Add context, cList.size(); = "+ cList.size());
+		//System.out.println("Add context, cList.size(); = "+ cList.size());
 		
 		String t = String.format("(\"%d\",\"%s\",\"%s\", \"%s\", \"%s\"),",  
 				                    Id_C, "REF_LOCATION", type, value, "Time_invariant");
@@ -1071,7 +1071,7 @@ public class LinksIDS{
 		
 		
 		//System.out.println("saveIndiv " + iList.size());
-		System.out.println("saveIndiv " + iList.get(0).substring(2,10) + " - " +  iList.get(iList.size() - 1).substring(2,10));
+		//System.out.println("saveIndiv " + iList.get(0).substring(2,10) + " - " +  iList.get(iList.size() - 1).substring(2,10));
 		
 		
 		String s = String.format(sp15.substring(0, 2 * iList.size()), iList.toArray());
@@ -1081,7 +1081,7 @@ public class LinksIDS{
 		s = s.substring(0, s.length() -1);
 
 		String u = "insert into links_ids.individual (Id_I, Id_D, Source, Type, Value, Id_C, date_type, estimation, day, month, year, Start_day, Start_month, Start_year, End_day, End_month, End_year) values" + s;
-		System.out.println(u.substring(0, 420));
+		//System.out.println(u.substring(0, 420));
 
 		//String u = "insert into links_ids.context (Id_C, Id_D, Source, Type, Value, date_type, estimation, day, month, year) values" + s;
 			
@@ -1091,6 +1091,37 @@ public class LinksIDS{
 	}
 
 	public static void saveRegistration(Connection connection, boolean regardless) {
+		
+		//System.out.println("saveRegistration, cList.size() = " + cList.size());
+		
+		if(cList.size() == 0 || (cList.size() < 3000 && regardless == false))
+			return;
+		
+		try {
+			connection.setSavepoint();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		 
+		Contxt2.saveContextContext(ccList, connection);
+		Contxt2.saveContext(cList, connection);
+		
+		saveIndivContext(connection);
+		saveIndivIndiv(connection);
+		
+		try {
+			connection.commit();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+
+	public static void saveCont(Connection connection, boolean regardless) {
 		
 		//System.out.println("saveRegistration, cList.size() = " + cList.size());
 		
@@ -1108,8 +1139,6 @@ public class LinksIDS{
 		saveContextContext(connection);
 		saveContext(connection);
 		
-		saveIndivContext(connection);
-		saveIndivIndiv(connection);
 		
 		try {
 			connection.commit();
@@ -1633,9 +1662,9 @@ public class LinksIDS{
 			
 				
 				
-				saveRegistration(connection, false);
+				saveCont(connection, false);
 			}
-			saveRegistration(connection, true);
+			saveCont(connection, true);
 
 			
 			if(connection_ref != null)
