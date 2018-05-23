@@ -365,7 +365,7 @@ public class LinksIDS{
 						" order by R.id_registration";
 
 				//System.out.println(q);
-				System.out.print("Scanning id_registration range [" + a + ", " + (a + pageSize) + ")");
+				System.out.print("Scanning id_registration range (" + a + ", " + (a + pageSize) + "]");
 				Statement s = (Statement) connection.createStatement ();
 				s.executeQuery(q);
 				resultSet = s.getResultSet ();
@@ -430,11 +430,14 @@ public class LinksIDS{
 				while (resultSet.next()){
 					
 					if(resultSet.getInt("id_registration") != previousRegistrationNumber){
+						
+						
+						//System.out.println("resultSet.getInt(id_registration =" + resultSet.getInt("id_registration"));
 
 						saveRegistration(connection, false);
 
 						if(personNumbers.size() > 0)
-							writeIndivIndiv(personNumbers, roles, stillborns, registration_day, registration_month, registration_year, regType);
+							writeIndivIndiv(personNumbers, roles, stillborns, registration_day, registration_month, registration_year, regType + " " + previousRegistrationNumber);
 
 						// Add context for this source
 
@@ -513,10 +516,11 @@ public class LinksIDS{
 				}
 
 				if(personNumbers.size() > 0){
-					writeIndivIndiv(personNumbers, roles, stillborns, registration_day, registration_month, registration_year, regType);
+					writeIndivIndiv(personNumbers, roles, stillborns, registration_day, registration_month, registration_year, regType  + "-" + previousRegistrationNumber);
 					saveRegistration(connection, false);
 					personNumbers.clear();
 					roles.clear();
+					stillborns.clear();
 				}
 				
 								
@@ -1192,7 +1196,7 @@ public class LinksIDS{
 		s = s.substring(0, s.length() -1);
 		String u = "insert into links_ids.context (Id_C, Id_D, type, value, Missing) values" + s;
 			
-		//System.out.println(u.substring(0, 120));
+		//System.out.println(u.substring(0, 30));
    		Utils.executeQ(connection, u);
 	}
 	
@@ -1207,7 +1211,7 @@ public class LinksIDS{
 		s = s.substring(0, s.length() -1);
 		String u = "insert into links_ids.context_context (Id_C_1, Id_C_2, Id_D, relation, Missing) values" + s;
 			
-		//System.out.println(u.substring(0, 120));
+		//System.out.println(u.substring(0, 30));
    		Utils.executeQ(connection, u);
 	}
 	
