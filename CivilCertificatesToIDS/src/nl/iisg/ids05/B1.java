@@ -102,7 +102,7 @@ public class B1 {
 			Utils.addIndiv(em, getIdnr(), Id_I_RP,"BC B1", "FIRST_NAME", getB1rpfn(), "Event", "Exact", getB1rpbd(),  getB1rpbm(), getB1rpby());
 		if(getB1rpgn() != null && getB1rpgn().trim().length() > 0)
 			Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B1", "SEX", Utils.sex(getB1rpgn()), "Event", "Exact", getB1rpbd(), getB1rpbm(), getB1rpby());
-		Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B1", "HSN_RESEARCH_PERSON", "RP", "Missing", "Time_invariant", 0, 0, 0);
+		Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B1", "HSN_RESEARCH_PERSON", "HSN RP", "Missing", "Time_invariant", 0, 0, 0);
 		Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
 
@@ -117,18 +117,26 @@ public class B1 {
 		ContextElement ceCertificate = null;
 		if(getB1sdcc() > 0){
 			ceCertificate = Contxt.get(getB1sdcc());  // Look up name in Context System
-			//System.out.println("b1sdcc = " + getB1sdcc() + ", certificate = " + ceCertificate);
+			//System.out.println("b1sdcc = " + getB1sdcc() + ", certificate place =  " + ceCertificate.getName());
 		}
 
-		//String certificateMunicipality = null;
-		//if(ceCertificate != null){
-		//	 for(int i = 0; i < ceCertificate.getTypes().size(); i++){
-		///		 if(ceCertificate.getTypes().get(i).equals("NAME")){
-		//			 certificateMunicipality = ceCertificate.getValues().get(i);
-		//			 break;
-		//		 }
-		//	 }
-		//	 if(certificateMunicipality != null)
+		String certificateMunicipality = null;
+		if(ceCertificate != null){
+			 for(int i = 0; i < ceCertificate.getTypes().size(); i++){
+				 if(ceCertificate.getTypes().get(i).equals("NAME")){
+					 certificateMunicipality = ceCertificate.getValues().get(i);
+					 break;
+				 }
+			 }
+			 if(certificateMunicipality != null)
+				 System.out.println("b1sdcc = " + getB1sdcc() + ", certificate place =  " + certificateMunicipality);
+			 else
+				 System.out.println("b1sdcc = " + getB1sdcc() + ", certificate place =  NULL");
+		}
+		else
+			 System.out.println("b1sdcc = " + getB1sdcc() + ", certificate =  NULL");
+
+
 		//		 Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_RP, "B1ificate", "Birth", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 		//	 Utils.addIndivAndContext(getB1rpll(), ceCertificate, em, getIdnr(), Id_I_RP, "BC B1", "BIRTH_LOCATION", "Event", "Exact", getB1rpbd(),  getB1rpbm(), getB1rpby());
 		// }
@@ -146,7 +154,7 @@ public class B1 {
 				//String dateType, String estimation, int day, int month, int year)
 				
 				Utils.addIndivAndContext(getB1rplla().getQuarter(), getB1rplla().getStreet(), getB1rplla().getNumber(), getB1rplla().getAddition(),
-						ceCertificate, em, getIdnr(), Id_I_RP, "BC B1",  "BIRTH_LOCATION", "Reported", "Exact",  
+						ceCertificate, em, getIdnr(), Id_I_RP, "BC B1",  "BIRTH_LOCATION", "Event", "Exact",  
 						startDay1, startMonth1, startYear1);
 			}
 				

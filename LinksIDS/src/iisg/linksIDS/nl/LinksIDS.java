@@ -1098,7 +1098,7 @@ public class LinksIDS{
 		
 		//System.out.println("saveRegistration, cList.size() = " + cList.size());
 		
-		if(cList.size() == 0 || (cList.size() < 3000 && regardless == false))
+		if(cList.size() < 3000 && ccList.size() < 3000 && icList.size() < 3000 && iiList.size() < 3000 && regardless == false)
 			return;
 		
 		try {

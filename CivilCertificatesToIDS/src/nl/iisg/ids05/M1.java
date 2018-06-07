@@ -194,7 +194,7 @@ public class M1 {
 
 		 
 		 if(getM1rpgn() != null && getM1rpgn().equalsIgnoreCase("M"))
-			 Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "HSN_RESEARCH_PERSON", "RP", "Missing", "Time_invariant", 0, 0, 0);
+			 Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "HSN_RESEARCH_PERSON", "HSN RP", "Missing", "Time_invariant", 0, 0, 0);
 
 		 //if(getIdnr() == 41686) System.out.println("      m1 +       Groom 1");
 
