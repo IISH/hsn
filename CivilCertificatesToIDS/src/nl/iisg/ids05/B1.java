@@ -84,6 +84,12 @@ public class B1 {
 	public void convert(EntityManager em){
 		
 		//System.out.println("Enter B1, idnr = "+ getIdnr());
+		
+		//if(getB1sdcc() != 806){
+			//return;
+			//System.out.println("b1sdcc = " + getB1sdcc() + ", certificate place =  " + ceCertificate.getName());
+		//}
+
 
 		// RP
 
@@ -120,6 +126,7 @@ public class B1 {
 			//System.out.println("b1sdcc = " + getB1sdcc() + ", certificate place =  " + ceCertificate.getName());
 		}
 
+		/*
 		String certificateMunicipality = null;
 		if(ceCertificate != null){
 			 for(int i = 0; i < ceCertificate.getTypes().size(); i++){
@@ -136,16 +143,18 @@ public class B1 {
 		else
 			 System.out.println("b1sdcc = " + getB1sdcc() + ", certificate =  NULL");
 
+	    */ 
 
 		//		 Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_RP, "B1ificate", "Birth", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 		//	 Utils.addIndivAndContext(getB1rpll(), ceCertificate, em, getIdnr(), Id_I_RP, "BC B1", "BIRTH_LOCATION", "Event", "Exact", getB1rpbd(),  getB1rpbm(), getB1rpby());
 		// }
 
 		if(ceCertificate != null){
+			
 			Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_RP, "BC B1", "Child", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 			
 			if(getB1rplla() != null){
-				
+
 				int startDay1   = (new Integer(getB1rplla().getStartDate().substring(0,2))).intValue();
 				int startMonth1 = (new Integer(getB1rplla().getStartDate().substring(3,5))).intValue();
 				int startYear1  = (new Integer(getB1rplla().getStartDate().substring(6,10))).intValue();
@@ -347,6 +356,8 @@ public class B1 {
 				Utils.addIndivIndiv(em, getIdnr(), Id_I_IN, Id_I_MO, "BC B1", "Echtgenoot", "Declared", "Exact",getB1sdcd(),  getB1sdcm(), getB1sdcy()); 
 			}
 		} 
+		
+		//if(1==1) return;
 
 		// Down the tree
 

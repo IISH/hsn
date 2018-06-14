@@ -347,6 +347,11 @@ public class Initialiser {
 				b0.getB1L().add(b1List.get(i_b1));
 				b1List.get(i_b1).setB0(b0);
 				
+				//if(b1List.get(i_b1).getB1sdcc() == 806){
+				//	System.out.println("B1 " + b1List.get(i_b1).getIdnr());
+				//	System.out.println("A1 " + a1List.get(i_a1).getIdnr() + ", role = " + a1List.get(i_a1).getRole());
+				//}
+				
 				while(i_a1 < a1List.size() && a1List.get(i_a1).getIdnr() == b0.getIdnr() && a1List.get(i_a1).getRole() <= 4){
 					
 					
@@ -356,9 +361,10 @@ public class Initialiser {
 					
 					case 1:
 						
-						
-						//System.out.println("B1 rplla gevonden");
 						b1List.get(i_b1).setB1rplla(a1List.get(i_a1));
+						//if(b1List.get(i_b1).getB1sdcc() == 806)
+							//	System.out.println("B1 rplla gevonden");
+
 						i_a1++;
 						break;						
 					
@@ -366,6 +372,9 @@ public class Initialiser {
 						
 						//System.out.println("B1 molla gevonden");						
 						b1List.get(i_b1).setB1molla(a1List.get(i_a1));
+						//if(b1List.get(i_b1).getB1sdcc() == 806)
+							//System.out.println("B1 molla gevonden");
+
 						i_a1++;
 						break;						
 					
@@ -391,7 +400,7 @@ public class Initialiser {
 					b2List.get(i_b2).setB1(b1List.get(i_b1));
 					
 					
-					while(i_a1 < a1List.size() && a1List.get(i_a1).getIdnr() == b0.getIdnr() && a1List.get(i_a1).getRole() <= 20){ // See HSNMigrate
+					while(i_a1 < a1List.size() && a1List.get(i_a1).getIdnr() == b0.getIdnr() && a1List.get(i_a1).getRole() <= 6){ // See HSNMigrate
 						//System.out.println("B2 w_lla i_a1 = " + i_a1);
 
 						b2List.get(i_b2).setB2w_lla(a1List.get(i_a1));
@@ -508,7 +517,7 @@ public class Initialiser {
 					b1List.get(i_b1).setD1(d1List.get(i_d1));
 					d1List.get(i_d1).setB1(b1List.get(i_b1));
 					
-					while(i_a1 < a1List.size() && a1List.get(i_a1).getIdnr() == b0.getIdnr() && a1List.get(i_a1).getRole() <= 102){
+					while(i_a1 < a1List.size() && a1List.get(i_a1).getIdnr() == b0.getIdnr() && a1List.get(i_a1).getRole() <= 105){
 
 
 						//System.out.println("D1 i_a1 = " + i_a1);
@@ -567,7 +576,7 @@ public class Initialiser {
 						
 						
 
-						while(i_a1 < a1List.size() && a1List.get(i_a1).getIdnr() == b0.getIdnr() && a1List.get(i_a1).getRole() < 300){ // See HSNMigrate		
+						while(i_a1 < a1List.size() && a1List.get(i_a1).getIdnr() == b0.getIdnr() && a1List.get(i_a1).getRole() <= 210){ // See HSNMigrate former spouses		
 							
 							//System.out.println("D2 i_a1 = " + i_a1);
 
@@ -586,7 +595,7 @@ public class Initialiser {
 						d3List.get(i_d3).setD1(d1List.get(i_d1));
 						
 						
-						while(i_a1 < a1List.size() && a1List.get(i_a1).getIdnr() == b0.getIdnr()){ // See HSNMigrate		
+						while(i_a1 < a1List.size() && a1List.get(i_a1).getIdnr() == b0.getIdnr() &&  a1List.get(i_a1).getRole() <= 302){ // See HSNMigrate		
 							
 							//System.out.println("D1 i_a1 = " + i_a1);
 

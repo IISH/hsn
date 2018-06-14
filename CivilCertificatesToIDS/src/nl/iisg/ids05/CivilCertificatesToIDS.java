@@ -139,7 +139,7 @@ public class CivilCertificatesToIDS implements Runnable{
 	
 	int cnt = 0;
 	
-	for(int j = 0; j < 10; j++){  // TRM
+	outer:for(int j = 0; j < 10; j++){  // TRM
 
 		//print("2 heapsize.size() = " +  Runtime.getRuntime().maxMemory()/ (1000*1000) + "    "  + Runtime.getRuntime().totalMemory()/ (1000*1000) + "  " + Runtime.getRuntime().freeMemory()/ (1000*1000));
 
@@ -168,11 +168,13 @@ public class CivilCertificatesToIDS implements Runnable{
 				em.clear();
 				em.getTransaction().begin();
 				print("Processed " + cnt + " IDNRs");
+				System.out.println("Processed " + cnt + " IDNRs");
 				//print("4 heapsize.size() = " +  Runtime.getRuntime().maxMemory()/ (1000*1000) + "    "  + Runtime.getRuntime().totalMemory()/ (1000*1000) + "  " + Runtime.getRuntime().freeMemory()/ (1000*1000));
 				
 				//query = em.createNativeQuery("LOCK TABLES individual WRITE, indiv_indiv WRITE, indiv_context WRITE;");  
 				//query.executeUpdate();  
 
+				//if(cnt > 5000) break outer;
 
 			}
 
