@@ -1005,9 +1005,14 @@ public class Functions {
 		
 		if(place.trim().length() <= 2) return false;
 		
+		
+		/*
 		for(int i = 0; i < place.length() - 1; i++)
 			if(Character.isAlphabetic(place.charAt(i)) == false && place.charAt(i) != ' ')
 				return false;
+				
+		*/
+		
 		
 		return true;
 		
