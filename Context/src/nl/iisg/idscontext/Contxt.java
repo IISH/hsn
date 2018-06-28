@@ -18,8 +18,9 @@ public class Contxt {
 	static List<ContextElement> ceList = null;
 	static ContextElement top = null;
 	
-	static HashMap<Integer, ContextElement>  LocationID_2_Id_C = new HashMap<Integer, ContextElement>();
-
+	static HashMap<Integer, ContextElement>  LocationID_2_Id_C; // = new HashMap<Integer, ContextElement>();
+    static HashMap<String, ContextElement>  municipality_2_Id_C; // = new HashMap<String, ContextElement>();
+	
 	public static void main(String args[]) {
 
 		
@@ -259,6 +260,7 @@ public class Contxt {
 		int curr_Id_C = -1;
 		
 		LocationID_2_Id_C = new HashMap<Integer, ContextElement>();
+		municipality_2_Id_C = new HashMap<String, ContextElement>();
 		
 		ContextElement ce = null;
 		for(int i = 0; i < cList.size(); i++){			
@@ -266,14 +268,33 @@ public class Contxt {
 			if(cList.get(i).getId_C() != curr_Id_C){
 				curr_Id_C = cList.get(i).getId_C();
 				//System.out.println("Id_C = " + curr_Id_C);
-				if(ce != null)
+				if(ce != null){
+					
+					String name = "";
+					boolean isMunicipality = false;
+					for(int ii = 0; ii < ce.getTypes().size(); ii++){
+						
+						if(ce.getTypes().get(ii).equalsIgnoreCase("LEVEL") && ce.getValues().get(ii).equalsIgnoreCase("Municipality"))
+							isMunicipality = true;
+
+						if(ce.getTypes().get(ii).equalsIgnoreCase("NAME"))
+							name = ce.getValues().get(ii);
+
+					}
+					
+					if(isMunicipality &&  name.length() > 0)
+						municipality_2_Id_C.put(name.trim(), ce);
+					
 					ceList.add(ce);
+				}
 				ce = new ContextElement();
 				ce.setId_C(cList.get(i).getId_C());
 				
 				//int location_no = 
 				
 				//LocationID_2_Id_C.put(arg0, arg1)
+				
+				
 				
 			}
 			
@@ -287,6 +308,8 @@ public class Contxt {
 				LocationID_2_Id_C.put(hsn_municipality_code, ce);
 				
 			}
+			
+				
 			
 		}
 		if(ce != null)
@@ -409,7 +432,7 @@ public class Contxt {
 		//ArrayList<String> levels          = new ArrayList<String>();
 			
 		//if(1==1) return null;
-		
+		/*
 		int cnt = 0;
 		for(ContextElement ce: ceList){
 			cnt++;
@@ -430,11 +453,26 @@ public class Contxt {
 
 			if(level.equalsIgnoreCase("Municipality")){ 
 					if(name.trim().equalsIgnoreCase(municipality.trim()))
+						//System.out.println("1 name = "+ municipality + "ce.Id_C = " + ce.getId_C());
 						return ce;
 			}
 		}
 		
-		System.out.println("2 Municipality " + municipality +  " not found");
+		*/
+		//System.out.println("1 Municipality " + municipality +  " not found");
+		
+		if(municipality_2_Id_C.containsKey(municipality.trim())){
+			    //ContextElement ce = municipality_2_Id_C.get(municipality.trim());
+				//System.out.println("2 Name = "+ municipality + " ce.Id_C = " + ce.getId_C());
+				return(municipality_2_Id_C.get(municipality.trim()));
+		}
+		else{
+			System.out.println("2 Municipality " + municipality +  " not found");
+
+			return null;
+		}
+				
+				
 		//if(1/0==1);
 		//System.exit(0); 
 		
@@ -492,7 +530,7 @@ public class Contxt {
 		//System.out.println("    Name = " + municipality);// we left the municipality section
 		
 		*/
-		return null;
+		//return null;
 		
 		
 	}
