@@ -428,6 +428,10 @@ public class Contxt {
 		
 		if(municipality == null) return null;
 		
+		//int a;
+		//if(municipality.equalsIgnoreCase("Al"))
+		//	a = 1/0;
+		
 		//ArrayList<String> municipalities  = new ArrayList<String>();
 		//ArrayList<String> levels          = new ArrayList<String>();
 			
