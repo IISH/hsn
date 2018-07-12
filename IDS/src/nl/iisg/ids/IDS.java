@@ -1466,7 +1466,7 @@ private static void handleSpouses(ArrayList<Person> family){
 
 					String idnr6 = String.format("%06d", p2.getIdnr());
 					p2.setId_I_new("1" + idnr6 + "02" + p2.getIdWithinGroup());
-					System.out.println("CRR 1 " +  p.getIdnr() + "  " + p.getIdWithinGroup() + "  " + p.getId_I_new() + "  " + p.getFamilyName() + "  " + p.getFirstName() + "  " + p.getRelationRP() + "  " + p.getSource() + "  " + p.getIdWithinGroup() + "  " + p.getId_I_new()) ;
+					//System.out.println("CRR 1 " +  p.getIdnr() + "  " + p.getIdWithinGroup() + "  " + p.getId_I_new() + "  " + p.getFamilyName() + "  " + p.getFirstName() + "  " + p.getRelationRP() + "  " + p.getSource() + "  " + p.getIdWithinGroup() + "  " + p.getId_I_new()) ;
 
 				}
 
@@ -1483,7 +1483,7 @@ private static void handleSpouses(ArrayList<Person> family){
 		for(Person p2: group2){
 			String idnr6 = String.format("%06d", p2.getIdnr());
 			p2.setId_I_new("1" + idnr6 + "02" + p2.getIdWithinGroup());
-			System.out.println("CRR 1 " +  p2.getIdnr() + "  "  + p2.getIdWithinGroup() + "  " + p2.getId_I_new() + p2.getFamilyName() + "  " + p2.getFirstName() + "  " + p2.getRelationRP() + "  " + p2.getSource() + "  " + p2.getIdWithinGroup() + "  " + p2.getId_I_new()) ;
+			//System.out.println("CRR 1 " +  p2.getIdnr() + "  "  + p2.getIdWithinGroup() + "  " + p2.getId_I_new() + p2.getFamilyName() + "  " + p2.getFirstName() + "  " + p2.getRelationRP() + "  " + p2.getSource() + "  " + p2.getIdWithinGroup() + "  " + p2.getId_I_new()) ;
 
 		}
 

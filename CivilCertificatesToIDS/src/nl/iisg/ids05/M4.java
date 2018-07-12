@@ -80,7 +80,7 @@ public class M4 {
     	 if(getM4w_ll() != null && getM4w_ll().trim().length() > 0){
     		 ContextElement ce = Contxt.get2(getM4w_ll());
     		 if(ce != null)
-    			 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_WT, "MC M4", "ADDRESS", "Reported", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+    			 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_WT, "MC M4", "Address", "Reported", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
     	 }
     	 
     	 Utils.addIndiv(em, getIdnr(), Id_I_WT, "MC M4", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
