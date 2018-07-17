@@ -76,13 +76,13 @@ public class D3 {
 		 if(ceCertificate != null){
 			 
 	    	 //String death_certificate = "D3ificate";
-	    	 String death_certificate = "D3";
+	    	 String death_certificate = "DC D3";
 			 if(getD1().getD1sdce() != null && getD1().getD1sdce().equalsIgnoreCase("J"))
-				 death_certificate = "D3"; //"Extract D3ificate"; 
+				 death_certificate = "DC D3"; //"Extract D3ificate"; 
 			 
 			 //Utils.addIndivContextAndContext(getD3i_ll(), ceCertificate, em, getIdnr(), Id_I_IN, "DC D3", "", "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
 			 Utils.addIndivContextAndContextCertificate(getD1().getD1sdcy(), getD1().getD1sdcn(), ceCertificate, em, getIdnr(), Id_I_IN, death_certificate, 
-					 "Unknown", "Event", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+					 "Informer", "Event", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
 			 
 			 // Address
 			 

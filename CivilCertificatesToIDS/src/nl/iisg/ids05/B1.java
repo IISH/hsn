@@ -122,6 +122,7 @@ public class B1 {
 
 		ContextElement ceCertificate = null;
 		if(getB1sdcc() > 0){
+			//System.out.println("b1sdcc = " + getB1sdcc());
 			ceCertificate = Contxt.get(getB1sdcc());  // Look up name in Context System
 			//System.out.println("b1sdcc = " + getB1sdcc() + ", certificate place =  " + ceCertificate.getName());
 		}
@@ -150,6 +151,8 @@ public class B1 {
 		// }
 
 		if(ceCertificate != null){
+			
+			System.out.println("Adding Birth Certificate"); // XYZ
 			
 			Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_RP, "BC B1", "Child", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 			

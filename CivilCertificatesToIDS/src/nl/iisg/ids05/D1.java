@@ -117,7 +117,7 @@ public void convert(EntityManager em){
 		 
 		 if(ceCertificate != null){
 			 if(getD1sdce() != null && getD1sdce().equalsIgnoreCase("J"))
-				 death_certificate =  "DC D1 EXTRACT"; //Extract D1ificate"; 
+				 death_certificate =  "DC D1"; //Extract D1ificate"; 
 			 
 			 Utils.addIndivContextAndContextCertificate(getD1sdcy(), getD1sdcn(), ceCertificate, em, getIdnr(), Id_I_RP, death_certificate, "Deceased", "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
 			 //Utils.addIndivAndContext(getD1rpdl(), ceCertificate, em, getIdnr(), Id_I_RP, "DC D1", "DEATH_LOCATION", "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());

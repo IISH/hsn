@@ -662,7 +662,7 @@ public class Contxt {
 				
 			}
 
-			if(comp(level1, "Source") == true && comp(source1, source) == true && yearCertificate1 == yearCertificate && sequenceNumberCertificate1 == sequenceNumberCertificate)
+			if(comp(level1, "Source") == true && comp(source1.substring(0,2), source.substring(0, 2)) == true && yearCertificate1 == yearCertificate && sequenceNumberCertificate1 == sequenceNumberCertificate)
 				return ce;
 		}
 			
@@ -670,7 +670,7 @@ public class Contxt {
 		ce.types.add("LEVEL");
 		ce.values.add(level);
 		ce.types.add("NAME");
-		ce.values.add(source);
+		ce.values.add(source.substring(0,2));
 		ce.types.add("PERIOD");
 		ce.values.add("" + yearCertificate);
 		ce.types.add("SEQUENCE_NUMBER");
