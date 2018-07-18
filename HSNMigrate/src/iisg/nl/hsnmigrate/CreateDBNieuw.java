@@ -28,6 +28,7 @@ public class CreateDBNieuw {
    	"CREATE TABLE IF NOT EXISTS b1" +
     "(" +
     "    B1SDCC       SMALLINT, " +
+    "    B1SDCL       CHAR(50), " +
     "    B1SDCY       SMALLINT, " +
     "    B1SDCN       SMALLINT, " +
     "    IDNR         INT, " +

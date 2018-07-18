@@ -135,7 +135,8 @@ public class CivilCertificatesToIDS implements Runnable{
 	//query.executeUpdate();  
 
 	Ref.loadRelation_B();  // to standardize relations
-	Ref.loadRelation_C();  // we need it to transform some relations
+	Ref.loadRelation_C();  // we need it to transform some relation
+	//Ref.loadMunicipality();  // should not be here, but we need it
 	
 	int cnt = 0;
 	

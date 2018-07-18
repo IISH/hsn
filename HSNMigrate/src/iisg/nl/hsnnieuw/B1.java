@@ -23,6 +23,7 @@ import nl.iisg.ref.Ref_Municipality;
 public class B1 {
 
      @Column(name="B1SDCC")       private int b1sdcc;
+     @Column(name="B1SDCL")       private String b1sdcl;
      @Column(name="B1SDCY")       private int b1sdcy;
      @Column(name="B1SDCN")       private int b1sdcn;
      @Column(name="IDNR")         private int idnr;
@@ -79,6 +80,7 @@ public class B1 {
     	 
     	    setIdnr(gebknd.getIdnr());
     		setB1sdcc(gebknd.getGemnr());
+    		setB1sdcl(gebknd.getBirthActLocation());
             setB1sdcy(gebknd.getJaar());    		
             setB1sdcn(gebknd.getAktenr());    		
             setIdnr(gebknd.getIdnr());    		
@@ -342,6 +344,14 @@ public class B1 {
     		setB1inln(field);
     	}
     	
+     	field = getB1sdcl();
+    	allowedSize = 50;
+    	if(field != null && field.length() > allowedSize){
+    		Utils.message(1000000, getIdnr(), 0, "HSN_CIVREC_STD",  "B1SDCL",  (new Integer(field.length()).toString()));
+    		field = field.substring(0, allowedSize);
+    		setB1inln(field);
+    	}
+    	
      	field = getB1inpf();
     	allowedSize = Const.Smallstring;
     	if(field != null && field.length() > allowedSize){
@@ -508,6 +518,12 @@ public class B1 {
 	}
 	public void setB1sdcc(int b1sdcc) {
 		this.b1sdcc = b1sdcc;
+	}
+		public String getB1sdcl() {
+		return b1sdcl;
+	}
+	public void setB1sdcl(String b1sdcl) {
+		this.b1sdcl = b1sdcl;
 	}
 	public int getB1sdcy() {
 		return b1sdcy;

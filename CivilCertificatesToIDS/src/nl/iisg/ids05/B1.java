@@ -16,12 +16,15 @@ import javax.persistence.Transient;
 
 import nl.iisg.idscontext.ContextElement;
 import nl.iisg.idscontext.Contxt;
+import nl.iisg.ref.Ref;
+import nl.iisg.ref.Ref_Municipality;
 
 @Entity
 @Table(name="b1")
 public class B1 {
 
 	@Column(name="B1SDCC")       private int b1sdcc;
+	@Column(name="B1SDCL")       private String b1sdcl;
 	@Column(name="B1SDCY")       private int b1sdcy;
 	@Column(name="B1SDCN")       private int b1sdcn;
 	@Column(name="IDNR")         private int idnr;
@@ -121,9 +124,12 @@ public class B1 {
 
 
 		ContextElement ceCertificate = null;
-		if(getB1sdcc() > 0){
+		if(getB1sdcl() != null){
 			//System.out.println("b1sdcc = " + getB1sdcc());
-			ceCertificate = Contxt.get(getB1sdcc());  // Look up name in Context System
+
+				ceCertificate = Contxt.get2(getB1sdcl());  // Look up name in Context System
+				if(ceCertificate == null)
+					System.out.println("----> " + getB1sdcl() + " not found in context (= ref_location)");
 			//System.out.println("b1sdcc = " + getB1sdcc() + ", certificate place =  " + ceCertificate.getName());
 		}
 
@@ -152,7 +158,7 @@ public class B1 {
 
 		if(ceCertificate != null){
 			
-			System.out.println("Adding Birth Certificate"); // XYZ
+			//System.out.println("Adding Birth Certificate"); // XYZ
 			
 			Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_RP, "BC B1", "Child", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 			
@@ -401,6 +407,12 @@ public class B1 {
 	}
 	public void setB1sdcc(int b1sdcc) {
 		this.b1sdcc = b1sdcc;
+	}
+	public String getB1sdcl() {
+		return b1sdcl;
+	}
+	public void setB1sdcl(String b1sdcl) {
+		this.b1sdcl = b1sdcl;
 	}
 	public int getB1sdcy() {
 		return b1sdcy;

@@ -407,7 +407,7 @@ public class M1 {
 				 if(getM1gfll() != null){
 					 ce = Contxt.get2(getM1gfll());
 					 if(ce != null)
-						 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_GF, "MC M1", "Address", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+						 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_GF, "MC M1", "Address", "Reported", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 				 }
 			 }
 
