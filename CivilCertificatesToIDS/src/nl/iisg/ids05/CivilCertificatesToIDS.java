@@ -140,7 +140,7 @@ public class CivilCertificatesToIDS implements Runnable{
 	
 	int cnt = 0;
 	
-	outer:for(int j = 0; j < 10; j++){  // TRM
+	outer:for(int j = 0; j < 10; j++){  // TRM XYZ
 
 		//print("2 heapsize.size() = " +  Runtime.getRuntime().maxMemory()/ (1000*1000) + "    "  + Runtime.getRuntime().totalMemory()/ (1000*1000) + "  " + Runtime.getRuntime().freeMemory()/ (1000*1000));
 
@@ -183,7 +183,7 @@ public class CivilCertificatesToIDS implements Runnable{
 			//	System.out.println("No RP for IDNR = " + b0.getIdnr());
 			for(B1 b1: b0.getB1L()){			
 				b1.convert(em);
-				break outer; //XYZ
+				//break outer; //XYZ
 
 			}
 		}

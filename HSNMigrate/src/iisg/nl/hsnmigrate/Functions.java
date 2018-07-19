@@ -682,7 +682,7 @@ public class Functions {
 
 		location2 = location2.trim(); 
 		
-		System.out.format("%20s     %20s     %20s%n", ll, a1.getMunicipality(), location2 );
+		//System.out.format("%20s     %20s     %20s%n", ll, a1.getMunicipality(), location2 );
 		
 		String address = new String();
 		

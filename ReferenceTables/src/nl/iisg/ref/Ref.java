@@ -1693,7 +1693,7 @@ public class Ref {
 	public static void truncateHousenumberaddition(Ref_Housenumberaddition a){
 
 		
-		System.out.println("---->"+ a.getOriginal());
+		//System.out.println("---->"+ a.getOriginal());
 
 		String field = a.getOriginal();
 		int allowedSize = Smallstring;
