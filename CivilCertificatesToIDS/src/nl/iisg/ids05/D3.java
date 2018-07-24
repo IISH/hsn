@@ -41,29 +41,32 @@ public class D3 {
     	 
 		 int Id_I_IN = 60 + getD3i_sq(); // Informer
 		 
+		 String DC = getD1().getDC();
+
+		 
 		 if(getD3i_ln() != null && getD3i_ln().trim().length() > 0 && !getD3i_ln().trim().equalsIgnoreCase("N"))
-			 Utils.addIndiv(em, getIdnr(), Id_I_IN, "DC D3", "LAST_NAME", getD3i_ln(), "Missing", "Time_invariant", 0, 0, 0);
+			 Utils.addIndiv(em, getIdnr(), Id_I_IN, DC + " D3", "LAST_NAME", getD3i_ln(), "Missing", "Time_invariant", 0, 0, 0);
 		 else
 			 return;
 		 if(getD3i_pf() != null && getD3i_pf().trim().length() > 0)
-			 Utils.addIndiv(em, getIdnr(), Id_I_IN, "DC D3", "PREFIX_LAST_NAME", getD3i_pf(), "Missing", "Time_invariant", 0, 0, 0);
+			 Utils.addIndiv(em, getIdnr(), Id_I_IN, DC + " D3", "PREFIX_LAST_NAME", getD3i_pf(), "Missing", "Time_invariant", 0, 0, 0);
 		 if(getD3i_fn() != null && getD3i_fn().trim().length() > 0)
-			 Utils.addIndiv(em, getIdnr(), Id_I_IN, "DC D3", "FIRST_NAME", getD3i_fn(), "Missing", "Time_invariant", 0, 0, 0);
+			 Utils.addIndiv(em, getIdnr(), Id_I_IN, DC + " D3", "FIRST_NAME", getD3i_fn(), "Missing", "Time_invariant", 0, 0, 0);
 		 if(getD3i_oc() != null && getD3i_oc().trim().length() > 0)
-			 Utils.addIndiv(em, getIdnr(), Id_I_IN, "DC D3", "OCCUPATION_STANDARD", getD3i_oc(), "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+			 Utils.addIndiv(em, getIdnr(), Id_I_IN, DC + " D3", "OCCUPATION_STANDARD", getD3i_oc(), "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
 		 if(getD3i_ay() > 0 && getD3i_ay() < 120){  // because there is a strange value age = 558 in D3
-			 Utils.addIndiv(em, getIdnr(), Id_I_IN, "DC D3", "AGE_YEARS", (new Integer(getD3i_ay())).toString(), "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+			 Utils.addIndiv(em, getIdnr(), Id_I_IN, DC + " D3", "AGE_YEARS", (new Integer(getD3i_ay())).toString(), "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
 			 if(Utils.dateIsValid(getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy()) == 0){
 				 int[] a = Utils.birthRange(getD3i_ay(), getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
-				 Utils.addIndiv(em, getIdnr(), Id_I_IN, "DC D3", "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);			 
+				 Utils.addIndiv(em, getIdnr(), Id_I_IN, DC + " D3", "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);			 
 			 }
 		 }
 		 else
-			Utils.addIndiv(em, getIdnr(), Id_I_IN, "DC D3", "BIRTH_DATE", null, "Declared", "Estimated [18/100]", 1, 1, getD1().getD1sdcy() - 100, 1, 1,  getD1().getD1sdcy() - 18);
+			Utils.addIndiv(em, getIdnr(), Id_I_IN, DC + " D3", "BIRTH_DATE", null, "Declared", "Estimated [18/100]", 1, 1, getD1().getD1sdcy() - 100, 1, 1,  getD1().getD1sdcy() - 18);
 
-		 Utils.addIndiv(em, getIdnr(), Id_I_IN, "DC D3", "SIGNATURE", Utils.signature(getD3i_sg()), "Event", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+		 Utils.addIndiv(em, getIdnr(), Id_I_IN, DC + " D3", "SIGNATURE", Utils.signature(getD3i_sg()), "Event", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
 		 
-         Utils.addIndiv(em, getIdnr(), Id_I_IN, "DC D3", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
+         Utils.addIndiv(em, getIdnr(), Id_I_IN, DC + " D3", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
 		 
     	 ContextElement ceCertificate = null;
@@ -75,13 +78,8 @@ public class D3 {
 
 		 if(ceCertificate != null){
 			 
-	    	 //String death_certificate = "D3ificate";
-	    	 String death_certificate = "DC D3";
-			 if(getD1().getD1sdce() != null && getD1().getD1sdce().equalsIgnoreCase("J"))
-				 death_certificate = "DC D3"; //"Extract D3ificate"; 
-			 
 			 //Utils.addIndivContextAndContext(getD3i_ll(), ceCertificate, em, getIdnr(), Id_I_IN, "DC D3", "", "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
-			 Utils.addIndivContextAndContextCertificate(getD1().getD1sdcy(), getD1().getD1sdcn(), ceCertificate, em, getIdnr(), Id_I_IN, death_certificate, 
+			 Utils.addIndivContextAndContextCertificate(getD1().getD1sdcy(), getD1().getD1sdcn(), ceCertificate, em, getIdnr(), Id_I_IN, DC + " D3", 
 					 "Informer", "Event", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
 			 
 			 // Address
@@ -102,7 +100,7 @@ public class D3 {
 					 int startYear1  = (new Integer(getD3i_lla().getStartDate().substring(6,10))).intValue();
 
 					 Utils.addIndivContextAndContext(getD3i_lla().getQuarter(), getD3i_lla().getStreet(), getD3i_lla().getNumber(), getD3i_lla().getAddition(),
-							 ceAddress, em, getIdnr(), Id_I_IN, "DC D3",  "Address", "Reported", "Exact",  
+							 ceAddress, em, getIdnr(), Id_I_IN, DC + " D3",  "Address", "Reported", "Exact",  
 							 startDay1, startMonth1, startYear1);
 
 				 }
@@ -119,8 +117,8 @@ public class D3 {
     		 informer = getD3i_ls().trim();
     		 reciproceInformer = Utils.findReciproke(informer, getD1().getD1rpgn());
     	 }
-		 Utils.addIndivIndiv(em, getIdnr(), Id_I_IN, 51, "DC D3",  informer , "Event", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy()); // Deceased RP and Informer
-		 Utils.addIndivIndiv(em, getIdnr(), 51, Id_I_IN, "DC D3",  reciproceInformer, "Event", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy()); // Deceased RP and Informer
+		 Utils.addIndivIndiv(em, getIdnr(), Id_I_IN, 51, DC + " D3",  informer , "Event", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy()); // Deceased RP and Informer
+		 Utils.addIndivIndiv(em, getIdnr(), 51, Id_I_IN, DC + " D3",  reciproceInformer, "Event", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy()); // Deceased RP and Informer
 		 
      }
      
