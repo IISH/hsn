@@ -385,7 +385,7 @@ public class D1 {
      	}
      }
 
-     setD1rpdla(Functions.location_r2(getD1rpll(), Constants.E_LOD1RPDL, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
+     setD1rpdla(Functions.location_r2(getD1rpdl(), Constants.E_LOD1RPDL, getIdnr(), 0, "HSN_CIVREC_STD", "D1"));
      if(getD1rpdla() != null){
     	 getD1rpdla().setRole(103);
      	
