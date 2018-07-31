@@ -117,6 +117,10 @@ public class B4 {
     	 ContextElement ceMarriage = null;
     	 if(getB4sdml() != null)
     		 ceMarriage = Contxt.get2(getB4sdml());
+    	 else
+        	 if(getB1().getB1sdcl() != null && getB1().getB1sdcl().trim().length() > 0)
+        		 ceMarriage = Contxt.get2(getB1().getB1sdcl());  // Look up name in Context System
+
     	 
 		 if(ceMarriage != null){
 			 Utils.addIndivAndContext(null, ceMarriage, em, getIdnr(), Id_I_FA, "BC B4", "MARRIAGE_LOCATION", "Reported", "Exact", day, month, year);

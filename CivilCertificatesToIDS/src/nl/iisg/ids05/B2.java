@@ -51,8 +51,8 @@ public class B2 {
 			 Utils.addIndiv(em, getIdnr(), Id_I_WN, "BC B2", "FIRST_NAME", getB2w_fn(), "Missing", "Time_invariant", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
 
     	 ContextElement ceCertificate = null;
-    	 if(getB1().getB1sdcc() > 0)
-    		 ceCertificate = Contxt.get(getB1().getB1sdcc());  // Look up name in Context System
+    	 if(getB1().getB1sdcl() != null && getB1().getB1sdcl().trim().length() > 0)
+    		 ceCertificate = Contxt.get2(getB1().getB1sdcl());  // Look up name in Context System
     		 
 
     	 if(ceCertificate != null){    		 

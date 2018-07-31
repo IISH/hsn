@@ -111,7 +111,7 @@ public void convert(EntityManager em){
 			 if(getD1sdce() != null && getD1sdce().equalsIgnoreCase("J"))
 				 DC =  "DC Extract"; //Extract D1ificate"; 
 			 
-			 Utils.addIndivContextAndContextCertificate(getD1sdcy(), getD1sdcn(), ceCertificate, em, getIdnr(), Id_I_RP, DC, "Deceased", "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+			 Utils.addIndivContextAndContextCertificate(getD1sdcy(), getD1sdcn(), ceCertificate, em, getIdnr(), Id_I_RP, DC + " D1", "Deceased", "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
 			 //Utils.addIndivAndContext(getD1rpdl(), ceCertificate, em, getIdnr(), Id_I_RP, "DC D1", "DEATH_LOCATION", "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
 			// Utils.addIndivAndContext(null, null, null, null, ceCertificate, em, getIdnr(), Id_I_RP, DC + " D1", "DEATH_LOCATION", "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
 		 }
