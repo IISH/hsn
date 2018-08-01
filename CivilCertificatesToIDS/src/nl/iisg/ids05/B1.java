@@ -342,7 +342,7 @@ public class B1 {
 					
 					
 					Utils.addIndivContextAndContext(getB1molla().getQuarter(), getB1molla().getStreet(), getB1molla().getNumber(), getB1molla().getAddition(),
-							ceCertificate, em, getIdnr(), Id_I_IN, "BC B1",  "Address", "Reported", "Exact",  
+							ceCertificate, em, getIdnr(), Id_I_MO, "BC B1",  "Address", "Reported", "Exact",  
 							startDay1, startMonth1, startYear1);
 				}
 				

@@ -402,9 +402,11 @@ public class Initialiser {
 					
 					while(i_a1 < a1List.size() && a1List.get(i_a1).getIdnr() == b0.getIdnr() && a1List.get(i_a1).getRole() <= 6){ // See HSNMigrate
 						//System.out.println("B2 w_lla i_a1 = " + i_a1);
+						//System.out.println("B2 w_lla idnr  = " + a1List.get(i_a1).getIdnr() + " seqno = " + a1List.get(i_a1).getRole());
 
 						b2List.get(i_b2).setB2w_lla(a1List.get(i_a1));
 						i_a1++;
+						break;
 					}
 					
 					i_b2++;
@@ -584,6 +586,7 @@ public class Initialiser {
 							//System.out.println("D2 2s_lla gevonden");
 
 							i_a1++;
+							break;
 						}
 						
 						i_d2++;						
@@ -603,6 +606,7 @@ public class Initialiser {
 
 							d3List.get(i_d3).setD3i_lla(a1List.get(i_a1));
 							i_a1++;
+							break;
 						}
 						
 						i_d3++;						

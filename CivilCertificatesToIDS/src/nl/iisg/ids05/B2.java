@@ -54,17 +54,23 @@ public class B2 {
     	 if(getB1().getB1sdcl() != null && getB1().getB1sdcl().trim().length() > 0)
     		 ceCertificate = Contxt.get2(getB1().getB1sdcl());  // Look up name in Context System
     		 
+    	 System.out.println("CECertificate = " + ceCertificate); // XYZ
 
     	 if(ceCertificate != null){    		 
     		 Utils.addIndivContextAndContextCertificate(getB1().getB1sdcy(), getB1().getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_WN, 
     				 "BC B2", "Witness", "Event", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
+    		 System.out.println("---> " +getB2w_lla());
     		 //Utils.addIndivContextAndContext(getB2w_ll(), ceCertificate, em, getIdnr(), Id_I_WN, "BC B2", "", "Event", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
     		 if(getB2w_lla() != null){
+
+    	    	 
 
     			 int startDay1   = (new Integer(getB2w_lla().getStartDate().substring(0,2))).intValue();
     			 int startMonth1 = (new Integer(getB2w_lla().getStartDate().substring(3,5))).intValue();
     			 int startYear1  = (new Integer(getB2w_lla().getStartDate().substring(6,10))).intValue();
 
+    			 System.out.println("Adding CECertificate = " + ceCertificate); // XYZ
+    			 
     			 Utils.addIndivContextAndContext(getB2w_lla().getQuarter(), getB2w_lla().getStreet(), getB2w_lla().getNumber(), getB2w_lla().getAddition(),
     					 ceCertificate, em, getIdnr(), Id_I_WN, "BC B2",  "Address", "Reported", "Exact",  
     					 startDay1, startMonth1, startYear1);
