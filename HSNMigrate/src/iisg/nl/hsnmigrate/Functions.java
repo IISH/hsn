@@ -630,16 +630,52 @@ public class Functions {
 		A1 a1 = new iisg.nl.hsnnieuw.A1();
 		a1.setKeyToRP(idnr);
 		
-		String ll = location;
 
-		String [] a = location.split("[ ,]");
+		String [] a = location.split("[ ,./!]+");
 		
-		//System.out.println(location);
+		//System.out.println("--> " + location); // xyz
 		//for(String a12: a) System.out.println(a12);
 		//System.out.println();
 		
-		String loc = "";
+
 		
+		
+		o:for(int i = 0; i < a.length; i++){
+
+			String t = "";
+
+
+			for(int j = i; j < a.length; j++)				
+				t = t + " " + a[j];
+
+			if(location.equals("Castricum, hetzelfde huis"))
+				System.out.print("Try " + t); // xyz
+
+			Ref_Location l = Ref.getLocation(t);
+			if(l != null  && l.getStandardCode() != null && (l.getStandardCode().equalsIgnoreCase("y"))){
+
+				if(location.equals("Castricum, hetzelfde huis"))
+					System.out.println(" found"); // xyz
+
+				a1.setMunicipality(l.getMunicipality());
+				a1.setPlace(l.getLocation());
+				a1.setLocationNumber(l.getLocationNo() + "");
+
+				for(int k = i; k < a.length; k++)
+					a[k] = "";
+
+				break o;
+
+			}
+			//else
+				//System.out.println(" not found"); // xyz
+
+
+			
+		}
+		
+		//System.out.println();
+/*		
 		if(a.length > 1){		
 			loc = a[a.length - 2] + " " + a[a.length - 1];  // To get places like "De Ham"
 			if(validPlace(loc)){
@@ -673,7 +709,9 @@ public class Functions {
 				}	
 			}
 		}
-				
+	
+				*/
+		
 		String location2 = "";
 		for(int i = 0; i < a.length; i++)
 			location2 = location2 + a[i] + " ";
@@ -681,6 +719,8 @@ public class Functions {
 		
 
 		location2 = location2.trim(); 
+		
+		if(location2.length() == 0) return a1;
 		
 		//System.out.format("%20s     %20s     %20s%n", ll, a1.getMunicipality(), location2 );
 		
@@ -1116,7 +1156,9 @@ public class Functions {
 		
 		if(a != null && a.length > 0){
 			for(int i = 0; i < a.length; i++){
-				if(a[i].equalsIgnoreCase("Wijk") || a[i].equalsIgnoreCase("Wk")){
+				if(a[i].equalsIgnoreCase("Wijk") || 
+				   a[i].equalsIgnoreCase("Wk") ||
+				   a[i].equalsIgnoreCase("Wk.")){
 					if(i + 1 < a.length){
 						a1.setQuarter(a[i + 1]);
 						address = "";

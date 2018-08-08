@@ -183,10 +183,11 @@ public class CivilCertificatesToIDS implements Runnable{
 			//	System.out.println("No RP for IDNR = " + b0.getIdnr());
 			for(B1 b1: b0.getB1L()){			
 				b1.convert(em);
-				//break outer; //XYZ
+				break outer; //XYZ
 
 			}
 		}
+		//break; // XYZ
 	}
 	em.getTransaction().commit();
 	em.clear();

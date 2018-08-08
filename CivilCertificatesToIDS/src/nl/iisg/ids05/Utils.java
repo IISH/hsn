@@ -137,7 +137,7 @@ public class Utils {
 	
 		//System.out.println("s = " + s);
 		
-		String [] sa = s.split("[ ,]");
+		String [] sa = s.split("[ ,]+");
 		sa[sa.length-1].trim();
 		
 		String nr = null;

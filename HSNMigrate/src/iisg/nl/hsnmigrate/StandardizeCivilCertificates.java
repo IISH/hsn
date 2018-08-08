@@ -165,6 +165,8 @@ public class StandardizeCivilCertificates  implements Runnable {
 			
 		}
 		
+		all.clear();  // free up space
+		
 		print("Processed " + getCount() + " IDNR's");
 
 		statistics();
@@ -174,7 +176,6 @@ public class StandardizeCivilCertificates  implements Runnable {
 		print("Saving Messages table...");
 		Log.finalise();
 
-		all.clear();
 		
         print("\nCivil Certificates - Standardize      finished    \n");
 
