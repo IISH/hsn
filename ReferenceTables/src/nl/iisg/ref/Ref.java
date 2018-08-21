@@ -2110,8 +2110,7 @@ public class Ref {
 	public static void finalise(){
 
 		System.out.println("Started saving reference tables");
-		EntityManager em = getEm_ref_2();	
-		
+		EntityManager em = getFactory_ref_2().createEntityManager();	// take new entity manager
 		em.getTransaction().begin();   
 		
 		
@@ -2139,6 +2138,7 @@ public class Ref {
 		
 		//System.out.println("ref_address22 count = "+ ref_address22.size());
 		
+		ref_address21.clear();
 		if(ref_address22 != null){
 			for (Ref_Address ref_address : ref_address22.values()) {
 				count++;
@@ -2160,6 +2160,7 @@ public class Ref {
 		
 		count = 0;
 		
+		ref_houseNumber21.clear();
 		if(ref_houseNumber22 != null){
 			for (Ref_Housenumber ref_hn : ref_houseNumber22.values()) {
 				count++;
@@ -2178,7 +2179,7 @@ public class Ref {
 		// Housenumberaddition
 		
 		count = 0;
-		
+		ref_houseNumberAddition21.clear();
 		if(ref_houseNumberAddition22 != null){
 			for (Ref_Housenumberaddition ref_hna : ref_houseNumberAddition22.values()) {
 				count++;
@@ -2198,7 +2199,7 @@ public class Ref {
 		
 		count = 0;
 		
-		
+		ref_famName21.clear();
 		if(ref_famName22 != null){
 			for (Ref_FamilyName ref_famname : ref_famName22.values()) {
 				count++;
@@ -2235,6 +2236,7 @@ public class Ref {
 		
 		// FirstName
 
+		ref_firstName21.clear();
 		if(ref_firstName22 != null){
 			for (Ref_FirstName ref_firstname : ref_firstName22.values()) {
 				count++;
@@ -2247,7 +2249,7 @@ public class Ref {
 
 		
 		// Prefix
-
+	
 		count = 0;
 		if(ref_prefix != null)
 			for(Ref_Prefix x: ref_prefix)
@@ -2351,7 +2353,7 @@ public class Ref {
 		
 		count = 0;
 		
-		
+		ref_location21.clear();
 		if(ref_location22 != null){
 			for (Ref_Location ref_location : ref_location22.values()) {
 				count++;
@@ -2427,6 +2429,8 @@ public class Ref {
 	public static void setEm_ref_2(EntityManager em_ref_2) {
 		Ref.em_ref_2 = em_ref_2;
 	}
+
+		
 
 
 }

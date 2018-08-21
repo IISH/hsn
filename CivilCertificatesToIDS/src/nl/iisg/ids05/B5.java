@@ -91,7 +91,7 @@ public class B5 {
     			 int startYear1  = (new Integer(getB5fasla().getStartDate().substring(6,10))).intValue();
 
     			 Utils.addIndivContextAndContext(getB5fasla().getQuarter(), getB5fasla().getStreet(), getB5fasla().getNumber(), getB5fasla().getAddition(),
-    					 ceCertificate, em, getIdnr(), Id_I_FA, "B5 ",  "Divorce Location", "Reported", "Exact",  
+    					 ceCertificate, em, getIdnr(), Id_I_FA, "BC B5 ",  "Divorce Location", "Reported", "Exact",  
     					 startDay1, startMonth1, startYear1);
     		 }
 
@@ -102,7 +102,7 @@ public class B5 {
     			 int startYear1  = (new Integer(getB5fadla().getStartDate().substring(6,10))).intValue();
 
     			 Utils.addIndivContextAndContext(getB5fadla().getQuarter(), getB5fadla().getStreet(), getB5fadla().getNumber(), getB5fadla().getAddition(),
-    					 ceCertificate, em, getIdnr(), Id_I_FA, "B5 ",  "Death Location", "Reported", "Exact",  
+    					 ceCertificate, em, getIdnr(), Id_I_FA, "BC B5 ",  "Death Location", "Reported", "Exact",  
     					 startDay1, startMonth1, startYear1);
     		 }
 

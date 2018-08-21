@@ -650,8 +650,8 @@ public class Functions {
 			for(int j = i; j < a.length; j++)				
 				t = t + " " + a[j];
 
-			if(location.equals("Castricum, hetzelfde huis"))
-				System.out.print("Try " + t); // xyz
+			//if(location.equals("Castricum, hetzelfde huis"))
+				//System.out.print("Try " + t); // xyz
 
 			Ref_Location l = Ref.getLocation(t);
 			if(l != null  && l.getStandardCode() != null && (l.getStandardCode().equalsIgnoreCase("y"))){
