@@ -103,7 +103,7 @@ public class B4 {
 		 
 		 // We must give an estimated birthdate for linking purposes
 		 
-		 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B4", "BIRTH_DATE", null, "Declared", "Estimated [15/100]", 1, 1, year - 100, 1, 1,   year - 15);
+		 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B4", "BIRTH_DATE", null, "Assigned", "Estimated [15/100]", 1, 1, year - 100, 1, 1,   year - 15);
    		 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B4", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
 

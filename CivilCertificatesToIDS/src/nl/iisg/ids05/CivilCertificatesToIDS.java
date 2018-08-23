@@ -11,11 +11,13 @@ package nl.iisg.ids05;
 
 import java.io.*;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -27,6 +29,8 @@ import javax.swing.JTextArea;
 import nl.iisg.idscontext.Contxt;
 import nl.iisg.ref.Ref;
 
+import org.eclipse.persistence.config.BatchWriting;
+import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.eclipse.persistence.internal.sessions.remote.SequencingFunctionCall.GetNextValue;
  
 
@@ -119,8 +123,22 @@ public class CivilCertificatesToIDS implements Runnable{
      
 
     
-    EntityManagerFactory factory = Persistence.createEntityManagerFactory("hsn_civrec_ids");
-	EntityManager em = factory.createEntityManager();
+    //EntityManagerFactory factory = Persistence.createEntityManagerFactory("hsn_civrec_ids");
+    
+    // This Batch writing does not seem to work, so I removed it
+    
+    //Map props = new HashMap();
+
+    //props.put(PersistenceUnitProperties.BATCH_WRITING, BatchWriting.JDBC);
+    //props.put(PersistenceUnitProperties.BATCH_WRITING_SIZE, "5000");
+    // In persistence.xml:	<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://localhost:3306/hsn_civrec_ids?rewriteBatchedStatements=true" />" 
+
+
+    System.out.println("Creating EntityManagerFactory:");
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("hsn_civrec_ids");
+    System.out.println("Created!");
+
+	EntityManager em = emf.createEntityManager();
 	 
 	print("Initializing Context system...");
 	Contxt.initializeContext();  

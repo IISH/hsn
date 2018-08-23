@@ -109,7 +109,7 @@ public class D2 {
 					 int startYear1  = (new Integer(getD2s_lla().getStartDate().substring(6,10))).intValue();
 
 					 Utils.addIndivContextAndContext(getD2s_lla().getQuarter(), getD2s_lla().getStreet(), getD2s_lla().getNumber(), getD2s_lla().getAddition(),
-							 ceAddress, em, getIdnr(), Id_I_FS, DC + " D2",  "Address", "Reported", "Exact",  
+							 ceAddress, em, getIdnr(), Id_I_FS, DC + " D2",  "Address", "Declared", "Exact",  
 							 startDay1, startMonth1, startYear1);
 
 				 }

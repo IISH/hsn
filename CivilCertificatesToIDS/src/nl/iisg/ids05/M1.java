@@ -180,7 +180,7 @@ public class M1 {
 		 if(getM1grsg() != null && getM1grsg().trim().length() > 0)
 			 Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "SIGNATURE", Utils.signature(getM1grsg()), "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 		 if(getM1gray() > 0){
-			 Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "AGE_YEARS", (new Integer(getM1gray())).toString(), "Reported", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+			 Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "AGE_YEARS", (new Integer(getM1gray())).toString(), "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 			 if(Utils.dateIsValid(getMar_cd(), getMar_cm(), getMar_cy()) == 0){
 				 int[] a = Utils.birthRange(getM1gray(), getMar_cd(), getMar_cm(), getMar_cy());
 				 Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
@@ -202,7 +202,7 @@ public class M1 {
     	 if(getM1grbl() != null)
     		 ceBirth = Contxt.get2(getM1grbl());
     	 if(ceBirth != null)	 
-		     Utils.addIndivAndContext(null, ceBirth, em, getIdnr(), Id_I_GR, "MC M1", "BIRTH_LOCATION", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+		     Utils.addIndivAndContext(null, ceBirth, em, getIdnr(), Id_I_GR, "MC M1", "BIRTH_LOCATION", "Reported", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 
 		 //if(getIdnr() == 41686) System.out.println("      m1 +       Groom 2");
 		 
@@ -292,7 +292,7 @@ public class M1 {
 		 if(getM1brsg() != null && getM1brsg().trim().length() > 0)
 			 Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "SIGNATURE", Utils.signature(getM1brsg()), "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 		 if(getM1bray() > 0){
-			 Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "AGE_YEARS", (new Integer(getM1bray())).toString(), "Reported", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+			 Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "AGE_YEARS", (new Integer(getM1bray())).toString(), "", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 			 if(Utils.dateIsValid(getMar_cd(), getMar_cm(), getMar_cy()) == 0){
 				 int[] a = Utils.birthRange(getM1bray(), getMar_cd(), getMar_cm(), getMar_cy());
 				 Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
@@ -337,7 +337,7 @@ public class M1 {
     	 if(getM1brll() != null && getM1brll().trim().length() > 0){
     		 ce = Contxt.get2(getM1brll());
     		 if(ce != null)
-    			 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_BR, "MC M1", "Address", "Reported", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+    			 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_BR, "MC M1", "Address", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
     	 }
 
     	 ceBirth = null;
@@ -407,7 +407,7 @@ public class M1 {
 				 if(getM1gfll() != null){
 					 ce = Contxt.get2(getM1gfll());
 					 if(ce != null)
-						 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_GF, "MC M1", "Address", "Reported", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+						 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_GF, "MC M1", "Address", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 				 }
 			 }
 
