@@ -224,12 +224,14 @@ public class IDS implements Runnable {
     			
     			// Source = "HSN MC B4"
     			//           012345678
+    			//          'HSN DC Extract D1'
     			
-    			String source1 = p1.getSource().substring(0, 8);
-    			int    tab1    = new Integer(p1.getSource().substring(8,9));  
-    			String source2 = p2.getSource().substring(0, 8);
-    			int    tab2    = new Integer(p2.getSource().substring(8,9));  
-
+    			String source1 = p1.getSource().substring(0, 6);
+    			int    tab1    = new Integer(p1.getSource().substring(p1.getSource().length() - 1));  
+    			String source2 = p2.getSource().substring(0, 6);
+    			int    tab2    = new Integer(p2.getSource().substring(p2.getSource().length() - 1));  
+    			
+    			//System.out.println(source1 + "  " + tab1 + "  " + Arrays.asList(sources).indexOf(source1) + "  " + source2 + "  "+ tab2 + "  " + Arrays.asList(sources).indexOf(source2));
     			
     			// sort on sources
     			
