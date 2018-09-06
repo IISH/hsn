@@ -705,7 +705,7 @@ public class Ref {
 		Query q = em.createQuery("select a from Ref_Municipality a");
 		ref_Municipality =  q.getResultList();		
 
-		System.out.println("Read   ref_plaats " + ref_Municipality.size() + " rows");
+		System.out.println("Read   Ref_Plaats " + ref_Municipality.size() + " rows");
 
 		Collections.sort(ref_Municipality, new Comparator<Ref_Municipality>()
 				{
