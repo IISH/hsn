@@ -64,11 +64,11 @@ public class B5 {
 			 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B5", "AGE_YEARS", (new Integer(getB5faay())).toString(), "Declared", "Exact", getB1().getB1rpbd(), getB1().getB1rpbm(), getB1().getB1rpby());
 			 if(Utils.dateIsValid(getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy()) == 0){
 				 int[] a = Utils.birthRange(getB5faay(), getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
-				 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B5", "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
+				 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B5", "BIRTH_DATE", null, "Assigned", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
 			 }
 		 }
 		 else
-				Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B5", "BIRTH_DATE", null, "Declared", "Estimated [16/100]", 1, 1, getB1().getB1sdcy() - 100, 1, 1,  getB1().getB1sdcy() - 16);
+				Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B5", "BIRTH_DATE", null, "Assigned", "Estimated [16/100]", 1, 1, getB1().getB1sdcy() - 100, 1, 1,  getB1().getB1sdcy() - 16);
 
 		 
 		 
