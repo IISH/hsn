@@ -176,7 +176,7 @@ public class M1 {
 		 if(getM1grfn() != null && getM1grfn().trim().length() > 0)
 			 Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "FIRST_NAME", getM1grfn(), "Missing", "Time_invariant", 0, 0, 0);
 		 if(getM1groc() != null && getM1groc().trim().length() > 0)
-			 Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "OCCUPATION_STANDARD", getM1groc(), "Declared", "", getMar_cd(), getMar_cm(), getMar_cy());
+			 Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "OCCUPATION_STANDARD", getM1groc(), "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 		 if(getM1grsg() != null && getM1grsg().trim().length() > 0)
 			 Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "SIGNATURE", Utils.signature(getM1grsg()), "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 		 if(getM1gray() > 0){
@@ -292,7 +292,7 @@ public class M1 {
 		 if(getM1brsg() != null && getM1brsg().trim().length() > 0)
 			 Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "SIGNATURE", Utils.signature(getM1brsg()), "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 		 if(getM1bray() > 0){
-			 Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "AGE_YEARS", (new Integer(getM1bray())).toString(), "", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+			 Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "AGE_YEARS", (new Integer(getM1bray())).toString(), "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 			 if(Utils.dateIsValid(getMar_cd(), getMar_cm(), getMar_cy()) == 0){
 				 int[] a = Utils.birthRange(getM1bray(), getMar_cd(), getMar_cm(), getMar_cy());
 				 Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "BIRTH_DATE", null, "Assigned", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
@@ -382,7 +382,7 @@ public class M1 {
 			 if(getM1gffn() != null && getM1gffn().trim().length() > 0)
 				 Utils.addIndiv(em, getIdnr(), Id_I_GF, "MC M1", "FIRST_NAME", getM1gffn(), "Missing", "Time_invariant", 0, 0, 0);
 			 if(getM1gfoc() != null && getM1gfoc().trim().length() > 0)
-				 Utils.addIndiv(em, getIdnr(), Id_I_GF, "MC M1", "OCCUPATION_STANDARD", getM1gfoc(), "Declared", "", getMar_cd(), getMar_cm(), getMar_cy());
+				 Utils.addIndiv(em, getIdnr(), Id_I_GF, "MC M1", "OCCUPATION_STANDARD", getM1gfoc(), "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 			 if(getM1gfsg() != null && getM1gfsg().trim().length() > 0)
 				 Utils.addIndiv(em, getIdnr(), Id_I_GF, "MC M1", "SIGNATURE", Utils.signature(getM1gfsg()), "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 			 if(getM1gfay() > 0){
@@ -451,7 +451,7 @@ public class M1 {
 			 if(getM1gmfn() != null && getM1gmfn().trim().length() > 0)
 				 Utils.addIndiv(em, getIdnr(), Id_I_GM, "MC M1", "FIRST_NAME", getM1gmfn(), "Missing", "Time_invariant", 0, 0, 0);
 			 if(getM1gmoc() != null && getM1gmoc().trim().length() > 0)
-				 Utils.addIndiv(em, getIdnr(), Id_I_GM, "MC M1", "OCCUPATION_STANDARD", getM1gmoc(), "Declared", "", getMar_cd(), getMar_cm(), getMar_cy());
+				 Utils.addIndiv(em, getIdnr(), Id_I_GM, "MC M1", "OCCUPATION_STANDARD", getM1gmoc(), "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 			 if(getM1gmsg() != null && getM1gmsg().trim().length() > 0)
 				 Utils.addIndiv(em, getIdnr(), Id_I_GM, "MC M1", "SIGNATURE", Utils.signature(getM1gmsg()), "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 			 if(getM1gmay() > 0){
@@ -526,7 +526,7 @@ public class M1 {
 			 if(getM1bffn() != null && getM1bffn().trim().length() > 0)
 				 Utils.addIndiv(em, getIdnr(), Id_I_BF, "MC M1", "FIRST_NAME", getM1bffn(), "Missing", "Time_invariant", 0, 0, 0);
 			 if(getM1bfoc() != null && getM1bfoc().trim().length() > 0)
-				 Utils.addIndiv(em, getIdnr(), Id_I_BF, "MC M1", "OCCUPATION_STANDARD", getM1bfoc(), "Declared", "", getMar_cd(), getMar_cm(), getMar_cy());
+				 Utils.addIndiv(em, getIdnr(), Id_I_BF, "MC M1", "OCCUPATION_STANDARD", getM1bfoc(), "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 			 if(getM1bfsg() != null && getM1bfsg().trim().length() > 0)
 				 Utils.addIndiv(em, getIdnr(), Id_I_BF, "MC M1", "SIGNATURE", Utils.signature(getM1bfsg()), "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 			 if(getM1bfay() > 0){
@@ -595,7 +595,7 @@ public class M1 {
 			 if(getM1bmfn() != null && getM1bmfn().trim().length() > 0)
 				 Utils.addIndiv(em, getIdnr(), Id_I_BM, "MC M1", "FIRST_NAME", getM1bmfn(), "Missing", "Time_invariant", 0, 0, 0);
 			 if(getM1bmoc() != null && getM1bmoc().trim().length() > 0)
-				 Utils.addIndiv(em, getIdnr(), Id_I_BM, "MC M1", "OCCUPATION_STANDARD", getM1bmoc(), "Declared", "", getMar_cd(), getMar_cm(), getMar_cy());
+				 Utils.addIndiv(em, getIdnr(), Id_I_BM, "MC M1", "OCCUPATION_STANDARD", getM1bmoc(), "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 			 if(getM1bmsg() != null && getM1bmsg().trim().length() > 0)
 				 Utils.addIndiv(em, getIdnr(), Id_I_BM, "MC M1", "SIGNATURE", Utils.signature(getM1bmsg()), "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 			 if(getM1bmay() > 0){
