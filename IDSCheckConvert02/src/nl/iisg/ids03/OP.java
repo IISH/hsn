@@ -46,7 +46,7 @@ public class OP {
 public boolean check(){
 	
 	// Following give IDNRs terminating errors
-	if(getKeyToRP() == 76081 || getKeyToRP() == 76059 || getKeyToRP() == 70796) return true;
+	//if(getKeyToRP() == 76081 || getKeyToRP() == 76059 || getKeyToRP() == 70796) return true;
 	
 	boolean returnCode = true;
     

@@ -278,6 +278,8 @@ public class Person {
 
 		if(getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP){
 			returnCode = checkOP(ainb);
+			//System.out.println("checkOP rc = " + returnCode); // ASDZ
+
 		}
 		
 		if(getIsHead() && !getIsHeadFirstSuccessor())

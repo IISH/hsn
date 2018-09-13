@@ -298,11 +298,13 @@ public class RegistrationAddress {
 			if(getNameOfStreet().indexOf("/") >= 0){
 				String temp = getNameOfStreet();
 				int index = temp.indexOf("/");
-				char c = temp.charAt(index-1);
-				if(index < temp.length()){
-					char d =  temp.charAt(index+1);
-					if(Character.isDigit(c) == true  && Character.isDigit(d) == true)
-						message("1094",  getNameOfStreet()); 
+				if(index > 0){
+					char c = temp.charAt(index-1);
+					if(index + 1 < temp.length()){
+						char d =  temp.charAt(index+1);
+						if(Character.isDigit(c) == true  && Character.isDigit(d) == true)
+							message("1094",  getNameOfStreet()); 
+					}
 				}
 
 			}
@@ -312,9 +314,12 @@ public class RegistrationAddress {
 			if(getNameOfStreet().indexOf("/") >= 0){
 				String temp = getNameOfStreet();
 				int index = temp.indexOf("/");
-				char c = temp.charAt(index-1);
-				if(Character.isDigit(c) != true){
-					message("1093",  getNameOfStreet()); 
+				if(index > 0){
+
+					char c = temp.charAt(index-1);
+					if(Character.isDigit(c) != true){
+						message("1093",  getNameOfStreet()); 
+					}
 				}
 
 			}

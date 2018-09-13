@@ -156,7 +156,7 @@ public class StandardizePopulationRegister implements Runnable {
         // Check the objects
 
         boolean checkOK = cm.Check(ops, persons, personsDynamic, registrations, registrationAddresses);
-        //boolean checkOK = true;
+        //checkOK = true;
         
         
         // Save messages to disk
@@ -165,6 +165,7 @@ public class StandardizePopulationRegister implements Runnable {
         
         Message.write();
 
+        /*
         if(!checkOK){
 
         	print("Fatal error has occurred. Check bfout1ft and repair");
@@ -173,6 +174,7 @@ public class StandardizePopulationRegister implements Runnable {
         	return;
         }
 
+	    */
         // Conversion
 
         ConvertManager cvm = new ConvertManager();
