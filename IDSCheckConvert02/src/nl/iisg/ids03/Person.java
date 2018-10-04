@@ -1831,7 +1831,8 @@ public class Person {
 		}
 
 		PersonDynamicStandardized.renumber(standardizedPerson.getDynamicDataOfPersonStandardized());
-		
+	
+
 	}
 	
 	

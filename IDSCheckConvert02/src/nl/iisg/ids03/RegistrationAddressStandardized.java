@@ -132,6 +132,7 @@ public class RegistrationAddressStandardized {
 	
 	public void convertAddress(){
 
+
 			
 		Ref_AINB ainb = Ref.getAINB(getKeyToSourceRegister());	
 		
@@ -223,7 +224,7 @@ public class RegistrationAddressStandardized {
 			}
 		}
 
-		
+
 		
 	}
 

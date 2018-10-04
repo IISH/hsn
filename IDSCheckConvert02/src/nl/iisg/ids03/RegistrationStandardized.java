@@ -88,8 +88,14 @@ public class RegistrationStandardized {
 	
     public void transform(Registration r){
 		
+    	
+		
+		//int x = 1/0;
+
 		transformHeadOfHouseholdDate(r);
 		transformEntryDateResearchPerson(r);
+		
+
 	}
 	
     public void transformHeadOfHouseholdDate(Registration r){

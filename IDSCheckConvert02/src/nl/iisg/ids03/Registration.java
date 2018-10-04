@@ -1103,6 +1103,7 @@ public class Registration implements Comparable<Registration>{
 	 */
 	public void Convert(){
 		
+		
         //showFields();
 		
 		standardizedRegistration = new RegistrationStandardized(this); 
@@ -1118,6 +1119,7 @@ public class Registration implements Comparable<Registration>{
 		
 		for(Person p: personsInRegistration){
 			p.Convert();
+
 		}
 
 		//fixReligion();
@@ -1126,6 +1128,8 @@ public class Registration implements Comparable<Registration>{
 		standardizedRegistration.improveReciprocity2();
 		
 		ConvertAddresses();
+		
+
 	}
 	
 	
@@ -1154,6 +1158,20 @@ public class Registration implements Comparable<Registration>{
 
 		for(RegistrationAddress ra: addressesOfRegistration){
 			
+			String old_data = String.format("%d %d %d-%d-%d %s %s %s %s",
+                    ra.getSequenceNumberToAddresses(),
+                    ra.getSynchroneNumber(),
+                    ra.getDayOfAddress(), 
+                    ra.getMonthOfAddress(),
+                    ra.getYearOfAddress(),
+                    ra.getAddressType(),
+                    ra.getNameOfStreet(),
+                    ra.getNumber(),
+                    ra.getAdditionToNumber());
+
+
+			//if(ra.getKeyToRP() == 6083) System.out.println("-----> " + old_data);
+			
 			if(ra.getAddressType().equalsIgnoreCase("OA") == true){ 
 
 				if((ra.getSynchroneNumber() == 0 || ra.getSynchroneNumber() != currentSequenceNumber ) &&
@@ -1179,27 +1197,24 @@ public class Registration implements Comparable<Registration>{
 					ra.getRegistrationToWhichAddressRefers().getStandardizedRegistration().getAddressesStandardizedOfRegistration().add(ras);
 					ras.setAddressFlag(1);
 
-					ras.transform(ra);
+					ras.setLandlord(old_data); 	// Copy original data
+					
+					ras.transform(ra);  // transforms dates
 					ras.setSequenceNumberToAddresses(sequenceNumber);
 					sequenceNumber++;
 					
 					if(convertOldAddressLine(ra, streetName, ras) == null)
 						ras.setOldAddressTotallyProcessed(true);
 					
-					ras.convertAddress();
-
-					//System.out.println("RAS");
-					//if(ras.getStreet() != null) System.out.println("Street: " + ras.getStreet());
-					//if(ras.getQuarter() != null) System.out.println("Quarter: " + ras.getQuarter());
-					//if(ras.getNumber() != null) System.out.println("Number: " + ras.getNumber());
-
+					//ras.convertAddress(); // look in reference tables 
 
 
 					streetName = ras.getStreet(); // Need this later if next record has a "*"
 					rao = ra;  // save this RegistrationAddress
 				}
 				else{
-					
+
+					ras.setOther(old_data); 	// Copy original data  
 					convertOldAddressLine(ra, streetName, ras);
 				}
 			}
@@ -1213,7 +1228,6 @@ public class Registration implements Comparable<Registration>{
 					currentDay = ra.getDayOfAddress();
 					currentMonth = ra.getMonthOfAddress();
 					currentYear = ra.getYearOfAddress();
-					//System.out.println("New Address Type");
 
 					if(rao != null){ // saved object, must be processed first
 						ras = rao.getStandardizedRegistrationAddress();  // restore ras
@@ -1221,20 +1235,15 @@ public class Registration implements Comparable<Registration>{
 						rao = null;
 					}
 
-					//System.out.println("RAS");
-					//if(ras.getStreet() != null) System.out.println("Street = " + ras.getStreet());
-					//if(ras.getQuarter() != null) System.out.println("Quarter = " + ras.getQuarter());
-					//if(ras.getNumber() != null) System.out.println("Number = " + ras.getNumber());
-
-					//System.out.println();
-
-					//System.out.println("New ras!");
 
 					ras = new RegistrationAddressStandardized(ra); // new ras
 					ras.setOriginalAddress(ra); 
 					ra.setStandardizedRegistrationAddress(ras);
 					ra.getRegistrationToWhichAddressRefers().getStandardizedRegistration().getAddressesStandardizedOfRegistration().add(ras);
 					ras.setAddressFlag(2);
+					
+					ras.setLandlord(old_data); 	// Copy original data
+
 
 					ras.transform(ra); 
 					ras.setSequenceNumberToAddresses(sequenceNumber);
@@ -1245,8 +1254,7 @@ public class Registration implements Comparable<Registration>{
 
 				}
 				else{ // We are in a set of addresses that belong together
-					//System.out.println("Same ras!");
-					//System.out.println("Same");
+					ras.setOther(old_data); 	// Copy original data
 					convertNewAddressLine(ra, ras);
 
 				}
@@ -1258,6 +1266,8 @@ public class Registration implements Comparable<Registration>{
 			ras = rao.getStandardizedRegistrationAddress();  // restore ras
 	    	ras.convertAddress();
 		}
+		
+
 	}
 	
 	/**
@@ -1368,8 +1378,9 @@ public class Registration implements Comparable<Registration>{
 			
 		}
 		
-		
 		return address;
+		
+
 
 	}
 	
@@ -1723,7 +1734,7 @@ public class Registration implements Comparable<Registration>{
 		if(ra.getAddressType().equalsIgnoreCase("ST") == true){
 			
 			if(ra.getNameOfStreet() != null && ra.getNameOfStreet().length() >= 7 && ra.getNameOfStreet().substring(0,7).equals("IJsselv")){
-				System.out.println("---> " + ra.getNameOfStreet());
+				//System.out.println("---> " + ra.getNameOfStreet());
 				trace = true;
 			}	
 			

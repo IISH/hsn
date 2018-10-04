@@ -112,7 +112,7 @@ public class PDS_PlaceOfOrigin extends PersonDynamicStandardized {
 			
 			String[] b = Utils.transformPlace(origin, null, null);
 			
-			System.out.println(origin + " " + b[0] +   "  " + b[1]);
+			//System.out.println(origin + " " + b[0] +   "  " + b[1]);
 			
 			if(b[0] != null){
 				setOriginStandardized(b[0]);
