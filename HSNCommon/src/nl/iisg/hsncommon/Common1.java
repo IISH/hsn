@@ -4,9 +4,6 @@ package nl.iisg.hsncommon;
 
 import java.io.File;
 
-
-
-
 import nl.iisg.ref.Ref;
 import nl.iisg.ref.Ref_Relation_B;
 import nl.iisg.ref.Ref_Relation_C;
@@ -565,6 +562,72 @@ public class Common1 {
 		return null;	
 	}
 
+    
+    // Returns String[], first element is Quarter, second argument is rest of address without Quarter
+    
+	public static String[] tryQuarterInfo(String address){
+
+    	if(address == null  || address.trim().length() == 0) return null;
+    	
+    	String [] retInfo = new String[2];
+
+		String [] a = address.split("[ .]+");
+
+		if(a != null && a.length > 0){
+			for(int i = 0; i < a.length; i++){
+				if(a[i].equalsIgnoreCase("Wijk") || 
+						a[i].equalsIgnoreCase("Wk")){
+					if(i + 1 < a.length){
+						retInfo[0] = a[i + 1];
+						retInfo[1] = "";
+						for (int ii = 0; ii < a.length; ii++)
+							if(ii != i && ii != i + 1)
+								retInfo[1] = retInfo[1] + a[ii] + " ";
+					}
+					retInfo[1] = retInfo[1].trim();
+					return retInfo;
+				}
+			}
+			
+			for(int i = 0; i < a.length; i++){
+				if((a[i].length() == 1 && Character.isUpperCase(a[i].charAt(0)) == true) && (i + 1 < a.length && !Character.isUpperCase(a[i + 1].charAt(0)))){  // One character followed by a non character
+					retInfo[0] = a[i];
+					retInfo[1] = "";
+					for (int ii = 0; ii < a.length; ii++)
+						if(ii != i)
+							retInfo[1] = retInfo[1] + a[ii] + " ";
+					retInfo[1] = retInfo[1].trim();
+					return retInfo;
+				}
+			}
+
+		}
+
+		retInfo[0] = null; 
+		retInfo[1] = address; 
+		
+		return retInfo;
+	}
+
 	
+    // Returns String[], first element is Number, second argument is Addition
+	public static String[] tryNumberInfo(String address){
+		
+    	String [] retInfo ={"", ""};
+    	
+    	
+    	boolean digit = true;
+    	for(int i = 0; i < address.length(); i++){
+    		
+    		if(Character.isDigit(address.charAt(i)) == false) digit = false;
+    		if(digit) retInfo[0] = retInfo[0] + address.substring(i, i + 1);
+    		else      retInfo[1] = retInfo[1] + address.substring(i, i + 1);
+    		
+    	}
+    	
+    	return retInfo;
+
+		
+	}
 
 }
