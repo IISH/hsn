@@ -1296,7 +1296,7 @@ public class Registration implements Comparable<Registration>{
 	
 	private String convertOldAddressLine(RegistrationAddress ra, String streetName,  RegistrationAddressStandardized ras){
 
-		if(ra.getKeyToRP() == 4005) System.out.println(streetName + "  ras Landlord " + ras.getLandlord() + "ras Other" + ras.getOther());
+		//if(ra.getKeyToRP() == 4005) System.out.println(streetName + "  ras Landlord " + ras.getLandlord() + "ras Other" + ras.getOther());
 
 		if(ra.getNameOfStreet().equalsIgnoreCase("$Geen Adres$")) return "";
 
@@ -1560,12 +1560,13 @@ public class Registration implements Comparable<Registration>{
 		String[] rt2  = null; 
 
 		String [] a = address.split("[ ]+");
-		
+		/*
 		if(ras.getKeyToRP() == 4005){
 			System.out.println(ras.getKeyToRP() + "  " + address);
 			for(int i = 0; i < a.length; i++)			
 				System.out.println(i + " " + a[i]); // XYZ
 		}
+		*/
 		switch(a.length){
 
 		case 0: break;
@@ -1633,7 +1634,7 @@ public class Registration implements Comparable<Registration>{
 
 		default:
 			
-			if(ras.getKeyToRP() == 4005){
+			/*if(ras.getKeyToRP() == 4005){
 				System.out.println(ras.getKeyToRP() + "  " + address);
 				for(int i = 0; i < a.length; i++)			
 					System.out.println("default "+ i + " " + a[i]); // XYZ
@@ -1648,6 +1649,7 @@ public class Registration implements Comparable<Registration>{
 				System.out.println("Character.isDigit(a[a.length - 2].charAt(0))" + Character.isDigit(a[a.length - 2].charAt(0)));
 			}
 
+*/
 			if(Character.isDigit(a[a.length - 1].charAt(0)) == true && a[a.length - 1].length() <= 4){
 
 				rt2 = Common1.tryNumberInfo(a[a.length - 1]);
@@ -1655,12 +1657,13 @@ public class Registration implements Comparable<Registration>{
 				if(rt2[0].length() > 0) ras.setNumber(rt2[0]);
 				if(rt2[1].length() > 0) ras.setAddition(rt2[1]);
 
+				/*
 				if(ras.getKeyToRP() == 4005){
 					System.out.println(ras.getKeyToRP() + "  " + address);
 					for(int i = 0; i < a.length; i++)			
 						System.out.println("default 1"+ i + " " + a[i]); // XYZ
 				}
-
+*/
 
 				String street = "";
 				for(int i = 0; i < a.length - 1; i++){
@@ -1675,25 +1678,26 @@ public class Registration implements Comparable<Registration>{
 			}
 
 			else{
+				/*
 				if(ras.getKeyToRP() == 4005){
 					System.out.println("X a[a.length - 2] = " + a[a.length - 2]);
 					System.out.println("X .charAt(0))" + a[a.length - 2].charAt(0));
 					System.out.println("X Character.isDigit(a[a.length - 2].charAt(0))" + Character.isDigit(a[a.length - 2].charAt(0)));
 				}
-
+*/
 				if(Character.isDigit(a[a.length - 2].charAt(0)) == true && a[a.length - 2].length() <= 4){
 
 					rt2 = Common1.tryNumberInfo(a[a.length - 2]);
 
 					if(rt2[0].length() > 0) ras.setNumber(rt2[0]);
 					ras.setAddition(rt2[1] + a[a.length - 1]);
-
+					/*
 					if(ras.getKeyToRP() == 4005){
 						System.out.println(ras.getKeyToRP() + "  " + address);
 						for(int i = 0; i < a.length; i++)			
 							System.out.println("default 2"+ i + " " + a[i]); // XYZ
 					}
-
+*/
 
 					String street = "";
 					for(int i = 0; i < a.length - 2; i++){
