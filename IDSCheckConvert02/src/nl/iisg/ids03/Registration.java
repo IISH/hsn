@@ -1298,7 +1298,12 @@ public class Registration implements Comparable<Registration>{
 
 		//if(ra.getKeyToRP() == 4005) System.out.println(streetName + "  ras Landlord " + ras.getLandlord() + "ras Other" + ras.getOther());
 
-		if(ra.getNameOfStreet().equalsIgnoreCase("$Geen Adres$")) return "";
+		
+		if(ra.getNameOfStreet().trim().equalsIgnoreCase("$Geen Adres$")){
+			ras.setAddressFlag(3);  // indicator of 'no address'
+			return "";
+		}
+
 
 		String [] ret = null;
 		boolean processedAll = false; 
@@ -1903,7 +1908,10 @@ public class Registration implements Comparable<Registration>{
 	
 	private void convertNewAddressLine(RegistrationAddress ra, RegistrationAddressStandardized ras){
 		
-		if(ra.getNameOfStreet().equalsIgnoreCase("$Geen Adres$")) return;
+		if(ra.getNameOfStreet().trim().equalsIgnoreCase("$Geen Adres$")){
+			ras.setAddressFlag(3);  // indicator of 'no address'
+			return;
+		}
 
 		
 		//System.out.println("convertNewAddressLine! " + ra.getAddressType());
