@@ -53,7 +53,7 @@ public class B34_ST extends B3_ST{
 		if(startYear == 0 && ConstRelations2.b3kode1_Related[getContentOfDynamicData()] != null)
 			missing = "Time invariant";
 
-		Utils.addIndivIndiv(em, getKeyToRP(), id_i_1,  id_i_2, "B34_ST", "" + getContentOfDynamicData(), startDay, startMonth, startYear, endDay, endMonth, endYear, missing);
+		Utils.addIndivIndiv(em, getKeyToRP(), id_i_1,  id_i_2, "B34", "" + getContentOfDynamicData(), startDay, startMonth, startYear, endDay, endMonth, endYear, missing);
 
 	}
 }

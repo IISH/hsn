@@ -43,7 +43,7 @@ public class B33_ST extends B3_ST{
 		}
 
 		if(getReligionStandardized() != null)
-			Utils.addIndiv(em, getKeyToRP(), getPersonStandardizedToWhomDynamicDataRefers().getPersonID(), "B33_ST", "RELIGION_STANDARD", getReligionStandardized(), null, startDay, startMonth, startYear, endDay, endMonth, endYear);
+			Utils.addIndiv(em, getKeyToRP(), getPersonStandardizedToWhomDynamicDataRefers().getPersonID(), "B33", "RELIGION_STANDARD", getReligionStandardized(), null, startDay, startMonth, startYear, endDay, endMonth, endYear);
 
 	}
 

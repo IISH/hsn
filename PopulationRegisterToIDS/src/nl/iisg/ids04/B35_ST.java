@@ -38,7 +38,7 @@ public class B35_ST extends B3_ST{
 			endYear  = (new Integer(getEndDate().substring(6,10))).intValue();
 		}
 
-		Utils.addIndiv(em, getKeyToRP(), getPersonStandardizedToWhomDynamicDataRefers().getPersonID(), "B35_ST", "OCCUPATION_STANDARD", getOccupationStandardized(), null, startDay, startMonth, startYear, endDay, endMonth, endYear);
+		Utils.addIndiv(em, getKeyToRP(), getPersonStandardizedToWhomDynamicDataRefers().getPersonID(), "B35", "OCCUPATION_STANDARD", getOccupationStandardized(), null, startDay, startMonth, startYear, endDay, endMonth, endYear);
 		
 	}
 

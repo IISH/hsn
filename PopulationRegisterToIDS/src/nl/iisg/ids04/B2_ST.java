@@ -175,7 +175,7 @@ public class B2_ST {
 
 			    					 }
 			    				 }
-			    				 Utils.addIndivContextAndContext(address.trim(), ce, em, getKeyToRP(), getPersonID(), "B6_ST", livingLocation,  startDay, startMonth, startYear, endDay, endMonth, endYear);
+			    				 Utils.addIndivContextAndContext(address.trim(), ce, em, getKeyToRP(), getPersonID(), "B6", livingLocation,  startDay, startMonth, startYear, endDay, endMonth, endYear);
 			    			 }
 			    		 }
 			    	 }

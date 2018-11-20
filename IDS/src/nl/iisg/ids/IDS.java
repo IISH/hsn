@@ -225,7 +225,9 @@ public class IDS implements Runnable {
     			// Source = "HSN MC B4"
     			//           012345678
     			//          'HSN DC Extract D1'
-    			
+
+    			//System.out.println(p1.getSource().substring(0, 6) + "  " + p2.getSource().substring(0, 6));
+
     			String source1 = p1.getSource().substring(0, 6);
     			int    tab1    = new Integer(p1.getSource().substring(p1.getSource().length() - 1));  
     			String source2 = p2.getSource().substring(0, 6);

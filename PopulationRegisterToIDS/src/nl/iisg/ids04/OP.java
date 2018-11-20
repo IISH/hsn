@@ -141,7 +141,7 @@ public class OP {
         		}
         	}
         	
-    		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "HSN_IDENTIFIER", "" + getKeyToRP());
+    		Utils.addIndiv(em, getKeyToRP(), pId, "B2", "HSN_IDENTIFIER", "" + getKeyToRP());
     		
     		
         	
@@ -163,18 +163,18 @@ public class OP {
         		year  = (new Integer(a[0].substring(6,10))).intValue();
 
         
-        		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "BIRTH_DATE", null, day, month, year);
+        		Utils.addIndiv(em, getKeyToRP(), pId, "B2", "BIRTH_DATE", null, day, month, year);
         		
         		x = new Integer(a[1]);
         		y = new Integer(a[2]);
         		z = 100 * y + x;		
 
-        		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "BIRTH_DATE_FLAG", "" + z, day, month, year);
+        		Utils.addIndiv(em, getKeyToRP(), pId, "B2", "BIRTH_DATE_FLAG", "" + z, day, month, year);
         		
         	}
         	else{
         		
-        		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "BIRTH_DATE", null,  "Estimation [-100, 100]", 1, 1, OPBirthYear - 100, 1, 1, OPBirthYear + 100);
+        		Utils.addIndiv(em, getKeyToRP(), pId, "B2", "BIRTH_DATE", null,  "Estimation [-100, 100]", 1, 1, OPBirthYear - 100, 1, 1, OPBirthYear + 100);
       		       //  addIndiv(EntityManager em, int IDNR, int Id_I, String source, String type, String value, int startDay, int startMonth, int startYear, int endDay, int endMonth, int endYear){
 
         		
@@ -187,7 +187,7 @@ public class OP {
 
         		ContextElement ce = Contxt.get2(a[0]);		
         		if(ce != null){
-        			Utils.addIndivAndContext(null, ce, em, getKeyToRP(), pId, "B2_ST",  "BIRTH_LOCATION", day, month, year);
+        			Utils.addIndivAndContext(null, ce, em, getKeyToRP(), pId, "B2",  "BIRTH_LOCATION", day, month, year);
 
 
 
@@ -196,7 +196,7 @@ public class OP {
         			x = new Integer(a[1]);
         			y = new Integer(a[2]);
         			z = 100 * y + x;		
-        			Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "BIRTH_LOCATION_FLAG", "" + z, day, month, year);
+        			Utils.addIndiv(em, getKeyToRP(), pId, "B2", "BIRTH_LOCATION_FLAG", "" + z, day, month, year);
         		}
         	}
 
@@ -206,7 +206,7 @@ public class OP {
         	if(a[0] != null && a[0].length() != 0){
 
         		//Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "FIRST_NAME", a[0], day, month, year);
-        		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "FIRST_NAME", a[0]);
+        		Utils.addIndiv(em, getKeyToRP(), pId, "B2", "FIRST_NAME", a[0]);
 
         		//Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "FIRST_NAME_FLAG", a[1], day, month, year);
         	}
@@ -214,14 +214,14 @@ public class OP {
         	a = Utils.findLastMostCommonValue(lastNames, null);
         	if(a[0] != null && a[0].length() != 0){
 
-        		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "LAST_NAME", a[0]);
+        		Utils.addIndiv(em, getKeyToRP(), pId, "B2", "LAST_NAME", a[0]);
         		//Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "LASTN_AME_FLAG", a[1], day, month, year);
         	}
         	
         	a = Utils.findLastMostCommonValue(prefixes, null);
         	if(a[0] != null && a[0].length() != 0){
 
-        		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "PREFIX_LAST_NAME", a[0]);
+        		Utils.addIndiv(em, getKeyToRP(), pId, "B2", "PREFIX_LAST_NAME", a[0]);
         		//Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "PREFIX_LASTNAME_FLAG", a[1], day, month, year);
         	}
         	
@@ -237,7 +237,7 @@ public class OP {
             		else
             			sex = "Unknown";
         		
-        		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "SEX", sex);
+        		Utils.addIndiv(em, getKeyToRP(), pId, "B2", "SEX", sex);
         		//Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "SEX_FLAG", a[1], day, month, year);
         	}
         	
@@ -254,13 +254,13 @@ public class OP {
         		month = (new Integer(a[0].substring(3,5))).intValue();
         		year  = (new Integer(a[0].substring(6,10))).intValue();
         		
-        		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "DEATH_DATE", null, day, month, year);
+        		Utils.addIndiv(em, getKeyToRP(), pId, "B2", "DEATH_DATE", null, day, month, year);
 
         		x = new Integer(a[1]);
         		y = new Integer(a[2]);
         		z = 100 * y + x;		
 
-        		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "DEATH_DATE_FLAG", "" + z, day, month, year);
+        		Utils.addIndiv(em, getKeyToRP(), pId, "B2", "DEATH_DATE_FLAG", "" + z, day, month, year);
 
         	}
         	
@@ -273,7 +273,7 @@ public class OP {
 
         		ContextElement ce = Contxt.get2(a[0]);		
         		if(ce != null){
-        			Utils.addIndivAndContext(null, ce, em, getKeyToRP(), pId, "B2_ST",  "DEATH_LOCATION", day, month, year);
+        			Utils.addIndivAndContext(null, ce, em, getKeyToRP(), pId, "B2",  "DEATH_LOCATION", day, month, year);
 
         			//Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "DEATH_PLACE", a[0], day, month, year);
         			x = new Integer(a[1]);
@@ -281,7 +281,7 @@ public class OP {
         			z = 100 * y + x;		
 
 
-        			Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "DEATH_LOCATION_FLAG", "" + z, day, month, year);
+        			Utils.addIndiv(em, getKeyToRP(), pId, "B2", "DEATH_LOCATION_FLAG", "" + z, day, month, year);
 
         			
         		}
@@ -351,7 +351,7 @@ public class OP {
 
             		
             		//Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "OBSERVATION_END", reason, day, month, year);
-            		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "OBSERVATION", null, null, day_1, month_1, year_1, day, month, year);
+            		Utils.addIndiv(em, getKeyToRP(), pId, "B2", "OBSERVATION", null, null, day_1, month_1, year_1, day, month, year);
 
 
             		
@@ -386,7 +386,7 @@ public class OP {
 
             		
             		//Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "OBSERVATION_END", reason, day, month, year);
-            		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "OBSERVATION", null, null, day_1, month_1, year_1, day, month, year);
+            		Utils.addIndiv(em, getKeyToRP(), pId, "B2", "OBSERVATION", null, null, day_1, month_1, year_1, day, month, year);
         			
         			
         		}
@@ -397,7 +397,7 @@ public class OP {
         	
         	
         	if(isRP)
-        		Utils.addIndiv(em, getKeyToRP(), pId, "B2_ST", "HSN_RESEARCH_PERSON", "HSN RP", day, month, year);
+        		Utils.addIndiv(em, getKeyToRP(), pId, "B2", "HSN_RESEARCH_PERSON", "HSN RP", day, month, year);
 
     	}
     }

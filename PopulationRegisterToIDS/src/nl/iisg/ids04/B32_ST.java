@@ -53,7 +53,7 @@ public class B32_ST extends B3_ST {
 		//System.out.println("b3st 2");
 
 		if(getContentOfDynamicData() > 0){
-				Utils.addIndiv(em, getKeyToRP(), getPersonStandardizedToWhomDynamicDataRefers().getPersonID(), "B32_ST", "CIVIL_STATUS " ,  
+				Utils.addIndiv(em, getKeyToRP(), getPersonStandardizedToWhomDynamicDataRefers().getPersonID(), "B32", "CIVIL_STATUS " ,  
 					Constants.cscode1[getContentOfDynamicData()], null, startDay, startMonth, startYear, endDay, endMonth, endYear);
 		}
 
@@ -61,11 +61,11 @@ public class B32_ST extends B3_ST {
 
 		
 		if(getContentOfDynamicData() == 5){ //  Marriage
-			Utils.addIndiv(em, getKeyToRP(), getPersonStandardizedToWhomDynamicDataRefers().getPersonID(), "B32_ST", "MARRIAGE_DATE", null, startDay, startMonth, startYear);
+			Utils.addIndiv(em, getKeyToRP(), getPersonStandardizedToWhomDynamicDataRefers().getPersonID(), "B32", "MARRIAGE_DATE", null, startDay, startMonth, startYear);
 			if(getCivilLocalityStandardized() != null && getCivilLocalityStandardized().trim().length() > 0){
 				ContextElement ce = Contxt.get2(getCivilLocalityStandardized());		
 				if(ce != null){
-					Utils.addIndivContextAndContext(null, ce, em, getKeyToRP(), getPersonStandardizedToWhomDynamicDataRefers().getPersonID(), "B32_ST", "MARRIAGE LOCATION", startDay, startMonth, startYear, endDay, endMonth, endYear);
+					Utils.addIndivContextAndContext(null, ce, em, getKeyToRP(), getPersonStandardizedToWhomDynamicDataRefers().getPersonID(), "B32", "MARRIAGE LOCATION", startDay, startMonth, startYear, endDay, endMonth, endYear);
 				}
 			}
 		}

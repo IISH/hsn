@@ -43,7 +43,7 @@ public class B36_ST extends B3_ST{
 		//Utils.addIndiv(em, getKeyToRP(), getPersonStandardizedToWhomDynamicDataRefers().getPersonID(), "B36_ST", "ARRIVAL_FROM", getOriginStandardized(), day, month, year);
 		ContextElement ce = Contxt.get2(getOriginStandardized());		
 		if(ce != null)
-			Utils.addIndivAndContext(null, ce, em, getKeyToRP(), getPersonStandardizedToWhomDynamicDataRefers().getPersonID(), "B36_ST",  "ARRIVAL_FROM", day, month, year);
+			Utils.addIndivAndContext(null, ce, em, getKeyToRP(), getPersonStandardizedToWhomDynamicDataRefers().getPersonID(), "B36",  "ARRIVAL_FROM", day, month, year);
 
 	}
 
