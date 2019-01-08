@@ -1720,7 +1720,7 @@ public class RegistrationStandardized {
 
     			if(implicitHead != null){
 
-    				int endDate = personEndDate(implicitHead);
+    				int endDateImplicitHead = personEndDate(implicitHead);
 
     				// get relation new head to original head
 
@@ -1823,7 +1823,8 @@ public class RegistrationStandardized {
     						pdsnew.setStartFlag(pdsLast.getEndFlag());
     						pdsnew.setStartEst(pdsLast.getEndEst());
 
-    						pdsnew.setEndDate("31-12-" + ainb.getEndYearRegister());
+    						pdsnew.setEndDate(Utils.dateFromDayCount(endDateImplicitHead)); 
+    						//pdsnew.setEndDate("31-12-" + ainb.getEndYearRegister()); // Kan niet altijd
     						pdsnew.setEndFlag(pdsLast.getEndFlag());
     						pdsnew.setEndEst(100);
 
