@@ -2188,205 +2188,232 @@ public class RegistrationStandardized {
     
     public void relateAllToAll(){
 
-    	int traceKey = 70001;
-    	
+    	int traceKey = 101955;
+
     	if(getKeyToRP() == traceKey)
     		System.out.println("\nRegistration: " + getKeyToRP() + "  " + getKeyToSourceRegister());
-    	
+
     	for(PersonStandardized psA: getPersonsStandardizedInRegistration()){
 
-        	int x1 = 0;
-        	int x2 = 0;
-        	int x3 = 0;
-        	int x4 = 0;
-        	
-    		
+    		int x1 = 0;
+    		int x2 = 0;
+    		int x3 = 0;
+    		int x4 = 0;
+
+
     		int count = 0;
-    		
+
     		int relToHeadA = 0; 
     		for(PersonDynamicStandardized pdsA: psA.getDynamicDataOfPersonStandardized()){
-	        	if(pdsA.getKeyToDistinguishDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD_ST){
-	        		relToHeadA = ((PDS_RelationToHead)pdsA).getContentOfDynamicData();
 
-	        		x1 = relToHeadA;
+    			if(pdsA.getKeyToDistinguishDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD_ST){
 
-	        		if(relToHeadA <= 0){
-    	        		if(getKeyToRP() == traceKey)
-    	        			System.out.println(psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + x1);
-	        			continue;
-	        		}
+    				relToHeadA = ((PDS_RelationToHead)pdsA).getContentOfDynamicData();
 
-	        		if((relToHeadA == ConstRelations2.EXPLICIET_HOOFD  || relToHeadA == ConstRelations2.EXPLICIET_HOOFD_EERSTE_OPVOLGER || relToHeadA == ConstRelations2.EXPLICIET_HOOFD_TWEEDE_OPVOLGER) && 
-	        				psA.getSex().equalsIgnoreCase("V"))
-	        			relToHeadA = ConstRelations2.IMPLICIET_HOOFD_WEDUWE_OF_MAN_WEG;
-	        		
-	        		int relToHeadB = 0; 
+    				x1 = relToHeadA;
 
-	            	for(PersonStandardized psB: getPersonsStandardizedInRegistration()){
+    				if(relToHeadA <= 0){
+    					if(getKeyToRP() == traceKey)
+    						System.out.println(psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + x1);
+    					continue;
+    				}
 
-	            		if(psB == psA || psB.getPersonID() == psA.getPersonID()){
-	            			
-	            			continue;
-	            		}
-	            		
-	            		for(PersonDynamicStandardized pdsB: psB.getDynamicDataOfPersonStandardized()){
-	        	        	if(pdsB.getKeyToDistinguishDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD_ST){
-	        	        		relToHeadB = ((PDS_RelationToHead)pdsB).getContentOfDynamicData();
-	        	        		
-	        	        		x2 = relToHeadB;
+    				if((relToHeadA == ConstRelations2.EXPLICIET_HOOFD  || relToHeadA == ConstRelations2.EXPLICIET_HOOFD_EERSTE_OPVOLGER || relToHeadA == ConstRelations2.EXPLICIET_HOOFD_TWEEDE_OPVOLGER) && 
+    						psA.getSex().equalsIgnoreCase("V"))
+    					relToHeadA = ConstRelations2.IMPLICIET_HOOFD_WEDUWE_OF_MAN_WEG;
 
-	        	        		if(relToHeadB <= 0){
-		        	        		if(getKeyToRP() == traceKey)
-		        	        			System.out.println(psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + x1 + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + x2);
-	        	        			continue;
-	        	        		}
+    				x1 = relToHeadA;
+    				int relToHeadB = 0; 
 
-	        	        		if((relToHeadB == ConstRelations2.EXPLICIET_HOOFD  || relToHeadB == ConstRelations2.EXPLICIET_HOOFD_EERSTE_OPVOLGER || relToHeadB == ConstRelations2.EXPLICIET_HOOFD_TWEEDE_OPVOLGER) && 
-	        	        				psB.getSex().equalsIgnoreCase("V"))
-	        	        			relToHeadB = ConstRelations2.IMPLICIET_HOOFD_WEDUWE_OF_MAN_WEG;
+    				for(PersonStandardized psB: getPersonsStandardizedInRegistration()){
 
-	        	        		
-	        	        		int[] relABa = Common1.getRelation(relToHeadA, relToHeadB);
-	        	        		
-	        	        		
-	        	        		int relAB = 90;
-	        	        		if(relABa != null){
-	        	        			
-	        	        			relAB = relABa[0]; // male form
-	        	        			
-	        	        			if(relABa.length == 2 && psA.getSex().equalsIgnoreCase("V"))
-		        	        			relAB = relABa[1];  // female form
-	        	        			
-	        	        			
-	        	        		}
-	        	        		
-	        	        		x3 = relAB;
+    					if(psB == psA || psB.getPersonID() == psA.getPersonID()){
 
-	        	        		
-	        	        		
-	        	        		if(relAB <= 0){
-		        	        		if(getKeyToRP() == traceKey)
-		        	        			System.out.println(psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + x1 + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + x2 + "  " + x3 + "  " + x4);
-	        	        			continue;
-	        	        		}
-	        	        		
-	        	        		relAB = resolveRelation(relAB, psA.getSex(), psB.getPersonID(), psA.getPersonID_FA(), psA.getPersonID_MO(),
-	        	        									                                    psB.getPersonID_FA(), psB.getPersonID_MO());
-	        	        		
-	        	        		x4 = relAB;
+    						continue;
+    					}
 
-	        	        		if(getKeyToRP() == traceKey)
-	        	        			System.out.println(psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + x1 + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + x2 + "  " + x3 + "  " + x4);
-	        	            	//if(getKeyToRP() == traceKey &&  (psA.getNatureOfPerson() != 2   || psB.getNatureOfPerson() != 2)){
-	        	            	//	System.out.println("Person A = " + psA.getPersonID() + "  " + psA.getFirstName() + "  " + psA.getFamilyName() + "  , relation to Head = " + relToHeadA);
-	        	            	//	System.out.println("Person B = " + psB.getPersonID() + "  " + psB.getFirstName() + "  " + psB.getFamilyName() + "  , relation = " + relToHeadB);
-	        	            	//	System.out.println("Person A to B relation: " + relAB);
-        	            		//}
-	        	        		
-	        	        		
+    					for(PersonDynamicStandardized pdsB: psB.getDynamicDataOfPersonStandardized()){
 
-	            				if(ConstRelations2.b3kode1_Related[relAB] == null){ // not blood related, so lets try to date
-	            					if(pdsA.getStartDate() != null || pdsB.getStartDate() != null){
-	            						String  []  intersection = Common1.getIntersection(pdsA.getStartDate(), pdsA.getEndDate(), pdsB.getStartDate(), pdsB.getEndDate());
-	            						if(intersection != null){
-	            							
-	            		        			PDS_AllToAll pds = new PDS_AllToAll();
+    						if(pdsB.getKeyToDistinguishDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD_ST){
 
-	    		        					pds.setStartDate(intersection[0]);
-	    		        					pds.setEndDate(intersection[1]);
 
-	    		        					pds.setKeyToSourceRegister(psA.getKeyToSourceRegister());
-	    		        					pds.setEntryDateHead(psA.getEntryDateHead());
-	    		        					pds.setKeyToRP(psA.getKeyToRP());
-	    		        					pds.setKeyToRegistrationPersons(psA.getKeyToPersons());
-	    		        					pds.setKeyToDistinguishDynamicDataType(34);
-	    		        					pds.setDynamicDataSequenceNumber(psA.getToAll().size() + 1); 
-	    		        					pds.setContentOfDynamicData(relAB); 
+    							relToHeadB = ((PDS_RelationToHead)pdsB).getContentOfDynamicData();
 
-	    		        					pds.setValueOfRelatedPerson(psB.getKeyToPersons()); 
-	    		        					pds.setNatureOfPerson(psA.getNatureOfPerson());
+    							x2 = relToHeadB;
 
-	    		        					pds.setDateOfMutation("00-00-0000");
-	    		        					pds.setDateOfMutationFlag(0);
+    							if(relToHeadB <= 0){
+    								if(getKeyToRP() == traceKey)
+    									System.out.println(psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + x1 + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + x2);
+    								continue;
+    							}
 
-	    		        					pds.setVersionLastTimeOfDataEntry(psA.getVersionLastTimeOfDataEntry());
-	    		        					pds.setResearchCodeOriginal(psA.getResearchCodeOriginal());
-	    		        					pds.setVersionOriginalDataEntry(psA.getVersionOriginalDataEntry());
-	    		        					pds.setDate0(psA.getDate0());
-	    		        					
-	    		        					//pds.setOriginalPersonDynamic(null);
-		    	        					pds.setPersonStandardizedToWhomDynamicDataRefers(psA);
+    							if((relToHeadB == ConstRelations2.EXPLICIET_HOOFD  || relToHeadB == ConstRelations2.EXPLICIET_HOOFD_EERSTE_OPVOLGER || relToHeadB == ConstRelations2.EXPLICIET_HOOFD_TWEEDE_OPVOLGER) && 
+    									psB.getSex().equalsIgnoreCase("V"))
+    								relToHeadB = ConstRelations2.IMPLICIET_HOOFD_WEDUWE_OF_MAN_WEG;
 
-		    	                			psA.getToAll().add(pds);
 
-	    		        				}
-	    	        				}
-	            					else{ // not blood related but no dates
-	            	        			PDS_AllToAll pds = new PDS_AllToAll();
+    							x2 = relToHeadB;
+    							
+    							int[] relABa = Common1.getRelation(relToHeadA, relToHeadB);
 
-	    	        					pds.setKeyToSourceRegister(psA.getKeyToSourceRegister());
-	    	        					pds.setEntryDateHead(psA.getEntryDateHead());
-	    	        					pds.setKeyToRP(psA.getKeyToRP());
-	    	        					pds.setKeyToRegistrationPersons(psA.getKeyToPersons());
-	    	        					pds.setKeyToDistinguishDynamicDataType(34);
-	    	        					pds.setDynamicDataSequenceNumber(psA.getToAll().size() + 1); 
-	    	        					pds.setContentOfDynamicData(relAB); 
+    							if(getKeyToRP() == traceKey){
+    								System.out.println(relToHeadA + " " + relToHeadB);
+    								for(int x: relABa) System.out.println(x);
+    							}
 
-	    	        					pds.setValueOfRelatedPerson(psB.getKeyToPersons()); 
-	    	        					pds.setNatureOfPerson(psA.getNatureOfPerson());
+    							int relAB = 90;
+    							if(relABa != null){
 
-	    	        					pds.setDateOfMutation("00-00-0000");
-	    	        					pds.setDateOfMutationFlag(0);
+    								relAB = relABa[0]; // male form
 
-	    	        					pds.setVersionLastTimeOfDataEntry(psA.getVersionLastTimeOfDataEntry());
-	    	        					pds.setResearchCodeOriginal(psA.getResearchCodeOriginal());
-	    	        					pds.setVersionOriginalDataEntry(psA.getVersionOriginalDataEntry());
-	    	        					pds.setDate0(psA.getDate0());
-	    	        					
-	    	        					//pds.setOriginalPersonDynamic(null);
-	    	        					pds.setPersonStandardizedToWhomDynamicDataRefers(psA);
+    								if(relABa.length == 2 && psA.getSex().equalsIgnoreCase("V"))
+    									relAB = relABa[1];  // female form
 
-	    	                			psA.getToAll().add(pds);
-	            					}
-	    	        			}
-	    	        			else{ // blood related, do not date
 
-	    	            			PDS_AllToAll pds = new PDS_AllToAll();
+    							}
 
-	    	        				pds.setKeyToSourceRegister(psA.getKeyToSourceRegister());
-	    	        				pds.setEntryDateHead(psA.getEntryDateHead());
-	    	        				pds.setKeyToRP(psA.getKeyToRP());
-	    	        				pds.setKeyToRegistrationPersons(psA.getKeyToPersons());
-	    	        				pds.setKeyToDistinguishDynamicDataType(34);
-	    	        				pds.setDynamicDataSequenceNumber(psA.getToAll().size() + 1); 
-	    	        				pds.setContentOfDynamicData(relAB); 
 
-	    	        				pds.setValueOfRelatedPerson(psB.getKeyToPersons()); 
-	    	        				pds.setNatureOfPerson(psA.getNatureOfPerson());
+    							x3 = relAB;
 
-	    	        				pds.setDateOfMutation("00-00-0000");
-	    	        				pds.setDateOfMutationFlag(0);
 
-	    	        				pds.setVersionLastTimeOfDataEntry(psA.getVersionLastTimeOfDataEntry());
-	    	        				pds.setResearchCodeOriginal(psA.getResearchCodeOriginal());
-	    	        				pds.setVersionOriginalDataEntry(psA.getVersionOriginalDataEntry());
-	    	        				pds.setDate0(psA.getDate0());
 
-	    	        				//pds.setOriginalPersonDynamic(null);
-    	        					pds.setPersonStandardizedToWhomDynamicDataRefers(psA);
+    							if(relAB <= 0){
+    								if(getKeyToRP() == traceKey)
+    									System.out.println(psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + x1 + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + x2 + "  " + x3 + "  " + x4);
+    								continue;
+    							}
 
-    	                			psA.getToAll().add(pds);
+    							relAB = resolveRelation(relAB, psA.getSex(), psB.getPersonID(), psA.getPersonID_FA(), psA.getPersonID_MO(),
+    									psB.getPersonID_FA(), psB.getPersonID_MO());
 
-	    	        			}
-	        	        	}
-	            		}
-	            	}
-	        	}
+    							x4 = relAB;
+
+    							//if(getKeyToRP() == traceKey)
+    							if(getKeyToRP() == traceKey)
+    								System.out.println("0 " +  psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + ConstRelations2.b3kode1[x1] + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + ConstRelations2.b3kode1[x2] + "  " + ConstRelations2.b3kode1[x3] + "  " + ConstRelations2.b3kode1[x4]);
+    							//if(getKeyToRP() == traceKey &&  (psA.getNatureOfPerson() != 2   || psB.getNatureOfPerson() != 2)){
+    							//	System.out.println("Person A = " + psA.getPersonID() + "  " + psA.getFirstName() + "  " + psA.getFamilyName() + "  , relation to Head = " + relToHeadA);
+    							//	System.out.println("Person B = " + psB.getPersonID() + "  " + psB.getFirstName() + "  " + psB.getFamilyName() + "  , relation = " + relToHeadB);
+    							//	System.out.println("Person A to B relation: " + relAB);
+    							//}
+
+
+
+    							if(ConstRelations2.b3kode1_Related[relAB] == null){ // not blood related, so lets try to date
+    								if(pdsA.getStartDate() != null || pdsB.getStartDate() != null){
+    									String  []  intersection = Common1.getIntersection(pdsA.getStartDate(), pdsA.getEndDate(), pdsB.getStartDate(), pdsB.getEndDate());
+    									if(intersection != null){
+
+    		    							if(getKeyToRP() == traceKey)
+    		    								System.out.println("1 " +  psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + ConstRelations2.b3kode1[x1] + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + ConstRelations2.b3kode1[x2] + "  " + ConstRelations2.b3kode1[x3] + "  " + ConstRelations2.b3kode1[x4]);
+
+    										
+    										PDS_AllToAll pds = new PDS_AllToAll();
+
+    										pds.setStartDate(intersection[0]);
+    										pds.setEndDate(intersection[1]);
+
+    										pds.setKeyToSourceRegister(psA.getKeyToSourceRegister());
+    										pds.setEntryDateHead(psA.getEntryDateHead());
+    										pds.setKeyToRP(psA.getKeyToRP());
+    										pds.setKeyToRegistrationPersons(psA.getKeyToPersons());
+    										pds.setKeyToDistinguishDynamicDataType(34);
+    										pds.setDynamicDataSequenceNumber(psA.getToAll().size() + 1); 
+    										pds.setContentOfDynamicData(relAB); 
+
+    										pds.setValueOfRelatedPerson(psB.getKeyToPersons()); 
+    										pds.setNatureOfPerson(psA.getNatureOfPerson());
+
+    										pds.setDateOfMutation("00-00-0000");
+    										pds.setDateOfMutationFlag(0);
+
+    										pds.setVersionLastTimeOfDataEntry(psA.getVersionLastTimeOfDataEntry());
+    										pds.setResearchCodeOriginal(psA.getResearchCodeOriginal());
+    										pds.setVersionOriginalDataEntry(psA.getVersionOriginalDataEntry());
+    										pds.setDate0(psA.getDate0());
+
+    										//pds.setOriginalPersonDynamic(null);
+    										pds.setPersonStandardizedToWhomDynamicDataRefers(psA);
+
+    										psA.getToAll().add(pds);
+
+    									}
+    								}
+    								else{ // not blood related but no dates
+    									
+		    							if(getKeyToRP() == traceKey)
+		    								System.out.println("2 " +  psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + ConstRelations2.b3kode1[x1] + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + ConstRelations2.b3kode1[x2] + "  " + ConstRelations2.b3kode1[x3] + "  " + ConstRelations2.b3kode1[x4]);
+
+    									
+    									PDS_AllToAll pds = new PDS_AllToAll();
+
+    									pds.setKeyToSourceRegister(psA.getKeyToSourceRegister());
+    									pds.setEntryDateHead(psA.getEntryDateHead());
+    									pds.setKeyToRP(psA.getKeyToRP());
+    									pds.setKeyToRegistrationPersons(psA.getKeyToPersons());
+    									pds.setKeyToDistinguishDynamicDataType(34);
+    									pds.setDynamicDataSequenceNumber(psA.getToAll().size() + 1); 
+    									pds.setContentOfDynamicData(relAB); 
+
+    									pds.setValueOfRelatedPerson(psB.getKeyToPersons()); 
+    									pds.setNatureOfPerson(psA.getNatureOfPerson());
+
+    									pds.setDateOfMutation("00-00-0000");
+    									pds.setDateOfMutationFlag(0);
+
+    									pds.setVersionLastTimeOfDataEntry(psA.getVersionLastTimeOfDataEntry());
+    									pds.setResearchCodeOriginal(psA.getResearchCodeOriginal());
+    									pds.setVersionOriginalDataEntry(psA.getVersionOriginalDataEntry());
+    									pds.setDate0(psA.getDate0());
+
+    									//pds.setOriginalPersonDynamic(null);
+    									pds.setPersonStandardizedToWhomDynamicDataRefers(psA);
+
+    									psA.getToAll().add(pds);
+    								}
+    							}
+    							else{ // blood related, do not date
+    								
+	    							if(getKeyToRP() == traceKey)
+	    								System.out.println("3 " +  psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + ConstRelations2.b3kode1[x1] + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + ConstRelations2.b3kode1[x2] + "  " + ConstRelations2.b3kode1[x3] + "  " + ConstRelations2.b3kode1[x4]);
+
+
+    								PDS_AllToAll pds = new PDS_AllToAll();
+
+    								pds.setKeyToSourceRegister(psA.getKeyToSourceRegister());
+    								pds.setEntryDateHead(psA.getEntryDateHead());
+    								pds.setKeyToRP(psA.getKeyToRP());
+    								pds.setKeyToRegistrationPersons(psA.getKeyToPersons());
+    								pds.setKeyToDistinguishDynamicDataType(34);
+    								pds.setDynamicDataSequenceNumber(psA.getToAll().size() + 1); 
+    								pds.setContentOfDynamicData(relAB); 
+
+    								pds.setValueOfRelatedPerson(psB.getKeyToPersons()); 
+    								pds.setNatureOfPerson(psA.getNatureOfPerson());
+
+    								pds.setDateOfMutation("00-00-0000");
+    								pds.setDateOfMutationFlag(0);
+
+    								pds.setVersionLastTimeOfDataEntry(psA.getVersionLastTimeOfDataEntry());
+    								pds.setResearchCodeOriginal(psA.getResearchCodeOriginal());
+    								pds.setVersionOriginalDataEntry(psA.getVersionOriginalDataEntry());
+    								pds.setDate0(psA.getDate0());
+
+    								//pds.setOriginalPersonDynamic(null);
+    								pds.setPersonStandardizedToWhomDynamicDataRefers(psA);
+
+    								psA.getToAll().add(pds);
+
+    							}
+    						}
+    					}
+    				}
+    			}
     		}
     	}
     }
 
-    
+
    
     /**
      * This routine resolves the actual relation based on the relation returned by getRelation
