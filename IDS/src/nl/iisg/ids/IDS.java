@@ -229,10 +229,22 @@ public class IDS implements Runnable {
     			//System.out.println(p1.getSource().substring(0, 6) + "  " + p2.getSource().substring(0, 6));
 
     			String source1 = p1.getSource().substring(0, 6);
-    			int    tab1    = new Integer(p1.getSource().substring(p1.getSource().length() - 1));  
-    			String source2 = p2.getSource().substring(0, 6);
-    			int    tab2    = new Integer(p2.getSource().substring(p2.getSource().length() - 1));  
+    			String s1 = "";
+    			for(int i = 0; i < p1.getSource().length(); i++)
+    				if(Character.isDigit(p1.getSource().charAt(i)))
+    					s1 += p1.getSource().substring(i, i+1);
+    				
+    				
     			
+    			int    tab1    = new Integer(s1);
+    			
+    			String source2 = p2.getSource().substring(0, 6);
+    			String s2 = "";
+    			for(int i = 0; i < p2.getSource().length(); i++)
+    				if(Character.isDigit(p2.getSource().charAt(i)))
+    					s2 += p2.getSource().substring(i, i+1);
+ 
+   				int    tab2    = new Integer(s2);
     			//System.out.println(source1 + "  " + tab1 + "  " + Arrays.asList(sources).indexOf(source1) + "  " + source2 + "  "+ tab2 + "  " + Arrays.asList(sources).indexOf(source2));
     			
     			// sort on sources

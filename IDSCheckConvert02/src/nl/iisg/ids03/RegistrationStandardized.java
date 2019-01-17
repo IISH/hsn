@@ -2261,15 +2261,44 @@ public class RegistrationStandardized {
     								for(int x: relABa) System.out.println(x);
     							}
 
-    							int relAB = 90;
-    							if(relABa != null){
+    							int relAB = ConstRelations2.GEEN_VERWANTSCHAP;  // preset 'geen verwantschap'
+    							if(relABa != null){   								
 
-    								relAB = relABa[0]; // male form
+    								// See if -1 was returned
+    								
+    								if(relABa[0] == -1)
+    									System.out.println(psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + x1 + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + x2 + " no relation found!");
 
-    								if(relABa.length == 2 && psA.getSex().equalsIgnoreCase("V"))
-    									relAB = relABa[1];  // female form
 
 
+    								else{
+
+
+    									// See if relToHeadA occurs in relAB, in this case relAB = relToHeadA
+
+    									for(int i: relABa )
+    										if(i == relToHeadA){
+    											relAB = i;
+    											break;    										
+    										}
+
+
+
+    									// See if male/female form is needed
+
+    									if(relAB == ConstRelations2.GEEN_VERWANTSCHAP)
+    										for(int i: relABa )
+    											if((ConstRelations2.b3kode1_Female[i] != null && psA.getSex().equalsIgnoreCase("V")) ||
+    													(ConstRelations2.b3kode1_Male[i]   != null && psA.getSex().equalsIgnoreCase("M"))){
+    												relAB = i;
+    												break;    										
+    											}
+
+    									// take first value
+
+    									if(relAB == ConstRelations2.GEEN_VERWANTSCHAP)
+    										relAB = relABa[0]; 
+    								}
     							}
 
 
@@ -2283,7 +2312,14 @@ public class RegistrationStandardized {
     								continue;
     							}
 
-    							relAB = resolveRelation(relAB, psA.getSex(), psB.getPersonID(), psA.getPersonID_FA(), psA.getPersonID_MO(),
+    							
+    							if(getKeyToRP() == traceKey){
+    								
+    								System.out.format("%d  %s %d   %d   %d   %d   %d  %d \n", 
+    										relAB, psA.getSex(), psA.getPersonID(), psB.getPersonID(), psA.getPersonID_FA(), psA.getPersonID_MO(),
+        									psB.getPersonID_FA(), psB.getPersonID_MO());
+    							}
+    							relAB = resolveRelation(relAB, psA.getSex(), psA.getPersonID(), psB.getPersonID(), psA.getPersonID_FA(), psA.getPersonID_MO(),
     									psB.getPersonID_FA(), psB.getPersonID_MO());
 
     							x4 = relAB;
@@ -2423,6 +2459,7 @@ public class RegistrationStandardized {
      *  
      * @param relAB
      * @param sex (of A)
+     * @param A_ID
      * @param B_ID
      * @param A_ID_FA
      * @param A_ID_MO
@@ -2432,7 +2469,7 @@ public class RegistrationStandardized {
      */
     
 
-	private int resolveRelation(int relAB, String sex, int B_ID, int A_ID_FA, int A_ID_MO, int B_ID_FA, int B_ID_MO){
+	private int resolveRelation(int relAB, String sex, int A_ID, int B_ID, int A_ID_FA, int A_ID_MO, int B_ID_FA, int B_ID_MO){
 		
 		// Adapt for sex
 
@@ -2453,8 +2490,8 @@ public class RegistrationStandardized {
 		// resolve mother, she may be stepmother
 		
 		if(relAB == ConstRelations2.MOEDER)
-			if(A_ID_MO != 0)
-				if(A_ID_MO == B_ID)
+			if(B_ID_MO != 0)
+				if(B_ID_MO == A_ID)
 					relAB =  ConstRelations2.MOEDER;
 				else
 					relAB =  ConstRelations2.STIEFMOEDER;
@@ -2465,8 +2502,8 @@ public class RegistrationStandardized {
 		// resolve father, he may be stepfather
 		
 		if(relAB == ConstRelations2.VADER)
-			if(A_ID_FA != 0)
-				if(A_ID_FA == B_ID)
+			if(B_ID_FA != 0)
+				if(B_ID_FA == A_ID)
 					relAB =  ConstRelations2.VADER;
 				else
 					relAB =  ConstRelations2.STIEFVADER;
@@ -2476,15 +2513,15 @@ public class RegistrationStandardized {
 		// resolve aunt, she may be mother
 
 		if(relAB == ConstRelations2.TANTE)
-			if(A_ID_MO != 0)
-				if(A_ID_MO == B_ID)
+			if(B_ID_MO != 0)
+				if(B_ID_MO == A_ID)
 					relAB =  ConstRelations2.MOEDER;
 		
 		// resolve uncle, he may be father
 
 		if(relAB == ConstRelations2.OOM)
-			if(A_ID_FA != 0)
-				if(A_ID_FA == B_ID)
+			if(B_ID_FA != 0)
+				if(B_ID_FA == A_ID)
 					relAB =  ConstRelations2.VADER;
 		
 		return relAB;
