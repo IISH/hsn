@@ -317,6 +317,17 @@ public class PkHuw {
         	b313.setDateOfMutation(marriageDate);        	
         	b313.setDateOfMutationFlag(10); // original value
         	b313.setStartDate(marriageDate);
+        	b313.setStartFlag(21);
+        	
+        	// End date must be set explicitly, because the b2 record may have no end date set 
+        	if(Common1.dateIsValid(getOdghuwp(), getOmdhuwp(), getOjrhuwp()) == 0){    			
+   				b313.setEndDate(String.format("%02d-%02d-%04d", getOdghuwp(), getOmdhuwp(), getOjrhuwp()));
+   				b313.setEndFlag(40);
+        	}
+        	if(getAjrhuwp() > 0 && Common1.dateIsValid(getAdghuwp(), getAmdhuwp(), getAjrhuwp()) == 0){
+   				b313.setEndDate(String.format("%02d-%02d-%04d", getOdghuwp(), getOmdhuwp(), getOjrhuwp()));
+   				b313.setEndFlag(41);
+        	}
     	}
 
     	
@@ -342,7 +353,19 @@ public class PkHuw {
         	b32.setDateOfMutation(marriageDate);
            	b32.setDateOfMutationFlag(10); // original value 
            	b32.setStartDate(marriageDate);
-    		
+        	b32.setStartFlag(21);
+
+           	
+        	// End date must be set explicitly, because the b2 record may have no end date set 
+
+        	if(Common1.dateIsValid(getOdghuwp(), getOmdhuwp(), getOjrhuwp()) == 0){    			
+   				b32.setEndDate(String.format("%02d-%02d-%04d", getOdghuwp(), getOmdhuwp(), getOjrhuwp()));
+   				b32.setEndFlag(40);
+        	}
+        	if(getAjrhuwp() > 0 && Common1.dateIsValid(getAdghuwp(), getAmdhuwp(), getAjrhuwp()) == 0){
+   				b32.setEndDate(String.format("%02d-%02d-%04d", getOdghuwp(), getOmdhuwp(), getOjrhuwp()));
+   				b32.setEndFlag(41);
+        	}
     	}
     	b32.setValueOfRelatedPerson(1);  // set row number spouse = Pk-Holder = First Row 
 
@@ -380,7 +403,7 @@ public class PkHuw {
     		b37.setDynamicDataSequenceNumber(1);
     		
     		
-    		
+    		/*
     		// new civil status record for spouse with code = 11
     		
     		b32 = new B32_ST();
@@ -400,7 +423,7 @@ public class PkHuw {
             
             b32Last.setEndDate(Common1.dateFromDayCount(Common1.dayCount(departureDate) - 1));
         		
-        	
+        	*/
     	}
 
     	

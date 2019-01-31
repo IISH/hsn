@@ -222,11 +222,15 @@ public class B2_ST {
 						break;
 
 					case 11:  // Father
-					case 21:  // Mother
 					case 61:  // Step-Father
 					case 71:  // Step-Mother
 
 						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "BIRTH_DATE", null, "Reported", "Estimate [-15/-100]", 1 , 1, birthyearPK -100, 1, 1, birthyearPK - 15);
+						break;
+
+					case 21:  // Mother
+
+						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "BIRTH_DATE", null, "Reported", "Estimate [-15/-50]", 1 , 1, birthyearPK -100, 1, 1, birthyearPK - 15);
 						break;
 
 					default:   

@@ -507,6 +507,14 @@ public class PkKnd {
     	initialiseB2_ST(b2);
     	b2.setKeyToPersons(seqNoPersons);
     	
+    	// No period of observation
+    	
+    	b2.setStartDate(null);
+    	b2.setStartFlag(11);  // 11 = unavailable
+    	
+    	b2.setEndDate(null);
+    	b2.setEndFlag(11);  // 11 = unavailable
+    	
     	// Last name     	
 		
     	lastName = getAnmvdrp();
@@ -611,6 +619,16 @@ public class PkKnd {
 
     	initialiseB2_ST(b2);
     	b2.setKeyToPersons(seqNoPersons);
+    	
+    	// No period of observation
+    	
+    	b2.setStartDate(null);
+    	b2.setStartFlag(11);  // 11 = unavailable
+    	
+    	b2.setEndDate(null);
+    	b2.setEndFlag(11);  // 11 = unavailable
+    	
+
     	
     	// Last name 
 
