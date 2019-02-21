@@ -73,6 +73,7 @@ public class B4_ST {
      * 
      */
     
+	/*
     public void relateAllToAll(){
     	
     	//System.out.println("RP = " + getKeyToRP());
@@ -276,6 +277,7 @@ public class B4_ST {
     	}
     }
 
+    /*
     
     /**
      * 

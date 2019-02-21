@@ -135,7 +135,7 @@ public class B2_ST {
 			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "SEX", "Unknown", "Reported", "Exact", 0, 0, 0);
 
 		if(getKeyToRP() != 0)
-			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_IDENTIFIER", "" + getKeyToRP(), "Reported", "Exact", 0, 0, 0);
+			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_IDENTIFIER", "" + getKeyToRP(), "Assigned", "Exact", 0, 0, 0);
 		
 		//System.out.println("Number of b313 " + getRelationsToPKHolder().size());
 		
@@ -151,18 +151,18 @@ public class B2_ST {
 
 				case  1:  // RP
 
-					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "HSN RP", "Reported", "Exact", 0, 0, 0);
+					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "HSN RP", "Assigned", "Exact", 0, 0, 0);
 					break;
 
 
 				case 11:  // Father
 
-					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "Father RP", "Reported", "Exact", 0, 0, 0);
+					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "Father RP", "Assigned", "Exact", 0, 0, 0);
 					break;
 
 				case 21:  // Mother
 
-					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "Mother RP", "Reported", "Exact", 0, 0, 0);
+					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", "Mother RP", "Assigned", "Exact", 0, 0, 0);
 					break;
 
 				default:  
@@ -179,7 +179,7 @@ public class B2_ST {
 
 					if(other != null){
 						String person = other + " RP";
-						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", person, "Reported", "Exact",  0, 0, 0);
+						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "HSN_RESEARCH_PERSON", person, "Assigned", "Exact",  0, 0, 0);
 					}
 
 				}
@@ -208,7 +208,7 @@ public class B2_ST {
 					case 145:  // Echtgenoot Man
 					case 161:  // Partner
 
-						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "BIRTH_DATE", null, "Reported", "Estimate [-50/50]", 1 , 1, birthyearPK -50, 1, 1, birthyearPK + 50);
+						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "BIRTH_DATE", null, "Reported", "Estimated [-50/50]", 1 , 1, birthyearPK -50, 1, 1, birthyearPK + 50, "Unavailable");
 						break;
 
 					case 3:  // Son
@@ -218,19 +218,24 @@ public class B2_ST {
 					case 133:  // Kind
 					case 134:  // Step Daughter
 
-						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "BIRTH_DATE", null, "Reported", "Estimate [15/100]", 1 , 1, birthyearPK -15, 1, 1, birthyearPK + 15);
+						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "BIRTH_DATE", null, "Reported", "Estimated [15/100]", 1 , 1, birthyearPK +15, 1, 1, birthyearPK + 100, "Unavailable");
 						break;
 
 					case 11:  // Father
-					case 61:  // Step-Father
-					case 71:  // Step-Mother
+					case 61:  // Father-in-Law
 
-						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "BIRTH_DATE", null, "Reported", "Estimate [-15/-100]", 1 , 1, birthyearPK -100, 1, 1, birthyearPK - 15);
+						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "BIRTH_DATE", null, "Reported", "Estimated [-100/-15]", 1 , 1, birthyearPK -100, 1, 1, birthyearPK - 15, "Unavailable");
+						break;
+						
+					case 71:  // Mother-in-Law
+
+						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "BIRTH_DATE", null, "Reported", "Estimated [-50/-15]", 1 , 1, birthyearPK -50, 1, 1, birthyearPK - 15, "Unavailable");
 						break;
 
+						
 					case 21:  // Mother
 
-						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "BIRTH_DATE", null, "Reported", "Estimate [-15/-50]", 1 , 1, birthyearPK -100, 1, 1, birthyearPK - 15);
+						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "BIRTH_DATE", null, "Reported", "Estimated [-50/-15]", 1 , 1, birthyearPK -50, 1, 1, birthyearPK - 15, "Unavailable");
 						break;
 
 					default:   
@@ -242,7 +247,7 @@ public class B2_ST {
 		}
 		
 		if(getPlaceOfBirthID() > 0){
-			ContextElement ce = Contxt.get(getPlaceOfBirthID());		
+			ContextElement ce = Contxt.get2(getPlaceOfBirthStandardized());		
 			if(ce != null){
 				Utils.addIndivAndContext(null, null, null, null, ce, em, getKeyToRP(), getPersonID(), "B2_ST",  "BIRTH_LOCATION", "Reported", "Exact", day, month, year);
 			}
@@ -266,7 +271,7 @@ public class B2_ST {
 
 			
 			if(getPlaceOfDeceaseID() > 0){
-				ContextElement ce = Contxt.get(getPlaceOfDeceaseID());		
+				ContextElement ce = Contxt.get2(getPlaceOfDeceaseStandardized());		
 				if(ce != null){
 					Utils.addIndivAndContext(null, null, null, null, ce, em, getKeyToRP(), getPersonID(), "B2_ST", "DEATH_LOCATION", "Reported", "Exact", day, month, year);
 				}
@@ -300,7 +305,7 @@ public class B2_ST {
 
 
 		if(getNationality() != null && getNationality().trim().length() > 0)
-			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "NATIONALITY", getNationality().trim(), "Reported", "Exact", startDay, startMonth, startYear, endDay, endMonth, endYear);
+			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "NATIONALITY", getNationality().trim(), "Declared", "Exact", startDay, startMonth, startYear, endDay, endMonth, endYear);
 
 		// Observation Period for PK Holder and Spouses only
 		

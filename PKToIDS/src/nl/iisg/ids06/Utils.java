@@ -8,7 +8,7 @@ import nl.iisg.idscontext.Contxt;
 public class Utils {
 	
 	public static void addIndivIndiv(EntityManager em, int IDNR, int id_i_1,  int id_i_2, String source, String relation, 
-			String dateType, String missing, int day, int month, int year){
+			String dateType, String estimation, String missing, int day, int month, int year){
 		
 		INDIV_INDIV iiUp = new INDIV_INDIV();
 		
@@ -22,6 +22,8 @@ public class Utils {
 		if(year != 0){
 			
 			iiUp.setDate_type(dateType); 
+			iiUp.setEstimation(estimation); 
+
 			iiUp.setDay(day);
 			iiUp.setMonth(month);
 			iiUp.setYear(year);			
@@ -29,7 +31,7 @@ public class Utils {
 		}
 		
 		else
-			iiUp.setMissing("Time_invariant");
+			iiUp.setMissing("Time_Invariant");
 		
 		em.persist(iiUp);
 		
@@ -38,7 +40,7 @@ public class Utils {
 	}
 	
 	public static void addIndivIndiv(EntityManager em, int IDNR, int id_i_1,  int id_i_2, String source, String relation, 
-			String dateType, String missing, int startDay, int startMonth, int startYear, int endDay, int endMonth, int endYear){
+			String dateType, String estimation, String missing, int startDay, int startMonth, int startYear, int endDay, int endMonth, int endYear){
 		
 		INDIV_INDIV iiUp = new INDIV_INDIV();
 		
@@ -50,13 +52,19 @@ public class Utils {
 
 		
 		if(startYear != 0){
-			
+			iiUp.setDate_type(dateType); 
+			iiUp.setEstimation(estimation); 
+
 			//iiUp.setDate_type(dateType);
 			iiUp.setStart_day(startDay);
 			iiUp.setStart_month(startMonth);
 			iiUp.setStart_year(startYear);
 		}
 		if(endYear != 0){
+			
+			iiUp.setDate_type(dateType); 
+			iiUp.setEstimation(estimation); 
+
 		
 			iiUp.setEnd_day(endDay);
 			iiUp.setEnd_month(endMonth);
@@ -116,7 +124,12 @@ public class Utils {
 		ic.setYear(year);
 		
 		if(year == 0)
-			ic.setMissing("Time_invariant");
+			ic.setMissing("Time_Invariant");
+		else{
+			ic.setDate_type(dateType);
+			ic.setEstimation(estimation);
+		}
+
 
 
 		em.persist(ic);
@@ -160,8 +173,6 @@ public class Utils {
 		
 		ic.setRelation(relation);
 		
-		ic.setDate_type(dateType);
-		ic.setEstimation(estimation);
 		ic.setStart_day(startDay);
 		ic.setStart_month(startMonth);
 		ic.setStart_year(startYear);
@@ -170,7 +181,12 @@ public class Utils {
 		ic.setEnd_year(endYear);
 
 		if(startYear == 0)
-			ic.setMissing("Time_invariant");
+			ic.setMissing("Time_Invariant");
+		else{
+			ic.setDate_type(dateType);
+			ic.setEstimation(estimation);
+		}
+
 
 		
 		em.persist(ic);
@@ -215,14 +231,17 @@ public class Utils {
 		
 		i.setId_C(Id_C);
 		
-		i.setDate_type(dateType);
-		i.setEstimation(estimation);
 		i.setDay(day);
 		i.setMonth(month);
 		i.setYear(year);
 
 		if(year == 0)
-			i.setMissing("Time_invariant");
+			i.setMissing("Time_Invariant");
+		else{
+			i.setDate_type(dateType);
+			i.setEstimation(estimation);
+		}
+
 
 		
 		em.persist(i);
@@ -246,14 +265,17 @@ public class Utils {
 		i.setType(type);
 		i.setValue(value);
 		
-		i.setDate_type(dateType);
-		i.setEstimation(estimation);
 		i.setDay(day);
 		i.setMonth(month);
 		i.setYear(year);
 
 		if(year == 0)
-			i.setMissing("Time_invariant");
+			i.setMissing("Time_Invariant");
+		else{
+			i.setDate_type(dateType);
+			i.setEstimation(estimation);
+		}
+
 		
 		em.persist(i);
 		
@@ -274,14 +296,17 @@ public class Utils {
 		i.setType(type);
 		i.setValue(value);
 		
-		i.setDate_type(dateType);
-		i.setEstimation(estimation);
 		i.setDay(day);
 		i.setMonth(month);
 		i.setYear(year);
 
-		if(year == 0)
-			i.setMissing(reasonMissing);
+		i.setMissing(reasonMissing);
+		
+		if(!reasonMissing.equals("Time_Invariant")){
+			i.setDate_type(dateType);
+			i.setEstimation(estimation);
+		}
+
 		
 		em.persist(i);
 		
@@ -303,8 +328,6 @@ public class Utils {
 		i.setType(type);
 		i.setValue(value);
 		
-		i.setDate_type(dateType);
-		i.setEstimation(estimation);
 		i.setStart_day(startDay);
 		i.setStart_month(startMonth);
 		i.setStart_year(startYear);
@@ -313,7 +336,11 @@ public class Utils {
 		i.setEnd_year(endYear);
 
 		if(startYear == 0)
-			i.setMissing("Time_invariant");
+			i.setMissing("Time_Invariant");
+		else{
+			i.setDate_type(dateType);
+			i.setEstimation(estimation);
+		}
 
 		
 		em.persist(i);
@@ -336,8 +363,6 @@ public class Utils {
 		i.setType(type);
 		i.setValue(value);
 		
-		i.setDate_type(dateType);
-		i.setEstimation(estimation);
 		i.setStart_day(startDay);
 		i.setStart_month(startMonth);
 		i.setStart_year(startYear);
@@ -345,8 +370,13 @@ public class Utils {
 		i.setEnd_month(endMonth);
 		i.setEnd_year(endYear);
 
-		if(startYear == 0)
-			i.setMissing(reasonMissing);
+		i.setMissing(reasonMissing);
+		
+		if(!reasonMissing.equals("Time_Invariant")){
+			i.setDate_type(dateType);
+			i.setEstimation(estimation);
+		}
+
 
 		
 		em.persist(i);

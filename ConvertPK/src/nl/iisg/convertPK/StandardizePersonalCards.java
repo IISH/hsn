@@ -677,9 +677,11 @@ public class StandardizePersonalCards implements Runnable {
 
         			copyPartnerInfo(pkknd2.getB4(), pkknd1.getB4());
         			
+        			
         			for (B2_ST b2L : pkknd2.getB4().getPersons()) 
         				for(B2_ST b2R :  pkknd2.getB4().getPersons())
         					handleB34_new(b2L, b2R);
+        					
         			
 
         			// Now we must change the key of pkknd2.getB4():
@@ -947,8 +949,8 @@ public class StandardizePersonalCards implements Runnable {
         				newPerson = true;
         				b2 = allocateB2(b4Wife, b2H);  // Allocate new person
         				
-        				//b2.setStartDate(b2Partner.getStartDate());
-        				//b2.setStartFlag(b2Partner.getStartFlag());
+        				//b2.setStartDate(b2Partner.getStartDate());  
+        				//b2.setStartFlag(b2Partner.getStartFlag());  
         				
         				b2.setKeyToPersons(b4Wife.getPersons().size() + 1);  // keep together    				
         				b4Wife.getPersons().add(b2);                         // keep together
@@ -1365,7 +1367,19 @@ public class StandardizePersonalCards implements Runnable {
     	int relL = b2L.getRelationsToPKHolder().get(0).getContentOfDynamicData();
 
     	int rel = 0;
+    	
+    	// Check overlap on b313 dates
+    	
+    	if(b2L.getRelationsToPKHolder().get(0).getEndDate() != null && b2R.getRelationsToPKHolder().get(0).getStartDate() != null &&
+    			Common1.dayCount(b2L.getRelationsToPKHolder().get(0).getEndDate()) < 
+    			Common1.dayCount(b2R.getRelationsToPKHolder().get(0).getStartDate())) return;
 
+    	if(b2R.getRelationsToPKHolder().get(0).getEndDate() != null && b2L.getRelationsToPKHolder().get(0).getStartDate() != null &&
+    			Common1.dayCount(b2R.getRelationsToPKHolder().get(0).getEndDate()) < 
+    			Common1.dayCount(b2L.getRelationsToPKHolder().get(0).getStartDate())) return;
+
+
+    	
     	switch(relL){
     	
     	

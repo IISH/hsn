@@ -45,7 +45,7 @@ public class B35_ST extends B3_ST {
 
 		if(getOccupationStandardized() != null)
 			Utils.addIndiv(em, getKeyToRP(), getPerson().getPersonID(), "B35_ST",  "OCCUPATION_STANDARD", "" + getOccupationStandardized(),
-					 "Reported", "Exact", startDay, startMonth, startYear, endDay, endMonth, endYear);
+					 "Declared", "Exact", startDay, startMonth, startYear, endDay, endMonth, endYear);
 		
 	}
 

@@ -31,7 +31,7 @@ public class B313_ST extends B3_ST {
 				int id_i          = getPerson().getPersonID();  
 				int id_i_pkholder = getPerson().getRegistration().getPersons().get(0).getPersonID(); // B311 -> B2 (non-PK-Holder) -> B4 -> B2 (PK-Holder)
 
-				Utils.addIndivIndiv(em, getKeyToRP(), id_i,  id_i_pkholder, "B313_ST", relation, "Reported", "Exact", 0, 0, 0);
+				Utils.addIndivIndiv(em, getKeyToRP(), id_i,  id_i_pkholder, "B313_ST", relation, "Time_Invariant", "Reported", "Exact", 0, 0, 0);
 			//}
 		}	
 	}

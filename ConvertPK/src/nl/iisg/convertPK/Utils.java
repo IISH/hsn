@@ -423,8 +423,21 @@ public class Utils {
 
 	        // Fetch table
 	        
-	        //String selTable = "SELECT * FROM " + tabName + " where idnr < 10000";
-	        String selTable = "SELECT * FROM " + tabName;
+	        String selTable = "SELECT * FROM " + tabName + 
+	        		" where idnr = 5230 or " + 
+	        		" idnr = 70433  or " + 
+	        		" idnr = 600197 or " + 
+	        		" idnr = 600582 or " + 
+	        		" idnr = 70521  or " + 
+	        		" idnr = 70868  or " + 
+	        		" idnr = 70736  or " + 
+	        		" idnr = 664780 or " + 
+	        		" idnr = 76359  or " + 
+	        		" idnr = 600270; "; 
+	        
+	        //System.out.println(selTable);
+	        
+	        //String selTable = "SELECT * FROM " + tabName;
 	        s.execute(selTable);
 	        ResultSet rs = s.getResultSet();
 	        ResultSetMetaData rsmd = rs.getMetaData();
