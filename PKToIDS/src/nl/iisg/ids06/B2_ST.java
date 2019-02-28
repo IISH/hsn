@@ -308,15 +308,16 @@ public class B2_ST {
 			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "NATIONALITY", getNationality().trim(), "Declared", "Exact", startDay, startMonth, startYear, endDay, endMonth, endYear);
 
 		// Observation Period for PK Holder and Spouses only
-		
+		/*
 		for(B313_ST b313: getRelationsToPKHolder()){
 			if(b313.getContentOfDynamicData() == 1 || b313.getContentOfDynamicData() == 2 && startYear > 0 && endYear > 0){
 				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "OBSERVATION", null, "Assigned", "Exact", startDay, startMonth, startYear, endDay, endMonth, endYear);
 				break;
 			}
 		}
+		*/
 		
-		// Start Observation for PK Holder, Spouses and (step) children if in scope
+		// Start Observation for PK Holder, Spouses /* and (step) children if in scope */
 		
 		String startObservation = null;
 		for(B313_ST b313: getRelationsToPKHolder()){
@@ -346,7 +347,8 @@ public class B2_ST {
 				if(getStartFlag() == 21) startObservation = "Arrival";
 				else
 					if(getStartFlag() == 22) startObservation = "Birth";
-				else                     startObservation = "Start source";	// 			
+				else                     startObservation = "Start source";	// 		
+				
 				break;
 			
 			default:
@@ -362,6 +364,7 @@ public class B2_ST {
 				startMonth = new Integer(getStartDate().substring(3,5));
 				startYear = new Integer(getStartDate().substring(6,10));
 
+				//System.out.println("START_OBSERVATION for IDNR = " +  getKeyToRP() + " id = " +  getPersonID());
 				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "START_OBSERVATION", startObservation, "Assigned", "Exact", startDay, startMonth, startYear);
 			}
 		}
@@ -429,49 +432,58 @@ public class B2_ST {
 		// See which addresses this person can be bound to
 		// Check relation to RP, only spouses and children live with RP
 		// For now, only RP
+		// 28-02-2019 Also for others
 		
 		//int r = getRelationsToPKHolder().get(0).getContentOfDynamicData();
 		//if(r == 1 || r == ConstRelations2.ECHTGENOTE_HOOFD || r == ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD || r == ConstRelations2.ECHTGENOOT_MAN_GEEN_HOOFD)
 		
-		if(getRelationsToPKHolder().get(0).getContentOfDynamicData() == 1){  // RP
+		
+		if(getStartDate() != null && getEndDate() != null){
 
-			if(getStartDate() != null && getEndDate() != null){
+			for(B6_ST b6: getRegistration().getAddresses()){ // via B4_ST to B6_ST
 
+				if(b6.getStartDate() != null && b6.getEndDate() != null){
 
-				for(B6_ST b6: getRegistration().getAddresses()){ // via B4_ST to B6_ST
+					String [] intersect = Common1.getIntersection(getStartDate(), getEndDate(), b6.getStartDate(), b6.getEndDate());
+					
+					//System.out.println("[" + getStartDate() + "," + getEndDate() + "] and [" + b6.getStartDate() + "," + b6.getEndDate() + "]");
+					//if(intersect != null)
+					//	System.out.println("[" + intersect[0]   + "," + intersect[1] + "]");
+					//else
+					//	System.out.println( "No intersection"); 
+					
+					
+					int rel = getRelationsToPKHolder().get(0).getContentOfDynamicData();
+					
+					//System.out.println("rel = "+ rel);
 
-					if(b6.getStartDate() != null && b6.getEndDate() != null){
+					
+					if((rel == 1  || 
+					    rel ==  2 || rel == 145 ||  rel == 161 || 
+				        rel ==  3 || rel == 4   ||  rel == 8   || rel == 9 || rel == 133 || rel == 134) && intersect != null){
 
-						int start = Math.max(Utils.dayCount(getStartDate()), Utils.dayCount(b6.getStartDate()));
-						int end   = Math.min(Utils.dayCount(getEndDate()),   Utils.dayCount(b6.getEndDate()));
+						int startDay1   = (new Integer(intersect[0].substring(0,2))).intValue();
+						int startMonth1 = (new Integer(intersect[0].substring(3,5))).intValue();
+						int startYear1  = (new Integer(intersect[0].substring(6,10))).intValue();
 
-						if(start <= end){						
+						int endDay1   = (new Integer(intersect[1].substring(0,2))).intValue();
+						int endMonth1 = (new Integer(intersect[1].substring(3,5))).intValue();
+						int endYear1  = (new Integer(intersect[1].substring(6,10))).intValue();
+                      
 
-							String startDate = Utils.dateFromDayCount(start);
-							String endDate   = Utils.dateFromDayCount(end);
-
-							int startDay1   = (new Integer(startDate.substring(0,2))).intValue();
-							int startMonth1 = (new Integer(startDate.substring(3,5))).intValue();
-							int startYear1  = (new Integer(startDate.substring(6,10))).intValue();
-
-							int endDay1   = (new Integer(endDate.substring(0,2))).intValue();
-							int endMonth1 = (new Integer(endDate.substring(3,5))).intValue();
-							int endYear1  = (new Integer(endDate.substring(6,10))).intValue();
-
-							ContextElement ce = null;
-							String address = "";
-							if(b6.getMunicipality() != null && b6.getMunicipality().trim().length() > 0 ){
-								ce = Contxt.get2(b6.getMunicipality().trim());
-								if(ce != null){
-									Utils.addIndivContextAndContext(b6.getBoat(), b6.getQuarter(), b6.getStreet(), b6.getNumber(), b6.getAddition(),
-											ce, em, getKeyToRP(), getPersonID(), "B6_ST ",  "LIVING_LOCATION", "Reported", "Exact",  startDay1, startMonth1, startYear1, endDay1, endMonth1, endYear1);
-								}
+						ContextElement ce = null;
+						if(b6.getMunicipality() != null && b6.getMunicipality().trim().length() > 0 ){
+							ce = Contxt.get2(b6.getMunicipality().trim());
+							if(ce != null){
+								Utils.addIndivContextAndContext(b6.getBoat(), b6.getQuarter(), b6.getStreet(), b6.getNumber(), b6.getAddition(),
+										ce, em, getKeyToRP(), getPersonID(), "B6_ST ",  "?LIVING_LOCATION?", "Reported", "Exact",  startDay1, startMonth1, startYear1, endDay1, endMonth1, endYear1);
 							}
 						}
 					}
 				}
 			}
 		}
+
 		
 		// down the tree
 		

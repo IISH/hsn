@@ -972,7 +972,7 @@ public class PkKnd {
     	if(getProfessions().size() > 0){
 
     		int date = Common1.dayCount(b2pk.getStartDate());
-    		String endDate = b2pk.getEndDate() != null ? b2pk.getEndDate() : "01-01-2015";
+    		String endDate = b2pk.getEndDate() != null ? b2pk.getEndDate() : "01-01-2020";
     			
     		int increment = (Common1.dayCount(endDate) - Common1.dayCount(b2pk.getStartDate())) / getProfessions().size();
 
@@ -1012,6 +1012,12 @@ public class PkKnd {
     					b35.setEndDate(Common1.dateFromDayCount(date + increment - 1));
     				else
     					b35.setEndDate(b2pk.getEndDate());  // to make the last date equal the death date
+    				
+    				if(getProfessions().size() > 1){
+    					
+    					b35.setStartFlag(51);
+    					b35.setEndFlag(52);
+    				}
 
     				date += increment;
 

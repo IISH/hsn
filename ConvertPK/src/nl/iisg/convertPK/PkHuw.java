@@ -236,6 +236,8 @@ public class PkHuw {
     	if((Common1.dateIsValid(getAdghuwp(), getAmdhuwp(), getAjrhuwp()) == 0 && Common1.dayCount(getAdghuwp(), getAmdhuwp(), getAjrhuwp()) < Common1.dayCount(b2.getRegistration().getStartDate())) || 
     	   (Common1.dateIsValid(getOdghuwp(), getOmdhuwp(), getOjrhuwp()) == 0 && Common1.dayCount(getOdghuwp(), getOmdhuwp(), getOjrhuwp()) < Common1.dayCount(b2.getRegistration().getStartDate()))){ 
     		
+    		//System.out.println("No startdate for idnr = "+ getIdnr() );
+    		
     	    b2.setStartDate(null);
     		b2.setStartFlag(0);
 			b2.setEndDate(null);
@@ -243,12 +245,20 @@ public class PkHuw {
     		
     	}
     	else{
+    		//System.out.println("Wel startdate for idnr = "+ getIdnr() );
+
     		if(Common1.dateIsValid(getHdghuwp(), getHmdhuwp(), getHjrhuwp()) == 0){
+        		//System.out.println("2 Wel startdate for idnr = "+ getIdnr() );
+
     			if(Common1.dayCount(getHdghuwp(), getHmdhuwp(), getHjrhuwp()) > Common1.dayCount(b2.getRegistration().getStartDate())){
+    	    		//System.out.println("3 Wel startdate for idnr = "+ getIdnr() );
+
     				b2.setStartDate(String.format("%02d-%02d-%04d", getHdghuwp(), getHmdhuwp(), getHjrhuwp()));
     				b2.setStartFlag(21);
     			}
     			else{
+    	    		//System.out.println("4 Wel startdate for idnr = "+ getIdnr() );
+
     				b2.setStartDate(b2.getRegistration().getStartDate());
     				b2.setStartFlag(1);
     				

@@ -413,6 +413,7 @@ public class IDS implements Runnable {
 					
 				}
     		}
+    		h.clear();
     	}
     	
 

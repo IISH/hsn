@@ -987,9 +987,10 @@ public class StandardizePersonalCards implements Runnable {
         				case 4: // Daughter of the husband    
         				case 133:  // Child of the husband
 
-        					
+        					/*
         					if(newPerson)
         						b2.setStartFlag(21);  // assume that children move with the mother to the household of the new husband
+        					*/
         					
         					if(b2H.getPersonID_MO() == b4Wife.getPersons().get(0).getPersonID())
         						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()); // also wife's child

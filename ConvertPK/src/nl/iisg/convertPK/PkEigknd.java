@@ -259,22 +259,45 @@ public class PkEigknd {
     	
 
     	// get date second marriage
+    	
+    	System.out.println("IDNR = " + getIdnr() );
 
     	int marriageDays = 0;
     	if(getPkHolder().getMarriages() != null && getPkHolder().getMarriages().size() > 1){    		
     		PkHuw pkh = getPkHolder().getMarriages().get(1); 
-    		marriageDays = Common1.dayCount(pkh.getHdghuwp(), pkh.getHmdhuwp(), pkh.getHjrhuwp());
+			if(Common1.dateIsValid(pkh.getHdghuwp(), pkh.getHmdhuwp(), pkh.getHjrhuwp()) == 0)
+			   	System.out.println(" Marriage Date " +   pkh.getHdghuwp() + pkh.getHmdhuwp()+ pkh.getHjrhuwp());
+			 
+				marriageDays = Common1.dayCount(pkh.getHdghuwp(), pkh.getHmdhuwp(), pkh.getHjrhuwp());
     	}
 
     	
     	// Start/End date
+
+    	System.out.println(" Death Date " +   getOdgkndp()+getOmdkndp()+getOjrkndp());
+    	System.out.println(" Leave Date " +   getAdgkndp()+getAmdkndp()+getAjrkndp());
+    	System.out.println(" Marrg Date " +   getHdgkndp()+getHmdkndp()+getHjrkndp());
     	
-    	b2.setStartDate(b2.getRegistration().getStartDate());
-		b2.setStartFlag(b2.getRegistration().getStartFlag());
-		b2.setEndDate(b2.getRegistration().getEndDate());
-		b2.setEndFlag(b2.getRegistration().getEndFlag());
-		
-		
+		if((Common1.dateIsValid(getOdgkndp(), getOmdkndp(), getOjrkndp()) == 0 && marriageDays != 0 && Common1.dayCount(getOdgkndp(), getOmdkndp(), getOjrkndp()) < marriageDays) || 
+	       (Common1.dateIsValid(getAdgkndp(), getAmdkndp(), getAjrkndp()) == 0 && marriageDays != 0 && Common1.dayCount(getAdgkndp(), getAmdkndp(), getAjrkndp()) < marriageDays) ||
+	       (Common1.dateIsValid(getHdgkndp(), getHmdkndp(), getHjrkndp()) == 0 && marriageDays != 0 && Common1.dayCount(getHdgkndp(), getHmdkndp(), getHjrkndp()) < marriageDays)){
+
+			
+			System.out.println("+++> idnr = "+ getIdnr() );
+	    	b2.setStartDate(null);
+			b2.setStartFlag(0);
+			b2.setEndDate(null);
+			b2.setEndFlag(0);
+
+		}
+		else{
+
+			b2.setStartDate(b2.getRegistration().getStartDate());
+			b2.setStartFlag(b2.getRegistration().getStartFlag());
+			b2.setEndDate(b2.getRegistration().getEndDate());
+			b2.setEndFlag(b2.getRegistration().getEndFlag());
+		}
+
 		if(Common1.dateIsValid(getGdgkndp(), getGmdkndp(), getGjrkndp()) == 0 && b2.getStartDate() != null && Common1.dayCount(getGdgkndp(), getGmdkndp(), getGjrkndp()) > Common1.dayCount(b2.getStartDate())){
 			b2.setStartDate(String.format("%02d-%02d-%04d", getGdgkndp(), getGmdkndp(), getGjrkndp()));
 			b2.setStartFlag(22);

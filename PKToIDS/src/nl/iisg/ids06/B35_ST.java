@@ -43,9 +43,13 @@ public class B35_ST extends B3_ST {
 			endYear  = (new Integer(getEndDate().substring(6,10))).intValue();
 		}
 
+		
+		String estimated = getStartFlag() == 51 ? "Middling of period" : "Exact"; 
+		
+		
 		if(getOccupationStandardized() != null)
 			Utils.addIndiv(em, getKeyToRP(), getPerson().getPersonID(), "B35_ST",  "OCCUPATION_STANDARD", "" + getOccupationStandardized(),
-					 "Declared", "Exact", startDay, startMonth, startYear, endDay, endMonth, endYear);
+					 "Declared", estimated, startDay, startMonth, startYear, endDay, endMonth, endYear);
 		
 	}
 
