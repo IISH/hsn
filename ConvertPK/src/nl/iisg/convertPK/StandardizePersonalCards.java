@@ -969,7 +969,7 @@ public class StandardizePersonalCards implements Runnable {
         					
         					b313.setContentOfDynamicData(61); // Father (11) -> Father in Law (61)
         					b313.setStartDate(b2Partner.getRelationsToPKHolder().get(0).getStartDate());  // Start Date is marriage date
-        					b313.setStartFlag(89); // marriage-related
+        					b313.setStartFlag(21); // marriage-related
         					b313.setEndDate(null);
         					//setRelations(b2);
         					break;
@@ -977,7 +977,7 @@ public class StandardizePersonalCards implements Runnable {
         				case 21:
         					b313.setContentOfDynamicData(71); // Mother (21) -> Mother in Law (71)
         					b313.setStartDate(b2Partner.getRelationsToPKHolder().get(0).getStartDate());  // Start Date is marriage date
-        					b313.setStartFlag(89);
+        					b313.setStartFlag(21);
         					b313.setEndDate(null);
 
         					//setRelations(b2);
@@ -992,14 +992,16 @@ public class StandardizePersonalCards implements Runnable {
         						b2.setStartFlag(21);  // assume that children move with the mother to the household of the new husband
         					*/
         					
-        					if(b2H.getPersonID_MO() == b4Wife.getPersons().get(0).getPersonID())
+        					if(b2H.getPersonID_MO() == b4Wife.getPersons().get(0).getPersonID()){
         						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()); // also wife's child
+        						b313.setStartDate(b2H.getDateOfBirth());
+        						//b313.setStartFlag(b2H.getDateOfBirthFlag());
+        					}
         					else{
         						b313.setContentOfDynamicData(ConstRelations2.STIEFKIND_PK); // make them wife's stepchild
             					b313.setStartDate(b2Partner.getRelationsToPKHolder().get(0).getStartDate());  // Start Date is marriage date
-            					b313.setStartFlag(89);
+            					b313.setStartFlag(21);
             					b313.setEndDate(null);
-            					b313.setStartFlag(89);
         					}
         					
         					 //setRelations(b2);
@@ -1019,9 +1021,8 @@ public class StandardizePersonalCards implements Runnable {
         					else{
         						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()); // wife's stepchild
             					b313.setStartDate(b2Partner.getRelationsToPKHolder().get(0).getStartDate());  // Start Date is marriage date
-            					b313.setStartFlag(89);
+            					b313.setStartFlag(21);
             					b313.setEndDate(null);
-            					b313.setStartFlag(89);
 
         					}
         					
@@ -2054,11 +2055,31 @@ public class StandardizePersonalCards implements Runnable {
         b34.setContentOfDynamicData(rel);
         b34.setValueOfRelatedPerson(b313R.getKeyToRegistrationPersons());
         
+
+        if(b313L.getStartDate() != null &&  b313L.getEndDate() != null && b313R.getStartDate() != null && b313R.getEndDate() != null){
+
+        	String [] aa = Common1.getIntersection(b313L.getStartDate(), b313L.getEndDate(), b313R.getStartDate(), b313R.getEndDate());
+
+        	if(aa == null) return null;
+
+        	b34.setStartDate(aa[0]);
+        	b34.setEndDate(aa[1]);
+        	//b34.setStartFlag(21);
+
+        }
+        else
+        	b34.setStartDate(Common1.dateFromDayCount(max(Common1.dayCount(b313L.getStartDate()), Common1.dayCount(b313R.getStartDate()))));
+        
+        if(b313L.getStartFlag() == 21 || b313R.getStartFlag() == 21)
+        	b34.setStartFlag(21);
+
+        return b34;
+        /*
         if(ConstRelations2.b3kode1_Related[rel] == null) {  
         	
             // Hack
             // If a relation is through marriage and the relation is not between the spouses (but between a spouse and an in-law) we
-        	// do not set the end date. This is nonsense, but Kees thinks this is nice. We will undoubtedly remove it later
+        	// do not set the end date. 
         	
         	boolean leftIsSpouse = false;
         	
@@ -2077,6 +2098,8 @@ public class StandardizePersonalCards implements Runnable {
 
         	
         	//if(b313L.getStartDate() == null &&  b313L.getEndDate() == null)
+        	
+        	
         	
         	if((b313L.getStartDate() == null &&  b313L.getEndDate() == null) && b313R.getStartDate() != null){
         		
@@ -2114,15 +2137,15 @@ public class StandardizePersonalCards implements Runnable {
         	
         	
         	
-        	int [] a = findCommonTime(b313L.getStartDate(), b313L.getEndDate(), b313R.getStartDate(), b313R.getEndDate());
+        	String [] a = Common1.getIntersection(b313L.getStartDate(), b313L.getEndDate(), b313R.getStartDate(), b313R.getEndDate());
 
         	if(a != null){
 
-        		b34.setStartDate(Common1.dateFromDayCount(a[0]));
+        		b34.setStartDate(a[0]);
         		
             	
             	if(leftIsSpouse && rightIsSpouse)
-            		b34.setEndDate(Common1.dateFromDayCount(a[1]));
+            		b34.setEndDate(a[1]);
         		
         	}
         }
@@ -2135,10 +2158,16 @@ public class StandardizePersonalCards implements Runnable {
         
         
         return b34;
+        */
     }
     
 
-    
+    private static int max(int a , int b){
+    	
+    	if (a > b) return a;
+    	return b;
+    	
+    }
     
     /**
      * 

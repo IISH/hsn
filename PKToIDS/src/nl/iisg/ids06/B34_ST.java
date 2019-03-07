@@ -69,18 +69,17 @@ public class B34_ST extends B3_ST {
 		
 		
 		String m = "";
-		if(getStartFlag() == 88) 
-			m = "Time_Invariant";
-		else
-			if(getStartFlag() == 11){
-				m = "Marriage_Related";
-			}
-			//else xyz
-				//return;
 		
-		//else
-			//if(getStartFlag() == 11 && (getStartEst() == 1 || getStartEst() ==2))
-				//	est = "Unilateral"; 
+		if(getEndDate() == null){
+			if(getStartFlag() == 21)
+				m = "Marriage_Related";
+			else{
+				m = "Time_Invariant";
+				startDay = 0;
+				startMonth = 0;
+				startYear = 0;
+			}
+		}
 			
 		
 		Utils.addIndivIndiv(em, getKeyToRP(), id_i_1,  id_i_2, "B34_ST", "" + getContentOfDynamicData(), "Reported", "Exact", m, startDay, startMonth, startYear, endDay, endMonth, endYear);

@@ -6,6 +6,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import nl.iisg.idscontext.ContextElement;
+import nl.iisg.idscontext.Contxt;
+
 @Entity
 @Table(name="b37_st")
 public class B37_ST  extends B3_ST{
@@ -26,6 +29,29 @@ public class B37_ST  extends B3_ST{
 	 
 	
 	B37_ST(){}
+	
+	public void convert(EntityManager em){
+		
+		int mutationDay   = 0;
+		int mutationMonth = 0;
+		int mutationYear  = 0;
+		
+
+		if(getDateOfMutation() != null){
+
+			mutationDay   = (new Integer(getDateOfMutation().substring(0,2))).intValue();
+			mutationMonth = (new Integer(getDateOfMutation().substring(3,5))).intValue();
+			mutationYear  = (new Integer(getDateOfMutation().substring(6,10))).intValue();
+		}
+
+		
+		if(getDestinationID() > 0){
+			ContextElement ce = Contxt.get2(getDestinationStandardized());
+			if(ce != null)
+				Utils.addIndivAndContext(null, null, null, null, ce, em, getKeyToRP(), getPerson().getPersonID(), "B37_ST",  "DEPARTURE_TO", "Reported", "Exact", mutationDay, mutationMonth, mutationYear);
+		}
+		
+	}
 	
 	/**
 	 * 

@@ -485,7 +485,7 @@ public class PkKnd {
 		b313.setDynamicDataSequenceNumber(1);
 		
 		b313.setStartDate(b2.getDateOfBirth());
-		b313.setStartFlag(b2.getDateOfBirthFlag());
+		b313.setStartFlag(0);
 
 		b313.setKeyToRegistrationPersons(b2.getKeyToPersons());
 
@@ -596,7 +596,9 @@ public class PkKnd {
 
 		initialiseB3_ST(b313);
 		b313.setDynamicDataType(13);
-		b313.setContentOfDynamicData(11);         // Father of PK-Holder 
+		b313.setContentOfDynamicData(11);         // Father of PK-Holder
+		b313.setStartDate(b2pk.getDateOfBirth()); // Start date = PK-Holder birth date
+		b313.setStartFlag(0); 
 		b313.setDynamicDataSequenceNumber(1);
 
 		b313.setKeyToRegistrationPersons(b2.getKeyToPersons());
@@ -713,6 +715,8 @@ public class PkKnd {
 		initialiseB3_ST(b313);
 		b313.setDynamicDataType(13);
 		b313.setContentOfDynamicData(21);         // Mother of PK-Holder 
+		b313.setStartDate(b2pk.getDateOfBirth()); // Start date = PK-Holder birth date
+		b313.setStartFlag(0);
 		b313.setDynamicDataSequenceNumber(1);
 		b313.setKeyToRegistrationPersons(b2.getKeyToPersons());
 

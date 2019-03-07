@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.Table;
 
+import nl.iisg.hsncommon.ConstRelations2;
 import nl.iisg.idscontext.ContextElement;
 import nl.iisg.idscontext.Contxt;
 
@@ -74,7 +75,9 @@ public class B32_ST extends B3_ST{
 				if(ce != null){
 					//Utils.addIndivContextAndContext(null, null, null, null,
 					//		ce, em, getKeyToRP(), getPerson().getPersonID(), "B32_ST ", "MARRIAGE_LOCATION", mutationDay, mutationMonth, mutationYear);
+
 					Utils.addIndivAndContext(null, null, null, null, ce, em, getKeyToRP(), getPerson().getPersonID(), "B32_ST",  "MARRIAGE_LOCATION", "Reported", "Exact", startDay, startMonth, startYear);
+
 
 				}
 			}

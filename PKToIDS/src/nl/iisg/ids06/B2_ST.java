@@ -506,6 +506,9 @@ public class B2_ST {
 		for(B35_ST b35: getProfessions())
       		b35.convert(em);
 
+		for(B37_ST b37: getDestinations())
+      		b37.convert(em);
+
 		//System.out.println("Exit B2");
 
 		

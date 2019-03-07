@@ -260,13 +260,13 @@ public class PkEigknd {
 
     	// get date second marriage
     	
-    	System.out.println("IDNR = " + getIdnr() );
+    	//System.out.println("IDNR = " + getIdnr() );
 
     	int marriageDays = 0;
     	if(getPkHolder().getMarriages() != null && getPkHolder().getMarriages().size() > 1){    		
     		PkHuw pkh = getPkHolder().getMarriages().get(1); 
 			if(Common1.dateIsValid(pkh.getHdghuwp(), pkh.getHmdhuwp(), pkh.getHjrhuwp()) == 0)
-			   	System.out.println(" Marriage Date " +   pkh.getHdghuwp() + pkh.getHmdhuwp()+ pkh.getHjrhuwp());
+			   	//System.out.println(" Marriage Date " +   pkh.getHdghuwp() + pkh.getHmdhuwp()+ pkh.getHjrhuwp());
 			 
 				marriageDays = Common1.dayCount(pkh.getHdghuwp(), pkh.getHmdhuwp(), pkh.getHjrhuwp());
     	}
@@ -274,16 +274,16 @@ public class PkEigknd {
     	
     	// Start/End date
 
-    	System.out.println(" Death Date " +   getOdgkndp()+getOmdkndp()+getOjrkndp());
-    	System.out.println(" Leave Date " +   getAdgkndp()+getAmdkndp()+getAjrkndp());
-    	System.out.println(" Marrg Date " +   getHdgkndp()+getHmdkndp()+getHjrkndp());
+    	//System.out.println(" Death Date " +   getOdgkndp()+getOmdkndp()+getOjrkndp());
+    	//System.out.println(" Leave Date " +   getAdgkndp()+getAmdkndp()+getAjrkndp());
+    	//System.out.println(" Marrg Date " +   getHdgkndp()+getHmdkndp()+getHjrkndp());
     	
 		if((Common1.dateIsValid(getOdgkndp(), getOmdkndp(), getOjrkndp()) == 0 && marriageDays != 0 && Common1.dayCount(getOdgkndp(), getOmdkndp(), getOjrkndp()) < marriageDays) || 
 	       (Common1.dateIsValid(getAdgkndp(), getAmdkndp(), getAjrkndp()) == 0 && marriageDays != 0 && Common1.dayCount(getAdgkndp(), getAmdkndp(), getAjrkndp()) < marriageDays) ||
 	       (Common1.dateIsValid(getHdgkndp(), getHmdkndp(), getHjrkndp()) == 0 && marriageDays != 0 && Common1.dayCount(getHdgkndp(), getHmdkndp(), getHjrkndp()) < marriageDays)){
 
 			
-			System.out.println("+++> idnr = "+ getIdnr() );
+			//System.out.println("+++> idnr = "+ getIdnr() );
 	    	b2.setStartDate(null);
 			b2.setStartFlag(0);
 			b2.setEndDate(null);
@@ -423,7 +423,6 @@ public class PkEigknd {
 
     	// marriage
     	
-		
 		if(Utils.dateIsValid(getHdgkndp(), getHmdkndp(), getHjrkndp()) == 0){
 		
     		
@@ -452,12 +451,15 @@ public class PkEigknd {
         	}
     		
     		b32.setDynamicDataSequenceNumber(1);
-
+    		
 
     	}
     	
     	// departure
     	
+		
+		
+		
     	if(getAplkndp() != null && getAplkndp().trim().length() != 0  && !getAplkndp().trim().equals("-1")){
     		
     		//System.out.println("Departure Child, destination = " + getAplkndp());
