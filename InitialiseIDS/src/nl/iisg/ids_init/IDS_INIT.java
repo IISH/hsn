@@ -214,7 +214,6 @@ public class IDS_INIT implements Runnable {
 			int Id_C = 0;
 			String x = null;
 	     
-	     
 			
 	     
 			for(Ref_Location rl: ref_location){

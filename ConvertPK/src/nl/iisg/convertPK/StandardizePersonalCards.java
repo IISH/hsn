@@ -894,6 +894,35 @@ public class StandardizePersonalCards implements Runnable {
     				b2Partner.setPersonID_MO(b2H.getPersonID_MO());
     				b2Partner.setPersonID_MO_FG(b2H.getPersonID_MO_FG());
 
+    				// Copy *older* civil status history before the current one
+    				
+    				B32_ST b32current = b2Partner.getCivilStatus().get(0);
+    				
+    				if(b32current != null && b32current.getStartDate() != null){
+    					
+    					b2Partner.getCivilStatus().clear();
+
+    					for(B32_ST b32H: b2H.getCivilStatus()){
+
+    						
+    						//System.out.println("      ===> Copying IDNR = " + b32H.getKeyToRP() + "    ===> b32H.getStartDate() " + b32H.getStartDate() + " b32current.getStartDate() " + b32current.getStartDate());
+    						if(b32H.getStartDate() != null && Common1.dayCount(b32H.getStartDate()) < Common1.dayCount(b32current.getStartDate())){
+
+    							//System.out.println("      ===> Copying IDNR = "+ b32H.getKeyToRP() + " start " + b32H.getStartDate() + " husband " + b32H.getEntryDateHead());
+    							B32_ST b32W = allocateB32(b2Partner, b32H);
+    							b32W.setContentOfDynamicData(b32H.getContentOfDynamicData());
+    							b32W.setValueOfRelatedPerson(1); // Because he is married to the RP, she has B2RNBG == 1 in the main table
+    							b32W.setDynamicDataSequenceNumber(b2Partner.getCivilStatus().size() + 1);
+    							b2Partner.getCivilStatus().add(b32W);
+    						}
+
+    					}
+    					
+    					b32current.setDynamicDataSequenceNumber(b2Partner.getCivilStatus().size() + 1);
+						b2Partner.getCivilStatus().add(b32current);
+
+    				}
+    				
     				for(B33_ST b33H: b2H.getReligions()){
 
     					B33_ST b33W = allocateB33(b2Partner, b33H);
@@ -1225,7 +1254,7 @@ public class StandardizePersonalCards implements Runnable {
     	
     	// Keys from b2
     	
-    	b32.setDynamicDataType(3);
+    	b32.setDynamicDataType(2);
         b32.setKeyToRP(b2.getKeyToRP());
         b32.setEntryDateHead(b2.getEntryDateHead());
         b32.setKeyToSourceRegister(b2.getKeyToSourceRegister());
@@ -2068,7 +2097,8 @@ public class StandardizePersonalCards implements Runnable {
 
         }
         else
-        	b34.setStartDate(Common1.dateFromDayCount(max(Common1.dayCount(b313L.getStartDate()), Common1.dayCount(b313R.getStartDate()))));
+        	if(b313L.getStartDate() != null  && b313R.getStartDate() != null)
+        		b34.setStartDate(Common1.dateFromDayCount(max(Common1.dayCount(b313L.getStartDate()), Common1.dayCount(b313R.getStartDate()))));
         
         if(b313L.getStartFlag() == 21 || b313R.getStartFlag() == 21)
         	b34.setStartFlag(21);

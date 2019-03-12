@@ -471,9 +471,11 @@ public class Contxt {
 				return(municipality_2_Id_C.get(municipality.trim()));
 		}
 		else{
-			System.out.println("2 Municipality " + municipality +  " not found");
+			//System.out.println(municipality_2_Id_C.get("No valid Location")); // This Municipality has been added to Ref_Location
+			return(municipality_2_Id_C.get("No valid Location")); 
+			//System.out.println("2 Municipality " + municipality +  " not found");
 			//int x = 1/0; // XYZ
-			return null;
+			//return null;
 		}
 				
 				
