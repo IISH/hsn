@@ -7,7 +7,7 @@ public class Utils {
 
 	public static int getId_C() {
 		
-		//int x = 1/0; 
+		//int x = 1/0; yes
 	
 		return Id_C++;
 	}
