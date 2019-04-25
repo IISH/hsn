@@ -16,6 +16,7 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.swing.JTextArea;
 
+import nl.iisg.hsncommon.CreateIDSTables2;
 import nl.iisg.idscontext.CONTEXT;
 import nl.iisg.idscontext.CONTEXT_CONTEXT;
 import nl.iisg.ref.Ref_Location;
@@ -95,10 +96,19 @@ public class IDS_INIT implements Runnable {
 		 
 		 em_context.getTransaction().begin();
 
-		 Query query = em_context.createNativeQuery(CreateIDSTables.CONTEXT);  
+		 Query query = em_context.createNativeQuery(CreateIDSTables2.INDIVIDUAL);  
+		 query.executeUpdate();
+		 
+		 query = em_context.createNativeQuery(CreateIDSTables2.INDIV_CONTEXT);  
 		 query.executeUpdate();
 
-		 query = em_context.createNativeQuery(CreateIDSTables.CONTEXT_CONTEXT);  
+		 query = em_context.createNativeQuery(CreateIDSTables2.INDIV_INDIV);  
+		 query.executeUpdate();
+
+		 query = em_context.createNativeQuery(CreateIDSTables2.CONTEXT);  
+		 query.executeUpdate();
+
+		 query = em_context.createNativeQuery(CreateIDSTables2.CONTEXT_CONTEXT);  
 		 query.executeUpdate();
 
 
@@ -118,6 +128,14 @@ public class IDS_INIT implements Runnable {
 		 
 		 
 		 HashMap<String, Integer> hmap = new HashMap<String, Integer>();
+
+		 //String t0 = "SET LOCAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY,',''))"; // Otherwise the next query gives an error
+		 String t0 = "SET SESSION sql_mode ='NO_BACKSLASH_ESCAPES'"; // Don't want other options like ONLY_FULL_GROUP_BY
+		 em_ref.getTransaction().begin();
+		 //query = em_ref.createQuery(t0);
+		 query = em_ref.createNativeQuery(t0);		 
+		 query.executeUpdate();
+		 em_ref.getTransaction().commit();
 
 		 
 		 String t = "select a from Ref_Municipality a";

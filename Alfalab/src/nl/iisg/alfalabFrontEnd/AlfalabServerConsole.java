@@ -103,9 +103,9 @@ public class AlfalabServerConsole implements Runnable {
     	Charset charset = Charset.defaultCharset();
         System.out.println("Default encoding: " + charset + " (Aliases: "
             + charset.aliases() + ")");
-        factory_original_tabs = Persistence.createEntityManagerFactory("b_tables");
+        //factory_original_tabs = Persistence.createEntityManagerFactory("b_tables");
     	System.out.println("factory_original_tabs = " + factory_original_tabs);
-        emBtables = factory_original_tabs.createEntityManager();
+        //emBtables = factory_original_tabs.createEntityManager();
 
         //textArea.getDocument().addDocumentListener(this);
     }

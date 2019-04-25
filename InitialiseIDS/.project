@@ -3,6 +3,7 @@
 	<name>InitialiseIDS</name>
 	<comment></comment>
 	<projects>
+		<project>HSNCommon</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
