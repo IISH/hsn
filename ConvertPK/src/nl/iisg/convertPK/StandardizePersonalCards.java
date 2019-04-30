@@ -854,7 +854,7 @@ public class StandardizePersonalCards implements Runnable {
     private static void copyPartnerInfo(B4_ST b4Husband, B4_ST b4Wife){
     	
     	
-    	System.out.println("Husband = " + b4Husband + "wife = "+ b4Wife);
+    	//System.out.println("Husband = " + b4Husband + "wife = "+ b4Wife);
     	
     	//System.out.println("Copy Partner Info"); 
     	

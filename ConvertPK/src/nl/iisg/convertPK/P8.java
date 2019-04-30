@@ -231,7 +231,7 @@ public class P8 {
     
     public void destination(B2_ST b2){
 
-    	System.out.println("   P8        destination country = " + getP8opil() + " place = " + getPladrp());
+    	//System.out.println("   P8        destination country = " + getP8opil() + " place = " + getPladrp());
 
 		B37_ST b37 = new B37_ST();
     	b2.getDestinations().add(b37); // Link B37_ST -> B2_ST

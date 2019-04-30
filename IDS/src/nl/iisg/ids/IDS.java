@@ -25,6 +25,7 @@ import javax.swing.JTextArea;
 
 import nl.iisg.hsncommon.Common1;
 import nl.iisg.hsncommon.ConstRelations2;
+import nl.iisg.hsncommon.CreateIDSTables2;
 import nl.iisg.ref.Ref;
 import nl.iisg.ref.Ref_FirstName;
 import nl.iisg.ref.Ref_Relation_B;
@@ -993,11 +994,13 @@ private static void handler(){
 	
 private static void loadIDS(String component, int lastDigit){
 
+	
 	//System.out.println("Start loading " + component); 
 
 	//print(" " + component + ":");
 	//Civil Certificates Marriage Certificates
 	String lastD = String.format("%01d", lastDigit);
+	
 	
 	
 	String persistence = "";
@@ -1018,7 +1021,8 @@ private static void loadIDS(String component, int lastDigit){
 	
 	//Query q = em.createQuery("select a from INDIVIDUAL a where a.id_D < 9000"); 
 	//Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%00" + lastD + "'"); 
-	Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%" + lastD + "'"); 
+	Query q = null;
+	q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%" + lastD + "'");
 	//Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%'"); 
 	//Query q = em.createQuery("select a from INDIVIDUAL a"); 
 	setIndividualL(q.getResultList());	
@@ -1175,15 +1179,15 @@ private static void createIDSTables(){
 			
 			em.getTransaction().begin();
 
-			Query query = em.createNativeQuery(CreateIDSTables.INDIVIDUAL);  
+			Query query = em.createNativeQuery(CreateIDSTables2.INDIVIDUAL);  
 			query.executeUpdate();
-			//query = em.createNativeQuery(CreateIDSTables.CONTEXT);  
-			//query.executeUpdate();
-			//query = em.createNativeQuery(CreateIDSTables.CONTEXT_CONTEXT);  
-			//query.executeUpdate();
-			query = em.createNativeQuery(CreateIDSTables.INDIV_CONTEXT);  
+			query = em.createNativeQuery(CreateIDSTables2.CONTEXT);  
 			query.executeUpdate();
-			query = em.createNativeQuery(CreateIDSTables.INDIV_INDIV);  
+			query = em.createNativeQuery(CreateIDSTables2.CONTEXT_CONTEXT);  
+			query.executeUpdate();
+			query = em.createNativeQuery(CreateIDSTables2.INDIV_CONTEXT);  
+			query.executeUpdate();
+			query = em.createNativeQuery(CreateIDSTables2.INDIV_INDIV);  
 			query.executeUpdate();
 			query = em.createNativeQuery(CreatePersonTable.PERSONS);  
 			query.executeUpdate();
@@ -1194,19 +1198,82 @@ private static void createIDSTables(){
 		
 			em.getTransaction().begin();
 
-			query = em.createNativeQuery(CreateIDSTables.INDIVIDUAL_TRUNCATE);  
+			query = em.createNativeQuery(CreateIDSTables2.INDIVIDUAL_TRUNCATE);  
 			query.executeUpdate();
 			//query = em.createNativeQuery(CreateIDSTables.CONTEXT_DELETE);  
 			//query.executeUpdate();
 			//query = em.createNativeQuery(CreateIDSTables.CONTEXT_CONTEXT_DELETE);  
 			//query.executeUpdate();
-			query = em.createNativeQuery(CreateIDSTables.INDIV_CONTEXT_TRUNCATE);  
+			query = em.createNativeQuery(CreateIDSTables2.INDIV_CONTEXT_TRUNCATE);  
 			query.executeUpdate();
-			query = em.createNativeQuery(CreateIDSTables.INDIV_INDIV_TRUNCATE);  
+			query = em.createNativeQuery(CreateIDSTables2.INDIV_INDIV_TRUNCATE);  
 			query.executeUpdate();
 			query = em.createNativeQuery(CreatePersonTable.PERSON_TRUNCATE);  
 			query.executeUpdate();
 
+			
+			em.getTransaction().commit();
+            em.clear();
+			
+
+			// also create component IDS-tables
+			
+            em.getTransaction().begin();
+            
+			String table = CreateIDSTables2.INDIVIDUAL;
+			table = table.replaceAll("individual", "hsn_popreg_total_ids.individual");
+			System.out.println("table = "+ table);
+			query = em.createNativeQuery(table);  
+			query.executeUpdate();
+			table = CreateIDSTables2.INDIV_CONTEXT;
+			table = table.replaceAll("indiv_context", "hsn_popreg_total_ids.indiv_context");
+			query = em.createNativeQuery(table);  
+			query.executeUpdate();
+			table = CreateIDSTables2.INDIV_INDIV;
+			table = table.replaceAll("indiv_indiv", "hsn_popreg_total_ids.indiv_indiv");
+			query = em.createNativeQuery(table);  
+			query.executeUpdate();
+			
+			
+			em.getTransaction().commit();
+            em.clear();
+		
+            em.getTransaction().begin();
+            
+			table = CreateIDSTables2.INDIVIDUAL;
+			table = table.replaceAll("individual", "hsn_civrec_ids.individual");
+			//System.out.println("table = "+ table);
+			query = em.createNativeQuery(table);  
+			query.executeUpdate();
+			table = CreateIDSTables2.INDIV_CONTEXT;
+			table = table.replaceAll("indiv_context", "hsn_civrec_ids.indiv_context");
+			query = em.createNativeQuery(table);  
+			query.executeUpdate();
+			table = CreateIDSTables2.INDIV_INDIV;
+			table = table.replaceAll("indiv_indiv", "hsn_civrec_ids.indiv_indiv");
+			query = em.createNativeQuery(table);  
+			query.executeUpdate();
+			
+			
+			em.getTransaction().commit();
+            em.clear();
+		
+            em.getTransaction().begin();
+            
+			table = CreateIDSTables2.INDIVIDUAL;
+			table = table.replaceAll("individual", "hsn_perscd_ids.individual");
+			System.out.println("table = "+ table);
+			query = em.createNativeQuery(table);  
+			query.executeUpdate();
+			table = CreateIDSTables2.INDIV_CONTEXT;
+			table = table.replaceAll("indiv_context", "hsn_perscd_ids.indiv_context");
+			query = em.createNativeQuery(table);  
+			query.executeUpdate();
+			table = CreateIDSTables2.INDIV_INDIV;
+			table = table.replaceAll("indiv_indiv", "hsn_perscd_ids.indiv_indiv");
+			query = em.createNativeQuery(table);  
+			query.executeUpdate();
+			
 			
 			em.getTransaction().commit();
             em.clear();

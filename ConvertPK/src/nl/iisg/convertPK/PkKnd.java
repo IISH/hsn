@@ -743,8 +743,9 @@ public class PkKnd {
 		if(pkhw != null && pkhw.getHjrhuwp() > 0 && Common1.dayCount(pkhw.getHdghuwp(), pkhw.getHmdhuwp(), pkhw.getHjrhuwp()) > Common1.dayCount(b2pk.getStartDate())){
 
 			if(pkhw.getAnmhuwp() == null || pkhw.getAnmhuwp().trim().length() == 0)
-				System.out.println("PKHUW: IDNR = " + pkhw.getIdnr() + " Sequence Number " + pkhw.getVnrhuwp() + " heeft geen achternaam, skipped");
-			
+				//System.out.println("PKHUW: IDNR = " + pkhw.getIdnr() + " Sequence Number " + pkhw.getVnrhuwp() + " heeft geen achternaam, skipped");
+			    //message(b2.getKeyToRP(), "7146");
+				;
 			
 			else{
 
@@ -774,7 +775,8 @@ public class PkKnd {
     	for(PkHuw pkhuw: getMarriages()){
 
     		if(pkhuw.getAnmhuwp() == null || pkhuw.getAnmhuwp().trim().length() == 0){
-    			System.out.println("Partner without last name skipped for idnr = " + pkhw.getIdnr());
+    		    message(b2.getKeyToRP(), "7146");
+    			//System.out.println("Partner without last name skipped for idnr = " + pkhw.getIdnr());
     			continue;
     		}
     		

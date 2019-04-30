@@ -308,14 +308,15 @@ public class B2_ST {
 			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "NATIONALITY", getNationality().trim(), "Declared", "Exact", startDay, startMonth, startYear, endDay, endMonth, endYear);
 
 		// Observation Period for PK Holder and Spouses only
-		/*
+		
 		for(B313_ST b313: getRelationsToPKHolder()){
-			if(b313.getContentOfDynamicData() == 1 || b313.getContentOfDynamicData() == 2 && startYear > 0 && endYear > 0){
+			if((b313.getContentOfDynamicData() == 1 || b313.getContentOfDynamicData() == 2 || b313.getContentOfDynamicData() == 145 || b313.getContentOfDynamicData() == 161)
+					&& startYear > 0 && endYear > 0){
 				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "OBSERVATION", null, "Assigned", "Exact", startDay, startMonth, startYear, endDay, endMonth, endYear);
 				break;
 			}
 		}
-		*/
+		
 		
 		// Start Observation for PK Holder, Spouses /* and (step) children if in scope */
 		
