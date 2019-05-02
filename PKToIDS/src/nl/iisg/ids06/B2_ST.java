@@ -307,16 +307,6 @@ public class B2_ST {
 		if(getNationality() != null && getNationality().trim().length() > 0)
 			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "NATIONALITY", getNationality().trim(), "Declared", "Exact", startDay, startMonth, startYear, endDay, endMonth, endYear);
 
-		// Observation Period for PK Holder and Spouses only
-		
-		for(B313_ST b313: getRelationsToPKHolder()){
-			if((b313.getContentOfDynamicData() == 1 || b313.getContentOfDynamicData() == 2 || b313.getContentOfDynamicData() == 145 || b313.getContentOfDynamicData() == 161)
-					&& startYear > 0 && endYear > 0){
-				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "OBSERVATION", null, "Assigned", "Exact", startDay, startMonth, startYear, endDay, endMonth, endYear);
-				break;
-			}
-		}
-		
 		
 		// Start Observation for PK Holder, Spouses /* and (step) children if in scope */
 		
@@ -378,8 +368,14 @@ public class B2_ST {
 			switch(b313.getContentOfDynamicData()){
 			case 1:  // Holder
 				if(endYear == 0) break;  // not dead yet, but this is not possible because we get the PK only after the holder (=subject) dies.
-				if(endFlag == 10) 
+				if(endFlag == 10) {
+					
+					endDay = new Integer(getEndDate().substring(0,2));
+					endMonth = new Integer(getEndDate().substring(3,5));
+					endYear = new Integer(getEndDate().substring(6,10));
+
 					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", "Death", "Assigned", "Exact", endDay, endMonth, endYear);
+				}
 				break;
 				
 			case 2: // Partner
@@ -413,12 +409,12 @@ public class B2_ST {
 				else{
 					if(getRegistration().getEndDate() != null){
 						
-						int cardEndDay   = new Integer(getRegistration().getEndDate().substring(0, 2));
-						int cardEndMonth = new Integer(getRegistration().getEndDate().substring(3, 5));
-						int cardEndYear  = new Integer(getRegistration().getEndDate().substring(6, 10));
+						endDay   = new Integer(getRegistration().getEndDate().substring(0, 2));
+						endMonth = new Integer(getRegistration().getEndDate().substring(3, 5));
+						endYear  = new Integer(getRegistration().getEndDate().substring(6, 10));
 						
 						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", "End source", "Assigned", "Exact", 
-								cardEndDay, cardEndMonth, cardEndYear);
+								endDay, endMonth, endYear);
 						
 						
 					}
@@ -428,6 +424,22 @@ public class B2_ST {
 				default:	
 			}
 		}
+		
+		// Observation Period // for PK Holder and Spouses only
+		
+		if(startObservation != null && endObservation != null && startYear != 0 && endYear != 0 )
+			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "OBSERVATION", null, "Assigned", "Exact", startDay, startMonth, startYear, endDay, endMonth, endYear);
+
+		/*
+		for(B313_ST b313: getRelationsToPKHolder()){
+			if((b313.getContentOfDynamicData() == 1 || b313.getContentOfDynamicData() == 2 || b313.getContentOfDynamicData() == 145 || b313.getContentOfDynamicData() == 161)
+					&& startYear > 0 && endYear > 0){
+				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "OBSERVATION", null, "Assigned", "Exact", startDay, startMonth, startYear, endDay, endMonth, endYear);
+				break;
+			}
+		}
+		*/
+
 		
 		
 		// See which addresses this person can be bound to

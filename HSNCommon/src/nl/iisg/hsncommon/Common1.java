@@ -227,7 +227,7 @@ public class Common1 {
 	
 	public static int dayCount(String date0){
 		
-		//System.out.println(date0);
+		//System.out.println("-------->" + date0);
 			
 		int d = (new Integer(date0.substring(0,2))).intValue();
 		int m = (new Integer(date0.substring(3,5))).intValue();

@@ -1,6 +1,11 @@
 package nl.iisg.convertPK;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -978,7 +983,82 @@ public class PkKnd {
     	if(getProfessions().size() > 0){
 
     		int date = Common1.dayCount(b2pk.getStartDate());
-    		String endDate = b2pk.getEndDate() != null ? b2pk.getEndDate() : "01-01-2020";
+    		
+    		//DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    		//Date date1 = new Date();
+    		//System.out.println(localDate);
+    		//String endDate1 =  dateFormat.format(localDate); // e.g. "01-01-2020";
+
+    		LocalDate localDate = LocalDate.now();
+
+    		String endDate1 = DateTimeFormatter.ofPattern("dd-MM-yyyy").format(localDate);
+    		
+    		//System.out.println("--->" + endDate1);
+    		
+    		String endDate = b2pk.getEndDate() != null ? b2pk.getEndDate() : endDate1;
+    		
+    		
+    		// Check if last profession = 'zonder' and more than  profession an alive at 65
+    		// Then start 'zonder beroep' at 65 and spread the other professions equidistantly
+    		
+    		B35_ST b35_last   = null; 
+    		PkBrp pkbrp_last  = null;
+    		System.out.println("Last profession = " + getProfessions().get(getProfessions().size() -1).getBeroepp());
+    		if(getProfessions().size() > 1 && getProfessions().get(getProfessions().size() -1).getBeroepp().equalsIgnoreCase("zonder")){
+    			
+    			String birthdate = b2pk.getDateOfBirth();
+    			Integer birthyear = new Integer(birthdate.substring(6));
+    			String pensionDate = birthdate.substring(0, 6) + (birthyear + 65);
+    			
+    			System.out.println("Geboorte datum = " + birthdate);
+    			System.out.println("Pensioen datum = " + pensionDate);
+    			
+    			if(Common1.dayCount(pensionDate) < Common1.dayCount(b2pk.getEndDate())){
+    				
+    				// create b35 for the last 'zonder beroep' from age 65 until death
+    				
+    				B35_ST b35 = new B35_ST();
+    				b35.setPerson(b2pk);            // Link B2_ST -> B35_ST
+
+    				initialiseB3_ST(b35);
+    				b35.setKeyToRegistrationPersons(b2pk.getKeyToPersons());
+    				//System.out.println("key = " + b2pk.getKeyToPersons());
+
+    				//b35.setDynamicDataSequenceNumber(seqNoPr++);
+    				
+    				String profession = getProfessions().get(getProfessions().size() -1).getBeroepp();
+    				String position   = getProfessions().get(getProfessions().size() -1).getBrpposp();
+    				
+    				if(position != null){
+    					if(!position.equalsIgnoreCase("n")){
+
+    						if(!profession.endsWith("(o)") && !profession.endsWith("(h)")){
+
+    							profession = profession + " (" + position + ")";
+    						}
+    					}
+    				}
+    				
+    				ArrayList b = Utils.standardizeProfession(getProfessions().get(getProfessions().size() -1).getBeroepp());
+    				b35.setOccupationStandardized((String)b.get(0));
+    				b35.setOccupationID((Integer)b.get(1));
+    				
+					b35.setStartFlag(51);
+					b35.setEndFlag(52);
+					b35.setDynamicDataType(5);
+    				
+    				b35.setStartDate(pensionDate);
+    				b35.setEndDate(b2pk.getEndDate());
+    				endDate = pensionDate;
+
+    				int ii = getProfessions().size() -1;
+    				pkbrp_last = getProfessions().get(ii); // remember
+    				getProfessions().remove(ii);
+    				b35_last = b35; // remember this b35
+    			}
+    			
+    		}
+    		
     			
     		int increment = (Common1.dayCount(endDate) - Common1.dayCount(b2pk.getStartDate())) / getProfessions().size();
 
@@ -1017,7 +1097,13 @@ public class PkKnd {
     				if(seqNoPr <= getProfessions().size())
     					b35.setEndDate(Common1.dateFromDayCount(date + increment - 1));
     				else
-    					b35.setEndDate(b2pk.getEndDate());  // to make the last date equal the death date
+    					if(b35_last != null){
+    						
+    						b35.setEndDate(Common1.dateFromDayCount(Common1.dayCount(b35_last.getStartDate()) - 1));
+    						
+    					}
+    					else
+    						b35.setEndDate(b2pk.getEndDate());  // to make the last date equal the death date
     				
     				if(getProfessions().size() > 1){
     					
@@ -1031,6 +1117,19 @@ public class PkKnd {
     				if(pkbrp.convert(b35)){
     					b2pk.getProfessions().add(b35); // Link B35_ST -> B2_ST
     				}
+    			}
+    			
+    			// Now check if there is a b35_last
+    			
+    			if(b35_last != null){
+    				
+    				b35_last.setDynamicDataSequenceNumber(seqNoPr);
+    				
+    				if(pkbrp_last.convert(b35_last)){
+    					b2pk.getProfessions().add(b35_last); // Link B35_ST -> B2_ST
+    				}
+    				
+    				
     			}
     			
     			

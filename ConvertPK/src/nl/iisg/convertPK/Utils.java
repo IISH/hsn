@@ -435,7 +435,7 @@ public class Utils {
 	        		" idnr = 76359  or " + 
 	        		" idnr = 600270; "; 
 	        
-	        selTable = "SELECT * FROM " + tabName; 
+	       // selTable = "SELECT * FROM " + tabName; 
 	       // 		" where idnr  >= 120000 and IDNR < 128000; " ; dit gaat niet omdat zo de mannen niet worden meegenomen 
 	        
 	        System.out.println(selTable);
