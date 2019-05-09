@@ -460,7 +460,8 @@ public class PkEigknd {
 		
 		
 		
-    	if(getAplkndp() != null && getAplkndp().trim().length() != 0  && !getAplkndp().trim().equals("-1")){
+    	if(getAjrkndp() > 0){
+        //if(getAplkndp() != null && getAplkndp().trim().length() != 0  && !getAplkndp().trim().equals("-1")){
     		
     		//System.out.println("Departure Child, destination = " + getAplkndp());
     		
@@ -473,15 +474,14 @@ public class PkEigknd {
     		b37.setDynamicDataType(7);
     		
 
-        	ArrayList b = Utils.standardizeLocation(getAplkndp());
+    		String destination = getAplkndp() != null ? getAplkndp() : "No valid Location";
+        	ArrayList b = Utils.standardizeLocation(destination);
         	b37.setDestinationStandardized((String)b.get(0));
         	b37.setDestinationID((Integer)b.get(1));
         	
-        	if(getAjrkndp() != 0){
-            	String departureDate = String.format("%02d-%02d-%04d", getAdgkndp(), getAmdkndp(), getAjrkndp());
-            	b37.setDateOfMutation(departureDate);
+           	String departureDate = String.format("%02d-%02d-%04d", getAdgkndp(), getAmdkndp(), getAjrkndp());
+           	b37.setDateOfMutation(departureDate);
         		
-        	}
     		
     		b37.setDynamicDataSequenceNumber(1);
 

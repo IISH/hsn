@@ -399,7 +399,9 @@ public class PkHuw {
     		b37.setDynamicDataType(7);
     		b37.setKeyToRegistrationPersons(b2.getKeyToPersons());
 
-        	b = Utils.standardizeLocation(getAplhuwp());
+    		String destination = getAplhuwp() != null ? getAplhuwp() : "No valid Location";
+
+        	b = Utils.standardizeLocation(destination);
         	b37.setDestinationStandardized((String)b.get(0));
         	b37.setDestinationID((Integer)b.get(1));
         	

@@ -347,88 +347,96 @@ public class B2_ST {
 			}
 		}
 		
-		if(startObservation != null){
-			
-			if(getStartDate() != null){
-				
-				startDay = new Integer(getStartDate().substring(0,2));
-				startMonth = new Integer(getStartDate().substring(3,5));
-				startYear = new Integer(getStartDate().substring(6,10));
+		if(startObservation != null && getStartDate() != null){
 
-				//System.out.println("START_OBSERVATION for IDNR = " +  getKeyToRP() + " id = " +  getPersonID());
-				Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "START_OBSERVATION", startObservation, "Assigned", "Exact", startDay, startMonth, startYear);
-			}
-		}
-		
-		// End Observation for PK Holder, Spouses and (step) children
-		
-		String endObservation = null;
-		for(B313_ST b313: getRelationsToPKHolder()){
-			
-			switch(b313.getContentOfDynamicData()){
-			case 1:  // Holder
-				if(endYear == 0) break;  // not dead yet, but this is not possible because we get the PK only after the holder (=subject) dies.
-				if(endFlag == 10) {
-					
-					endDay = new Integer(getEndDate().substring(0,2));
-					endMonth = new Integer(getEndDate().substring(3,5));
-					endYear = new Integer(getEndDate().substring(6,10));
 
-					Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", "Death", "Assigned", "Exact", endDay, endMonth, endYear);
-				}
-				break;
-				
-			case 2: // Partner
-			case 145: 
-			case 161:
-				
-			case 3: // (Step) Children
-			case 4: 
-			case 8: 
-			case 9: 
-			case 133:
-			case 134:
-				
-				if(endYear == 0) break;  // not under observation
-				
-				if(getEndFlag() == 40) endObservation = "Death";
-				else if(endFlag == 41 || endFlag == 42) endObservation = "Departure";		
-				
-				if(endObservation != null){
-					
-					if(getEndDate() != null){
-						
+			startDay = new Integer(getStartDate().substring(0,2));
+			startMonth = new Integer(getStartDate().substring(3,5));
+			startYear = new Integer(getStartDate().substring(6,10));
+
+			//System.out.println("START_OBSERVATION for IDNR = " +  getKeyToRP() + " id = " +  getPersonID());
+			//Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "START_OBSERVATION", startObservation, "Assigned", "Exact", startDay, startMonth, startYear);
+
+
+			// End Observation for PK Holder, Spouses and (step) children
+
+			String endObservation = null;
+			for(B313_ST b313: getRelationsToPKHolder()){
+
+				switch(b313.getContentOfDynamicData()){
+				case 1:  // Holder
+					if(endYear == 0) break;  // not dead yet, but this is not possible because we get the PK only after the holder (=subject) dies.
+					if(endFlag == 10) {
+
 						endDay = new Integer(getEndDate().substring(0,2));
 						endMonth = new Integer(getEndDate().substring(3,5));
 						endYear = new Integer(getEndDate().substring(6,10));
 
-						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", endObservation, "Assigned", "Exact", endDay, endMonth, endYear);
+						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "START_OBSERVATION", startObservation, "Assigned", "Exact", startDay, startMonth, startYear);
+
+						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", "Death", "Assigned", "Exact", endDay, endMonth, endYear);
+						
+						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "OBSERVATION", null, "Assigned", "Exact", startDay, startMonth, startYear, endDay, endMonth, endYear);
+
 					}
-				}
-				
-				else{
-					if(getRegistration().getEndDate() != null){
-						
-						endDay   = new Integer(getRegistration().getEndDate().substring(0, 2));
-						endMonth = new Integer(getRegistration().getEndDate().substring(3, 5));
-						endYear  = new Integer(getRegistration().getEndDate().substring(6, 10));
-						
-						Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", "End source", "Assigned", "Exact", 
-								endDay, endMonth, endYear);
-						
-						
+					break;
+
+				case 2: // Partner
+				case 145: 
+				case 161:
+
+				case 3: // (Step) Children
+				case 4: 
+				case 8: 
+				case 9: 
+				case 133:
+				case 134:
+
+					if(endYear == 0) break;  // not under observation
+
+					if(getEndFlag() == 40) endObservation = "Death";
+					else if(endFlag == 41 || endFlag == 42) endObservation = "Departure";		
+
+					if(endObservation != null){
+
+						if(getEndDate() != null){
+
+							endDay = new Integer(getEndDate().substring(0,2));
+							endMonth = new Integer(getEndDate().substring(3,5));
+							endYear = new Integer(getEndDate().substring(6,10));
+
+							Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "START_OBSERVATION", startObservation, "Assigned", "Exact", startDay, startMonth, startYear);
+
+							Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", endObservation, "Assigned", "Exact", endDay, endMonth, endYear);
+							
+							Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "OBSERVATION", null, "Assigned", "Exact", startDay, startMonth, startYear, endDay, endMonth, endYear);
+
+						}
 					}
-				}
-				break;
-			
+
+					else{
+						if(getRegistration().getEndDate() != null){
+
+							endDay   = new Integer(getRegistration().getEndDate().substring(0, 2));
+							endMonth = new Integer(getRegistration().getEndDate().substring(3, 5));
+							endYear  = new Integer(getRegistration().getEndDate().substring(6, 10));
+
+							Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "START_OBSERVATION", startObservation, "Assigned", "Exact", startDay, startMonth, startYear);
+							
+							Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "END_OBSERVATION", "End source", "Assigned", "Exact", endDay, endMonth, endYear);
+							
+							Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "OBSERVATION", null, "Assigned", "Exact", startDay, startMonth, startYear, endDay, endMonth, endYear);
+
+
+
+						}
+					}
+					break;
+
 				default:	
+				}
 			}
 		}
-		
-		// Observation Period // for PK Holder and Spouses only
-		
-		if(startObservation != null && endObservation != null && startYear != 0 && endYear != 0 )
-			Utils.addIndiv(em, getKeyToRP(), getPersonID(), "B2_ST", "OBSERVATION", null, "Assigned", "Exact", startDay, startMonth, startYear, endDay, endMonth, endYear);
 
 		/*
 		for(B313_ST b313: getRelationsToPKHolder()){
@@ -438,7 +446,7 @@ public class B2_ST {
 				break;
 			}
 		}
-		*/
+		 */
 
 		
 		

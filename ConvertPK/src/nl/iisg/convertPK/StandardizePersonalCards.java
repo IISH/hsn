@@ -852,59 +852,59 @@ public class StandardizePersonalCards implements Runnable {
      * 
      */
     private static void copyPartnerInfo(B4_ST b4Husband, B4_ST b4Wife){
-    	
-    	
+
+
     	//System.out.println("Husband = " + b4Husband + "wife = "+ b4Wife);
-    	
+
     	//System.out.println("Copy Partner Info"); 
-    	
+
     	//if(1==1) return; 
-    	
+
     	B2_ST b2Partner = null;
-    	
-    A:	for(B2_ST b2H: b4Husband.getPersons()){
-    	
+
+    	A:	for(B2_ST b2H: b4Husband.getPersons()){
+
     		//System.out.println("HHH " + b2H.getFirstName() +  "  " + b2H.getFamilyName() + " " + b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData());
-    		
+
     		switch(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()){
-    		
+
     		case 1: // The husband. Find him as partner of his wife
-    			
+
     			for(B2_ST b2W: b4Wife.getPersons()){
-    				
-    	    		//System.out.println("WWW " + b2W.getFirstName() +  "  " + b2W.getFamilyName() + " " + b2W.getRelationsToPKHolder().get(0).getContentOfDynamicData());
-    				
+
+    				//System.out.println("WWW " + b2W.getFirstName() +  "  " + b2W.getFamilyName() + " " + b2W.getRelationsToPKHolder().get(0).getContentOfDynamicData());
+
     				if(b2H.getPersonID() == b2W.getPersonID()){
-    					
+
     					b2Partner = b2W;
     					break;
     				}
     			}
 
-	    		//System.out.println("HHH Partner" + b2Partner.getFirstName() +  "  " + b2Partner.getFamilyName() + " " + b2Partner.getRelationsToPKHolder().get(0).getContentOfDynamicData());
+    			//System.out.println("HHH Partner" + b2Partner.getFirstName() +  "  " + b2Partner.getFamilyName() + " " + b2Partner.getRelationsToPKHolder().get(0).getContentOfDynamicData());
 
     			if(b2Partner != null){				
 
     				b2Partner.setDateOfDecease(b2H.getDateOfDecease());
     				b2Partner.setPlaceOfDeceaseStandardized(b2H.getPlaceOfDeceaseStandardized());
     				b2Partner.setNationality(b2H.getNationality());
-    				
+
     				b2Partner.setPersonID_FA(b2H.getPersonID_FA());
     				b2Partner.setPersonID_FA_FG(b2H.getPersonID_FA_FG());
     				b2Partner.setPersonID_MO(b2H.getPersonID_MO());
     				b2Partner.setPersonID_MO_FG(b2H.getPersonID_MO_FG());
 
     				// Copy *older* civil status history before the current one
-    				
+
     				B32_ST b32current = b2Partner.getCivilStatus().get(0);
-    				
+
     				if(b32current != null && b32current.getStartDate() != null){
-    					
+
     					b2Partner.getCivilStatus().clear();
 
     					for(B32_ST b32H: b2H.getCivilStatus()){
 
-    						
+
     						//System.out.println("      ===> Copying IDNR = " + b32H.getKeyToRP() + "    ===> b32H.getStartDate() " + b32H.getStartDate() + " b32current.getStartDate() " + b32current.getStartDate());
     						if(b32H.getStartDate() != null && Common1.dayCount(b32H.getStartDate()) < Common1.dayCount(b32current.getStartDate())){
 
@@ -917,12 +917,12 @@ public class StandardizePersonalCards implements Runnable {
     						}
 
     					}
-    					
+
     					b32current.setDynamicDataSequenceNumber(b2Partner.getCivilStatus().size() + 1);
-						b2Partner.getCivilStatus().add(b32current);
+    					b2Partner.getCivilStatus().add(b32current);
 
     				}
-    				
+
     				for(B33_ST b33H: b2H.getReligions()){
 
     					B33_ST b33W = allocateB33(b2Partner, b33H);
@@ -932,7 +932,7 @@ public class StandardizePersonalCards implements Runnable {
     				}
 
     				for(B35_ST b35H: b2H.getProfessions()){
-    					
+
     					B35_ST b35W = allocateB35(b2Partner, b35H);
     					b35W.setDynamicDataSequenceNumber(b2Partner.getProfessions().size() + 1);
     					b2Partner.getProfessions().add(b35W);
@@ -941,171 +941,183 @@ public class StandardizePersonalCards implements Runnable {
     			}
     			else 
     				break A; // If we cannot find the husband in the wife's registry
-    			
+
     			break;
 
 
 
-    		
-    		
+
+
     		case 2:  // One of the wives, maybe the RP No action, we know everything about her already from her own card
     		case 161:  // One of the wives, maybe the RP No action, we know everything about her already from her own card
     			break;
-    		
+
     		default:  // Husband's parents and children 
 
-    			
+
     			if(b2Partner != null){
-        			
+
     				//if(b2H.getEndDate() != null && Common1.dayCount(b2H.getEndDate()) < Common1.dayCount(b2Partner.getStartDate())) continue; // Must be child that left before marriage
-    				
+
     				B2_ST b2 = null;
-    			
+
     				// See if PersonID already exists in Wife Registration
-        			for(B2_ST b2W: b4Wife.getPersons()){
-        				if(b2W.getPersonID() == b2H.getPersonID()){
-        					b2 = b2W;
-        					break;
-        				}
-        			}
-        			
+    				for(B2_ST b2W: b4Wife.getPersons()){
+    					if(b2W.getPersonID() == b2H.getPersonID()){
+    						b2 = b2W;
+    						break;
+    					}
+    				}
+
     				boolean newPerson = false;
-        			
-        			if(b2 == null){
-        				
-        				//System.out.println("allocating person: b4Wife = " + b4Wife + "b4H = " + b2H);
 
-        				newPerson = true;
-        				b2 = allocateB2(b4Wife, b2H);  // Allocate new person
-        				
-        				//b2.setStartDate(b2Partner.getStartDate());  
-        				//b2.setStartFlag(b2Partner.getStartFlag());  
-        				
-        				b2.setKeyToPersons(b4Wife.getPersons().size() + 1);  // keep together    				
-        				b4Wife.getPersons().add(b2);                         // keep together
-        				
-        				B313_ST b313 = allocateB313(b4Wife, b2Partner); // relation new person to PK-Holder Wife
-        				b313.setPerson(b2);
-        				b313.setKeyToRegistrationPersons(b2.getKeyToPersons());
-        				b313.setDynamicDataSequenceNumber(1);
-        				
-        				b2.getRelationsToPKHolder().add(b313); 
-        				
-        				
-        				switch(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()){ // relation to PK-Holder husband
-        				
-        				case 11:
-        					
-        					b313.setContentOfDynamicData(61); // Father (11) -> Father in Law (61)
-        					b313.setStartDate(b2Partner.getRelationsToPKHolder().get(0).getStartDate());  // Start Date is marriage date
-        					b313.setStartFlag(21); // marriage-related
-        					b313.setEndDate(null);
-        					//setRelations(b2);
-        					break;
-        					
-        				case 21:
-        					b313.setContentOfDynamicData(71); // Mother (21) -> Mother in Law (71)
-        					b313.setStartDate(b2Partner.getRelationsToPKHolder().get(0).getStartDate());  // Start Date is marriage date
-        					b313.setStartFlag(21);
-        					b313.setEndDate(null);
+    				if(b2 == null){
 
-        					//setRelations(b2);
-        					break; 
-        					
-        				case 3: // Son of the husband
-        				case 4: // Daughter of the husband    
-        				case 133:  // Child of the husband
+    					//System.out.println("allocating person: b4Wife = " + b4Wife + "b4H = " + b2H);
 
-        					/*
+    					newPerson = true;
+    					b2 = allocateB2(b4Wife, b2H);  // Allocate new person
+
+    					//b2.setStartDate(b2Partner.getStartDate());  
+    					//b2.setStartFlag(b2Partner.getStartFlag());  
+
+    					b2.setKeyToPersons(b4Wife.getPersons().size() + 1);  // keep together    				
+    					b4Wife.getPersons().add(b2);                         // keep together
+
+    					B313_ST b313 = allocateB313(b4Wife, b2Partner); // relation new person to PK-Holder Wife
+    					b313.setPerson(b2);
+    					b313.setKeyToRegistrationPersons(b2.getKeyToPersons());
+    					b313.setDynamicDataSequenceNumber(1);
+
+    					b2.getRelationsToPKHolder().add(b313); 
+
+
+    					switch(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()){ // relation to PK-Holder husband
+
+    					case 11:
+
+    						b313.setContentOfDynamicData(61); // Father (11) -> Father in Law (61)
+    						b313.setStartDate(b2Partner.getRelationsToPKHolder().get(0).getStartDate());  // Start Date is marriage date
+    						b313.setStartFlag(21); // marriage-related
+    						b313.setEndDate(null);
+    						//setRelations(b2);
+    						break;
+
+    					case 21:
+    						b313.setContentOfDynamicData(71); // Mother (21) -> Mother in Law (71)
+    						b313.setStartDate(b2Partner.getRelationsToPKHolder().get(0).getStartDate());  // Start Date is marriage date
+    						b313.setStartFlag(21);
+    						b313.setEndDate(null);
+
+    						//setRelations(b2);
+    						break; 
+
+    					case 3: // Son of the husband
+    					case 4: // Daughter of the husband    
+    					case 133:  // Child of the husband
+
+    						/*
         					if(newPerson)
         						b2.setStartFlag(21);  // assume that children move with the mother to the household of the new husband
-        					*/
-        					
-        					if(b2H.getPersonID_MO() == b4Wife.getPersons().get(0).getPersonID()){
-        						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()); // also wife's child
-        						b313.setStartDate(b2H.getDateOfBirth());
-        						//b313.setStartFlag(b2H.getDateOfBirthFlag());
-        					}
-        					else{
-        						b313.setContentOfDynamicData(ConstRelations2.STIEFKIND_PK); // make them wife's stepchild
-            					b313.setStartDate(b2Partner.getRelationsToPKHolder().get(0).getStartDate());  // Start Date is marriage date
-            					b313.setStartFlag(21);
-            					b313.setEndDate(null);
-        					}
-        					
-        					 //setRelations(b2);
-        					
-        					break;
-        					
-        				case 8: // Stepson of the husband
-        				case 9: // Stepdaughter of the husband
-        				case 136: // Stepchild of husband
+    						 */
 
-        					if(newPerson)
-        						b2.setStartFlag(21);  // assume that step-children move with the mother to the household of the new husband
+    						if(b2H.getPersonID_MO() == b4Wife.getPersons().get(0).getPersonID()){
+    							b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()); // also wife's child
+    							b313.setStartDate(b2H.getDateOfBirth());
+    							//b313.setStartFlag(b2H.getDateOfBirthFlag());
+    						}
+    						else{
+    							b313.setContentOfDynamicData(ConstRelations2.STIEFKIND_PK); // make them wife's stepchild
+    							b313.setStartDate(b2Partner.getRelationsToPKHolder().get(0).getStartDate());  // Start Date is marriage date
+    							b313.setStartFlag(21);
+    							b313.setEndDate(null);
+    						}
 
-        					
-        					if(b2H.getPersonID_MO() == b4Wife.getPersons().get(0).getPersonID())
-        						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData() - 5); // wife's child
-        					else{
-        						b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()); // wife's stepchild
-            					b313.setStartDate(b2Partner.getRelationsToPKHolder().get(0).getStartDate());  // Start Date is marriage date
-            					b313.setStartFlag(21);
-            					b313.setEndDate(null);
+    						//setRelations(b2);
 
-        					}
-        					
-        					//setRelations(b2);
-        					
-        					break;
-        					
+    						break;
 
-        				default:
-        				
-        				}
-        				
-        				// Children may have a civil status (married) in their original registration
-        				// Test for this and copy if needed
-        				
-        				int rel = b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData();
-        				if(rel == 3 || rel == 4 || rel == 8 || rel == 9){
-        					if(b2H.getCivilStatus().size() > 0){
-        						B32_ST b32 = allocateB32(b2, b2H.getCivilStatus().get(0));
-        						
-        	    				b32.setPerson(b2);
-        	    				b32.setKeyToRegistrationPersons(b2.getKeyToPersons());
-        	    				b32.setDynamicDataSequenceNumber(1);
-        	    				b32.setContentOfDynamicData(b2H.getCivilStatus().get(0).getContentOfDynamicData());
-        	    				
-        	    				
-        	    				b2.getCivilStatus().add(b32); 
-        						
-        					}
-        				}
+    					case 8: // Stepson of the husband
+    					case 9: // Stepdaughter of the husband
+    					case 136: // Stepchild of husband
 
-        			}
-        			else{  // Some info must be copied
-        				
-        				if(b2.getPersonID_MO() == 0){        					
-        					b2.setPersonID_MO(b2H.getPersonID_MO());
-        					b2.setPersonID_MO_FG(b2H.getPersonID_MO_FG());
-        				}
-        			
-        				if(b2.getPersonID_FA() == 0){        					
-        					b2.setPersonID_FA(b2H.getPersonID_FA());
-        					b2.setPersonID_FA_FG(b2H.getPersonID_FA_FG());
-        				}
-        				
-        				if(b2.getSex() == null || b2.getSex().trim().length() == 0){        					
-        					b2.setSex(b2H.getSex());
-        				}
-        			}
+    						if(newPerson)
+    							b2.setStartFlag(21);  // assume that step-children move with the mother to the household of the new husband
+
+
+    						if(b2H.getPersonID_MO() == b4Wife.getPersons().get(0).getPersonID())
+    							b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData() - 5); // wife's child
+    						else{
+    							b313.setContentOfDynamicData(b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData()); // wife's stepchild
+    							b313.setStartDate(b2Partner.getRelationsToPKHolder().get(0).getStartDate());  // Start Date is marriage date
+    							b313.setStartFlag(21);
+    							b313.setEndDate(null);
+
+    						}
+
+    						//setRelations(b2);
+
+    						break;
+
+
+    					default:
+
+    					}
+
+    					// Children may have a civil status (married) in their original registration
+    					// Test for this and copy if needed
+
+    					int rel = b2H.getRelationsToPKHolder().get(0).getContentOfDynamicData();
+    					if(rel == 3 || rel == 4 || rel == 8 || rel == 9){
+    						if(b2H.getCivilStatus().size() > 0){
+    							B32_ST b32 = allocateB32(b2, b2H.getCivilStatus().get(0));
+
+    							b32.setPerson(b2);
+    							b32.setKeyToRegistrationPersons(b2.getKeyToPersons());
+    							b32.setDynamicDataSequenceNumber(1);
+    							b32.setContentOfDynamicData(b2H.getCivilStatus().get(0).getContentOfDynamicData());
+
+
+    							b2.getCivilStatus().add(b32); 
+
+    						}
+    					}
+
+    				}
+    				else{  // Some info must be copied
+
+    					if(b2.getPersonID_MO() == 0){        					
+    						b2.setPersonID_MO(b2H.getPersonID_MO());
+    						b2.setPersonID_MO_FG(b2H.getPersonID_MO_FG());
+    					}
+
+    					if(b2.getPersonID_FA() == 0){        					
+    						b2.setPersonID_FA(b2H.getPersonID_FA());
+    						b2.setPersonID_FA_FG(b2H.getPersonID_FA_FG());
+    					}
+
+    					if(b2.getSex() == null || b2.getSex().trim().length() == 0){        					
+    						b2.setSex(b2H.getSex());
+    					}
+    				}
+
+    				// Copy b37 (for Children)
+
+    				int cnt = 1;
+    				for(B37_ST d: b2H.getDestinations()){
+    					B37_ST b37 = allocateB37(b2, d);
+    					b37.setDynamicDataSequenceNumber(cnt++);
+    					b37.setDateOfMutation(d.getDateOfMutation());
+    					b37.setDateOfMutationFlag(d.getDateOfMutationFlag());
+    					b2.getDestinations().add(b37);  
+    				}
+
     			}
-    			
-    			
+
+
     			break;
     		}
-        			
+
     	}
     }
 
@@ -1384,6 +1396,53 @@ public class StandardizePersonalCards implements Runnable {
 		
 		b35.setPerson(b2);
     	return b35;
+    	
+    }
+    
+    /**
+     * 
+     * Allocate an B35_ST with keys copied from b2 and the rest copied from b35
+     * 
+     * @param b2
+     * @param b35
+     * @return
+     */
+    
+    private static B37_ST allocateB37(B2_ST b2, B37_ST b37I){
+    	
+    	B37_ST b37 = new B37_ST(); 
+    	
+    	// Keys from b2
+    	b37.setDynamicDataType(7);
+
+        b37.setKeyToRP(b2.getKeyToRP());
+        b37.setEntryDateHead(b2.getEntryDateHead());
+        b37.setKeyToSourceRegister(b2.getKeyToSourceRegister());
+        b37.setKeyToRegistrationPersons(b2.getKeyToPersons());
+        
+        // Rest from b37I
+        
+        b37.setStartDate(b37I.getStartDate());
+        b37.setStartFlag(b37I.getStartFlag());
+        b37.setStartEst(b37I.getStartEst());
+        b37.setEndDate(b37I.getEndDate());
+        b37.setEndFlag(b37I.getEndFlag());
+        b37.setEndEst(b37I.getEndEst());        
+        
+        b37.setDestinationFlag(b37I.getDestinationFlag());
+        b37.setDestinationStandardized(b37I.getDestinationStandardized());
+        b37.setDestinationID(b37I.getDestinationID());
+        b37.setDestinationGroup(b37I.getDestinationGroup());
+
+		b37.setVersionLastTimeOfDataEntry(b37I.getVersionLastTimeOfDataEntry());
+		b37.setResearchCodeOriginal(b37I.getResearchCodeOriginal());
+		b37.setVersionOriginalDataEntry(b37I.getVersionOriginalDataEntry());
+		b37.setDate0(b37I.getDate0());
+		
+		// Person from b2
+		
+		b37.setPerson(b2);
+    	return b37;
     	
     }
     

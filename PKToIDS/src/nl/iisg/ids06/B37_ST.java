@@ -44,12 +44,11 @@ public class B37_ST  extends B3_ST{
 			mutationYear  = (new Integer(getDateOfMutation().substring(6,10))).intValue();
 		}
 
+		String destination = getDestinationStandardized() != null ? getDestinationStandardized() : " ";
 		
-		if(getDestinationID() > 0){
-			ContextElement ce = Contxt.get2(getDestinationStandardized());
-			if(ce != null)
-				Utils.addIndivAndContext(null, null, null, null, ce, em, getKeyToRP(), getPerson().getPersonID(), "B37_ST",  "DEPARTURE_TO", "Reported", "Exact", mutationDay, mutationMonth, mutationYear);
-		}
+		ContextElement ce = Contxt.get2(destination);
+		if(ce != null)
+			Utils.addIndivAndContext(null, null, null, null, ce, em, getKeyToRP(), getPerson().getPersonID(), "B37_ST",  "DEPARTURE_TO", "Reported", "Exact", mutationDay, mutationMonth, mutationYear);
 		
 	}
 	
