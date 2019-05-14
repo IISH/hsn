@@ -2159,8 +2159,12 @@ public class StandardizePersonalCards implements Runnable {
         	if(b313L.getStartDate() != null  && b313R.getStartDate() != null)
         		b34.setStartDate(Common1.dateFromDayCount(max(Common1.dayCount(b313L.getStartDate()), Common1.dayCount(b313R.getStartDate()))));
         
-        if(b313L.getStartFlag() == 21 || b313R.getStartFlag() == 21)
-        	b34.setStartFlag(21);
+        //if(b313L.getStartFlag() == 21 || b313R.getStartFlag() == 21) // This is incorrect: Father is 21, his children are 0 but the relation should be 0 
+        //	b34.setStartFlag(21);
+        
+        if(ConstRelations2.b3kode1_Related[rel] == null){
+        	b34.setStartFlag(21);        	
+        }
 
         return b34;
         /*

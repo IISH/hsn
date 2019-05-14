@@ -1003,15 +1003,15 @@ public class PkKnd {
     		
     		B35_ST b35_last   = null; 
     		PkBrp pkbrp_last  = null;
-    		System.out.println("Last profession = " + getProfessions().get(getProfessions().size() -1).getBeroepp());
+    		//System.out.println("Last profession = " + getProfessions().get(getProfessions().size() -1).getBeroepp());
     		if(getProfessions().size() > 1 && getProfessions().get(getProfessions().size() -1).getBeroepp().equalsIgnoreCase("zonder")){
     			
     			String birthdate = b2pk.getDateOfBirth();
     			Integer birthyear = new Integer(birthdate.substring(6));
     			String pensionDate = birthdate.substring(0, 6) + (birthyear + 65);
     			
-    			System.out.println("Geboorte datum = " + birthdate);
-    			System.out.println("Pensioen datum = " + pensionDate);
+    			//System.out.println("Geboorte datum = " + birthdate);
+    			//System.out.println("Pensioen datum = " + pensionDate);
     			
     			if(Common1.dayCount(pensionDate) < Common1.dayCount(b2pk.getEndDate())){
     				
@@ -1043,8 +1043,8 @@ public class PkKnd {
     				b35.setOccupationStandardized((String)b.get(0));
     				b35.setOccupationID((Integer)b.get(1));
     				
-					b35.setStartFlag(51);
-					b35.setEndFlag(52);
+					b35.setStartFlag(53); // Special code to indicate that we do this
+					b35.setEndFlag(54);   // Special code to indicate that we do this
 					b35.setDynamicDataType(5);
     				
     				b35.setStartDate(pensionDate);
@@ -1105,7 +1105,7 @@ public class PkKnd {
     					else
     						b35.setEndDate(b2pk.getEndDate());  // to make the last date equal the death date
     				
-    				if(getProfessions().size() > 1){
+    				if(getProfessions().size() > 1 || b35_last != null){
     					
     					b35.setStartFlag(51);
     					b35.setEndFlag(52);
