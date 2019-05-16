@@ -1021,6 +1021,8 @@ public class PkKnd {
     				b35.setPerson(b2pk);            // Link B2_ST -> B35_ST
 
     				initialiseB3_ST(b35);
+    				b35.setStartFlag(0);
+    				b35.setEndFlag(0);
     				b35.setKeyToRegistrationPersons(b2pk.getKeyToPersons());
     				//System.out.println("key = " + b2pk.getKeyToPersons());
 
@@ -1071,6 +1073,9 @@ public class PkKnd {
     				b35.setPerson(b2pk);            // Link B2_ST -> B35_ST
 
     				initialiseB3_ST(b35);
+    				b35.setStartFlag(0);
+    				b35.setEndFlag(0);
+
     				b35.setKeyToRegistrationPersons(b2pk.getKeyToPersons());
     				//System.out.println("key = " + b2pk.getKeyToPersons());
 
@@ -1317,9 +1322,7 @@ public class PkKnd {
     			B6_ST b6 = new B6_ST();
 
     			b2pk.getAddressess().add(b6);  // Link B6_ST -> B2_ST
-
-    			b2pk.getAddressess().add(b6);  // Link B6_ST -> B2_ST
-    			b6.setPerson(b2pk);            // Link B2_ST -> B35_ST
+    			b6.setPerson(b2pk);            // Link B2_ST -> B6
 
     			initialiseB6_ST(b6);
     			b6.setSequenceNumberToAddresses(seqNoAdr);
