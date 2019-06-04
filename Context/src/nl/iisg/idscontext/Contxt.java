@@ -672,7 +672,7 @@ public class Contxt {
 		ce.types.add("LEVEL");
 		ce.values.add(level);
 		ce.types.add("NAME");
-		ce.values.add(source.substring(0,2));
+		ce.values.add(source);
 		ce.types.add("PERIOD");
 		ce.values.add("" + yearCertificate);
 		ce.types.add("SEQUENCE_NUMBER");

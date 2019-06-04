@@ -153,7 +153,7 @@ public class B4 {
 
 		 
 		 if(ceCertificate != null){
-			 Utils.addIndivContextAndContextCertificate(getB1().getB1sdcy(), getB1().getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_FA, "BC B4", "Father", "Event", "Exact",
+			 Utils.addIndivContextAndContextCertificate(getB1().getB1sdcy(), getB1().getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_FA, "Birth Certificate", "BC B4", "Father", "Event", "Exact",
 					 getB1().getB1sdcd(),  getB1().getB1sdcm(), getB1().getB1sdcy());
 		 }
 

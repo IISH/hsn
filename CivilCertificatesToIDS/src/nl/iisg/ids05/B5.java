@@ -70,6 +70,8 @@ public class B5 {
 		 else
 				Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B5", "BIRTH_DATE", null, "Assigned", "Estimated [16/100]", 1, 1, getB1().getB1sdcy() - 100, 1, 1,  getB1().getB1sdcy() - 16);
 
+		 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B5", "HSN_RESEARCH_PERSON", "Father RP", "Missing", "Time_invariant", 0, 0, 0);
+
 		 
 		 
 		 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B5", "SEX", "Male", "Missing", "Time_invariant", 0, 0,0); 
@@ -118,7 +120,7 @@ public class B5 {
     		 }
 
     		 Utils.addIndivContextAndContextCertificate(getB1().getB1sdcy(), getB1().getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_FA, 
-    				 "BC B5", "Father", "Event", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
+    				 "Birth Certificate", "BC B5", "Father", "Event", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
 			 
 
 		 }

@@ -158,9 +158,9 @@ public class B1 {
 
 		if(ceCertificate != null){
 			
-			//System.out.println("Adding Birth Certificate"); // XYZ
+			System.out.println("Adding Birth Certificate"); // XYZ
 			
-			Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_RP, "BC B1", "Child", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
+			Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_RP, "Birth Certificate", "BC B1", "Child", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 			
 			if(getB1rplla() != null){
 
@@ -215,18 +215,18 @@ public class B1 {
 
 			if(getB1infa().equalsIgnoreCase("J")){
 				Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1",  "SEX", "Male" ,"Missing", "Time_invariant", 0, 0, 0);
-				Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B1",  "STATUS_FATHER", "1", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
+				Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B1",  "STATUS_FATHER", "Father is the informer", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 			}
 			else{
 				Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1",  "SEX", "Unknown" ,"Missing", "Time_invariant",  0, 0, 0);
-				if(getB5() != null && getB5().getB5faln() != null)
-					Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B1",  "STATUS_FATHER", "2", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
+				if(getB5() != null && getB5().getB5sdcf() != null && getB5().getB5sdcf().equalsIgnoreCase("j"))
+					Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B1",  "STATUS_FATHER", "Father is not the informer", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 				else
-					Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B1",  "STATUS_FATHER", "3", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
+					Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B1",  "STATUS_FATHER", "Father is not known", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 
 			}
-
-			Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1", "HSN_RESEARCH_PERSON", "Father RP", "Missing", "Time_invariant", 0, 0, 0);
+			if(getB1infa().equalsIgnoreCase("J"))
+				Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1", "HSN_RESEARCH_PERSON", "Father RP", "Missing", "Time_invariant", 0, 0, 0);
 			Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
 
@@ -274,7 +274,7 @@ public class B1 {
 
 			if(getB1infa().equalsIgnoreCase("J")){
 				if(ceCertificate != null){
-					Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_IN, "BC B1", "Father as Informer", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
+					Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_IN, "Birth Certificate", "B1", "Father as Informer", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 				}
 				
 				String relation = "Kind";
@@ -287,7 +287,7 @@ public class B1 {
 			}
 			else{
 				if(ceCertificate != null)
-					Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_IN, "BC B1", "Informer", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
+					Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_IN, "Birth Certificate", "BC B1", "Informer", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 				Utils.addIndivIndiv(em, getIdnr(), Id_I_IN, Id_I_RP, "BC B1", "Onbekend",  "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());// Informer and newly-born RP
 				Utils.addIndivIndiv(em, getIdnr(), Id_I_RP, Id_I_IN, "BC B1", "Onbekend",  "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy()); // Informer and newly-born RP
 			}
@@ -317,7 +317,7 @@ public class B1 {
 				}
 			}
 			else
-				Utils.addIndiv(em, getIdnr(), Id_I_MO, "BC B1", "BIRTH_DATE", null, "Assigned", "Estimated [16/100]", 1, 1,  getB1sdcy() - 100, 1, 1,  getB1sdcy() - 16);
+				Utils.addIndiv(em, getIdnr(), Id_I_MO, "BC B1", "BIRTH_DATE", null, "Assigned", "Estimated [14/50]", 1, 1,  getB1sdcy() - 50, 1, 1,  getB1sdcy() - 14);
 			
 
 			Utils.addIndiv(em, getIdnr(), Id_I_MO, "BC B1", "HSN_RESEARCH_PERSON", "Mother RP", "Missing", "Time_invariant", 0, 0, 0);
@@ -346,7 +346,7 @@ public class B1 {
 							startDay1, startMonth1, startYear1);
 				}
 				
-				Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_MO, "BC B1", "Mother", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
+				Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_MO, "Birth Certificate", "BC B1", "Mother", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 			}
 
 

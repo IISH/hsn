@@ -142,6 +142,8 @@ public class M1 {
     	 
     	 //if(getIdnr() == 41686) System.out.println("Enter m1");
     	 
+    	 String MC = "Marriage Certificate";
+    	 
     	 int uniquifier = getMar_cy() * 100 * 1000 + (getMar_cm() * 1000) ; // The Id_I will be like 184906xxx
     	 
     	 int Id_I_GR = 11 + uniquifier; 
@@ -165,8 +167,8 @@ public class M1 {
 
 		 if(ceMarriage != null){
 			 //Utils.addIndivAndContext(null, ceMarriage, em, getIdnr(), Id_I_GR, "MC M1", "MARRIAGE_LOCATION", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
-			 Utils.addIndivAndContext(null, null, null, null, ceMarriage, em, getIdnr(), Id_I_GR, "MC M1", "MARRIAGE_LOCATION", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
-			 Utils.addIndivContextAndContextCertificate(getMar_cy(), getM1sdcn(), ceMarriage, em, getIdnr(), Id_I_GR, "MC M1", "Groom", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+			 Utils.addIndivAndContext(null, null, null, null, ceMarriage, em, getIdnr(), Id_I_GR, MC, "MARRIAGE_LOCATION", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+			 Utils.addIndivContextAndContextCertificate(getMar_cy(), getM1sdcn(), ceMarriage, em, getIdnr(), Id_I_GR, MC, "MC M1", "Groom", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 		 }
 
 		 if(getM1grln() != null && getM1grln().trim().length() > 0)
@@ -277,7 +279,7 @@ public class M1 {
 		 if(ceMarriage != null){
 			 //Utils.addIndivAndContext(null, ceMarriage, em, getIdnr(), Id_I_BR, "MC M1", "MARRIAGE_LOCATION", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 			 Utils.addIndivAndContext(null, null, null, null, ceMarriage, em, getIdnr(), Id_I_BR, "MC M1", "MARRIAGE_LOCATION", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
-			 Utils.addIndivContextAndContextCertificate(getMar_cy(), getM1sdcn(), ceMarriage, em, getIdnr(), Id_I_BR, "MC M1", "Bride", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+			 Utils.addIndivContextAndContextCertificate(getMar_cy(), getM1sdcn(), ceMarriage, em, getIdnr(), Id_I_BR, MC, "MC M1", "Bride", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 		 }
 		 
 
@@ -417,7 +419,7 @@ public class M1 {
 				 Utils.addIndiv(em, getIdnr(), Id_I_GF, "MC M1", "ALIVE", "No", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 
 			 if(ceMarriage != null){
-				 Utils.addIndivContextAndContextCertificate(getMar_cy(), getM1sdcn(), ceMarriage, em, getIdnr(), Id_I_GF, "MC M1", "Father Groom", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+				 Utils.addIndivContextAndContextCertificate(getMar_cy(), getM1sdcn(), ceMarriage, em, getIdnr(), Id_I_GF, MC, "MC M1", "Father Groom", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 			 }
 
 
@@ -485,7 +487,7 @@ public class M1 {
 				 Utils.addIndiv(em, getIdnr(), Id_I_GM, "MC M1", "ALIVE", "No", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 
 			 if(ceMarriage != null){
-				 Utils.addIndivContextAndContextCertificate(getMar_cy(), getM1sdcn(), ceMarriage, em, getIdnr(), Id_I_GM, "MC M1", "Mother Groom", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+				 Utils.addIndivContextAndContextCertificate(getMar_cy(), getM1sdcn(), ceMarriage, em, getIdnr(), Id_I_GM, MC, "MC M1", "Mother Groom", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 			 }
 
 			 if(getM1gmdl() != null && getM1gmdl().trim().length() > 0){
@@ -563,7 +565,7 @@ public class M1 {
 				 Utils.addIndiv(em, getIdnr(), Id_I_BF, "MC M1", "ALIVE", "No", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 
 			 if(ceMarriage != null){
-				 Utils.addIndivContextAndContextCertificate(getMar_cy(), getM1sdcn(), ceMarriage, em, getIdnr(), Id_I_BF, "MC M1", "Father Bride", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+				 Utils.addIndivContextAndContextCertificate(getMar_cy(), getM1sdcn(), ceMarriage, em, getIdnr(), Id_I_BF, MC, "MC M1", "Father Bride", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 			 }
 
 			 if(getM1bfdl() != null && getM1bfdl().trim().length() > 0){
@@ -633,7 +635,7 @@ public class M1 {
 
 
 			 if(ceMarriage != null){
-				 Utils.addIndivContextAndContextCertificate(getMar_cy(), getM1sdcn(), ceMarriage, em, getIdnr(), Id_I_BM, "MC M1", "Mother Bride", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+				 Utils.addIndivContextAndContextCertificate(getMar_cy(), getM1sdcn(), ceMarriage, em, getIdnr(), Id_I_BM, MC, "MC M1", "Mother Bride", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 			 }
 
 			 if(getM1bmdl() != null && getM1bmdl().trim().length() > 0){

@@ -413,7 +413,7 @@ public class Utils {
 			// Get MSAccess table information
 			
             //String connURL = "jdbc:ucanaccess://" + inputDirectory + File.separator + "PK.accdb;memory=false";
-            String connURL = "jdbc:ucanaccess://" + inputDirectory + File.separator + "PK.accdb";
+            String connURL = "jdbc:ucanaccess://" + inputDirectory + File.separator + "HSN_PK_2019_02_28.accdb";
             
             System.out.println("Connection URL = " + connURL);
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver"); // On windows this is not needed
@@ -557,7 +557,10 @@ public class Utils {
 		                //System.out.println("fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]] =  " + fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]]);
 
 					
-						if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("DOUBLE")) 
+						if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("DOUBLE") ||  
+							fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("NUMBER") ||
+							fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("INTEGER"))
+
 							parameterTypes[0] = Integer.TYPE;
 						else
 							parameterTypes[0] = String.class;
@@ -579,7 +582,9 @@ public class Utils {
 						
 						e[0] = null;
 					
-						if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("DOUBLE")) 
+						if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("DOUBLE") || 
+								fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("NUMBER") || 
+								fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("INTEGER"))
 							e[0] = rs.getInt(columnAnnotatedVariableToMSAField[index1] + 1);
 						
 						if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("VARCHAR")) 

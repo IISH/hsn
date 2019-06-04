@@ -58,7 +58,7 @@ public class B2 {
 
     	 if(ceCertificate != null){    		 
     		 Utils.addIndivContextAndContextCertificate(getB1().getB1sdcy(), getB1().getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_WN, 
-    				 "BC B2", "Witness", "Event", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
+    				 "Birth Certificate", "BC B2", "Witness", "Event", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
     		 //System.out.println("---> " +getB2w_lla());
     		 //Utils.addIndivContextAndContext(getB2w_ll(), ceCertificate, em, getIdnr(), Id_I_WN, "BC B2", "", "Event", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
     		 if(getB2w_lla() != null){

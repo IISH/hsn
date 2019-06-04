@@ -46,7 +46,7 @@ public class B35_ST extends B3_ST {
 		String estimated = "";
 		switch(getStartFlag()){
 
-		case(1):  estimated = "Exact"; break;
+		case(0):  estimated = "Exact"; break;
 		case(51): estimated = "Middling of period"; break;
 		case(53): estimated = "Assigned date"; break;
 		default:  estimated = "Unknown"; break;

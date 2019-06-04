@@ -91,7 +91,7 @@ public class M4 {
     		 ceMarriage = Contxt.get2(getM1().getM1sdml());
 
     	 if(ceMarriage != null)
-    		 Utils.addIndivContextAndContextCertificate(getMar_cy(), getM1().getM1sdcn(), ceMarriage, em, getIdnr(), Id_I_WT, "MC M4", "Witness", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+    		 Utils.addIndivContextAndContextCertificate(getMar_cy(), getM1().getM1sdcn(), ceMarriage, em, getIdnr(), Id_I_WT, "Marriage Certificate", "MC M4", "Witness", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
     	 
 
 		 

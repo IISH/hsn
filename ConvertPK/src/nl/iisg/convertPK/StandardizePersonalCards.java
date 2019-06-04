@@ -82,7 +82,8 @@ public class StandardizePersonalCards implements Runnable {
 
         String missingFile = Common1.nonExisitingFile(inputDirectory, requiredFiles);
         if(missingFile != null){
-        	String[] requiredFile = {"PK.ACCDB"};
+        	//String[] requiredFile = {"PK.ACCDB"};
+        	String[] requiredFile = {"HSN_PK_2019_02_28.ACCDB"};
             String missingFile2 = Common1.nonExisitingFile(inputDirectory, requiredFile);
         	if(missingFile2 != null){
         		print("Required file " + missingFile + " missing\n");

@@ -40,41 +40,40 @@ public class D2 {
     	 
 		 int Id_I_FS = 53 + getD2s_sq(); // Former Spouse
 		 
-		 String DC = getD1().getDC();
-		 
+		  
 		 
 		 if(getD2s_ln() != null && getD2s_ln().trim().length() > 0 && !getD2s_ln().trim().equalsIgnoreCase("N")){
-			 Utils.addIndiv(em, getIdnr(), Id_I_FS, DC + " D2", "LAST_NAME", getD2s_ln(), "Missing", "Time_invariant", 0, 0, 0);
+			 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "LAST_NAME", getD2s_ln(), "Missing", "Time_invariant", 0, 0, 0);
 		 }
 		 else
 			 return; 
 		 
 		 if(getD2s_pf() != null && getD2s_pf().trim().length() > 0){
-			 Utils.addIndiv(em, getIdnr(), Id_I_FS, DC + " D2", "PREFIX_LAST_NAME", getD2s_pf(), "Missing", "Time_invariant", 0, 0, 0);
+			 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "PREFIX_LAST_NAME", getD2s_pf(), "Missing", "Time_invariant", 0, 0, 0);
 		 }
 		 if(getD2s_fn() != null && getD2s_fn().trim().length() > 0){
-			 Utils.addIndiv(em, getIdnr(), Id_I_FS, DC + " D2", "FIRST_NAME", getD2s_fn(), "Missing", "Time_invariant", 0, 0, 0);
+			 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "FIRST_NAME", getD2s_fn(), "Missing", "Time_invariant", 0, 0, 0);
 		 }
 
 		 if(getD1().getD1rpgn() != null && getD1().getD1rpgn().trim().equalsIgnoreCase("M"))
-			 Utils.addIndiv(em, getIdnr(), Id_I_FS, DC + " D2", "SEX", "Female", "Missing", "Time_invariant", 0, 0, 0); // invert sex!
+			 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "SEX", "Female", "Missing", "Time_invariant", 0, 0, 0); // invert sex!
 		 else
-			 Utils.addIndiv(em, getIdnr(), Id_I_FS, DC + " D2", "SEX", "Male", "Missing", "Time_invariant", 0, 0, 0);
+			 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "SEX", "Male", "Missing", "Time_invariant", 0, 0, 0);
 			 
 		 
 		 if(getD2s_ca() != null && getD2s_ca().equalsIgnoreCase("J")){
 
 			 if(getD2s_oc() != null && getD2s_oc().trim().length() > 0)
-				 Utils.addIndiv(em, getIdnr(), Id_I_FS, DC + " D2", "OCCUPATION_STANDARD", getD2s_oc(), "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+				 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "OCCUPATION_STANDARD", getD2s_oc(), "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
 			 if(getD2s_ay() > 0){
-				 Utils.addIndiv(em, getIdnr(), Id_I_FS, DC + " D2", "AGE_YEARS", (new Integer(getD2s_ay())).toString(), "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+				 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "AGE_YEARS", (new Integer(getD2s_ay())).toString(), "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
 				 if(Utils.dateIsValid(getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy()) == 0){
 					 int[] a = Utils.birthRange(getD2s_ay(), getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
-					 Utils.addIndiv(em, getIdnr(), Id_I_FS, DC + " D2", "BIRTH_DATE", null, "Assigned", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);			 
+					 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "BIRTH_DATE", null, "Assigned", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);			 
 				 }
 			 }
 			 else
-				Utils.addIndiv(em, getIdnr(), Id_I_FS, DC + " D2", "BIRTH_DATE", null, "Assigned", "Estimated [15/100]", 1, 1, getD1().getD1sdcy() - 100, 1, 1,  getD1().getD1sdcy() - 15);
+				Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "BIRTH_DATE", null, "Assigned", "Estimated [15/100]", 1, 1, getD1().getD1sdcy() - 100, 1, 1,  getD1().getD1sdcy() - 15);
 
 
 			 ContextElement ceCertificate = null;
@@ -109,7 +108,7 @@ public class D2 {
 					 int startYear1  = (new Integer(getD2s_lla().getStartDate().substring(6,10))).intValue();
 
 					 Utils.addIndivContextAndContext(getD2s_lla().getQuarter(), getD2s_lla().getStreet(), getD2s_lla().getNumber(), getD2s_lla().getAddition(),
-							 ceAddress, em, getIdnr(), Id_I_FS, DC + " D2",  "Address", "Declared", "Exact",  
+							 ceAddress, em, getIdnr(), Id_I_FS,  "DC D2",  "Address", "Declared", "Exact",  
 							 startDay1, startMonth1, startYear1);
 
 				 }
@@ -117,30 +116,30 @@ public class D2 {
 			 }
 		 }
 		 else
-			Utils.addIndiv(em, getIdnr(), Id_I_FS, DC + " D2", "BIRTH_DATE", null, "Assigned", "Estimated [15/100]", 1, 1, getD1().getD1sdcy() - 100, 1, 1,  getD1().getD1sdcy() - 15);
+			Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "BIRTH_DATE", null, "Assigned", "Estimated [15/100]", 1, 1, getD1().getD1sdcy() - 100, 1, 1,  getD1().getD1sdcy() - 15);
 
-		 Utils.addIndiv(em, getIdnr(), Id_I_FS, DC + " D2", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
+		 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
 		 // Relation to RP Is former spouse RP
 
 		 if(getD2s_ca() != null && getD2s_ca().trim().equalsIgnoreCase("J")){
 			 if(getD1().getB1().getB1rpgn().equalsIgnoreCase("M")){
-				 Utils.addIndivIndiv(em, getIdnr(), 51, Id_I_FS, DC + " D2", "Echtgenoot", "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
-				 Utils.addIndivIndiv(em, getIdnr(), Id_I_FS, 51, DC + " D2", "Echtgenote", "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+				 Utils.addIndivIndiv(em, getIdnr(), 51, Id_I_FS,  "DC D2", "Echtgenoot", "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+				 Utils.addIndivIndiv(em, getIdnr(), Id_I_FS, 51,  "DC D2", "Echtgenote", "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
 			 }
 			 else{
-				 Utils.addIndivIndiv(em, getIdnr(), 51, Id_I_FS, DC + " D2", "Echtgenote", "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
-				 Utils.addIndivIndiv(em, getIdnr(), Id_I_FS, 51, DC + " D2", "Echtgenoot", "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+				 Utils.addIndivIndiv(em, getIdnr(), 51, Id_I_FS,  "DC D2", "Echtgenote", "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+				 Utils.addIndivIndiv(em, getIdnr(), Id_I_FS, 51,  "DC D2", "Echtgenoot", "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
 			 }
 		 }
 		 else{
 			 if(getD1().getB1().getB1rpgn().equalsIgnoreCase("M")){
-				 Utils.addIndivIndiv(em, getIdnr(), 51, Id_I_FS, DC + " D2", "Echtgenoot", "Missing", "Unavailable", 0, 0,0 );
-				 Utils.addIndivIndiv(em, getIdnr(), Id_I_FS, 51, DC + " D2", "Echtgenote", "Missing", "Unavailable", 0, 0,0 );
+				 Utils.addIndivIndiv(em, getIdnr(), 51, Id_I_FS,  "DC D2", "Echtgenoot", "Missing", "Unavailable", 0, 0,0 );
+				 Utils.addIndivIndiv(em, getIdnr(), Id_I_FS, 51,  "DC D2", "Echtgenote", "Missing", "Unavailable", 0, 0,0 );
 			 }
 			 else{
-				 Utils.addIndivIndiv(em, getIdnr(), 51, Id_I_FS, DC + " D2", "Echtgenote", "Missing", "Unavailable", 0, 0,0 );
-				 Utils.addIndivIndiv(em, getIdnr(), Id_I_FS, 51, DC + " D2", "Echtgenoot", "Missing", "Unavailable", 0, 0,0 );
+				 Utils.addIndivIndiv(em, getIdnr(), 51, Id_I_FS,  "DC D2", "Echtgenote", "Missing", "Unavailable", 0, 0,0 );
+				 Utils.addIndivIndiv(em, getIdnr(), Id_I_FS, 51,  "DC D2", "Echtgenoot", "Missing", "Unavailable", 0, 0,0 );
 			 }
 		 }
      }
