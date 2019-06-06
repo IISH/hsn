@@ -158,7 +158,7 @@ public class B1 {
 
 		if(ceCertificate != null){
 			
-			System.out.println("Adding Birth Certificate"); // XYZ
+			//System.out.println("Adding Birth Certificate"); // XYZ
 			
 			Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_RP, "Birth Certificate", "BC B1", "Child", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 			
@@ -174,6 +174,11 @@ public class B1 {
 				Utils.addIndivAndContext(getB1rplla().getQuarter(), getB1rplla().getStreet(), getB1rplla().getNumber(), getB1rplla().getAddition(),
 						ceCertificate, em, getIdnr(), Id_I_RP, "BC B1",  "BIRTH_LOCATION", "Event", "Exact",  
 						startDay1, startMonth1, startYear1);
+				
+				Utils.addIndivContextAndContext(getB1rplla().getQuarter(), getB1rplla().getStreet(), getB1rplla().getNumber(), getB1rplla().getAddition(),
+						ceCertificate, em, getIdnr(), Id_I_RP, "BC B1",  "Address", "Declared", "Exact",  
+						startDay1, startMonth1, startYear1);
+
 			}
 				
 			//Utils.addIndivAndContext(getB1rpll(), ceCertificate, em, getIdnr(), Id_I_RP, "BC B1", "BIRTH_LOCATION", "Event", "Exact", getB1rpbd(),  getB1rpbm(), getB1rpby());
@@ -258,10 +263,15 @@ public class B1 {
 					//		String dateType, String estimation, int day, int month, int year)
 					
 					
-					
-					Utils.addIndivContextAndContext(getB1inlla().getQuarter(), getB1inlla().getStreet(), getB1inlla().getNumber(), getB1inlla().getAddition(),
-							ceCertificate, em, getIdnr(), Id_I_IN, "BC B1",  "Address", "Declared", "Exact",  
-							startDay1, startMonth1, startYear1);
+					if(getB1infa().equalsIgnoreCase("J"))
+						Utils.addIndivContextAndContext(getB1inlla().getQuarter(), getB1inlla().getStreet(), getB1inlla().getNumber(), getB1inlla().getAddition(),
+								ceCertificate, em, getIdnr(), Id_I_IN, "BC B1",  "Address", "Declared", "Exact",  
+								startDay1, startMonth1, startYear1);
+					else
+						Utils.addIndivAndContext(getB1inlla().getQuarter(), getB1inlla().getStreet(), getB1inlla().getNumber(), getB1inlla().getAddition(),
+								ceCertificate, em, getIdnr(), Id_I_IN, "BC B1",  "RESIDENCE_LOCATION", "Declared", "Exact",  
+								startDay1, startMonth1, startYear1);
+
 				}
 
 				

@@ -120,7 +120,7 @@ public class B5 {
     		 }
 
     		 Utils.addIndivContextAndContextCertificate(getB1().getB1sdcy(), getB1().getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_FA, 
-    				 "Birth Certificate", "BC B5", "Father", "Event", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
+    				 "Birth Certificate", "BC B5", "Father", "Declared", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
 			 
 
 		 }

@@ -267,7 +267,9 @@ public class M1 {
     	 if(getM1grll() != null){
     		 ce = Contxt.get2(getM1grll());
     		 if(ce != null)
-    			 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_GR, "MC M1", "Address", "Event", "Exact",  getMar_cd(), getMar_cm(), getMar_cy());
+    			 //Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_GR, "MC M1", "Address", "Event", "Exact",  getMar_cd(), getMar_cm(), getMar_cy());
+    		 	 Utils.addIndivAndContext(null, ce, em, getIdnr(), Id_I_GR, "MC M1", "RESIDENCE_LOCATION", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+
     	 }
 		 //if(getIdnr() == 41686) System.out.println("      m1 + Start Bride");
 
@@ -339,7 +341,9 @@ public class M1 {
     	 if(getM1brll() != null && getM1brll().trim().length() > 0){
     		 ce = Contxt.get2(getM1brll());
     		 if(ce != null)
-    			 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_BR, "MC M1", "Address", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+    			 //Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_BR, "MC M1", "Address", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+    		 	 Utils.addIndivAndContext(null, ce, em, getIdnr(), Id_I_BR, "MC M1", "RESIDENCE_LOCATION", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+
     	 }
 
     	 ceBirth = null;
@@ -409,7 +413,9 @@ public class M1 {
 				 if(getM1gfll() != null){
 					 ce = Contxt.get2(getM1gfll());
 					 if(ce != null)
-						 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_GF, "MC M1", "Address", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+						 //Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_GF, "MC M1", "Address", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+     	    		 	 Utils.addIndivAndContext(null, ce, em, getIdnr(), Id_I_GF, "MC M1", "RESIDENCE_LOCATION", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+
 				 }
 			 }
 
@@ -477,7 +483,9 @@ public class M1 {
 				 if(getM1gmll() != null){
 					 ce = Contxt.get2(getM1gmll());
 					 if(ce != null)
-						 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_GM, "MC M1", "Address", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+						 //Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_GM, "MC M1", "Address", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+					 	 Utils.addIndivAndContext(null, ce, em, getIdnr(), Id_I_GM, "MC M1", "RESIDENCE_LOCATION", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+
 				 }
 			 }
 
@@ -555,7 +563,9 @@ public class M1 {
 				 if(getM1bfll() != null){
 					 ce = Contxt.get2(getM1bfll());
 					 if(ce != null)
-						 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_BF, "MC M1", "Address", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+						 //Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_BF, "MC M1", "Address", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+     	    		 	 Utils.addIndivAndContext(null, ce, em, getIdnr(), Id_I_BF, "MC M1", "RESIDENCE_LOCATION", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+
 				 }
 			 }
 
@@ -622,7 +632,9 @@ public class M1 {
 				 if(getM1bmll() != null){
 					 ce = Contxt.get2(getM1bmll());
 					 if(ce != null)
-						 Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_BM, "MC M1", "Address", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+						 //Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_BM, "MC M1", "Address", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+					 	 Utils.addIndivAndContext(null, ce, em, getIdnr(), Id_I_BM, "MC M1", "RESIDENCE_LOCATION", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+
 				 }
 			 }
 

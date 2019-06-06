@@ -71,9 +71,14 @@ public class B2 {
 
     			 //System.out.println("Adding CECertificate = " + ceCertificate); // XYZ
     			 
-    			 Utils.addIndivContextAndContext(getB2w_lla().getQuarter(), getB2w_lla().getStreet(), getB2w_lla().getNumber(), getB2w_lla().getAddition(),
-    					 ceCertificate, em, getIdnr(), Id_I_WN, "BC B2",  "Address", "Declared", "Exact",  
-    					 startDay1, startMonth1, startYear1);
+    			 //Utils.addIndivContextAndContext(getB2w_lla().getQuarter(), getB2w_lla().getStreet(), getB2w_lla().getNumber(), getB2w_lla().getAddition(),
+    			 //		 ceCertificate, em, getIdnr(), Id_I_WN, "BC B2",  "Address", "Declared", "Exact",  
+    			 //		 startDay1, startMonth1, startYear1);
+    			 
+				Utils.addIndivAndContext(getB2w_lla().getQuarter(), getB2w_lla().getStreet(), getB2w_lla().getNumber(), getB2w_lla().getAddition(),
+						ceCertificate, em, getIdnr(), Id_I_WN, "BC B2",  "RESIDENCE_LOCATION", "Event", "Exact",  
+								startDay1, startMonth1, startYear1);
+
     		 }
     	 }
 		 
