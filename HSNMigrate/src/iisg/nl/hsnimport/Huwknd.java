@@ -318,7 +318,7 @@ public void resolveAl(){
 			setAdrmrhv(getMarriageActPlace());
 		
 		if(getPlovmrhv() != null &&  Utils.toBeTranslated(getPlovmrhv().trim()))
-			setPlovmrhv(getMarriageActPlace());
+			setPlovmrhv(getMarriageActPlace());  // yes
 		
 		for(Huwafk huwafk: huwafkL)
 			huwafk.resolveAl();
