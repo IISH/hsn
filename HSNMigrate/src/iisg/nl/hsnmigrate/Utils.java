@@ -227,6 +227,16 @@ public class Utils {
 		 return(dayCount);
 	 }
 
+	 static String [] toBeTranslatedValues = {"al", "alhier", "alh", "alsboven", "id", "ald", "ten zijnen huize", "te zijnen huize", "aldaar", "N"};
+
+		public static boolean toBeTranslated(String s){
+			
+			for(int i = 0; i < toBeTranslatedValues.length; i++)
+				if(s.equalsIgnoreCase(toBeTranslatedValues[i]))
+					return true;
+			
+			return false;
+		}
 
 	 /**
 	  * 
@@ -645,6 +655,20 @@ public class Utils {
 				        		" where idnr = 1229 or " + 
 				        		" idnr = 1202  or " + 
 				        		" idnr = 1216  or " + 
+				        		
+	        		" idnr =  5230  or " + 
+	        		" idnr = 70433  or " + 
+	        		" idnr = 600197 or " + 
+	        		" idnr = 600582 or " + 
+	        		" idnr = 70521  or " + 
+	        		" idnr = 70868  or " + 
+	        		" idnr = 70736  or " + 
+	        		" idnr = 664780 or " + 
+	        		" idnr = 76359  or " + 
+	        		" idnr = 600270 or " + 
+
+				        		
+				        		
 				        		" idnr = 1244  or " + 
 				        		" idnr = 1220  or " + 
 				        		" idnr = 2072; "; 

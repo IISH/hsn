@@ -62,7 +62,7 @@ public void resolveAl(){
 	
 		
 	
-		if(getHwakpl() != null && getHwakpl().trim().equalsIgnoreCase("AL"))
+		if(getHwakpl() != null &&  Utils.toBeTranslated(getHwakpl()))
 			setHwakpl(getHuwknd().getMarriageActPlace());
 
 }

@@ -185,16 +185,16 @@ public void resolveAl(){
 	if(getDeathActPlace() != null){
 		
 	
-		if(getAdrovl() != null && getAdrovl().trim().equalsIgnoreCase("AL"))
+		if(getAdrovl() != null &&  Utils.toBeTranslated(getAdrovl().trim()))
 			setAdrovl(getDeathActPlace());
 		
-		if(getPloovl() != null && getPloovl().trim().equalsIgnoreCase("AL"))
+		if(getPloovl() != null &&  Utils.toBeTranslated(getPloovl()))
 			setPloovl(getDeathActPlace());
 
-		if(getAdrvovl() != null && getAdrvovl().trim().equalsIgnoreCase("AL"))
+		if(getAdrvovl() != null &&  Utils.toBeTranslated(getAdrvovl().trim()))
 			setAdrvovl(getDeathActPlace());
 		
-		if(getAdrmovl() != null && getAdrmovl().trim().equalsIgnoreCase("AL"))
+		if(getAdrmovl() != null &&  Utils.toBeTranslated(getAdrmovl().trim()))
 			setAdrmovl(getDeathActPlace());
 		
 		for(Ovlech ovlech: ovlechL)

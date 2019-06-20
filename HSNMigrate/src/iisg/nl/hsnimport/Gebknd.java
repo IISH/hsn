@@ -121,14 +121,15 @@ public class Gebknd {
 		 
 		 //System.out.println("Resolving 1");
 		 
-		 if(getAdrag() != null && getAdrag().trim().equalsIgnoreCase("AL"))
+		 if(getAdrag() != null && Utils.toBeTranslated(getAdrag().trim()))
 			 setAdrag(getBirthActLocation());
 		 
-		 if(getGebadr() != null && getGebadr().trim().equalsIgnoreCase("AL"))
+		 if(getGebadr() != null &&  Utils.toBeTranslated(getGebadr().trim()))
 			 setGebadr(getBirthActLocation());
 		 
-		 if(getAdrmr() != null && getAdrmr().trim().equalsIgnoreCase("AL"))
+		 if(getAdrmr() != null &&  Utils.toBeTranslated(getAdrmr().trim()))
 			 setAdrmr(getBirthActLocation());
+		 
 		 
 		 for(Gebgtg gebgtg: gebgtgL)
 			 gebgtg.resolveAl();

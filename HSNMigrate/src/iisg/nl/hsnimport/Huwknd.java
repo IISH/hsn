@@ -256,68 +256,68 @@ public void resolveAl(){
 	if(getMarriageActPlace() != null){
 		
 	
-		if(getIplts() != null && getIplts().trim().equalsIgnoreCase("AL"))
+		if(getIplts() != null &&  Utils.toBeTranslated(getIplts().trim()))
 			setIplts(getMarriageActPlace());
 		
-		if(getOadrhm() != null && getOadrhm().trim().equalsIgnoreCase("AL"))
+		if(getOadrhm() != null &&  Utils.toBeTranslated(getOadrhm().trim()))
 			setOadrhm(getMarriageActPlace());
 		
-		if(getOadrehm() != null && getOadrehm().trim().equalsIgnoreCase("AL"))
+		if(getOadrehm() != null &&  Utils.toBeTranslated(getOadrehm().trim()))
 			setOadrehm(getMarriageActPlace());
 		
 		
 		
-		if(getGebplhv() != null && getGebplhv().trim().equalsIgnoreCase("AL"))
+		if(getGebplhv() != null &&  Utils.toBeTranslated(getGebplhv().trim()))
 			setGebplhv(getMarriageActPlace());
 		
-		if(getAdrhv() != null && getAdrhv().trim().equalsIgnoreCase("AL"))
+		if(getAdrhv() != null &&  Utils.toBeTranslated(getAdrhv()))
 			setAdrhv(getMarriageActPlace());
 		
-		if(getOadrhv() != null && getOadrhv().trim().equalsIgnoreCase("AL"))
+		if(getOadrhv() != null &&  Utils.toBeTranslated(getOadrhv().trim()))
 			setOadrhv(getMarriageActPlace());
 		
-		if(getOadrehv() != null && getOadrehv().trim().equalsIgnoreCase("AL"))
+		if(getOadrehv() != null &&  Utils.toBeTranslated(getOadrehv()))
 			setOadrehv(getMarriageActPlace());
 		
 
 		
-		if(getGebplhm() != null && getGebplhm().trim().equalsIgnoreCase("AL"))
+		if(getGebplhm() != null &&  Utils.toBeTranslated(getGebplhm().trim()))
 			setGebplhm(getMarriageActPlace());
 		
-		if(getAdrhm() != null && getAdrhm().trim().equalsIgnoreCase("AL"))
+		if(getAdrhm() != null &&  Utils.toBeTranslated(getAdrhm().trim()))
 			setAdrhm(getMarriageActPlace());
 		
-		if(getOadrhm() != null && getOadrhm().trim().equalsIgnoreCase("AL"))
+		if(getOadrhm() != null &&  Utils.toBeTranslated(getOadrhm().trim()))
 			setOadrhm(getMarriageActPlace());
 		
-		if(getOadrehm() != null && getOadrehm().trim().equalsIgnoreCase("AL"))
+		if(getOadrehm() != null &&  Utils.toBeTranslated(getOadrehm().trim()))
 			setOadrehm(getMarriageActPlace());
 				
 		
 		
 		
-		if(getAdrvrhm() != null && getAdrvrhm().trim().equalsIgnoreCase("AL"))
+		if(getAdrvrhm() != null &&  Utils.toBeTranslated(getAdrvrhm().trim()))
 			setAdrvrhm(getMarriageActPlace());
 		
-		if(getPlovvrhm() != null && getPlovvrhm().trim().equalsIgnoreCase("AL"))
+		if(getPlovvrhm() != null &&  Utils.toBeTranslated(getPlovvrhm().trim()))
 			setPlovvrhm(getMarriageActPlace());
 		
-		if(getAdrmrhm() != null && getAdrmrhm().trim().equalsIgnoreCase("AL"))
+		if(getAdrmrhm() != null &&  Utils.toBeTranslated(getAdrmrhm().trim()))
 			setAdrmrhm(getMarriageActPlace());
 		
-		if(getPlovmrhm() != null && getPlovmrhm().trim().equalsIgnoreCase("AL"))
+		if(getPlovmrhm() != null &&  Utils.toBeTranslated(getPlovmrhm().trim()))
 			setPlovmrhm(getMarriageActPlace());
 		
-		if(getAdrvrhv() != null && getAdrvrhv().trim().equalsIgnoreCase("AL"))
+		if(getAdrvrhv() != null &&  Utils.toBeTranslated(getAdrvrhv().trim()))
 			setAdrvrhv(getMarriageActPlace());
 		
-		if(getPlovvrhv() != null && getPlovvrhv().trim().equalsIgnoreCase("AL"))
+		if(getPlovvrhv() != null &&  Utils.toBeTranslated(getPlovvrhv().trim()))
 			setPlovvrhv(getMarriageActPlace());
 		
-		if(getAdrmrhv() != null && getAdrmrhv().trim().equalsIgnoreCase("AL"))
+		if(getAdrmrhv() != null &&  Utils.toBeTranslated(getAdrmrhv().trim()))
 			setAdrmrhv(getMarriageActPlace());
 		
-		if(getPlovmrhv() != null && getPlovmrhv().trim().equalsIgnoreCase("AL"))
+		if(getPlovmrhv() != null &&  Utils.toBeTranslated(getPlovmrhv().trim()))
 			setPlovmrhv(getMarriageActPlace());
 		
 		for(Huwafk huwafk: huwafkL)

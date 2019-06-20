@@ -64,7 +64,7 @@ public class Gebgtg {
  
  public void resolveAl(){
 	 
-	 if(getAdrgt() != null && getAdrgt().trim().equalsIgnoreCase("AL")) 
+	 if(getAdrgt() != null &&  Utils.toBeTranslated(getAdrgt())) 
 		 setAdrgt(getGebknd().getBirthActLocation());
 
 	 

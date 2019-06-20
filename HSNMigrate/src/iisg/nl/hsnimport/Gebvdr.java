@@ -70,13 +70,13 @@ public void convert(EntityManager em){
 	 
 public void resolveAl(){
 	 
-	 if(getAdrvr() != null && getAdrvr().trim().equalsIgnoreCase("AL")) 
+	 if(getAdrvr() != null &&  Utils.toBeTranslated(getAdrvr().trim())) 
 		 setAdrvr(getGebknd().getBirthActLocation());
 	 
-	 if(getG5oogs() != null && getG5oogs().trim().equalsIgnoreCase("AL")) 
+	 if(getG5oogs() != null &&  Utils.toBeTranslated(getG5oogs().trim())) 
 		 setG5oogs(getGebknd().getBirthActLocation());
 	 
-	 if(getG5vogo() != null && getG5vogo().trim().equalsIgnoreCase("AL")) 
+	 if(getG5vogo() != null &&  Utils.toBeTranslated(getG5vogo().trim())) 
 		 setG5vogo(getGebknd().getBirthActLocation());
 	 
 }

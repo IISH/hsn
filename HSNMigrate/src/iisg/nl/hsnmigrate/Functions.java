@@ -17,7 +17,7 @@ public class Functions {
 	
 	static int c = 0;
 	
-	static String [] toBeRemoved = {"al", "alhier", "alh", "alsboven", "id", "ald", "ten zijnen huize", "te zijnen huize", "aldaar", "N"};
+	
 	
 	public static int date_f(int day, int month, int year){
 
@@ -567,61 +567,13 @@ public class Functions {
 	}
 
 	public static String location_r(String location, int errCode, int idnr, int year, String db, String tbl){
+		
+		
+		Ref_Location l = Ref.getLocation(location);
+		return l.getLocation();
 
 		
-		final int errorBase = 200400; 
-
-
-		if(location != null && location.trim().length() != 0){
-			
-			// Remove stuff
-			
-			String [] a = location.split("[ ]+");		
-			
-			if(a != null && a.length > 0){
-				for(int i = 0; i < a.length; i++){
-					for(int j = 0; j < toBeRemoved.length; j++){
-						if(a[i].equalsIgnoreCase(toBeRemoved[j]))
-							a[i] = "";
-						
-					}
-				}
-					
-			}
-
-			
-			location = "";
-			for (int i = 0; i < a.length; i++)
-				location = location + a[i] + " ";
-
-			
-			// End remove stuff
-			
-			
-			Ref_Location l = Ref.getLocation(location);
-
-			if(l != null  && l.getStandardCode() != null && (l.getStandardCode().equalsIgnoreCase("y") || l.getStandardCode().equalsIgnoreCase("u")) && l.getLocation() != null && l.getLocation().length() > 0){
-				return l.getLocation();
-			}
-			else{
-				if(l == null){
-					Ref_Location l1 = new Ref_Location();
-					l1.setOriginal(location);
-					l1.setStandardCode("x");
-					l1.setNeedSave(true);
-					Ref.addLocation(l1);
-				}
-				if(locationMesCount++ < messageLimit)
-					Utils.message(errorBase + errCode, idnr, year,  db, tbl, location);
-				
-				return location;
-				
-			}
-		}	    	    
-		else
-			return location;
 	}
-
 	public static A1 location_r2(String location, int errCode, int idnr, int year, String db, String tbl){
 
 	// This routine will process addresses that are a mix of Places and Addresses
@@ -634,6 +586,8 @@ public class Functions {
 		
 
 		String [] a = location.split("[ ,./!]+");
+		
+		
 		
 		//System.out.println("--> " + location); // xyz
 		//for(String a12: a) System.out.println(a12);
@@ -803,7 +757,7 @@ public class Functions {
     	//String [] toBeRemoved = {"al", "alhier", "alh", "alsboven", "id", "ald", "ten zijnen huize", "te zijnen huize", "aldaar", "N"};
 
 		String [] a = address.split("[ ]+");		
-		
+		/*
 		if(a != null && a.length > 0){
 			for(int i = 0; i < a.length; i++){
 				for(int j = 0; j < toBeRemoved.length; j++){
@@ -814,7 +768,7 @@ public class Functions {
 			}
 				
 		}
-
+		*/
 		
 		address = "";
 		for (int i = 0; i < a.length; i++)
