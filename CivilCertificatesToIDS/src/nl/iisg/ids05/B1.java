@@ -284,7 +284,7 @@ public class B1 {
 
 			if(getB1infa().equalsIgnoreCase("J")){
 				if(ceCertificate != null){
-					Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_IN, "Birth Certificate", "B1", "Father as Informer", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
+					Utils.addIndivContextAndContextCertificate(getB1sdcy(), getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_IN, "Birth Certificate", "BC B1", "Father as Informer", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 				}
 				
 				String relation = "Kind";

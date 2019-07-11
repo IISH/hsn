@@ -102,7 +102,7 @@ public class D3 {
          setD3i_ln(Functions.familyname_r(getD3i_ln(), Constants.E_LND3I_LN, getIdnr(), 0, "HSN_CIVREC_STD", "D3"));
          setD3i_fn(Functions.firstname_r(getD3i_fn(), Constants.E_FND3I_FN, getIdnr(), 0, "HSN_CIVREC_STD", "D3"));
          
-         setD3i_ll(Functions.location_r(getD3i_ll(), Constants.E_LOD3I_LL, getIdnr(), 0, "HSN_CIVREC_STD", "D3"));
+         //setD3i_ll(Functions.location_r(getD3i_ll(), Constants.E_LOD3I_LL, getIdnr(), 0, "HSN_CIVREC_STD", "D3"));
 
          setD3i_lla(Functions.location_r2(getD3i_ll(), Constants.E_LOD3I_LL, getIdnr(), 0, "HSN_CIVREC_STD", "D3"));
          if(getD3i_lla() != null){

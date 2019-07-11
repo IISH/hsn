@@ -567,13 +567,61 @@ public class Functions {
 	}
 
 	public static String location_r(String location, int errCode, int idnr, int year, String db, String tbl){
-		
-		
-		Ref_Location l = Ref.getLocation(location);
-		return l.getLocation();
 
-		
+
+		final int errorBase = 200400; 
+
+
+		if(location != null && location.trim().length() != 0){
+
+			// Remove stuff
+
+			String [] a = location.split("[ ]+");  
+			/*
+		  if(a != null && a.length > 0){
+		   for(int i = 0; i < a.length; i++){
+		    for(int j = 0; j < toBeRemoved.length; j++){
+		     if(a[i].equalsIgnoreCase(toBeRemoved[j]))
+		      a[i] = "";
+
+		    }
+		   }
+
+		  }
+			 */	
+
+			location = "";
+			for (int i = 0; i < a.length; i++)
+				location = location + a[i] + " ";
+
+
+			// End remove stuff
+
+
+			Ref_Location l = Ref.getLocation(location);
+
+			if(l != null  && l.getStandardCode() != null && (l.getStandardCode().equalsIgnoreCase("y") || l.getStandardCode().equalsIgnoreCase("u")) && l.getLocation() != null && l.getLocation().length() > 0){
+				return l.getLocation();
+			}
+			else{
+				if(l == null){
+					Ref_Location l1 = new Ref_Location();
+					l1.setOriginal(location);
+					l1.setStandardCode("x");
+					l1.setNeedSave(true);
+					Ref.addLocation(l1);
+				}
+				if(locationMesCount++ < messageLimit)
+					Utils.message(errorBase + errCode, idnr, year,  db, tbl, location);
+
+				return location;
+
+			}
+		}          
+		else
+			return location;
 	}
+	
 	public static A1 location_r2(String location, int errCode, int idnr, int year, String db, String tbl){
 
 	// This routine will process addresses that are a mix of Places and Addresses
@@ -593,7 +641,13 @@ public class Functions {
 		//for(String a12: a) System.out.println(a12);
 		//System.out.println();
 		
-
+		for(int i = 0; i < a.length; i++){
+			Ref_Location l = Ref.getLocation(a[i]);
+			if(l != null  && l.getStandardCode() != null && (l.getStandardCode().equalsIgnoreCase("y"))){
+				if(l.getLocation().equalsIgnoreCase("Alhier"))
+					a[i] = "";
+			}
+		}
 		
 		
 		o:for(int i = 0; i < a.length; i++){
@@ -601,8 +655,10 @@ public class Functions {
 			String t = "";
 
 
-			for(int j = i; j < a.length; j++)				
-				t = t + " " + a[j];
+			for(int j = i; j < a.length; j++)	
+				if(a[j].length() > 0)
+					t = t + " " + a[j];
+			
 
 			//if(location.equals("Castricum, hetzelfde huis"))
 				//System.out.print("Try " + t); // xyz
@@ -610,8 +666,8 @@ public class Functions {
 			Ref_Location l = Ref.getLocation(t);
 			if(l != null  && l.getStandardCode() != null && (l.getStandardCode().equalsIgnoreCase("y"))){
 
-				if(location.equals("Castricum, hetzelfde huis"))
-					System.out.println(" found"); // xyz
+				//if(location.equals("Castricum, hetzelfde huis"))
+				//	System.out.println(" found"); // xyz
 
 				a1.setMunicipality(l.getMunicipality());
 				a1.setPlace(l.getLocation());
@@ -670,7 +726,8 @@ public class Functions {
 		
 		String location2 = "";
 		for(int i = 0; i < a.length; i++)
-			location2 = location2 + a[i] + " ";
+			if(a[i].length() > 0)
+				location2 = location2 + a[i] + " ";
 		
 		
 
@@ -716,7 +773,10 @@ public class Functions {
 			
 		}
 		else{
+			//System.out.println("Call   Try QuarterInfo") ;
 			address= tryQuarterInfo(a1, address);             // this sets quarter
+			//System.out.println("Return Try QuarterInfo") ;
+
 			address= tryStreet(a1, address);                  // this sets street
 			                                                  // tryBoat, tryEtc....
 			// Now add this address to reference data
@@ -793,7 +853,7 @@ public class Functions {
 		//System.out.println(address +  "  " + a.length);
 
 		
-		for(int i = a.length  ; i > 0; i--){
+		for(int i = a.length  ; i > 1; i--){  // i > 1 because 1e Lelystraat etc..
 			
 			if(a[i-1].length() == 0) break;
 			
@@ -1113,7 +1173,8 @@ public class Functions {
 		if(a != null && a.length > 0){
 			for(int i = 0; i < a.length; i++){
 				if(a[i].equalsIgnoreCase("Wijk") || 
-				   a[i].equalsIgnoreCase("Wk") ||
+						   a[i].equalsIgnoreCase("Wk") ||
+						   a[i].equalsIgnoreCase("Canton") ||
 				   a[i].equalsIgnoreCase("Wk.")){
 					if(i + 1 < a.length){
 						a1.setQuarter(a[i + 1]);
@@ -1126,29 +1187,31 @@ public class Functions {
 				}
 			}
 		}
+		
+		// Look for combinations like A 122, in this case A is Quarter
 
+		if(a != null && a.length > 0){
+			for(int i = 0; i < a.length; i++){
+				if((a[i].length() == 1 &&   Character.isUpperCase(a[i].charAt(0))) || (a[i].length() == 2 &&   Character.isUpperCase(a[i].charAt(0))  && Character.isUpperCase(a[i].charAt(1)))){
 
-		if((a[0].length() == 1 &&   Character.isUpperCase(a[0].charAt(0)) == true) || (a[0].length() == 2 &&   Character.isUpperCase(a[0].charAt(0)) == true  && Character.isUpperCase(a[0].charAt(1)) == true)){
-			
-			
-			if(!(a.length > 1 && Character.isAlphabetic(a[1].charAt(0)))){ // Not followed by text, eg Q van Uffelenstraat
-			
-				a1.setQuarter(a[0]);
+					if((a.length > i + 1 && Character.isAlphabetic(a[i + 1].charAt(0)))) // Not followed by text, eg Q van Uffelenstraat
+						continue;
+					else{
+						a1.setQuarter(a[i]);
+						a[i] = "";
 
-				address = "";
-				for (int i = 1; i < a.length; i++)
-					address = address + a[i] + " ";
+						address = "";
+						for (int j = 0; j < a.length; j++)
+							if(a[j].length() > 0)
+								address = address + a[j] + " ";
+						return address.trim();
+					}
 
-
-				return address.trim();
+				}
 			}
-
-
 		}
 
 		return address;
 	}
-
-	
 	
 }

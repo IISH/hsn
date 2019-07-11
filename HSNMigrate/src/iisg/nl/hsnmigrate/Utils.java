@@ -5,6 +5,7 @@ import nl.iisg.ref.Ref;
 import nl.iisg.ref.Ref_Address;
 import nl.iisg.ref.Ref_Housenumber;
 import nl.iisg.ref.Ref_Housenumberaddition;
+import nl.iisg.ref.Ref_Location;
 
 import java.io.EOFException;
 import java.io.File;
@@ -227,16 +228,25 @@ public class Utils {
 		 return(dayCount);
 	 }
 
-	 static String [] toBeTranslatedValues = {"al", "alhier", "alh", "alsboven", "id", "ald", "ten zijnen huize", "te zijnen huize", "aldaar", "N"};
 
-		public static boolean toBeTranslated(String s){
+	 public static boolean toBeTranslated(String s){
+
+		 boolean rett = false;
+		 Ref_Location l = Ref.getLocation(s);
+		 
+		 //System.out.println("--> "+ s + " "+ l);
+		 //if(l != null){
+			// System.out.println("--> " + l.getStandardCode());
+			 //System.out.println("--> " + l.getLocation());
+		 //}
+		 
+		 if(l != null  && l.getStandardCode() != null && (l.getStandardCode().equalsIgnoreCase("y") || l.getStandardCode().equalsIgnoreCase("u")) && l.getLocation() != null && l.getLocation().length() > 0)
+			 if(l.getLocation().equalsIgnoreCase("Alhier"))
+				 rett = true;
 			
-			for(int i = 0; i < toBeTranslatedValues.length; i++)
-				if(s.equalsIgnoreCase(toBeTranslatedValues[i]))
-					return true;
-			
-			return false;
-		}
+		 //System.out.println("--> " + s + "  " + rett);
+		 return rett;
+	 }
 
 	 /**
 	  * 
@@ -672,7 +682,7 @@ public class Utils {
 				        		" idnr = 1244  or " + 
 				        		" idnr = 1220  or " + 
 				        		" idnr = 2072; "; 
-
+                     
 
 					 try {
 						 s.execute(selTable);
