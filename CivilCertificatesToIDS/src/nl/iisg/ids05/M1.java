@@ -167,7 +167,7 @@ public class M1 {
 
 		 if(ceMarriage != null){
 			 //Utils.addIndivAndContext(null, ceMarriage, em, getIdnr(), Id_I_GR, "MC M1", "MARRIAGE_LOCATION", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
-			 Utils.addIndivAndContext(null, null, null, null, ceMarriage, em, getIdnr(), Id_I_GR, MC, "MARRIAGE_LOCATION", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+			 Utils.addIndivAndContext(null, null, null, null, ceMarriage, em, getIdnr(), Id_I_GR, "MC M1", "MARRIAGE_LOCATION", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 			 Utils.addIndivContextAndContextCertificate(getMar_cy(), getM1sdcn(), ceMarriage, em, getIdnr(), Id_I_GR, MC, "MC M1", "Groom", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 		 }
 
@@ -264,9 +264,13 @@ public class M1 {
 
 		 
 		 ContextElement ce = null;
+		 //System.out.println("GROOM LIVING LOCATION = " + getM1grll() + " CE + " + ce);
+
     	 if(getM1grll() != null){
     		 ce = Contxt.get2(getM1grll());
+    		 //System.out.println("GROOM LIVING LOCATION = " + getM1grll() + " CE + " + ce);
     		 if(ce != null)
+    			 //System.out.println("Adding RESIDENCE_LOCATION" );
     			 //Utils.addIndivContextAndContext(null, ce, em, getIdnr(), Id_I_GR, "MC M1", "Address", "Event", "Exact",  getMar_cd(), getMar_cm(), getMar_cy());
     		 	 Utils.addIndivAndContext(null, ce, em, getIdnr(), Id_I_GR, "MC M1", "RESIDENCE_LOCATION", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 

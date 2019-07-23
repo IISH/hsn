@@ -338,6 +338,7 @@ public class Utils {
 		
 		//if(1==1) return; // TRM
 		
+		//System.out.println("Idnr = " + " source = " + source + " source2 = " + source2 + " relation = " + relation);
 		
 		ContextElement ce = Contxt.locateCertificate(source, yearCertificate, sequenceNumberCertificate,  ceCertificate,  "Source");
 		int Id_C = ce.getId_C();
@@ -512,7 +513,7 @@ public class Utils {
 	public static void addIndivAndContext(String address, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String type, 
 			String dateType, String estimation, int day, int month, int year){
 
-		if(1==1) return;
+		//if(1==1) return;
 
 		String [] s = Utils.getLocationHierarchy(ce);
 		String[] t = {null, null, null, null};

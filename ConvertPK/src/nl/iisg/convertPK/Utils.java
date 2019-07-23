@@ -422,7 +422,7 @@ public class Utils {
 	        Statement s = conn.createStatement();
 
 	        // Fetch table
-	        
+	        /*
 	        String selTable = "SELECT * FROM " + tabName + 
 	        		" where idnr = 5230 or " + 
 	        		" idnr = 70433  or " + 
@@ -434,9 +434,11 @@ public class Utils {
 	        		" idnr = 664780 or " + 
 	        		" idnr = 76359  or " + 
 	        		" idnr = 600270; "; 
-	        
+	        */
 	       // selTable = "SELECT * FROM " + tabName; 
 	       // 		" where idnr  >= 120000 and IDNR < 128000; " ; dit gaat niet omdat zo de mannen niet worden meegenomen 
+	        
+	        String selTable = "SELECT * FROM " + tabName;
 	        
 	        System.out.println(selTable);
 	        
