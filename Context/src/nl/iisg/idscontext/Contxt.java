@@ -691,16 +691,60 @@ public class Contxt {
 	public static ContextElement locateBoat(String boat, String street, String number, String addition, ContextElement ce1, String   level){
 		
 		
-		// locate address
+		// locate boat
 		
-		ContextElement ce = locateStreet(street, number, addition, ce1, level);
-		if(ce != null){
-			ce.types.add("BOAT");
-			ce.values.add(boat);
-			return ce;
-		}
+		if(boat == null || boat.trim().length() == 0)
+			return null;
+		
+		for(ContextElement ce: ce1.getChildren()){
 			
-		return null;
+			String street1 = null;
+			String number1 = null;
+			String addition1 = null;
+			String level1 = null;
+			String boat1 = null;
+			
+			for(int i = 0; i < ce.types.size(); i++){
+				if(ce.types.get(i).compareTo("LEVEL") == 0)
+					level1 = ce.values.get(i);
+				if(ce.types.get(i).compareTo("STREET") == 0)
+					street1 = ce.values.get(i);
+				if(ce.types.get(i).compareTo("HOUSE_NUMBER") == 0)
+					number1 = ce.values.get(i);
+				if(ce.types.get(i).compareTo("HOUSE_NUMBER_EXTENSION") == 0)
+					addition1 = ce.values.get(i);
+				if(ce.types.get(i).compareTo("BOAT") == 0)
+					boat1 = ce.values.get(i);
+			}
+
+			if(comp(level1, "Address") && comp(street1, street) && comp(number1, number)  && comp(addition1, addition) && comp(boat1, boat))
+				return ce;
+		}
+
+		ContextElement ce = new ContextElement();
+		ce.types.add("LEVEL");
+		ce.values.add(level);
+		ce.types.add("STREET");
+		ce.values.add(street);
+		if(number != null && number.length() > 0){
+			ce.types.add("HOUSE_NUMBER");
+			ce.values.add(number);
+		}
+		if(addition != null && addition.length() > 0){
+			ce.types.add("HOUSE_NUMBER_EXTENSION");
+			ce.values.add(addition);
+		}
+		ce.types.add("BOAT");
+		ce.values.add(boat);
+
+		
+		ce.setId_C(Utils.getId_C());
+		ce.setParent(ce1);
+		
+		ce1.getChildren().add(ce);
+
+		return ce;
+
 	}
 
 	public static ContextElement locateStreet(String street, String number, String addition, ContextElement ce1, String   level){

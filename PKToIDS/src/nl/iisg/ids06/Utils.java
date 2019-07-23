@@ -91,14 +91,13 @@ public class Utils {
 			context2 = Contxt.locateQuarter(quarter, context1, "Quarter");
 
 		context1 = (context2 !=  null ? context2 : context1);
-		
-		if(street != null && street.trim().length() > 0)
-			context2 = Contxt.locateStreet(street, number, addition, context1, "Address");
-		
-		context1 = (context2 !=  null ? context2 : context1);
-		
+
 		if(boat != null && boat.trim().length() > 0)
 			context2 = Contxt.locateBoat(boat, street, number, addition, context1, "Address");
+		else{
+			if(street != null && street.trim().length() > 0)
+				context2 = Contxt.locateStreet(street, number, addition, context1, "Address");
+		}
 		
 		context1 = (context2 !=  null ? context2 : context1);		
 		
