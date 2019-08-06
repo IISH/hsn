@@ -415,6 +415,8 @@ public class PkEigknd {
 							else
 								b313.setContentOfDynamicData(133); // Kind PK
 		}
+		else
+			b313.setContentOfDynamicData(133); // Kind PK
 
 				
 		b313.setStartDate(b2.getDateOfBirth());

@@ -83,6 +83,11 @@ public class Utils {
 	public static void addIndivContextAndContext(String boat, String quarter, String street, String number, String addition, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String relation, 
 			String dateType, String estimation, int day, int month, int year){
 
+		//if(boat != null && boat.trim().length() > 0){
+			//System.out.println("addIndivContextAndContext Boat 1");
+			//for(int i = 0; i < ce.getTypes().size(); i++)
+			//	System.out.println(ce.getTypes().get(i) + " = " + ce.getValues().get(i));
+		//}
 		
 		ContextElement context1 = ce;
 		ContextElement context2 = null;
@@ -92,8 +97,13 @@ public class Utils {
 
 		context1 = (context2 !=  null ? context2 : context1);
 
-		if(boat != null && boat.trim().length() > 0)
+		if(boat != null && boat.trim().length() > 0){
+			//System.out.println("addIndivContextAndContext Boat 1");
+			//for(int i = 0; i < context1.getTypes().size(); i++)
+			//	System.out.println(context1.getTypes().get(i) + " = " + context1.getValues().get(i));
+
 			context2 = Contxt.locateBoat(boat, street, number, addition, context1, "Address");
+		}
 		else{
 			if(street != null && street.trim().length() > 0)
 				context2 = Contxt.locateStreet(street, number, addition, context1, "Address");
@@ -146,15 +156,15 @@ public class Utils {
 
 		context1 = (context2 !=  null ? context2 : context1);
 		
-		if(street != null && street.trim().length() > 0)
-			context2 = Contxt.locateStreet(street, number, addition, context1, "Address");
+		if(boat != null && boat.trim().length() > 0)
+			context2 = Contxt.locateBoat(boat, street, number, addition, context1, "Address");
+		else{
+			if(street != null && street.trim().length() > 0)
+				context2 = Contxt.locateStreet(street, number, addition, context1, "Address");
+		}
 		
 		context1 = (context2 !=  null ? context2 : context1);
 		
-		if(boat != null && boat.trim().length() > 0)
-			context2 = Contxt.locateBoat(boat, street, number, addition, context1, "Address");
-		
-		context1 = (context2 !=  null ? context2 : context1);		
 		
 		//if(context1 == null)
 		//	return;

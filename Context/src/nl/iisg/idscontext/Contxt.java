@@ -690,6 +690,9 @@ public class Contxt {
 
 	public static ContextElement locateBoat(String boat, String street, String number, String addition, ContextElement ce1, String   level){
 		
+		//System.out.println("Locate Boat 1");
+		//for(int i = 0; i < ce1.getTypes().size(); i++)
+		//	System.out.println(ce1.getTypes().get(i) + " = " + ce1.getValues().get(i));
 		
 		// locate boat
 		
@@ -743,6 +746,12 @@ public class Contxt {
 		
 		ce1.getChildren().add(ce);
 
+		System.out.println("Locate Boat 2");
+		for(int i = 0; i < ce.getTypes().size(); i++)
+			System.out.println(ce.getTypes().get(i) + " = " + ce.getValues().get(i));
+
+		
+		
 		return ce;
 
 	}
