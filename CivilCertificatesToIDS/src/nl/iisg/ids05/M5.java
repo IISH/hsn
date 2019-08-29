@@ -73,6 +73,8 @@ public class M5 {
 		 
 		 Utils.addIndiv(em, getIdnr(), Id_I_VK, "MC M5", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
+		 Utils.addIndiv(em, getIdnr(), Id_I_VK, "MC M5", "HSN_RESEARCH_PERSON", "Child RP", "Missing", "Time_invariant", 0, 0, 0);
+
 		 
     	 if(getM5c_bl() != null){
     		 ContextElement ce = Contxt.get2(getM5c_bl());

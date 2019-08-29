@@ -175,9 +175,9 @@ public class B1 {
 						ceCertificate, em, getIdnr(), Id_I_RP, "BC B1",  "BIRTH_LOCATION", "Event", "Exact",  
 						startDay1, startMonth1, startYear1);
 				
-				Utils.addIndivContextAndContext(getB1rplla().getQuarter(), getB1rplla().getStreet(), getB1rplla().getNumber(), getB1rplla().getAddition(),
-						ceCertificate, em, getIdnr(), Id_I_RP, "BC B1",  "Address", "Declared", "Exact",  
-						startDay1, startMonth1, startYear1);
+				//Utils.addIndivContextAndContext(getB1rplla().getQuarter(), getB1rplla().getStreet(), getB1rplla().getNumber(), getB1rplla().getAddition(),
+				//		ceCertificate, em, getIdnr(), Id_I_RP, "BC B1",  "Address", "Declared", "Exact",  
+				//		startDay1, startMonth1, startYear1);
 
 			}
 				
@@ -209,7 +209,8 @@ public class B1 {
 				}
 			}
 			else
-				Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1", "BIRTH_DATE", null, "Assigned", "Estimated [16/100]", 1, 1, getB1sdcy() - 100, 1, 1,  getB1sdcy() - 16);
+				Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1", "BIRTH_DATE", null, "Assigned", "Estimated [16/100]", 
+						getB1sdcd(), getB1sdcm(), getB1sdcy() - 100,  getB1sdcd(), getB1sdcm(),  getB1sdcy() - 16);
 
 			if(getB1inoc() != null && getB1inoc().trim().length() > 0)
 				Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1", "OCCUPATION_STANDARD", getB1inoc() , "Declared", "Exact",  getB1sdcd(),  getB1sdcm(), getB1sdcy());
@@ -232,6 +233,9 @@ public class B1 {
 			}
 			if(getB1infa().equalsIgnoreCase("J"))
 				Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1", "HSN_RESEARCH_PERSON", "Father RP", "Missing", "Time_invariant", 0, 0, 0);
+			else
+				Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1", "HSN_RESEARCH_PERSON", "Other", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
+			
 			Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
 
@@ -265,7 +269,7 @@ public class B1 {
 					
 					if(getB1infa().equalsIgnoreCase("J"))
 						Utils.addIndivContextAndContext(getB1inlla().getQuarter(), getB1inlla().getStreet(), getB1inlla().getNumber(), getB1inlla().getAddition(),
-								ceCertificate, em, getIdnr(), Id_I_IN, "BC B1",  "Address", "Declared", "Exact",  
+								ceCertificate, em, getIdnr(), Id_I_IN, "BC B1",  "Member", "Declared", "Exact",  
 								startDay1, startMonth1, startYear1);
 					else
 						Utils.addIndivAndContext(getB1inlla().getQuarter(), getB1inlla().getStreet(), getB1inlla().getNumber(), getB1inlla().getAddition(),
@@ -327,7 +331,7 @@ public class B1 {
 				}
 			}
 			else
-				Utils.addIndiv(em, getIdnr(), Id_I_MO, "BC B1", "BIRTH_DATE", null, "Assigned", "Estimated [14/50]", 1, 1,  getB1sdcy() - 50, 1, 1,  getB1sdcy() - 14);
+				Utils.addIndiv(em, getIdnr(), Id_I_MO, "BC B1", "BIRTH_DATE", null, "Assigned", "Estimated [14/50]", getB1sdcd(), getB1sdcm(), getB1sdcy() - 50,  getB1sdcd(), getB1sdcm(),  getB1sdcy() - 14);
 			
 
 			Utils.addIndiv(em, getIdnr(), Id_I_MO, "BC B1", "HSN_RESEARCH_PERSON", "Mother RP", "Missing", "Time_invariant", 0, 0, 0);
@@ -352,7 +356,7 @@ public class B1 {
 					
 					
 					Utils.addIndivContextAndContext(getB1molla().getQuarter(), getB1molla().getStreet(), getB1molla().getNumber(), getB1molla().getAddition(),
-							ceCertificate, em, getIdnr(), Id_I_MO, "BC B1",  "Address", "Declared", "Exact",  
+							ceCertificate, em, getIdnr(), Id_I_MO, "BC B1",  "Member", "Declared", "Exact",  
 							startDay1, startMonth1, startYear1);
 				}
 				

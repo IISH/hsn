@@ -67,6 +67,9 @@ public class B4 {
         	 }
     	 }
     	 
+    	 //System.out.println("" + day + " " + month+ " "+year);
+    	 //if(Utils.dateIsValid(day, month, year) != 0) return;
+    	 
     	 // Child RP
     	 
 		 int Id_I_RP = 1; //Utils.getId_I();
@@ -88,6 +91,9 @@ public class B4 {
 		 
 		 int Id_I_FA = 9;
 		 
+		 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B4", "HSN_RESEARCH_PERSON", "Father RP", "Missing", "Time_invariant", 0, 0, 0);
+
+		 
 		 if(getB4faln() != null && getB4faln().trim().length() > 0 && !getB4faln().trim().equalsIgnoreCase("N")){
 			 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B4", "LAST_NAME", getB4faln(), "Missing", "Time_invariant", day, month, year);
 		 }
@@ -103,7 +109,7 @@ public class B4 {
 		 
 		 // We must give an estimated birthdate for linking purposes
 		 
-		 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B4", "BIRTH_DATE", null, "Assigned", "Estimated [15/100]", 1, 1, year - 100, 1, 1,   year - 15);
+		 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B4", "BIRTH_DATE", null, "Assigned", "Estimated [16/100]", day, month, year - 100, day, month,  year - 16);
    		 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B4", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
 

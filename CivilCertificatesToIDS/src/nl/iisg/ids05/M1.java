@@ -195,8 +195,10 @@ public class M1 {
      	 Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
 		 
-		 if(getM1rpgn() != null && getM1rpgn().equalsIgnoreCase("M"))
+		 if(getM1rpgn() != null && getM1rpgn().equalsIgnoreCase("M")){
 			 Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "HSN_RESEARCH_PERSON", "HSN RP", "Missing", "Time_invariant", 0, 0, 0);
+			 Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "HSN_RESEARCH_PERSON", "Wife RP", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+		 }
 
 		 //if(getIdnr() == 41686) System.out.println("      m1 +       Groom 1");
 
@@ -312,8 +314,11 @@ public class M1 {
 		 Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
 		 
-		 if(getM1rpgn() != null && getM1rpgn().equalsIgnoreCase("V"))
+		 if(getM1rpgn() != null && getM1rpgn().equalsIgnoreCase("V")){
 			 Utils.addIndiv(em, getIdnr(), Id_I_BR, "MC M1", "HSN_RESEARCH_PERSON", "HSN RP", "Missing", "Time_invariant", 0, 0, 0);
+			 Utils.addIndiv(em, getIdnr(), Id_I_GR, "MC M1", "HSN_RESEARCH_PERSON", "Husband RP", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+
+		 }
 
 		 
 		 if(getM1brcs() != null && getM1brcs().trim().length() > 0){
@@ -403,7 +408,8 @@ public class M1 {
 				 }
 			 }
 			 else
-				Utils.addIndiv(em, getIdnr(), Id_I_GF, "MC M1", "BIRTH_DATE", null, "Assigned", "Estimated [30/100]", 1, 1, getMar_cy() - 100, 1, 1,   getMar_cy() - 30);
+				Utils.addIndiv(em, getIdnr(), Id_I_GF, "MC M1", "BIRTH_DATE", null, "Assigned", "Estimated [30/100]", 
+						getMar_cd(), getMar_cm(), getMar_cy() - 100, getMar_cd(), getMar_cm(), getMar_cy() - 30);
 
 
 			 if(getM1gray() >= 23 || getM1gfca().equalsIgnoreCase("N"))
@@ -435,10 +441,17 @@ public class M1 {
 
 			 if(getM1gfdl() != null && getM1gfdl().trim().length() > 0){
 				 ContextElement ce1 = Contxt.get2(getM1gfdl());
-				 Utils.addIndivAndContext(null, ce1, em, getIdnr(), Id_I_GF, "MC M1", "DEATH_LOCATION", "Missing", "Unavailable", 0, 0, 0);
+				 if(ce1 != null)
+					 Utils.addIndivAndContext(null, ce1, em, getIdnr(), Id_I_GF, "MC M1", "DEATH_LOCATION", "Missing", "Unavailable", 0, 0, 0);
 			 }
 			 
 			 Utils.addIndiv(em, getIdnr(), Id_I_GF, "MC M1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
+
+			 if(getM1rpgn() != null && getM1rpgn().equalsIgnoreCase("M"))
+				 Utils.addIndiv(em, getIdnr(), Id_I_GF, "MC M1", "HSN_RESEARCH_PERSON", "Father RP", "Missing", "Time_invariant", 0, 0, 0);
+			 else
+				 Utils.addIndiv(em, getIdnr(), Id_I_GF, "MC M1", "HSN_RESEARCH_PERSON", "Father-in-law RP", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+			 
 
 
 			 // Father Groom relations 
@@ -474,7 +487,9 @@ public class M1 {
 				 }
 			 }
 			 else
-				 Utils.addIndiv(em, getIdnr(), Id_I_GM, "MC M1", "BIRTH_DATE", null, "Assigned", "Estimated [30/100]", 1, 1, getMar_cy() - 100, 1, 1,   getMar_cy() - 30);
+				 Utils.addIndiv(em, getIdnr(), Id_I_GM, "MC M1", "BIRTH_DATE", null, "Assigned", "Estimated [30/100]", 
+							getMar_cd(), getMar_cm(), getMar_cy() - 100, getMar_cd(), getMar_cm(), getMar_cy() - 30);
+
 
 			 if(getM1gray() >= 23 || getM1gmca().equalsIgnoreCase("N"))
 				 Utils.addIndiv(em, getIdnr(), Id_I_GM, "MC M1", "MARRIAGE_PERMISSION", "Not necessary", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
@@ -504,10 +519,16 @@ public class M1 {
 
 			 if(getM1gmdl() != null && getM1gmdl().trim().length() > 0){
 				 ContextElement ce1 = Contxt.get2(getM1gmdl());
-				 Utils.addIndivAndContext(null, ce1, em, getIdnr(), Id_I_GM, "MC M1", "DEATH_LOCATION",  "Missing", "Unavailable", 0, 0, 0);
+				 if(ce1 != null)
+					 Utils.addIndivAndContext(null, ce1, em, getIdnr(), Id_I_GM, "MC M1", "DEATH_LOCATION",  "Missing", "Unavailable", 0, 0, 0);
 			 }
 
 			 Utils.addIndiv(em, getIdnr(), Id_I_GM, "MC M1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
+
+			 if(getM1rpgn() != null && getM1rpgn().equalsIgnoreCase("M"))
+				 Utils.addIndiv(em, getIdnr(), Id_I_GM, "MC M1", "HSN_RESEARCH_PERSON", "Mother RP", "Missing", "Time_invariant", 0, 0, 0);
+			 else
+				 Utils.addIndiv(em, getIdnr(), Id_I_GM, "MC M1", "HSN_RESEARCH_PERSON", "Mother-in-law RP", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 
 
 			 // Mother Groom relation to IP
@@ -551,11 +572,17 @@ public class M1 {
 				 }
 			 }
 			 else
-				Utils.addIndiv(em, getIdnr(), Id_I_BF, "MC M1", "BIRTH_DATE", null, "Assigned", "Estimated [30/100]", 1, 1, getMar_cy() - 100, 1, 1,   getMar_cy() - 30);
+				Utils.addIndiv(em, getIdnr(), Id_I_BF, "MC M1", "BIRTH_DATE", null, "Assigned", "Estimated [30/100]",
+						getMar_cd(), getMar_cm(), getMar_cy() - 100, getMar_cd(), getMar_cm(), getMar_cy() - 30);
 
 			 Utils.addIndiv(em, getIdnr(), Id_I_BF, "MC M1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
+			 if(getM1rpgn() != null && getM1rpgn().equalsIgnoreCase("V"))
+				 Utils.addIndiv(em, getIdnr(), Id_I_BF, "MC M1", "HSN_RESEARCH_PERSON", "Father RP", "Missing", "Time_invariant", 0, 0, 0);
+			 else
+				 Utils.addIndiv(em, getIdnr(), Id_I_BF, "MC M1", "HSN_RESEARCH_PERSON", "Father-in-law RP", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 
+			 
 			 if(getM1bray() >= 23 || getM1bfca().equalsIgnoreCase("N"))
 				 Utils.addIndiv(em, getIdnr(), Id_I_BF, "MC M1", "MARRIAGE_PERMISSION", "Not necessary", "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
 			 else	 
@@ -584,7 +611,8 @@ public class M1 {
 
 			 if(getM1bfdl() != null && getM1bfdl().trim().length() > 0){
 				 ContextElement ce1 = Contxt.get2(getM1bfdl());
-				 Utils.addIndivAndContext(null, ce1, em, getIdnr(), Id_I_BF, "MC M1", "DEATH_LOCATION", "Missing", "Unavailable", 0, 0, 0);
+				 if(ce1 != null)
+					 Utils.addIndivAndContext(null, ce1, em, getIdnr(), Id_I_BF, "MC M1", "DEATH_LOCATION", "Missing", "Unavailable", 0, 0, 0);
 			 }
 
 
@@ -622,7 +650,9 @@ public class M1 {
 				 }
 			 }
 			 else
-				Utils.addIndiv(em, getIdnr(), Id_I_BM, "MC M1", "BIRTH_DATE", null, "Assigned", "Estimated [30/100]", 1, 1, getMar_cy() - 100, 1, 1,   getMar_cy() - 30);
+				Utils.addIndiv(em, getIdnr(), Id_I_BM, "MC M1", "BIRTH_DATE", null, "Assigned", "Estimated [30/100]", 
+						getMar_cd(), getMar_cm(), getMar_cy() - 100, getMar_cd(), getMar_cm(), getMar_cy() - 30);
+
 
 			 
 			 if(getM1bray() >= 23 || getM1bmca().equalsIgnoreCase("N"))
@@ -649,6 +679,11 @@ public class M1 {
 			 
 			 Utils.addIndiv(em, getIdnr(), Id_I_BM, "MC M1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
+			 if(getM1rpgn() != null && getM1rpgn().equalsIgnoreCase("V"))
+				 Utils.addIndiv(em, getIdnr(), Id_I_BM, "MC M1", "HSN_RESEARCH_PERSON", "Mother RP", "Missing", "Time_invariant", 0, 0, 0);
+			 else
+				 Utils.addIndiv(em, getIdnr(), Id_I_BM, "MC M1", "HSN_RESEARCH_PERSON", "Mother-in-law RP", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
+
 
 			 if(ceMarriage != null){
 				 Utils.addIndivContextAndContextCertificate(getMar_cy(), getM1sdcn(), ceMarriage, em, getIdnr(), Id_I_BM, MC, "MC M1", "Mother Bride", "Event", "Exact", getMar_cd(), getMar_cm(), getMar_cy());
@@ -656,7 +691,8 @@ public class M1 {
 
 			 if(getM1bmdl() != null && getM1bmdl().trim().length() > 0){
 				 ContextElement ce1 = Contxt.get2(getM1bmdl());
-				 Utils.addIndivAndContext(null, ce1, em, getIdnr(), Id_I_BM, "MC M1", "DEATH_LOCATION", "Missing", "Unavailable", 0, 0, 0);
+				 if(ce1 != null)
+					 Utils.addIndivAndContext(null, ce1, em, getIdnr(), Id_I_BM, "MC M1", "DEATH_LOCATION", "Missing", "Unavailable", 0, 0, 0);
 			 }
 
 

@@ -425,6 +425,10 @@ public class Functions {
 		
 		if(name == null) return 0;
 		
+		// Naam niet in geboorte-acte
+		
+		if(name.equalsIgnoreCase("Naam niet in geboorte-acte")) return 200100;
+		
 		for(int i = 0; i < name.length(); i++)
 			if(!Character.isLetter(name.charAt(i)) && name.charAt(i) != ' ' && name.charAt(i) != ',' && name.charAt(i) != '$' && name.charAt(i) != '!')
 				return 200100;

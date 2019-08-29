@@ -108,7 +108,7 @@ public class D2 {
 					 int startYear1  = (new Integer(getD2s_lla().getStartDate().substring(6,10))).intValue();
 
 					 Utils.addIndivContextAndContext(getD2s_lla().getQuarter(), getD2s_lla().getStreet(), getD2s_lla().getNumber(), getD2s_lla().getAddition(),
-							 ceAddress, em, getIdnr(), Id_I_FS,  "DC D2",  "Address", "Declared", "Exact",  
+							 ceAddress, em, getIdnr(), Id_I_FS,  "DC D2",  "Member", "Declared", "Exact",  
 							 startDay1, startMonth1, startYear1);
 
 				 }
@@ -120,26 +120,39 @@ public class D2 {
 
 		 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
+
 		 // Relation to RP Is former spouse RP
 
 		 if(getD2s_ca() != null && getD2s_ca().trim().equalsIgnoreCase("J")){
 			 if(getD1().getB1().getB1rpgn().equalsIgnoreCase("M")){
 				 Utils.addIndivIndiv(em, getIdnr(), 51, Id_I_FS,  "DC D2", "Echtgenoot", "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
 				 Utils.addIndivIndiv(em, getIdnr(), Id_I_FS, 51,  "DC D2", "Echtgenote", "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+				 
+				 Utils.addIndiv(em, getIdnr(), Id_I_FS, "DC D2", "HSN_RESEARCH_PERSON", "Wife RP", "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+
 			 }
 			 else{
 				 Utils.addIndivIndiv(em, getIdnr(), 51, Id_I_FS,  "DC D2", "Echtgenote", "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
 				 Utils.addIndivIndiv(em, getIdnr(), Id_I_FS, 51,  "DC D2", "Echtgenoot", "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+				 
+				 Utils.addIndiv(em, getIdnr(), Id_I_FS, "DC D2", "HSN_RESEARCH_PERSON", "Husband RP", "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+
 			 }
 		 }
 		 else{
 			 if(getD1().getB1().getB1rpgn().equalsIgnoreCase("M")){
 				 Utils.addIndivIndiv(em, getIdnr(), 51, Id_I_FS,  "DC D2", "Echtgenoot", "Missing", "Unavailable", 0, 0,0 );
 				 Utils.addIndivIndiv(em, getIdnr(), Id_I_FS, 51,  "DC D2", "Echtgenote", "Missing", "Unavailable", 0, 0,0 );
+				 
+				 Utils.addIndiv(em, getIdnr(), Id_I_FS, "DC D2", "HSN_RESEARCH_PERSON", "Wife RP", "Missing", "Time_invariant", 0, 0, 0);
+
 			 }
 			 else{
 				 Utils.addIndivIndiv(em, getIdnr(), 51, Id_I_FS,  "DC D2", "Echtgenote", "Missing", "Unavailable", 0, 0,0 );
 				 Utils.addIndivIndiv(em, getIdnr(), Id_I_FS, 51,  "DC D2", "Echtgenoot", "Missing", "Unavailable", 0, 0,0 );
+				 
+				 Utils.addIndiv(em, getIdnr(), Id_I_FS, "DC D2", "HSN_RESEARCH_PERSON", "Husband RP", "Missing", "Time_invariant", 0, 0, 0);
+
 			 }
 		 }
      }

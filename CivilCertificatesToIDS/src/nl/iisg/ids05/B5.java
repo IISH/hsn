@@ -68,7 +68,8 @@ public class B5 {
 			 }
 		 }
 		 else
-				Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B5", "BIRTH_DATE", null, "Assigned", "Estimated [16/100]", 1, 1, getB1().getB1sdcy() - 100, 1, 1,  getB1().getB1sdcy() - 16);
+				Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B5", "BIRTH_DATE", null, "Assigned", "Estimated [16/100]", 
+						getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy() - 100, getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy() - 16);
 
 		 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B5", "HSN_RESEARCH_PERSON", "Father RP", "Missing", "Time_invariant", 0, 0, 0);
 
@@ -115,7 +116,7 @@ public class B5 {
     			 int startYear1  = (new Integer(getB5falla().getStartDate().substring(6,10))).intValue();
 
     			 Utils.addIndivContextAndContext(getB5falla().getQuarter(), getB5falla().getStreet(), getB5falla().getNumber(), getB5falla().getAddition(),
-    					 ceCertificate, em, getIdnr(), Id_I_FA, "BC B5",  "Address", "Declared", "Exact",  
+    					 ceCertificate, em, getIdnr(), Id_I_FA, "BC B5",  "Member", "Declared", "Exact",  
     					 startDay1, startMonth1, startYear1);
     		 }
 

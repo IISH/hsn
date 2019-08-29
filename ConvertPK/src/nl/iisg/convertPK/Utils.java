@@ -413,7 +413,7 @@ public class Utils {
 			// Get MSAccess table information
 			
             //String connURL = "jdbc:ucanaccess://" + inputDirectory + File.separator + "PK.accdb;memory=false";
-            String connURL = "jdbc:ucanaccess://" + inputDirectory + File.separator + "HSN_PK_2019_02_28.accdb";
+            String connURL = "jdbc:ucanaccess://" + inputDirectory + File.separator + "HSN_PK_2019_08_12.accdb";
             
             System.out.println("Connection URL = " + connURL);
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver"); // On windows this is not needed

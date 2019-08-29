@@ -240,7 +240,7 @@ public void convert(EntityManager em){
 				 int startYear1  = (new Integer(getD1rplla().getStartDate().substring(6,10))).intValue();
 
 				 Utils.addIndivContextAndContext(getD1rplla().getQuarter(), getD1rplla().getStreet(), getD1rplla().getNumber(), getD1rplla().getAddition(),
-						 ceAddress, em, getIdnr(), Id_I_RP, "DC D1",  "Address", "Declared", "Exact",  
+						 ceAddress, em, getIdnr(), Id_I_RP, "DC D1",  "Member", "Declared", "Exact",  
 						 startDay1, startMonth1, startYear1);
 
 			 }
@@ -283,93 +283,102 @@ public void convert(EntityManager em){
 		 int Id_I_FA = 52; // Father Dead RP; 
 
 		 // First test if there is a father in the birth certificate
-		 if(getB1().getB1infa().equalsIgnoreCase("J") ||
-				 (getB1().getB5() != null && getB1().getB5().getB5sdcf() != null && getB1().getB5().getB5sdcf().equalsIgnoreCase("J"))){
+		 //if(getB1().getB1infa().equalsIgnoreCase("J") ||
+		 //		 (getB1().getB5() != null && getB1().getB5().getB5sdcf() != null && getB1().getB5().getB5sdcf().equalsIgnoreCase("J"))){
 			 
-			 			 
-			 if(getD1faln() != null && getD1faln().trim().length() > 0 && !getD1faln().trim().equalsIgnoreCase("N")){
 
-				 fatherLastname =true;
-				 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "LAST_NAME", getD1faln(), "Missing", "Time_invariant", 0, 0, 0);
+		 if(getD1faln() != null && getD1faln().trim().length() > 0 && !getD1faln().trim().equalsIgnoreCase("N")){
 
-				 if(getD1fapf() != null && getD1fapf().trim().length() > 0){
-					 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "PREFIX_LAST_NAME", getD1fapf(), "Missing", "Time_invariant", 0, 0, 0);
-				 }
-				 if(getD1fafn() != null && getD1fafn().trim().length() > 0){
-					 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "FIRST_NAME", getD1fafn(), "Missing", "Time_invariant", 0, 0, 0);
-				 }
+			 fatherLastname =true;
+			 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "LAST_NAME", getD1faln(), "Missing", "Time_invariant", 0, 0, 0);
 
-
-				 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "SEX", "Male", "Missing", "Time_invariant", 0, 0, 0);
+			 if(getD1fapf() != null && getD1fapf().trim().length() > 0){
+				 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "PREFIX_LAST_NAME", getD1fapf(), "Missing", "Time_invariant", 0, 0, 0);
+			 }
+			 if(getD1fafn() != null && getD1fafn().trim().length() > 0){
+				 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "FIRST_NAME", getD1fafn(), "Missing", "Time_invariant", 0, 0, 0);
+			 }
 
 
-				 if(getD1faca().equalsIgnoreCase("J")){
+			 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "SEX", "Male", "Missing", "Time_invariant", 0, 0, 0);
 
-					 if(getD1faoc() != null)
-						 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "OCCUPATION_STANDARD", getD1faoc(), "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
-					 if(getD1faay() > 0){
-						 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "AGE_YEARS", (new Integer(getD1faay())).toString(), "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
-						 if(Utils.dateIsValid(getD1rpdd(), getD1rpdm(), getD1rpdy()) == 0){
-							 int[] a = Utils.birthRange(getD1faay(), getD1rpdd(), getD1rpdm(), getD1rpdy());
-							 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "BIRTH_DATE", null, "Assigned", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
-						 }
-					 }
-					 else
-						 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "BIRTH_DATE", null, "Assigned", "Estimated [16/100]", 1, 1, getD1rpdy() - 100, 1, 1, getD1rpdy() - 16);
 
-					 if(ceCertificate != null){
-						 //Utils.addIndivContextAndContext(getD1fall(), ceCertificate, em, getIdnr(), Id_I_FA, "DC D1", "", "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
-						 Utils.addIndivContextAndContextCertificate(getD1sdcy(), getD1sdcn(), ceCertificate, em, getIdnr(), Id_I_FA, DC, "DC D1", "Father", "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+			 if(getD1faca().equalsIgnoreCase("J")){
+
+				 if(getD1faoc() != null)
+					 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "OCCUPATION_STANDARD", getD1faoc(), "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+				 if(getD1faay() > 0){
+					 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "AGE_YEARS", (new Integer(getD1faay())).toString(), "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+					 if(Utils.dateIsValid(getD1rpdd(), getD1rpdm(), getD1rpdy()) == 0){
+						 int[] a = Utils.birthRange(getD1faay(), getD1rpdd(), getD1rpdm(), getD1rpdy());
+						 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "BIRTH_DATE", null, "Assigned", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
 					 }
 				 }
 				 else
 					 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "BIRTH_DATE", null, "Assigned", "Estimated [16/100]", 1, 1, getD1rpdy() - 100, 1, 1, getD1rpdy() - 16);
 
-				 if(getD1infa() != null && getD1infa().trim().equalsIgnoreCase("J")){
-					 if(getD1insg() != null && getD1insg().trim().length() > 0)
-						 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "SIGNATURE", Utils.signature(getD1insg()), "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
-
+				 if(ceCertificate != null){
+					 //Utils.addIndivContextAndContext(getD1fall(), ceCertificate, em, getIdnr(), Id_I_FA, "DC D1", "", "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+					 Utils.addIndivContextAndContextCertificate(getD1sdcy(), getD1sdcn(), ceCertificate, em, getIdnr(), Id_I_FA, DC, "DC D1", "Father", "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
 				 }
-				 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
+			 }
+			 else
+				 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "BIRTH_DATE", null, "Assigned", "Estimated [16/100]", 1, 1, getD1rpdy() - 100, 1, 1, getD1rpdy() - 16);
 
-				 // Father relation to RP 
+			 if(getD1infa() != null && getD1infa().trim().equalsIgnoreCase("J")){
+				 if(getD1insg() != null && getD1insg().trim().length() > 0)
+					 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "SIGNATURE", Utils.signature(getD1insg()), "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
 
-				 //if(getD1faca().equalsIgnoreCase("J")){
+			 }
+			 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
-				 Utils.addIndivIndiv(em, getIdnr(), Id_I_FA, Id_I_RP, "DC D1", "Vader", "Missing", "Time_invariant", 0, 0, 0);
-				 if(getB1().getB1rpgn().equalsIgnoreCase("M"))
-					 Utils.addIndivIndiv(em, getIdnr(), Id_I_RP, Id_I_FA, "DC D1", "Zoon", "Missing", "Time_invariant", 0, 0, 0);
-				 else
-					 Utils.addIndivIndiv(em, getIdnr(), Id_I_RP, Id_I_FA, "DC D1", "Dochter", "Missing", "Time_invariant", 0, 0, 0);
-
-				 // Father Address
-
-				 if(getD1falla() != null){
-
-					 ContextElement ceAddress = null;
+			 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "HSN_RESEARCH_PERSON", "Father RP", "Missing", "Time_invariant", 0, 0, 0);
 
 
-					 if(getD1falla().getMunicipality() != null)
-						 ceAddress = Contxt.get2(getD1falla().getMunicipality());
-					 else 
-						 ceAddress = ceCertificate;
+			 // Father relation to RP 
 
-					 if(ceAddress != null){
+			 //if(getD1faca().equalsIgnoreCase("J")){
 
-						 int startDay1   = (new Integer(getD1falla().getStartDate().substring(0,2))).intValue();
-						 int startMonth1 = (new Integer(getD1falla().getStartDate().substring(3,5))).intValue();
-						 int startYear1  = (new Integer(getD1falla().getStartDate().substring(6,10))).intValue();
+			 if(getD1faca().equalsIgnoreCase("J"))
+				 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "ALIVE", "Yes", "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+			 else
+				 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "ALIVE", "No",  "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
 
-						 Utils.addIndivContextAndContext(getD1falla().getQuarter(), getD1falla().getStreet(), getD1falla().getNumber(), getD1falla().getAddition(),
-								 ceAddress, em, getIdnr(), Id_I_FA, "DC D1",  "Address", "Declared", "Exact",  
-								 startDay1, startMonth1, startYear1);
-					 }
 
+			 Utils.addIndivIndiv(em, getIdnr(), Id_I_FA, Id_I_RP, "DC D1", "Vader", "Missing", "Time_invariant", 0, 0, 0);
+			 if(getB1().getB1rpgn().equalsIgnoreCase("M"))
+				 Utils.addIndivIndiv(em, getIdnr(), Id_I_RP, Id_I_FA, "DC D1", "Zoon", "Missing", "Time_invariant", 0, 0, 0);
+			 else
+				 Utils.addIndivIndiv(em, getIdnr(), Id_I_RP, Id_I_FA, "DC D1", "Dochter", "Missing", "Time_invariant", 0, 0, 0);
+
+			 // Father Address
+
+			 if(getD1falla() != null){
+
+				 ContextElement ceAddress = null;
+
+
+				 if(getD1falla().getMunicipality() != null)
+					 ceAddress = Contxt.get2(getD1falla().getMunicipality());
+				 else 
+					 ceAddress = ceCertificate;
+
+				 if(ceAddress != null){
+
+					 int startDay1   = (new Integer(getD1falla().getStartDate().substring(0,2))).intValue();
+					 int startMonth1 = (new Integer(getD1falla().getStartDate().substring(3,5))).intValue();
+					 int startYear1  = (new Integer(getD1falla().getStartDate().substring(6,10))).intValue();
+
+					 Utils.addIndivContextAndContext(getD1falla().getQuarter(), getD1falla().getStreet(), getD1falla().getNumber(), getD1falla().getAddition(),
+							 ceAddress, em, getIdnr(), Id_I_FA, "DC D1",  "Member", "Declared", "Exact",  
+							 startDay1, startMonth1, startYear1);
 				 }
+
 			 }
 		 }
 		 //}
-		 
+		 //}
+
 
 		 
 		 
@@ -417,10 +426,17 @@ public void convert(EntityManager em){
 				 Utils.addIndiv(em, getIdnr(), Id_I_MO, "DC D1", "BIRTH_DATE", null, "Assigned", "Estimated [15/100]", 1, 1, getD1rpdy() - 100, 1, 1, getD1rpdy() - 15);
 			 Utils.addIndiv(em, getIdnr(), Id_I_MO, "DC D1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
+			 Utils.addIndiv(em, getIdnr(), Id_I_MO, "DC D1", "HSN_RESEARCH_PERSON", "Mother RP", "Missing", "Time_invariant", 0, 0, 0);
 				 
 			 // Mother relation to RP 
 
 			 //if(getD1moca().equalsIgnoreCase("J")){
+			 
+			 if(getD1moca().equalsIgnoreCase("J"))
+				 Utils.addIndiv(em, getIdnr(), Id_I_MO, "DC D1", "ALIVE", "Yes", "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+			 else
+				 Utils.addIndiv(em, getIdnr(), Id_I_MO, "DC D1", "ALIVE", "No",  "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+
 
 			 Utils.addIndivIndiv(em, getIdnr(), Id_I_MO, Id_I_RP, "DC D1", "Moeder", "Missing", "Time_invariant", 0, 0, 0);
 			 if(getB1().getB1rpgn().equalsIgnoreCase("M"))
@@ -461,7 +477,7 @@ public void convert(EntityManager em){
 					int startYear1  = (new Integer(getD1molla().getStartDate().substring(6,10))).intValue();
 
 					Utils.addIndivContextAndContext(getD1molla().getQuarter(), getD1molla().getStreet(), getD1molla().getNumber(), getD1molla().getAddition(),
-							ceAddress, em, getIdnr(), Id_I_MO, "DC D1",  "Address", "Declared", "Exact",  
+							ceAddress, em, getIdnr(), Id_I_MO, "DC D1",  "Member", "Declared", "Exact",  
 							startDay1, startMonth1, startYear1);
 	   			 }
 	   			 

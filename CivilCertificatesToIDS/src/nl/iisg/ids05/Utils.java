@@ -633,6 +633,11 @@ public class Utils {
 			String dateType, String estimation, int startDay, int startMonth, int startYear, int endDay, int endMonth, int endYear){
 		
 		
+		if(Utils.dateIsValid(startDay, startMonth, startYear) != 0){
+			System.out.println("" + startDay + " " + startMonth+ " "+startYear);
+			startDay = startDay/0;
+		}
+		
 		//System.out.println("dateType = " + dateType);
 		INDIVIDUAL i = new INDIVIDUAL();
 		
@@ -865,7 +870,7 @@ public class Utils {
 			
 		if(year <= 0 || month <= 0 || day <= 0) return -1;
 			
-		if(!(year  > 1750 ))   return 1;
+		//if(!(year  > 1750 ))   return 1;
 		if(!(month > 0    && month <= 12))     return 1;
 		if(!(day   > 0    && (day  <=  monthLength[month] || (day <= monthLength[2] + 1 && month == 2 && year % 4 == 0 && (year % 100 != 0 || year % 400 == 0))))) return 1;
 			

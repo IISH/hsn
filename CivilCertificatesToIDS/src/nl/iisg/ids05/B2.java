@@ -76,7 +76,7 @@ public class B2 {
     			 //		 startDay1, startMonth1, startYear1);
     			 
 				Utils.addIndivAndContext(getB2w_lla().getQuarter(), getB2w_lla().getStreet(), getB2w_lla().getNumber(), getB2w_lla().getAddition(),
-						ceCertificate, em, getIdnr(), Id_I_WN, "BC B2",  "RESIDENCE_LOCATION", "Event", "Exact",  
+						ceCertificate, em, getIdnr(), Id_I_WN, "BC B2",  "RESIDENCE_LOCATION", "Declared", "Exact",  
 								startDay1, startMonth1, startYear1);
 
     		 }
@@ -97,6 +97,8 @@ public class B2 {
 		 if(getB2w_sg() != null && getB2w_sg().trim().length() > 0)
 			 Utils.addIndiv(em, getIdnr(), Id_I_WN, "BC B2", "SIGNATURE", Utils.signature(getB2w_sg()), "Event", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
          Utils.addIndiv(em, getIdnr(), Id_I_WN, "BC B2", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
+
+		 Utils.addIndiv(em, getIdnr(), Id_I_WN, "BC B2", "HSN_RESEARCH_PERSON", "Other", "Event", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
 
 
 		 // Witness relations

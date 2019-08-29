@@ -86,6 +86,9 @@ public class M4 {
     	 }
     	 
     	 Utils.addIndiv(em, getIdnr(), Id_I_WT, "MC M4", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
+    	 
+		 Utils.addIndiv(em, getIdnr(), Id_I_WT, "MC M4", "HSN_RESEARCH_PERSON", "Other", "Event", "Exact",  getMar_cd(), getMar_cm(), getMar_cy());
+
 
     	 
     	 ContextElement ceMarriage = null;
