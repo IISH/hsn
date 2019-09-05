@@ -85,7 +85,7 @@ public class B4 {
 		 if(getB4rpgn() != null && getB4rpgn().trim().length() > 0)
 			 Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B4", "SEX", Utils.sex(getB4rpgn()), "Reported", "Exact", day, month, year);
          Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B4", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
-
+         Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B4", "HSN_RESEARCH_PERSON", "HSN RP", "Missing", "Time_invariant", 0, 0, 0);
 		 
 		 // New Father
 		 

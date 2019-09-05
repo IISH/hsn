@@ -246,7 +246,7 @@ public class IDS implements Runnable {
     					s2 += p2.getSource().substring(i, i+1);
  
    				int    tab2    = new Integer(s2);
-    			//System.out.println(source1 + "  " + tab1 + "  " + Arrays.asList(sources).indexOf(source1) + "  " + source2 + "  "+ tab2 + "  " + Arrays.asList(sources).indexOf(source2));
+    			System.out.println(source1 + "  " + tab1 + "  " + Arrays.asList(sources).indexOf(source1) + "  " + source2 + "  "+ tab2 + "  " + Arrays.asList(sources).indexOf(source2));
     			
     			// sort on sources
     			
@@ -256,6 +256,7 @@ public class IDS implements Runnable {
     				return +1;
     			
     			// sort on tables e.g. M1 < M2
+    			//  
     			
     			if(tab1 < tab2)
     				return -1;
@@ -267,6 +268,7 @@ public class IDS implements Runnable {
     			return 0;
     		}
     			});
+    	
     	
     	
     	int indexP = 0;
@@ -340,7 +342,7 @@ public class IDS implements Runnable {
     		if(new Integer(p.getId_I_new()) != id_prev){
     			id_prev = new Integer(p.getId_I_new());
     			identPerson = Arrays.copyOf(identPerson1, identPerson1.length);
-    			//System.out.println("Person " + p.getId_I_new() + " " + p.getSource());
+    			System.out.println("Person " + p.getId_I_new() + " " + p.getSource()); //mmm
     			prevSex = "";
     		}
     		
@@ -351,7 +353,7 @@ public class IDS implements Runnable {
     		
     		for(INDIVIDUAL ind: p.getIndividual()){
     			
-	//			System.out.println("INDIVIDUAL  = " + ind.getType()  + "    " + ind.getValue());
+				System.out.println("INDIVIDUAL  = " + ind.getSource() + " " + ind.getType()  + "    " + ind.getValue()); //mmm
 
     			boolean found = false;
     			//if(ind.getType().equalsIgnoreCase(("BIRTH_DATE")))	System.out.println("1->" + ind.getId() + "  " + ind.getType() + "  " + ind.getSource());

@@ -213,4 +213,15 @@ public class Ref_CreateTables {
 			" primary key (id)" +
 			" );";
 
+	public static final String Ref_Birth_Address =  
+
+			" create table if not exists ref_birth_address " +
+			" ( " +
+			" id_birth_address int auto_increment, " +
+			" idnr INT, " + 
+			" role_context_address varchar(" + Bigstring + "), " + 
+			" delivery_location varchar(" + Smallstring + "), " + 
+			" primary key (id_birth_address)" +
+			" );";
+
 }

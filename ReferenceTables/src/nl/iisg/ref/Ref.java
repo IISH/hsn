@@ -104,7 +104,9 @@ public class Ref {
 	
 	static    List<Ref_Relation_C>           ref_relation_c    = null;
 	static    List<Ref_Relation_C>           ref_relation_c_x  = new ArrayList<Ref_Relation_C>();
-	
+
+	static    HashMap<Integer, Ref_BirthAddress>        ref_birthaddress2  = null;   
+
 
 	static EntityManagerFactory              factory_ref   = Persistence.createEntityManagerFactory("ref_tables");
 	static EntityManager                     em_ref        = getFactory_ref().createEntityManager(); 
@@ -154,6 +156,8 @@ public class Ref {
 		query = em.createNativeQuery(Ref_CreateTables.Ref_Relation_B); 
 		query.executeUpdate();  
 		query = em.createNativeQuery(Ref_CreateTables.Ref_Relation_C); 
+		query.executeUpdate();  
+		query = em.createNativeQuery(Ref_CreateTables.Ref_Birth_Address); 
 		query.executeUpdate();  
 		
 		em.getTransaction().commit();
@@ -789,6 +793,38 @@ public class Ref {
 
 
 	}
+	
+	public static void loadBirthAddress(){
+
+		System.out.println("Reading Ref_BirthAddress");
+
+		EntityManager em = getEm_ref_2();	
+		Query q = em.createQuery("select a from Ref_BirthAddress a");
+		List<Ref_BirthAddress> ref_birthaddress  = q.getResultList();		
+
+		//int highest_ID = 0;
+		int count = 0;
+
+		ref_birthaddress2 = new HashMap<Integer, Ref_BirthAddress>();
+		
+		for(Ref_BirthAddress f: ref_birthaddress){
+
+			if(f.getIdnr() != 0){
+				ref_birthaddress2.put(f.getIdnr(), f);
+
+				count++;
+
+			}
+
+		}
+			
+		//Ref_Housenumber.setCurrent_ID(highest_ID + 1);
+		
+		
+		System.out.println("Read    Ref_BirthAddress " + count + " rows");
+
+	}
+
 
 	public static Ref_AINB getAINB(int key){
 
@@ -1570,6 +1606,17 @@ public class Ref {
 		if(getHousenumber(name) == null){
 			ref_houseNumber22.put(name, housenumber);
 		}
+		
+	}
+
+	public static Ref_BirthAddress getBirthAddress(int idnr){
+		
+
+		Ref_BirthAddress birthAddress = ref_birthaddress2.get(idnr);
+
+        
+		return birthAddress;
+		
 		
 	}
 
