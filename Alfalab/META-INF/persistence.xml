@@ -249,6 +249,7 @@
 		<class>nl.iisg.ref.Ref_Housenumberaddition</class>   
 		<class>nl.iisg.ref.Ref_Address</class>   	
 		<class>nl.iisg.ref.Ref_KG</class>  
+		<class>nl.iisg.ref.Ref_BirthAddress</class>  
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
 			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://194.171.4.71:3306/links_general?useUnicode=true&amp;characterEncoding=UTF-8" />" 

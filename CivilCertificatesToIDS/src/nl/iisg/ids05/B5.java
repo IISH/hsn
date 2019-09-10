@@ -109,17 +109,34 @@ public class B5 {
     					 startDay1, startMonth1, startYear1);
     		 }
 
-    		 if(getB5falla() != null){
+    		 //if(getB5falla() != null){
 
-    			 int startDay1   = (new Integer(getB5falla().getStartDate().substring(0,2))).intValue();
-    			 int startMonth1 = (new Integer(getB5falla().getStartDate().substring(3,5))).intValue();
-    			 int startYear1  = (new Integer(getB5falla().getStartDate().substring(6,10))).intValue();
+//    			 int startDay1   = (new Integer(getB5falla().getStartDate().substring(0,2))).intValue();
+//    			 int startMonth1 = (new Integer(getB5falla().getStartDate().substring(3,5))).intValue();
+//    			 int startYear1  = (new Integer(getB5falla().getStartDate().substring(6,10))).intValue();
+//
+//    			 Utils.addIndivContextAndContext(getB5falla().getQuarter(), getB5falla().getStreet(), getB5falla().getNumber(), getB5falla().getAddition(),
+//    					 ceCertificate, em, getIdnr(), Id_I_FA, "BC B5",  "Member", "Declared", "Exact",  
+//    					 startDay1, startMonth1, startYear1);
+//   		 }
 
-    			 Utils.addIndivContextAndContext(getB5falla().getQuarter(), getB5falla().getStreet(), getB5falla().getNumber(), getB5falla().getAddition(),
-    					 ceCertificate, em, getIdnr(), Id_I_FA, "BC B5",  "Member", "Declared", "Exact",  
-    					 startDay1, startMonth1, startYear1);
+    		 if(getB1().getCommonLivingLocation() != null){
+    			 
+ 				int startDay1   = (new Integer(getB1().getCommonLivingLocation().getStartDate().substring(0,2))).intValue();
+ 				int startMonth1 = (new Integer(getB1().getCommonLivingLocation().getStartDate().substring(3,5))).intValue();
+ 				int startYear1  = (new Integer(getB1().getCommonLivingLocation().getStartDate().substring(6,10))).intValue();
+
+
+ 				Utils.addIndivContextAndContext(getB1().getCommonLivingLocation().getQuarter(), getB1().getCommonLivingLocation().getStreet(), getB1().getCommonLivingLocation().getNumber(), getB1().getCommonLivingLocation().getAddition(),
+ 						ceCertificate, em, getIdnr(), Id_I_FA, "BC B5",  "Member", "Declared", "Exact",  
+ 						startDay1, startMonth1, startYear1);
+
+    			 
+    			 
+    			 
+    			 
     		 }
-
+    		 
     		 Utils.addIndivContextAndContextCertificate(getB1().getB1sdcy(), getB1().getB1sdcn(), ceCertificate, em, getIdnr(), Id_I_FA, 
     				 "Birth Certificate", "BC B5", "Father", "Declared", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());
 			 

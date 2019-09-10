@@ -342,7 +342,7 @@ public class IDS implements Runnable {
     		if(new Integer(p.getId_I_new()) != id_prev){
     			id_prev = new Integer(p.getId_I_new());
     			identPerson = Arrays.copyOf(identPerson1, identPerson1.length);
-    			System.out.println("Person " + p.getId_I_new() + " " + p.getSource()); //mmm
+    			//System.out.println("Person " + p.getId_I_new() + " " + p.getSource()); //mmm
     			prevSex = "";
     		}
     		
@@ -353,7 +353,7 @@ public class IDS implements Runnable {
     		
     		for(INDIVIDUAL ind: p.getIndividual()){
     			
-				System.out.println("INDIVIDUAL  = " + ind.getSource() + " " + ind.getType()  + "    " + ind.getValue()); //mmm
+				//System.out.println("INDIVIDUAL  = " + ind.getSource() + " " + ind.getType()  + "    " + ind.getValue()); //mmm
 
     			boolean found = false;
     			//if(ind.getType().equalsIgnoreCase(("BIRTH_DATE")))	System.out.println("1->" + ind.getId() + "  " + ind.getType() + "  " + ind.getSource());

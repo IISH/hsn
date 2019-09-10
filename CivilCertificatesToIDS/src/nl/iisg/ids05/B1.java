@@ -17,6 +17,7 @@ import javax.persistence.Transient;
 import nl.iisg.idscontext.ContextElement;
 import nl.iisg.idscontext.Contxt;
 import nl.iisg.ref.Ref;
+import nl.iisg.ref.Ref_BirthAddress;
 import nl.iisg.ref.Ref_Municipality;
 
 @Entity
@@ -82,6 +83,7 @@ public class B1 {
     @Transient                   private A1  b1rplla;  
     @Transient                   private A1  b1molla;
     @Transient                   private A1  b1inlla;
+    @Transient                   private A1  commonLivingLocation; // RP + father + mother are assumed to live at this location
 
 
 	public void convert(EntityManager em){
@@ -111,6 +113,12 @@ public class B1 {
 			Utils.addIndiv(em, getIdnr(), Id_I_RP,"BC B1", "FIRST_NAME", getB1rpfn(), "Event", "Exact", getB1rpbd(),  getB1rpbm(), getB1rpby());
 		if(getB1rpgn() != null && getB1rpgn().trim().length() > 0)
 			Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B1", "SEX", Utils.sex(getB1rpgn()), "Event", "Exact", getB1rpbd(), getB1rpbm(), getB1rpby());
+		
+		Ref_BirthAddress rba = Ref.getBirthAddress(getIdnr());
+		
+		if(rba != null && rba.getDeliveryLocation() != null)
+			Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B1", "DELIVERY_LOCATION", rba.getDeliveryLocation(), "Event", "Exact", getB1rpbd(), getB1rpbm(), getB1rpby());
+		
 		Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B1", "HSN_RESEARCH_PERSON", "HSN RP", "Missing", "Time_invariant", 0, 0, 0);
 		Utils.addIndiv(em, getIdnr(), Id_I_RP, "BC B1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
@@ -156,6 +164,8 @@ public class B1 {
 		//	 Utils.addIndivAndContext(getB1rpll(), ceCertificate, em, getIdnr(), Id_I_RP, "BC B1", "BIRTH_LOCATION", "Event", "Exact", getB1rpbd(),  getB1rpbm(), getB1rpby());
 		// }
 
+		//A1 livingLocation = null;  // RP + father + mother are assumed to live at this location
+
 		if(ceCertificate != null){
 			
 			//System.out.println("Adding Birth Certificate"); // XYZ
@@ -175,11 +185,33 @@ public class B1 {
 						ceCertificate, em, getIdnr(), Id_I_RP, "BC B1",  "BIRTH_LOCATION", "Event", "Exact",  
 						startDay1, startMonth1, startYear1);
 				
-				//Utils.addIndivContextAndContext(getB1rplla().getQuarter(), getB1rplla().getStreet(), getB1rplla().getNumber(), getB1rplla().getAddition(),
-				//		ceCertificate, em, getIdnr(), Id_I_RP, "BC B1",  "Address", "Declared", "Exact",  
-				//		startDay1, startMonth1, startYear1);
+				
 
 			}
+			
+			if(rba != null && rba.getRoleContextAddress() != null){
+				
+				int livingLocationNr = new Integer(rba.getRoleContextAddress());
+				
+				switch(livingLocationNr){
+				case 1: commonLivingLocation = b1rplla; 	 break;
+				case 2: commonLivingLocation = b1molla; 	 break;
+				case 3: commonLivingLocation = b1inlla;	 break;
+				default:;
+				}
+				
+				int startDay1   = (new Integer(commonLivingLocation.getStartDate().substring(0,2))).intValue();
+				int startMonth1 = (new Integer(commonLivingLocation.getStartDate().substring(3,5))).intValue();
+				int startYear1  = (new Integer(commonLivingLocation.getStartDate().substring(6,10))).intValue();
+
+
+				Utils.addIndivContextAndContext(commonLivingLocation.getQuarter(), commonLivingLocation.getStreet(), commonLivingLocation.getNumber(), commonLivingLocation.getAddition(),
+						ceCertificate, em, getIdnr(), Id_I_RP, "BC B1",  "Member", "Declared", "Exact",  
+						startDay1, startMonth1, startYear1);
+
+			}
+
+
 				
 			//Utils.addIndivAndContext(getB1rpll(), ceCertificate, em, getIdnr(), Id_I_RP, "BC B1", "BIRTH_LOCATION", "Event", "Exact", getB1rpbd(),  getB1rpbm(), getB1rpby());
 		}
@@ -254,7 +286,7 @@ public class B1 {
 			if(ceCertificate != null){    		 
 				//Utils.addIndivContextAndContext(getB1inll(), ceCertificate, em, getIdnr(), Id_I_IN, "BC B1", "", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 				
-				if(getB1inlla() != null){
+				if(getB1inlla() != null && getB1infa().equalsIgnoreCase("N")){
 					
 					int startDay1   = (new Integer(getB1inlla().getStartDate().substring(0,2))).intValue();
 					int startMonth1 = (new Integer(getB1inlla().getStartDate().substring(3,5))).intValue();
@@ -262,22 +294,33 @@ public class B1 {
 
 					//addIndivAndContext(String quarter, String street, String number, String addition, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String type, 
 					//String dateType, String estimation, int day, int month, int year)
-					
+
 					//addIndivContextAndContext(String boat, String quarter, String street, String number, String addition, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String relation, 
 					//		String dateType, String estimation, int day, int month, int year)
-					
-					
-					if(getB1infa().equalsIgnoreCase("J"))
-						Utils.addIndivContextAndContext(getB1inlla().getQuarter(), getB1inlla().getStreet(), getB1inlla().getNumber(), getB1inlla().getAddition(),
-								ceCertificate, em, getIdnr(), Id_I_IN, "BC B1",  "Member", "Declared", "Exact",  
-								startDay1, startMonth1, startYear1);
-					else
-						Utils.addIndivAndContext(getB1inlla().getQuarter(), getB1inlla().getStreet(), getB1inlla().getNumber(), getB1inlla().getAddition(),
-								ceCertificate, em, getIdnr(), Id_I_IN, "BC B1",  "RESIDENCE_LOCATION", "Declared", "Exact",  
-								startDay1, startMonth1, startYear1);
+
+
+
+					Utils.addIndivAndContext(getB1inlla().getQuarter(), getB1inlla().getStreet(), getB1inlla().getNumber(), getB1inlla().getAddition(),
+							ceCertificate, em, getIdnr(), Id_I_IN, "BC B1",  "RESIDENCE_LOCATION", "Declared", "Exact",  
+							startDay1, startMonth1, startYear1);
 
 				}
+				else{
+					if(commonLivingLocation != null && getB1infa().equalsIgnoreCase("J")){
+						
+						int startDay1   = (new Integer(commonLivingLocation.getStartDate().substring(0,2))).intValue();
+						int startMonth1 = (new Integer(commonLivingLocation.getStartDate().substring(3,5))).intValue();
+						int startYear1  = (new Integer(commonLivingLocation.getStartDate().substring(6,10))).intValue();
 
+
+						Utils.addIndivContextAndContext(commonLivingLocation.getQuarter(), commonLivingLocation.getStreet(), commonLivingLocation.getNumber(), commonLivingLocation.getAddition(),
+								ceCertificate, em, getIdnr(), Id_I_IN, "BC B1",  "Member", "Declared", "Exact",  
+								startDay1, startMonth1, startYear1);
+
+						
+					}
+					
+				}
 				
 				
 				
@@ -342,11 +385,11 @@ public class B1 {
 			if(ceCertificate != null){
 				//Utils.addIndivContextAndContext(getB1moll(), ceCertificate, em, getIdnr(), Id_I_MO, "BC B1", "", "Event", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 				
-				if(getB1molla() != null){
+				if(commonLivingLocation != null){
 					
-					int startDay1   = (new Integer(getB1molla().getStartDate().substring(0,2))).intValue();
-					int startMonth1 = (new Integer(getB1molla().getStartDate().substring(3,5))).intValue();
-					int startYear1  = (new Integer(getB1molla().getStartDate().substring(6,10))).intValue();
+					int startDay1   = (new Integer(commonLivingLocation.getStartDate().substring(0,2))).intValue();
+					int startMonth1 = (new Integer(commonLivingLocation.getStartDate().substring(3,5))).intValue();
+					int startYear1  = (new Integer(commonLivingLocation.getStartDate().substring(6,10))).intValue();
 
 					//addIndivAndContext(String quarter, String street, String number, String addition, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String type, 
 					//String dateType, String estimation, int day, int month, int year)
@@ -355,7 +398,7 @@ public class B1 {
 					//		String dateType, String estimation, int day, int month, int year)
 					
 					
-					Utils.addIndivContextAndContext(getB1molla().getQuarter(), getB1molla().getStreet(), getB1molla().getNumber(), getB1molla().getAddition(),
+					Utils.addIndivContextAndContext(commonLivingLocation.getQuarter(), commonLivingLocation.getStreet(), commonLivingLocation.getNumber(), commonLivingLocation.getAddition(),
 							ceCertificate, em, getIdnr(), Id_I_MO, "BC B1",  "Member", "Declared", "Exact",  
 							startDay1, startMonth1, startYear1);
 				}
@@ -391,8 +434,11 @@ public class B1 {
 
 		//if(getIdnr() == 41686) System.out.println("Start b4");
 
-		for(B4 b4: getB4L())
-			b4.convert(em);
+		// 10-09-2019: No B4 for the moment
+		// If this is activated again, the person data needs to be sorted more precisely
+		
+		//for(B4 b4: getB4L())
+		//	b4.convert(em);
 		
 		//if(getIdnr() == 41686) System.out.println("Start b5");
 
@@ -751,6 +797,18 @@ public class B1 {
 
 	public void setB1inlla(A1 b1inlla) {
 		this.b1inlla = b1inlla;
+	}
+
+
+
+	public A1 getCommonLivingLocation() {
+		return commonLivingLocation;
+	}
+
+
+
+	public void setCommonLivingLocation(A1 commonLivingLocation) {
+		this.commonLivingLocation = commonLivingLocation;
 	}
 
 

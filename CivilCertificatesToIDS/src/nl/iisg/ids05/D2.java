@@ -107,9 +107,14 @@ public class D2 {
 					 int startMonth1 = (new Integer(getD2s_lla().getStartDate().substring(3,5))).intValue();
 					 int startYear1  = (new Integer(getD2s_lla().getStartDate().substring(6,10))).intValue();
 
-					 Utils.addIndivContextAndContext(getD2s_lla().getQuarter(), getD2s_lla().getStreet(), getD2s_lla().getNumber(), getD2s_lla().getAddition(),
-							 ceAddress, em, getIdnr(), Id_I_FS,  "DC D2",  "Member", "Declared", "Exact",  
+					 //Utils.addIndivContextAndContext(getD2s_lla().getQuarter(), getD2s_lla().getStreet(), getD2s_lla().getNumber(), getD2s_lla().getAddition(),
+					 //		 ceAddress, em, getIdnr(), Id_I_FS,  "DC D2",  "Member", "Declared", "Exact",  
+					 //		 startDay1, startMonth1, startYear1);
+					 
+					 Utils.addIndivAndContext(getD2s_lla().getQuarter(), getD2s_lla().getStreet(), getD2s_lla().getNumber(), getD2s_lla().getAddition(),
+							 ceAddress, em, getIdnr(), Id_I_FS, "DC D2",  "RESIDENCE_LOCATION", "Declared", "Exact",  
 							 startDay1, startMonth1, startYear1);
+
 
 				 }
 
