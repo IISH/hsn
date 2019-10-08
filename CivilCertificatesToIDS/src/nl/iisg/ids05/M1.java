@@ -541,10 +541,19 @@ public class M1 {
 		 }
 		 // Father Groom and Mother Groom get an undated Husband Wife relation (if both are alive)
 		 
+		 
+		 // "Echtgenote", "Event", "Exact",  getMar_cd(), getMar_cm(), getMar_cy());
 		 if(getM1gfca().equalsIgnoreCase("J") &&  getM1gmca().equalsIgnoreCase("J")){
-			 Utils.addIndivIndiv(em, getIdnr(), Id_I_GM, Id_I_GF, "MC M1", "Echtgenote", "Missing", "Unavailable", 0, 0, 0); 
-			 Utils.addIndivIndiv(em, getIdnr(), Id_I_GF, Id_I_GM, "MC M1", "Echtgenoot", "Missing", "Unavailable" , 0, 0, 0); 
+			 Utils.addIndivIndiv(em, getIdnr(), Id_I_GM, Id_I_GF, "MC M1", "Echtgenote", "Declared", "Exact",  getMar_cd(), getMar_cm(), getMar_cy());
+			 Utils.addIndivIndiv(em, getIdnr(), Id_I_GF, Id_I_GM, "MC M1", "Echtgenoot", "Declared", "Exact",  getMar_cd(), getMar_cm(), getMar_cy());
 		 }
+		 else
+			 if((getM1gmln() != null && getM1gmln().trim().length() > 0 && !getM1gmln().trim().equalsIgnoreCase("N")) &&
+				 getM1gfln() != null && getM1gfln().trim().length() > 0 && !getM1gfln().trim().equalsIgnoreCase("N")){
+				 
+				 Utils.addIndivIndiv(em, getIdnr(), Id_I_GM, Id_I_GF, "MC M1", "Echtgenote", "Missing", "Unavailable", 0, 0, 0); 
+				 Utils.addIndivIndiv(em, getIdnr(), Id_I_GF, Id_I_GM, "MC M1", "Echtgenoot", "Missing", "Unavailable" , 0, 0, 0); 
+			 }
 			 
 		 
 		 
@@ -708,10 +717,17 @@ public class M1 {
 		 // Father Bride and Mother Bride get an undated Husband Wife relation (if both are alive)
 		 
 		 if(getM1bfca().equalsIgnoreCase("J") &&  getM1bmca().equalsIgnoreCase("J")){
-			 Utils.addIndivIndiv(em, getIdnr(), Id_I_BM, Id_I_BF, "MC M1", "Echtgenote", "Missing", "Unavailable", 0, 0, 0); 
-			 Utils.addIndivIndiv(em, getIdnr(), Id_I_BF, Id_I_BM, "MC M1", "Echtgenoot", "Missing", "Unavailable" , 0, 0, 0); 
+			 Utils.addIndivIndiv(em, getIdnr(), Id_I_BM, Id_I_BF, "MC M1", "Echtgenote", "Declared", "Exact",  getMar_cd(), getMar_cm(), getMar_cy());
+			 Utils.addIndivIndiv(em, getIdnr(), Id_I_BF, Id_I_BM, "MC M1", "Echtgenoot", "Declared", "Exact",  getMar_cd(), getMar_cm(), getMar_cy());
 		 }
-			 
+		 else
+			 if((getM1bfln() != null && getM1bfln().trim().length() > 0 && !getM1bfln().trim().equalsIgnoreCase("N")) && 
+			    (getM1bmln() != null && getM1bmln().trim().length() > 0 && !getM1bmln().trim().equalsIgnoreCase("N"))){
+				 
+				 Utils.addIndivIndiv(em, getIdnr(), Id_I_BM, Id_I_BF, "MC M1", "Echtgenote", "Missing", "Unavailable", 0, 0, 0); 
+				 Utils.addIndivIndiv(em, getIdnr(), Id_I_BF, Id_I_BM, "MC M1", "Echtgenoot", "Missing", "Unavailable" , 0, 0, 0); 
+			 }
+		 
 
 		 
 		 // Down the tree

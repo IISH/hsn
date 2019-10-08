@@ -53,10 +53,10 @@ public class Initialiser {
 			query.executeUpdate();  
 			query = em.createNativeQuery(CreateIDSTables.INDIV_CONTEXT);  
 			query.executeUpdate();  
-			//query = em.createNativeQuery(CreateIDSTables.CONTEXT);  
-			//query.executeUpdate();  
-			//query = em.createNativeQuery(CreateIDSTables.CONTEXT_CONTEXT);  
-			//query.executeUpdate();  
+			query = em.createNativeQuery(CreateIDSTables.CONTEXT);  
+			query.executeUpdate();  
+			query = em.createNativeQuery(CreateIDSTables.CONTEXT_CONTEXT);  
+			query.executeUpdate();  
 			
 			em.getTransaction().commit();
             em.clear();

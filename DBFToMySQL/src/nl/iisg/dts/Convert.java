@@ -97,7 +97,7 @@ public class Convert{
 
 			createTable = createTable.substring(0, createTable.length()-2) + ");";
 			
-			System.out.println(createTable);
+			System.out.println("----> "+ createTable);
 
 			Connection conn = getConnection(database, userid, password);
 			Statement stmt = conn.createStatement();
@@ -123,13 +123,14 @@ public class Convert{
 			//System.out.println("Start reading 2");
 			while( (rowObjects = reader.nextRecord()) != null) {
 
-				//System.out.println("In main loop");
+				System.out.println("In main loop, rowobjects.length =  " + rowObjects.length);
 				values = " (";
 				for( int i=0; i<rowObjects.length; i++) {
 
+
 					if(rowObjects[i] != null){
 						
-						//System.out.println("Type = " + type.get(i));
+						System.out.println("i = "+ i + " Type = " + type.get(i) + " value = " + rowObjects[i].toString());
 
 						if(type.get(i).equals("N")){
 
@@ -139,7 +140,7 @@ public class Convert{
 								s = s.substring(0, j);
 							values += "\"";
 							values += s;
-							values += "\", ";
+							values += "\",";
 
 						}
 
@@ -150,7 +151,7 @@ public class Convert{
 							values += x.replaceAll("\"", "\\\\\"");                                     // Change '"' to '\"'
 							//values += ((String)rowObjects[i]).trim(); 
 
-							values += "\", ";
+							values += "\",";
 						}
 						if(type.get(i).equals("D")){
 							
@@ -176,29 +177,38 @@ public class Convert{
 
 							values += "\"";
 							values += t;
-							values += "\", ";
+							values += "\",";
 
 
 						}
 
 					}
-					else
+					else{
+						
+						System.out.println("i = "+ i + " Type = " + type.get(i) + " value = null" );
+
 						if(type.get(i).equals("D"))
 							values += "0000/00/00,";							
 						else
 							if(type.get(i).equals("N"))
 								values += "0,";
 							else
-								values += "\"\", ";
+								values += "\"\",";
+					}
 				}
-				values = values.substring(0, values.length()-2) + "),";
+				
+				System.out.println(values);
+
+				values = values.substring(0, values.length()-1) + "),";
+				
+				System.out.println(values);
 
 				insertStmt += values;
 
 				count++;
-				if(count % 1000 == 0){
+				if(count % 1 == 0){
 					insertStmt = insertStmt.substring(0, insertStmt.length()-1) + ";";	
-					//System.out.println(insertStmt);
+					System.out.println(insertStmt);
 					stmt.executeUpdate(insertStmt);
 					System.out.println("Processed " + count + " lines");
 					insertStmt = "INSERT INTO " + tableName + " values";					

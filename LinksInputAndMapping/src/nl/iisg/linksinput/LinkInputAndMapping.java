@@ -39,11 +39,14 @@ public class LinkInputAndMapping {
 		
 
 		// Read files, create tables, insert rows 
+
+		System.out.println("Here 1" + a[0]);
 		
 		for(String s: a[0])
 			if(s.split("\\.").length > 1 && s.split("\\.")[1].equalsIgnoreCase("DBF")){
 				String [] b = {s, args[1], args[2], args[3]};  // pass filename plus last three arguments
 				System.out.println("\nReading file " + s + "\n");
+				System.out.println("Converting");
 				Convert.main(b);
 			}
 			
@@ -250,8 +253,17 @@ public class LinkInputAndMapping {
 		//
 		
 		String infoSection   = inputMapping.split("\\[INFO\\]")[1].split("\\[GLOBAL\\]")[0];
+		//System.out.println("--- INFO ---");
+		//System.out.println(infoSection);
+		
 		String globalSection = inputMapping.split("\\[INFO\\]")[1].split("\\[GLOBAL\\]")[1].split("\\[READ\\]")[0];
+		//System.out.println("--- GLOBAL ---");
+		
+		//System.out.println(globalSection);
+
 		String readSection   = inputMapping.split("\\[INFO\\]")[1].split("\\[GLOBAL\\]")[1].split("\\[READ\\]")[1].split("\\[RUN\\]")[0];
+		//System.out.println(readSection);
+
 		String runSection    = inputMapping.split("\\[INFO\\]")[1].split("\\[GLOBAL\\]")[1].split("\\[READ\\]")[1].split("\\[RUN\\]")[1].split("\\[QUERIES\\]")[0];
 		String querySection  = inputMapping.split("\\[INFO\\]")[1].split("\\[GLOBAL\\]")[1].split("\\[READ\\]")[1].split("\\[RUN\\]")[1].split("\\[QUERIES\\]")[1];
 		

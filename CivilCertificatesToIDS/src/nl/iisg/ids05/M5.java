@@ -97,8 +97,8 @@ public class M5 {
     		 }
     		 else
         		 if(getM1().getM1rpgn() != null && getM1().getM1rpgn().equalsIgnoreCase("V")){
-            		 Utils.addIndivIndiv(em, getIdnr(), Id_I_GR, Id_I_VK, "MC M5", "Moeder", "Missing", "Time_invariant", 0, 0, 0);
-            		 Utils.addIndivIndiv(em, getIdnr(), Id_I_VK, Id_I_GR, "MC M5", relation, "Missing", "Time_invariant", 0, 0, 0);
+            		 Utils.addIndivIndiv(em, getIdnr(), Id_I_BR, Id_I_VK, "MC M5", "Moeder", "Missing", "Time_invariant", 0, 0, 0);
+            		 Utils.addIndivIndiv(em, getIdnr(), Id_I_VK, Id_I_BR, "MC M5", relation, "Missing", "Time_invariant", 0, 0, 0);
         		 }
     	 }
     	 else{
@@ -109,8 +109,8 @@ public class M5 {
     		 }
     		 else
         		 if(getM1().getM1rpgn() != null && getM1().getM1rpgn().equalsIgnoreCase("V")){
-            		 Utils.addIndivIndiv(em, getIdnr(), Id_I_GR, Id_I_VK, "MC M5", "Moeder", "Missing", "Time_invariant", 0, 0, 0);
-            		 Utils.addIndivIndiv(em, getIdnr(), Id_I_VK, Id_I_GR, "MC M5", "Kind", "Missing", "Time_invariant", 0, 0, 0);
+            		 Utils.addIndivIndiv(em, getIdnr(), Id_I_BR, Id_I_VK, "MC M5", "Moeder", "Missing", "Time_invariant", 0, 0, 0);
+            		 Utils.addIndivIndiv(em, getIdnr(), Id_I_VK, Id_I_BR, "MC M5", "Kind", "Missing", "Time_invariant", 0, 0, 0);
         		 }
     	 }
     	 
