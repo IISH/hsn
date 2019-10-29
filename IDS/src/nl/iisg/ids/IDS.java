@@ -246,7 +246,7 @@ public class IDS implements Runnable {
     					s2 += p2.getSource().substring(i, i+1);
  
    				int    tab2    = new Integer(s2);
-    			System.out.println(source1 + "  " + tab1 + "  " + Arrays.asList(sources).indexOf(source1) + "  " + source2 + "  "+ tab2 + "  " + Arrays.asList(sources).indexOf(source2));
+    			//System.out.println(source1 + "  " + tab1 + "  " + Arrays.asList(sources).indexOf(source1) + "  " + source2 + "  "+ tab2 + "  " + Arrays.asList(sources).indexOf(source2));
     			
     			// sort on sources
     			
@@ -1022,7 +1022,7 @@ private static void loadIDS(String component, int lastDigit){
 
 	
 	//Query q = em.createQuery("select a from INDIVIDUAL a where a.id_D < 9000"); 
-	//Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%00" + lastD + "'"); 
+	//Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%0" + lastD + "'"); 
 	Query q = null;
 	q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%" + lastD + "'");
 	//Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%'"); 
@@ -1082,7 +1082,7 @@ private static void loadIDS(String component, int lastDigit){
 	print("Reading ..");
 
 	//q = em.createQuery("select a from INDIV_INDIV a where a.id_D == 1090"); 
-	//q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%00" + lastD + "'"); 
+	//q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%0" + lastD + "'"); 
 	q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%" + lastD + "'"); 
 	//q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%'");
 
@@ -1127,7 +1127,7 @@ private static void loadIDS(String component, int lastDigit){
 	print("Reading ...");
 
 	
-	//q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%' and a.id_D like '%00" + lastD + "'"); 
+	//q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%' and a.id_D like '%0" + lastD + "'"); 
 	q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%' and a.id_D like '%" + lastD + "'"); 
 	//q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%'"); 
 	//q = em.createQuery("select a from INDIV_CONTEXT a"); 
@@ -1301,6 +1301,7 @@ private static void integratePersons(){
 	
 	System.out.println("Integrate Persons");
 	
+	System.out.println("Sorting persons.....");
 	
 	Collections.sort(personL, new Comparator<Person>() // this effectively integrates the three sources
 			{
@@ -1320,23 +1321,49 @@ private static void integratePersons(){
 		}
 			});
 	
+	System.out.println("Sorting persons done");
 	
+	System.out.println("Persons size = " + personL.size());
 	
 	int idnrOld = -1;
 	ArrayList<Person> family = null; 
 	for(int i = 0; i < personL.size(); i++){
+		//System.out.println("i = " + i + ", IDNR = " + personL.get(i).getIdnr());
 		if(personL.get(i).getIdnr() != idnrOld){
 			
 			if(family != null){
 				
-				handleRP(family); 
-				handleMothers(family); 
-				handleFathers(family); 
-				handleSpouses(family); 
-				handleChildren(family); 
-				handleSiblings(family); 
-				handleParentsInLaw(family); 
-				handleOthers(family); 
+				if(i == 84019){
+					System.out.println("1");
+					System.out.println("family.size = " + family.size());
+					for(Person p: family)
+						System.out.println(p.getIdnr() + " " + p.getId() + " "+ p.getRelationRP());
+				}
+				
+				handleRP(family);
+     			if(i == 84019) System.out.println("2");
+
+				handleMothers(family);
+				if(i == 84019) System.out.println("3");
+
+				handleFathers(family);
+				if(i == 84019) System.out.println("4");
+
+				handleSpouses(family);
+				if(i == 84019) System.out.println("5");
+
+				handleChildren(family);
+				if(i == 84019) System.out.println("6");
+
+				handleSiblings(family);
+				if(i == 84019) System.out.println("7");
+
+				handleParentsInLaw(family);
+				if(i == 84019) System.out.println("8");
+
+				handleOthers(family);
+				if(i == 84019) System.out.println("9");
+
 
 			}
 			
@@ -1361,7 +1388,7 @@ private static void integratePersons(){
 
 	}
 	
-	
+	System.out.println("Integrate Persons Finished");
 	
 
 }
@@ -1814,6 +1841,17 @@ private static void handleParentsInLaw(ArrayList<Person> family){
  */
 private static void handleOthers(ArrayList<Person> family){
 	
+	
+	boolean  deb = false;
+	if(family != null && family.size() > 0){
+		if(family.get(0).getIdnr() == 84019){
+			System.out.println("HandleOthers Start 84019");
+			deb = true;
+		}
+	}
+	else
+		System.out.println("family == null/empty!");
+	
 	ArrayList<Person> group = new ArrayList<Person>();
 	for(Person p: family){
 		if(p.getStartCode() == 0){
@@ -1833,6 +1871,9 @@ private static void handleOthers(ArrayList<Person> family){
 	}
 	
 	setIDWithinGroup(group, false);
+
+	if(deb == true) System.out.println("HandleOthers 1");
+
 	
 	Collections.sort(group, new Comparator<Person>() 
 			{
@@ -1848,6 +1889,8 @@ private static void handleOthers(ArrayList<Person> family){
 			});
 	
 	
+	if(deb == true) System.out.println("HandleOthers 2");
+
 	int id_prev = -1;
 	ArrayList<Person> group2 = new ArrayList<Person>();
 	
@@ -1883,7 +1926,12 @@ private static void handleOthers(ArrayList<Person> family){
 
 	}
 	
+	if(deb == true) System.out.println("HandleOthers 3");
+
+	
 	family.removeAll(group);
+	
+	if(deb == true) System.out.println("HandleOthers Finished");
 
 	
 }

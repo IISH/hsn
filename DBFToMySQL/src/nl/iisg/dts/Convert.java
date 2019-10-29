@@ -56,10 +56,10 @@ public class Convert{
 
 			String[] a =  inputFile.split("[.\\\\]");
 
-			createTable += "links_temp.";
+			createTable += "links_original.";
 			createTable += a[a.length - 2];
 			String tableName = a[a.length - 2];
-			tableName = "links_temp." + tableName;
+			tableName = "links_original." + tableName;
 
 			//System.out.println(tableName);
 			createTable += " (";
@@ -123,14 +123,14 @@ public class Convert{
 			//System.out.println("Start reading 2");
 			while( (rowObjects = reader.nextRecord()) != null) {
 
-				System.out.println("In main loop, rowobjects.length =  " + rowObjects.length);
+				//System.out.println("In main loop, rowobjects.length =  " + rowObjects.length);
 				values = " (";
 				for( int i=0; i<rowObjects.length; i++) {
 
 
 					if(rowObjects[i] != null){
 						
-						System.out.println("i = "+ i + " Type = " + type.get(i) + " value = " + rowObjects[i].toString());
+						//System.out.println("i = "+ i + " Type = " + type.get(i) + " value = " + rowObjects[i].toString());
 
 						if(type.get(i).equals("N")){
 
@@ -185,7 +185,7 @@ public class Convert{
 					}
 					else{
 						
-						System.out.println("i = "+ i + " Type = " + type.get(i) + " value = null" );
+						//System.out.println("i = "+ i + " Type = " + type.get(i) + " value = null" );
 
 						if(type.get(i).equals("D"))
 							values += "0000/00/00,";							
@@ -197,18 +197,18 @@ public class Convert{
 					}
 				}
 				
-				System.out.println(values);
+				//System.out.println(values);
 
 				values = values.substring(0, values.length()-1) + "),";
 				
-				System.out.println(values);
+				//System.out.println(values);
 
 				insertStmt += values;
 
 				count++;
-				if(count % 1 == 0){
+				if(count % 1000 == 0){
 					insertStmt = insertStmt.substring(0, insertStmt.length()-1) + ";";	
-					System.out.println(insertStmt);
+					//System.out.println(insertStmt);
 					stmt.executeUpdate(insertStmt);
 					System.out.println("Processed " + count + " lines");
 					insertStmt = "INSERT INTO " + tableName + " values";					

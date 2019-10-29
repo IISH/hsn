@@ -432,7 +432,7 @@ public class Common1 {
     	
     	
     	if(Ref.getRelation_C(relToHeadA, relToHeadB) != null){
-    		System.out.println("   RelationA = " +  relToHeadA +  "   RelationB = " +  relToHeadB + "   RelationM = " +  Ref.getRelation_C(relToHeadA, relToHeadB)[0]);
+    		//System.out.println("   RelationA = " +  relToHeadA +  "   RelationB = " +  relToHeadB + "   RelationM = " +  Ref.getRelation_C(relToHeadA, relToHeadB)[0]);
     		return Ref.getRelation_C(relToHeadA, relToHeadB);
     	}
     	

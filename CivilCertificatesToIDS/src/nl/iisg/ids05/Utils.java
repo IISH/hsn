@@ -258,6 +258,13 @@ public class Utils {
 	public static void addIndivIndiv(EntityManager em, int IDNR, int id_i_1,  int id_i_2, String source, String relation, 
 			String dateType, String estimation, int day, int month, int year){
 		
+		if(!dateType.equalsIgnoreCase("Missing") && Utils.dateIsValid(day, month, year) != 0){
+			System.out.println("IDNR = " + IDNR + ", Id_I = " + Id_I + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
+			return;
+			//startDay = startDay/0;
+		}
+
+		
 		INDIV_INDIV iiUp = new INDIV_INDIV();
 		
 		iiUp.setId_I_1(id_i_1);
@@ -340,6 +347,13 @@ public class Utils {
 		
 		//System.out.println("Idnr = " + " source = " + source + " source2 = " + source2 + " relation = " + relation);
 		
+		if(!dateType.equalsIgnoreCase("Missing") && Utils.dateIsValid(day, month, year) != 0){
+			System.out.println("IDNR = " + IDNR + ", Id_I = " + Id_I + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
+			return;
+			//startDay = startDay/0;
+		}
+
+		
 		ContextElement ce = Contxt.locateCertificate(source, yearCertificate, sequenceNumberCertificate,  ceCertificate,  "Source");
 		int Id_C = ce.getId_C();
 		INDIV_CONTEXT ic = new INDIV_CONTEXT();
@@ -364,6 +378,13 @@ public class Utils {
 	
 	public static void addIndivContextAndContext(String address, ContextElement ceCertificate, EntityManager em, int IDNR, int Id_I, String source, String relation, 
 			String dateType, String estimation, int day, int month, int year){
+		
+		if(!dateType.equalsIgnoreCase("Missing") && Utils.dateIsValid(day, month, year) != 0){
+			System.out.println("IDNR = " + IDNR + ", Id_I = " + Id_I + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
+			return;
+			//startDay = startDay/0;
+		}
+
 
 		
 		//if(1==1) return;
@@ -402,6 +423,13 @@ public class Utils {
 	// New
 	public static void addIndivContextAndContext(String quarter, String street, String number, String addition, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String relation, 
 			String dateType, String estimation, int day, int month, int year){
+		
+		if(!dateType.equalsIgnoreCase("Missing") && Utils.dateIsValid(day, month, year) != 0){
+			System.out.println("IDNR = " + IDNR + ", Id_I = " + Id_I + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
+			return;
+			//startDay = startDay/0;
+		}
+
 
 		if(ce == null) return;
 
@@ -453,7 +481,12 @@ public class Utils {
 	public static void addIndivAndContext(String quarter, String street, String number, String addition, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String type, 
 			String dateType, String estimation, int day, int month, int year){
 
-		
+		if(!dateType.equalsIgnoreCase("Missing") && Utils.dateIsValid(day, month, year) != 0){
+			System.out.println("IDNR = " + IDNR + ", Id_I = " + Id_I + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
+			return;
+			//startDay = startDay/0;
+		}
+
 		//System.out.println("ce = " + ce);
 		
 		if(ce == null) return;
@@ -512,6 +545,13 @@ public class Utils {
 	
 	public static void addIndivAndContext(String address, ContextElement ce, EntityManager em, int IDNR, int Id_I, String source, String type, 
 			String dateType, String estimation, int day, int month, int year){
+		
+		if(!dateType.equalsIgnoreCase("Missing") && Utils.dateIsValid(day, month, year) != 0){
+			System.out.println("IDNR = " + IDNR + ", Id_I = " + Id_I + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
+			return;
+			//startDay = startDay/0;
+		}
+
 
 		//if(1==1) return;
 
@@ -563,6 +603,14 @@ public class Utils {
 	public static void addIndiv(EntityManager em, int IDNR, int Id_I, String source, String type, String value, 
 			String dateType, String estimation, int day, int month, int year){
 		
+		if(!dateType.equalsIgnoreCase("Missing") && Utils.dateIsValid(day, month, year) != 0){
+			
+			System.out.println("IDNR = " + IDNR + ", Id_I = " + Id_I + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
+			return;
+			//startDay = startDay/0;
+		}
+
+		
 		int x = 0;
 		if(Id_I == 0)
 			 x = 1/0;
@@ -595,6 +643,13 @@ public class Utils {
 
 	public static void addIndiv(EntityManager em, int IDNR, int Id_I, String source, String type, String value, 
 			String dateType, String estimation, int day, int month, int year, int hour, int minute){
+		
+		if(!dateType.equalsIgnoreCase("Missing") && Utils.dateIsValid(day, month, year) != 0){
+			System.out.println("IDNR = " + IDNR + ", Id_I = " + Id_I + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
+			return;
+			//startDay = startDay/0;
+		}
+
 
 		int x = 0;
 		if(Id_I == 0)
@@ -634,8 +689,10 @@ public class Utils {
 		
 		
 		if(Utils.dateIsValid(startDay, startMonth, startYear) != 0){
-			System.out.println("" + startDay + " " + startMonth+ " "+startYear);
-			startDay = startDay/0;
+			System.out.println("IDNR = " + IDNR + ", Id_I = " + Id_I +  ",  date Type = " + dateType + ", invalid date: " +  startDay + " " + startMonth+ " "+startYear);
+
+			return;
+			//startDay = startDay/0;
 		}
 		
 		//System.out.println("dateType = " + dateType);

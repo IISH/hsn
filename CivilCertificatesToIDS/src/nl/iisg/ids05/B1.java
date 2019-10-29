@@ -95,7 +95,12 @@ public class B1 {
 			//System.out.println("b1sdcc = " + getB1sdcc() + ", certificate place =  " + ceCertificate.getName());
 		//}
 
-
+		// Do not continue with invalid aktedatum 
+		
+		//if(Utils.dateIsValid(getB1sdcd(),  getB1sdcm(), getB1sdcy()) != 0)
+		//	return;
+		
+		
 		// RP
 
 		int Id_I_RP = 1; // Utils.getId_I();
@@ -374,10 +379,10 @@ public class B1 {
 				}
 			}
 			else{
-				System.out.println("idnr = " + getIdnr());
-				System.out.format("%d - %d - %d\n", getB1sdcd(), getB1sdcm(), getB1sdcy());
-				System.out.format("%d - %d - %d\n", getB1sdcd(), getB1sdcm(), getB1sdcy() - 50);
-				System.out.format("%d - %d - %d\n", getB1sdcd(), getB1sdcm(),  getB1sdcy() - 14);
+				//System.out.println("idnr = " + getIdnr());
+				//System.out.format("%d - %d - %d\n", getB1sdcd(), getB1sdcm(), getB1sdcy());
+				//System.out.format("%d - %d - %d\n", getB1sdcd(), getB1sdcm(), getB1sdcy() - 50);
+				//System.out.format("%d - %d - %d\n", getB1sdcd(), getB1sdcm(),  getB1sdcy() - 14);
 				Utils.addIndiv(em, getIdnr(), Id_I_MO, "BC B1", "BIRTH_DATE", null, "Assigned", "Estimated [14/50]", getB1sdcd(), getB1sdcm(), getB1sdcy() - 50,  getB1sdcd(), getB1sdcm(),  getB1sdcy() - 14);
 			}
 			
