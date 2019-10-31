@@ -1024,6 +1024,7 @@ private static void loadIDS(String component, int lastDigit){
 	//Query q = em.createQuery("select a from INDIVIDUAL a where a.id_D < 9000"); 
 	//Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%0" + lastD + "'"); 
 	Query q = null;
+	//q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%196810%'");
 	q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%' and  a.id_D like '%" + lastD + "'");
 	//Query q = em.createQuery("select a from INDIVIDUAL a where a.source like '" + component + "%'"); 
 	//Query q = em.createQuery("select a from INDIVIDUAL a"); 
@@ -1084,6 +1085,7 @@ private static void loadIDS(String component, int lastDigit){
 	//q = em.createQuery("select a from INDIV_INDIV a where a.id_D == 1090"); 
 	//q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%0" + lastD + "'"); 
 	q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%" + lastD + "'"); 
+	//q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%' and a.id_D like '%196810%'");
 	//q = em.createQuery("select a from INDIV_INDIV a where a.source like '" + component + "%'");
 
 	//q = em.createQuery("select a from INDIV_INDIV a"); 
@@ -1129,6 +1131,7 @@ private static void loadIDS(String component, int lastDigit){
 	
 	//q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%' and a.id_D like '%0" + lastD + "'"); 
 	q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%' and a.id_D like '%" + lastD + "'"); 
+	//q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%' and a.id_D like '%196810%'");
 	//q = em.createQuery("select a from INDIV_CONTEXT a  where a.source like '" + component + "%'"); 
 	//q = em.createQuery("select a from INDIV_CONTEXT a"); 
 	setIndiv_contextL(q.getResultList());	
@@ -1299,9 +1302,9 @@ private static void createIDSTables(){
  */
 private static void integratePersons(){
 	
-	System.out.println("Integrate Persons");
+	//System.out.println("Integrate Persons");
 	
-	System.out.println("Sorting persons.....");
+	//System.out.println("Sorting persons.....");
 	
 	Collections.sort(personL, new Comparator<Person>() // this effectively integrates the three sources
 			{
@@ -1321,48 +1324,46 @@ private static void integratePersons(){
 		}
 			});
 	
-	System.out.println("Sorting persons done");
+	//System.out.println("Sorting persons done");
 	
-	System.out.println("Persons size = " + personL.size());
+	//System.out.println("Persons size = " + personL.size());
 	
 	int idnrOld = -1;
 	ArrayList<Person> family = null; 
 	for(int i = 0; i < personL.size(); i++){
 		//System.out.println("i = " + i + ", IDNR = " + personL.get(i).getIdnr());
 		if(personL.get(i).getIdnr() != idnrOld){
-			
+
 			if(family != null){
-				
-				if(i == 84019){
-					System.out.println("1");
-					System.out.println("family.size = " + family.size());
-					for(Person p: family)
-						System.out.println(p.getIdnr() + " " + p.getId() + " "+ p.getRelationRP());
-				}
-				
+
+				//System.out.println("1");
+				//System.out.println("family.size = " + family.size());
+				//for(Person p: family)
+					//System.out.println(p.getIdnr() + " " + p.getId() + " "+ p.getRelationRP());
+
 				handleRP(family);
-     			if(i == 84019) System.out.println("2");
+				//System.out.println("2");
 
 				handleMothers(family);
-				if(i == 84019) System.out.println("3");
+				//System.out.println("3");
 
 				handleFathers(family);
-				if(i == 84019) System.out.println("4");
+				//System.out.println("4");
 
 				handleSpouses(family);
-				if(i == 84019) System.out.println("5");
+				//System.out.println("5");
 
 				handleChildren(family);
-				if(i == 84019) System.out.println("6");
+				//System.out.println("6");
 
 				handleSiblings(family);
-				if(i == 84019) System.out.println("7");
+				//System.out.println("7");
 
 				handleParentsInLaw(family);
-				if(i == 84019) System.out.println("8");
+				//System.out.println("8");
 
 				handleOthers(family);
-				if(i == 84019) System.out.println("9");
+				//System.out.println("9");
 
 
 			}
@@ -1375,17 +1376,29 @@ private static void integratePersons(){
 		family.add(personL.get(i));
 		
 	}
+	
+	//System.out.println("family.size = " + family.size());
+	//for(Person p: family)
+		//System.out.println(p.getIdnr() + " " + p.getId() + " "+ p.getRelationRP());
+
 	if(family != null){
 		
 		handleRP(family); 
+		//System.out.println("11");
 		handleMothers(family); 
+		//System.out.println("12");
 		handleFathers(family);
-		handleSpouses(family); 
-		handleChildren(family); 
-		handleSiblings(family); 
-		handleParentsInLaw(family);		
+		//System.out.println("13");
+		handleSpouses(family);
+		//System.out.println("14");
+		handleChildren(family);
+		//System.out.println("15");
+		handleSiblings(family);
+		//System.out.println("16");
+		handleParentsInLaw(family);
+		//System.out.println("17");
 		handleOthers(family); 
-
+		//System.out.println("18");
 	}
 	
 	System.out.println("Integrate Persons Finished");
@@ -1767,6 +1780,8 @@ private static void handleSiblings(ArrayList<Person> family){
  */
 private static void handleParentsInLaw(ArrayList<Person> family){
 	
+	//System.out.println("PIL 1");
+	
 	int id = 201;
 	ArrayList<Person> group = new ArrayList<Person>();
 	for(Person p: family){
@@ -1777,8 +1792,12 @@ private static void handleParentsInLaw(ArrayList<Person> family){
 			p.setStartCode(2);  // preset
 		}
 	}
-	
+
+	//System.out.println("PIL 2");
+
 	setIDWithinGroup(group, false);
+	
+	//System.out.println("PIL 22");
 	
 	Collections.sort(group, new Comparator<Person>() 
 			{
@@ -1793,7 +1812,8 @@ private static void handleParentsInLaw(ArrayList<Person> family){
 		}
 			});
 	
-	
+	//System.out.println("PIL 3");
+
 	int id_prev = -1;
 	ArrayList<Person> group2 = new ArrayList<Person>();
 	
@@ -1817,6 +1837,9 @@ private static void handleParentsInLaw(ArrayList<Person> family){
 		group2.add(p);
 		
 	}
+	
+	//System.out.println("PIL 4");
+
 	if(group2.size() > 0){
 		setStartCode(group2); //find preferred source
 		for(Person p2: group2){					
@@ -1829,7 +1852,12 @@ private static void handleParentsInLaw(ArrayList<Person> family){
 
 	}
 	
+	//System.out.println("PIL 5");
+
 	family.removeAll(group);
+	
+	//System.out.println("PIL 6");
+
 
 }
 
@@ -1840,17 +1868,6 @@ private static void handleParentsInLaw(ArrayList<Person> family){
  * @return
  */
 private static void handleOthers(ArrayList<Person> family){
-	
-	
-	boolean  deb = false;
-	if(family != null && family.size() > 0){
-		if(family.get(0).getIdnr() == 84019){
-			System.out.println("HandleOthers Start 84019");
-			deb = true;
-		}
-	}
-	else
-		System.out.println("family == null/empty!");
 	
 	ArrayList<Person> group = new ArrayList<Person>();
 	for(Person p: family){
@@ -1872,7 +1889,7 @@ private static void handleOthers(ArrayList<Person> family){
 	
 	setIDWithinGroup(group, false);
 
-	if(deb == true) System.out.println("HandleOthers 1");
+	//if(deb == true) System.out.println("HandleOthers 1");
 
 	
 	Collections.sort(group, new Comparator<Person>() 
@@ -1889,7 +1906,7 @@ private static void handleOthers(ArrayList<Person> family){
 			});
 	
 	
-	if(deb == true) System.out.println("HandleOthers 2");
+	//if(deb == true) System.out.println("HandleOthers 2");
 
 	int id_prev = -1;
 	ArrayList<Person> group2 = new ArrayList<Person>();
@@ -1926,12 +1943,12 @@ private static void handleOthers(ArrayList<Person> family){
 
 	}
 	
-	if(deb == true) System.out.println("HandleOthers 3");
+	//if(deb == true) System.out.println("HandleOthers 3");
 
 	
 	family.removeAll(group);
 	
-	if(deb == true) System.out.println("HandleOthers Finished");
+	//if(deb == true) System.out.println("HandleOthers Finished");
 
 	
 }
@@ -1991,17 +2008,28 @@ private static void setIDWithinGroup(ArrayList<Person> group, boolean onlyNames 
 
 
 	for(Person p: group){
+		
+		//System.out.println("SIWG 1");
 		boolean found = false;
-		for(Person pu: uniquePersons){			
+		for(Person pu: uniquePersons){
+			//System.out.println("SIWG 2");
+
 			if(comparePersons(p, pu, onlyNames) == 0){
+				//System.out.println("SIWG 3");
+
 				p.setIdWithinGroup(pu.getIdWithinGroup());
 				found = true;
 				break;
 			}
 		}
+		//System.out.println("SIWG 4");
 
 
 		if(found == false){
+			//System.out.println("SIWG 5");
+			
+			
+
 			p.setIdWithinGroup(id++);
 			uniquePersons.add(p);
 		}
@@ -2046,8 +2074,13 @@ private static String idnrSixCharacters(String idnr){
 private static int comparePersons(Person p1, Person p2, boolean onlyNames){
 	
 	
+	//System.out.println("CP 1");
+	
 	boolean familyNameOK = checkFamilyName(p1.getFamilyName(), p2.getFamilyName());
+	//System.out.println("CP 2");
+
 	boolean firstNameOK = checkFirstName(p1.getFirstName(), p2.getFirstName()); 
+	//System.out.println("CP 3");
 
 	/*
 	if(p1.getFamilyName().length() >= 3 && p1.getFamilyName().substring(0,3).equalsIgnoreCase("kru")){
@@ -2067,7 +2100,13 @@ private static int comparePersons(Person p1, Person p2, boolean onlyNames){
 	if(familyNameOK && firstNameOK && onlyNames)
 		return 0;
 	
-	boolean birthDateOK = checkBirthDate(p1, p2); 
+	//System.out.println("CP 4");
+
+	
+	boolean birthDateOK = checkBirthDate(p1, p2);
+	
+	//System.out.println("CP 5");
+
 
 	/*
 	if(p1.getFamilyName().length() >= 3 && p1.getFamilyName().substring(0,3).equalsIgnoreCase("kru")){
