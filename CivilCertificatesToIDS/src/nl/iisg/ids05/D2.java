@@ -69,11 +69,11 @@ public class D2 {
 				 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "AGE_YEARS", (new Integer(getD2s_ay())).toString(), "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
 				 if(Utils.dateIsValid(getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy()) == 0){
 					 int[] a = Utils.birthRange(getD2s_ay(), getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
-					 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "BIRTH_DATE", null, "Assigned", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);			 
+					 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);			 
 				 }
 			 }
 			 else
-				Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "BIRTH_DATE", null, "Assigned", "Estimated [15/100]", 1, 1, getD1().getD1sdcy() - 100, 1, 1,  getD1().getD1sdcy() - 15);
+				Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "BIRTH_DATE", null, "Declared", "Estimated [15/100]", 1, 1, getD1().getD1sdcy() - 100, 1, 1,  getD1().getD1sdcy() - 15);
 
 
 			 ContextElement ceCertificate = null;
@@ -121,7 +121,7 @@ public class D2 {
 			 }
 		 }
 		 else
-			Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "BIRTH_DATE", null, "Assigned", "Estimated [15/100]", 1, 1, getD1().getD1sdcy() - 100, 1, 1,  getD1().getD1sdcy() - 15);
+			Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "BIRTH_DATE", null, "Declared", "Estimated [15/100]", 1, 1, getD1().getD1sdcy() - 100, 1, 1,  getD1().getD1sdcy() - 15);
 
 		 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 

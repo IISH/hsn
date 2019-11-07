@@ -158,7 +158,7 @@ public void convert(EntityManager em){
 			 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "AGE_YEARS", (new Integer(getD1rpay())).toString(), "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
 			 if(Utils.dateIsValid(getD1rpdd(), getD1rpdm(), getD1rpdy()) == 0){
 				 int[] a = Utils.birthRange(getD1rpay(), getD1rpdd(), getD1rpdm(), getD1rpdy());
-				 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "BIRTH_DATE", null, "Assigned", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
+				 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
 			 }
 		 }
 		 else
@@ -173,7 +173,7 @@ public void convert(EntityManager em){
 		 
 		 
 		 if(getD1rpay() <= 0)				
-			Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "BIRTH_DATE", null, "Assigned", "Estimated [0/100]", 1, 1, getD1sdcy() - 100, 1, 1,  getD1sdcy());
+			Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "BIRTH_DATE", null, "Declared", "Estimated [0/100]", 1, 1, getD1sdcy() - 100, 1, 1,  getD1sdcy());
 
 		 
 		 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "HSN_RESEARCH_PERSON", "HSN RP", "Missing", "Time_invariant", 0, 0, 0);
@@ -315,11 +315,11 @@ public void convert(EntityManager em){
 					 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "AGE_YEARS", (new Integer(getD1faay())).toString(), "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
 					 if(Utils.dateIsValid(getD1rpdd(), getD1rpdm(), getD1rpdy()) == 0){
 						 int[] a = Utils.birthRange(getD1faay(), getD1rpdd(), getD1rpdm(), getD1rpdy());
-						 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "BIRTH_DATE", null, "Assigned", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
+						 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
 					 }
 				 }
 				 else
-					 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "BIRTH_DATE", null, "Assigned", "Estimated [16/100]", 1, 1, getD1rpdy() - 100, 1, 1, getD1rpdy() - 16);
+					 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "BIRTH_DATE", null, "Declared", "Estimated [16/100]", 1, 1, getD1rpdy() - 100, 1, 1, getD1rpdy() - 16);
 
 				 if(ceCertificate != null){
 					 //Utils.addIndivContextAndContext(getD1fall(), ceCertificate, em, getIdnr(), Id_I_FA, "DC D1", "", "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
@@ -327,7 +327,7 @@ public void convert(EntityManager em){
 				 }
 			 }
 			 else
-				 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "BIRTH_DATE", null, "Assigned", "Estimated [16/100]", 1, 1, getD1rpdy() - 100, 1, 1, getD1rpdy() - 16);
+				 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "BIRTH_DATE", null, "Declared", "Estimated [16/100]", 1, 1, getD1rpdy() - 100, 1, 1, getD1rpdy() - 16);
 
 			 if(getD1infa() != null && getD1infa().trim().equalsIgnoreCase("J")){
 				 if(getD1insg() != null && getD1insg().trim().length() > 0)
@@ -418,12 +418,12 @@ public void convert(EntityManager em){
 					 //Utils.addIndiv(em, getIdnr(), Id_I_MO, "DC D1", "AGE_YEARS", (new Integer(getD1moay())).toString(), getD1rpdd(), getD1rpdm(), getD1rpdy());
 					 if(Utils.dateIsValid(getD1rpdd(), getD1rpdm(), getD1rpdy()) == 0){
 						 int[] a = Utils.birthRange(getD1moay(), getD1rpdd(), getD1rpdm(), getD1rpdy());
-						 Utils.addIndiv(em, getIdnr(), Id_I_MO, "DC D1",  "BIRTH_DATE", null, "Assigned", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
+						 Utils.addIndiv(em, getIdnr(), Id_I_MO, "DC D1",  "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
 					 }
 
 				 }
 				 else
-					 Utils.addIndiv(em, getIdnr(), Id_I_MO, "DC D1", "BIRTH_DATE", null, "Assigned", "Estimated [15/100]", 1, 1, getD1rpdy() - 100, 1, 1, getD1rpdy() - 15);
+					 Utils.addIndiv(em, getIdnr(), Id_I_MO, "DC D1", "BIRTH_DATE", null, "Declared", "Estimated [15/100]", 1, 1, getD1rpdy() - 100, 1, 1, getD1rpdy() - 15);
 
 
 				 if(ceCertificate != null){
@@ -432,7 +432,7 @@ public void convert(EntityManager em){
 				 }
 			 }
 			 else
-				 Utils.addIndiv(em, getIdnr(), Id_I_MO, "DC D1", "BIRTH_DATE", null, "Assigned", "Estimated [15/100]", 1, 1, getD1rpdy() - 100, 1, 1, getD1rpdy() - 15);
+				 Utils.addIndiv(em, getIdnr(), Id_I_MO, "DC D1", "BIRTH_DATE", null, "Declared", "Estimated [15/100]", 1, 1, getD1rpdy() - 100, 1, 1, getD1rpdy() - 15);
 			 Utils.addIndiv(em, getIdnr(), Id_I_MO, "DC D1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
 			 Utils.addIndiv(em, getIdnr(), Id_I_MO, "DC D1", "HSN_RESEARCH_PERSON", "Mother RP", "Missing", "Time_invariant", 0, 0, 0);

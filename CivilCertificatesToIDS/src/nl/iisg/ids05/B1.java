@@ -242,11 +242,11 @@ public class B1 {
 				Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1", "AGE_YEARS", (new Integer(getB1inay())).toString(), "Declared", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 				if(Utils.dateIsValid(getB1sdcd(),  getB1sdcm(), getB1sdcy()) == 0){
 					int[] a = Utils.birthRange(getB1inay(), getB1sdcd(),  getB1sdcm(), getB1sdcy());
-					Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1", "BIRTH_DATE", null, "Assigned", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
+					Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1", "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
 				}
 			}
 			else
-				Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1", "BIRTH_DATE", null, "Assigned", "Estimated [16/100]", 
+				Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1", "BIRTH_DATE", null, "Declared", "Estimated [16/100]", 
 						getB1sdcd(), getB1sdcm(), getB1sdcy() - 100,  getB1sdcd(), getB1sdcm(),  getB1sdcy() - 16);
 
 			if(getB1inoc() != null && getB1inoc().trim().length() > 0)
@@ -375,7 +375,7 @@ public class B1 {
 				Utils.addIndiv(em, getIdnr(), Id_I_MO, "BC B1", "AGE_YEARS", (new Integer(getB1moay())).toString(), "Declared", "Exact", getB1sdcd(),  getB1sdcm(), getB1sdcy());
 				if(Utils.dateIsValid(getB1sdcd(),  getB1sdcm(), getB1sdcy()) == 0){
 					int[] a = Utils.birthRange(getB1moay(), getB1sdcd(),  getB1sdcm(), getB1sdcy());
-					Utils.addIndiv(em, getIdnr(), Id_I_MO, "BC B1", "BIRTH_DATE", null, "Assigned", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
+					Utils.addIndiv(em, getIdnr(), Id_I_MO, "BC B1", "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
 				}
 			}
 			else{
@@ -383,7 +383,7 @@ public class B1 {
 				//System.out.format("%d - %d - %d\n", getB1sdcd(), getB1sdcm(), getB1sdcy());
 				//System.out.format("%d - %d - %d\n", getB1sdcd(), getB1sdcm(), getB1sdcy() - 50);
 				//System.out.format("%d - %d - %d\n", getB1sdcd(), getB1sdcm(),  getB1sdcy() - 14);
-				Utils.addIndiv(em, getIdnr(), Id_I_MO, "BC B1", "BIRTH_DATE", null, "Assigned", "Estimated [14/50]", getB1sdcd(), getB1sdcm(), getB1sdcy() - 50,  getB1sdcd(), getB1sdcm(),  getB1sdcy() - 14);
+				Utils.addIndiv(em, getIdnr(), Id_I_MO, "BC B1", "BIRTH_DATE", null, "Declared", "Estimated [14/50]", getB1sdcd(), getB1sdcm(), getB1sdcy() - 50,  getB1sdcd(), getB1sdcm(),  getB1sdcy() - 14);
 			}
 			
 

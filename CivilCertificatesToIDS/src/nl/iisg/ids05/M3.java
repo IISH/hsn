@@ -81,7 +81,7 @@ public class M3 {
 		 
 		 // We must give an estimated birthdate for linking purposes
 		 
-		Utils.addIndiv(em, getIdnr(), Id_I_FS, "MC M3", "BIRTH_DATE", null, "Assigned", "Estimated [15/120]", 1, 1, getMar_cy() - 120, 1, 1,   getMar_cy() - 15);
+		Utils.addIndiv(em, getIdnr(), Id_I_FS, "MC M3", "BIRTH_DATE", null, "Declared", "Estimated [15/120]", 1, 1, getMar_cy() - 120, 1, 1,   getMar_cy() - 15);
 
 		Utils.addIndiv(em, getIdnr(), Id_I_FS, "MC M3", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
