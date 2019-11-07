@@ -113,8 +113,10 @@ public class Common1 {
 			 
 		 // Correct for 29-02-xxxx
 		 
-		 if(month1 == 2 && day1 == 29 && !(year1 % 4 == 0 && (year1 % 100 != 0 || year1 % 400 == 0)))
-			 day1 = 28;
+		 if(month1 == 2 && day1 == 29 && !(year1 % 4 == 0 && (year1 % 100 != 0 || year1 % 400 == 0))){
+			 day1 = 1;
+			 month1 = 3;
+		 }
 		 
 		 if(year1 > 1800){
 	
