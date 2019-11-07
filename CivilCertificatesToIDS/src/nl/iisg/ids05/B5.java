@@ -67,9 +67,12 @@ public class B5 {
 				 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B5", "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
 			 }
 		 }
-		 else
-				Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B5", "BIRTH_DATE", null, "Declared", "Estimated [16/100]", 
-						getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy() - 100, getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy() - 16);
+		 else{
+			 
+			 int[] a = Utils.range(100, 16, getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());	
+			 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B5", "BIRTH_DATE", null, "Declared", "Estimated [16/100]", 
+					 a[0], a[1], a[2], a[3], a[4], a[5]);
+		 }
 
 		 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B5", "HSN_RESEARCH_PERSON", "Father RP", "Missing", "Time_invariant", 0, 0, 0);
 

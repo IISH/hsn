@@ -13,12 +13,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-
 import nl.iisg.idscontext.ContextElement;
 import nl.iisg.idscontext.Contxt;
 import nl.iisg.ref.Ref;
 import nl.iisg.ref.Ref_BirthAddress;
-import nl.iisg.ref.Ref_Municipality;
 
 @Entity
 @Table(name="b1")
@@ -245,9 +243,11 @@ public class B1 {
 					Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1", "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
 				}
 			}
-			else
+			else{
+				int[] a = Utils.range(100, 16, getB1sdcd(), getB1sdcm(),  getB1sdcy());
 				Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1", "BIRTH_DATE", null, "Declared", "Estimated [16/100]", 
-						getB1sdcd(), getB1sdcm(), getB1sdcy() - 100,  getB1sdcd(), getB1sdcm(),  getB1sdcy() - 16);
+						a[0], a[1], a[2], a[3], a[4], a[5]);
+			}
 
 			if(getB1inoc() != null && getB1inoc().trim().length() > 0)
 				Utils.addIndiv(em, getIdnr(), Id_I_IN, "BC B1", "OCCUPATION_STANDARD", getB1inoc() , "Declared", "Exact",  getB1sdcd(),  getB1sdcm(), getB1sdcy());
@@ -383,7 +383,9 @@ public class B1 {
 				//System.out.format("%d - %d - %d\n", getB1sdcd(), getB1sdcm(), getB1sdcy());
 				//System.out.format("%d - %d - %d\n", getB1sdcd(), getB1sdcm(), getB1sdcy() - 50);
 				//System.out.format("%d - %d - %d\n", getB1sdcd(), getB1sdcm(),  getB1sdcy() - 14);
-				Utils.addIndiv(em, getIdnr(), Id_I_MO, "BC B1", "BIRTH_DATE", null, "Declared", "Estimated [14/50]", getB1sdcd(), getB1sdcm(), getB1sdcy() - 50,  getB1sdcd(), getB1sdcm(),  getB1sdcy() - 14);
+				int[] a = Utils.range(50, 14, getB1sdcd(), getB1sdcm(),  getB1sdcy());
+				Utils.addIndiv(em, getIdnr(), Id_I_MO, "BC B1", "BIRTH_DATE", null, "Declared", "Estimated [14/50]", 
+						a[0], a[1], a[2], a[3], a[4], a[5]);
 			}
 			
 

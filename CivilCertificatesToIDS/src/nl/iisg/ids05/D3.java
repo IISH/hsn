@@ -61,8 +61,12 @@ public class D3 {
 				 Utils.addIndiv(em, getIdnr(), Id_I_IN,  "DC D3", "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);			 
 			 }
 		 }
-		 else
-			Utils.addIndiv(em, getIdnr(), Id_I_IN,  "DC D3", "BIRTH_DATE", null, "Declared", "Estimated [18/100]", 1, 1, getD1().getD1sdcy() - 100, 1, 1,  getD1().getD1sdcy() - 18);
+		 else{			 
+			 int[] a = Utils.range(100, 18, 1, 1, getD1().getD1sdcy());				 
+			 Utils.addIndiv(em, getIdnr(), Id_I_IN,  "DC D3", "BIRTH_DATE", null, "Declared", "Estimated [18/100]", 
+					 a[0], a[1], a[2], a[3], a[4], a[5]);
+		 }
+
 
 		 Utils.addIndiv(em, getIdnr(), Id_I_IN,  "DC D3", "SIGNATURE", Utils.signature(getD3i_sg()), "Event", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
 		 

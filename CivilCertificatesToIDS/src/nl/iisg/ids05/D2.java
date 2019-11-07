@@ -72,8 +72,11 @@ public class D2 {
 					 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);			 
 				 }
 			 }
-			 else
-				Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "BIRTH_DATE", null, "Declared", "Estimated [15/100]", 1, 1, getD1().getD1sdcy() - 100, 1, 1,  getD1().getD1sdcy() - 15);
+			 else{
+				 int[] a = Utils.range(100, 15, 1, 1, getD1().getD1sdcy());						 
+				 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "BIRTH_DATE", null, "Declared", "Estimated [15/100]", 
+						 a[0], a[1], a[2], a[3], a[4], a[5]);
+			 }
 
 
 			 ContextElement ceCertificate = null;
@@ -120,8 +123,11 @@ public class D2 {
 
 			 }
 		 }
-		 else
-			Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "BIRTH_DATE", null, "Declared", "Estimated [15/100]", 1, 1, getD1().getD1sdcy() - 100, 1, 1,  getD1().getD1sdcy() - 15);
+		 else{
+			 int[] a = Utils.range(100, 15, 1, 1, getD1().getD1sdcy());				 
+			 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "BIRTH_DATE", null, "Declared", "Estimated [15/100]", 
+					 a[0], a[1], a[2], a[3], a[4], a[5]);
+		 }
 
 		 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 

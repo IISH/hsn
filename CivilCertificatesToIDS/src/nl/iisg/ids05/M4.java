@@ -69,8 +69,11 @@ public class M4 {
 				 Utils.addIndiv(em, getIdnr(), Id_I_WT, "MC M4", "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
 			 }
 		 }
-		 else
-			Utils.addIndiv(em, getIdnr(), Id_I_WT, "MC M4", "BIRTH_DATE", null, "Declared", "Estimated [18/100]", 1, 1, getMar_cy() - 100, 1, 1,   getMar_cy() - 18);
+		 else{			 
+			 int[] a = Utils.range(100, 18, 1, 1, getMar_cy());		
+			 Utils.addIndiv(em, getIdnr(), Id_I_WT, "MC M4", "BIRTH_DATE", null, "Declared", "Estimated [18/100]", 
+					 a[0], a[1], a[2], a[3], a[4], a[5]);
+		 }
 
 		 if(getM4w_oc() != null && getM4w_oc().trim().length() > 0)
 			 Utils.addIndiv(em, getIdnr(), Id_I_WT, "MC M4", "OCCUPATION_STANDARD", getM4w_oc(), "Declared", "Exact", getMar_cd(), getMar_cm(), getMar_cy());

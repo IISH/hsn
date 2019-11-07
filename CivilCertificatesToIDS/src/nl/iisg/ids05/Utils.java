@@ -1016,19 +1016,19 @@ public class Utils {
 
 		 int[] a =  {0, 0, 0, 0, 0, 0};
 
-		 
+
 		 if(Utils.dateIsValid(day, month, year) != 0)
 			 return a;
-		 
-		 
+
+
 		 int [] monthDays = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-		 
+
 		 // Earliest birthday: tomorrow - (age + 1)
-		 
+
 		 int tomorrowDay = 0;
 		 int tomorrowMonth = 0;
 		 int tomorrowYear = 0;
-		 
+
 		 if(day < monthDays[month] || (day == 29 && month == 2 && year % 4 == 0)){
 			 tomorrowDay =  day + 1;
 			 tomorrowMonth = month;
@@ -1046,14 +1046,14 @@ public class Utils {
 				 tomorrowYear = year + 1;
 			 }
 		 }
-		 
+
 		 if(Utils.dateIsValid(tomorrowDay, tomorrowMonth, tomorrowYear) != 0){
 			 tomorrowDay = tomorrowDay - 1; 
 			 if(Utils.dateIsValid(tomorrowDay, tomorrowMonth, tomorrowYear) != 0)
 				 return a;
-			 
+
 		 }
-		 
+
 		 a[0] = tomorrowDay;
 		 a[1] = tomorrowMonth;
 		 a[2] = tomorrowYear  - (age + 1);
@@ -1061,18 +1061,55 @@ public class Utils {
 		 if(Utils.dateIsValid(a[0], a[1], a[2]) != 0)
 			 a[0] = a[0] - 1; // can only be 29-3 in a non-leap year so subtract 1
 
-		 
+
 		 // Latest birthday: today - age
-		 
+
 		 a[3] = day;
 		 a[4] = month;
 		 a[5] = year - age;
-		 
+
 		 if(Utils.dateIsValid(a[3], a[4], a[5]) != 0)
 			 a[3] = a[3] - 1; // can only be 29-3 in a non-leap year so subtract 1
+
+		 return a;
+
+	 }
+
+	 public static int[] range(int minYears, int maxYears, int day, int month, int year){
+
+		 int[] a =  {0, 0, 0, 0, 0, 0};
+		 
+		 int minYear  = year - minYears;
+		 int minDay   = day;
+		 int minMonth = month; 
+		 
+		// Correct for 29-02-xxxx
+		 
+		 if(month == 2 && day == 29 && !(minYear % 4 == 0 && (minYear % 100 != 0 || minYear % 400 == 0))){
+			 minDay   = 1;
+			 minMonth = 3;
+		 }
+
+		 a[0] = minDay;
+		 a[1] = minMonth;
+		 a[2] = minYear;
+		 
+		 int maxYear  = year - maxYears;
+		 int maxDay   = day;
+		 int maxMonth = month; 
+		 
+		// Correct for 29-02-xxxx
+		 
+		 if(month == 2 && day == 29 && !(maxYear % 4 == 0 && (maxYear % 100 != 0 || maxYear % 400 == 0))){
+			 maxDay   = 1;
+			 maxMonth = 3;
+		 }
+
+		 a[3] = maxDay;
+		 a[4] = maxMonth;
+		 a[5] = maxYear;
 		 
 		 return a;
-		 
 	 }
 	 
     public static String sex(String sex){

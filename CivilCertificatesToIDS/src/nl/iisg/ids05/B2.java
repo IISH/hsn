@@ -89,8 +89,11 @@ public class B2 {
 				 Utils.addIndiv(em, getIdnr(), Id_I_WN, "BC B2", "BIRTH_DATE", null, "Declared", "Age_based",  a[0], a[1], a[2], a[3], a[4], a[5]);
 			 }
 		 }
-		 else
-			Utils.addIndiv(em, getIdnr(), Id_I_WN, "BC B2", "BIRTH_DATE", null, "Declared", "Estimated [16/100]", 1, 1, getB1().getB1sdcy() - 100, 1, 1, getB1(). getB1sdcy() - 16);
+		 else{
+			 int[] a = Utils.range(100, 16, 1, 1, getB1().getB1sdcy());
+			 Utils.addIndiv(em, getIdnr(), Id_I_WN, "BC B2", "BIRTH_DATE", null, "Declared", "Estimated [16/100]", 
+					 a[0], a[1], a[2], a[3], a[4], a[5]);
+		 }
 
 		 if(getB2w_oc() != null && getB2w_oc().trim().length() > 0)
 			 Utils.addIndiv(em, getIdnr(), Id_I_WN, "BC B2", "OCCUPATION_STANDARD", getB2w_oc(), "Declared", "Exact", getB1().getB1sdcd(), getB1().getB1sdcm(), getB1().getB1sdcy());

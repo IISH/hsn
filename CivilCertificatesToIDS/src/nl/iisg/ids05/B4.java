@@ -109,7 +109,10 @@ public class B4 {
 		 
 		 // We must give an estimated birthdate for linking purposes
 		 
-		 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B4", "BIRTH_DATE", null, "Declared", "Estimated [16/100]", day, month, year - 100, day, month,  year - 16);
+		 int[] a = Utils.range(100, 16, day, month, year);			 
+		 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B4", "BIRTH_DATE", null, "Declared", "Estimated [16/100]",
+				 a[0], a[1], a[2], a[3], a[4], a[5]);
+		 
    		 Utils.addIndiv(em, getIdnr(), Id_I_FA, "BC B4", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
 

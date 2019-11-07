@@ -407,9 +407,11 @@ public class M1 {
 					 Utils.addIndiv(em, getIdnr(), Id_I_GF, "MC M1", "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
 				 }
 			 }
-			 else
-				Utils.addIndiv(em, getIdnr(), Id_I_GF, "MC M1", "BIRTH_DATE", null, "Declared", "Estimated [30/100]", 
-						getMar_cd(), getMar_cm(), getMar_cy() - 100, getMar_cd(), getMar_cm(), getMar_cy() - 30);
+			 else{
+				 int[] a = Utils.range(100, 30, getMar_cd(), getMar_cm(), getMar_cy());					 
+				 Utils.addIndiv(em, getIdnr(), Id_I_GF, "MC M1", "BIRTH_DATE", null, "Declared", "Estimated [30/100]", 
+						 a[0], a[1], a[2], a[3], a[4], a[5]);
+			 }
 
 
 			 if(getM1gray() >= 23 || getM1gfca().equalsIgnoreCase("N"))
@@ -486,9 +488,11 @@ public class M1 {
 					 Utils.addIndiv(em, getIdnr(), Id_I_GM, "MC M1", "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
 				 }
 			 }
-			 else
+			 else{
+				 int[] a = Utils.range(100, 30, getMar_cd(), getMar_cm(), getMar_cy());					
 				 Utils.addIndiv(em, getIdnr(), Id_I_GM, "MC M1", "BIRTH_DATE", null, "Declared", "Estimated [30/100]", 
-							getMar_cd(), getMar_cm(), getMar_cy() - 100, getMar_cd(), getMar_cm(), getMar_cy() - 30);
+						 a[0], a[1], a[2], a[3], a[4], a[5]);
+			 }
 
 
 			 if(getM1gray() >= 23 || getM1gmca().equalsIgnoreCase("N"))
@@ -580,9 +584,11 @@ public class M1 {
 					 Utils.addIndiv(em, getIdnr(), Id_I_BF, "MC M1", "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
 				 }
 			 }
-			 else
-				Utils.addIndiv(em, getIdnr(), Id_I_BF, "MC M1", "BIRTH_DATE", null, "Declared", "Estimated [30/100]",
-						getMar_cd(), getMar_cm(), getMar_cy() - 100, getMar_cd(), getMar_cm(), getMar_cy() - 30);
+			 else{
+				 int[] a = Utils.range(100, 30, getMar_cd(), getMar_cm(), getMar_cy());					
+				 Utils.addIndiv(em, getIdnr(), Id_I_BF, "MC M1", "BIRTH_DATE", null, "Declared", "Estimated [30/100]", 
+						 a[0], a[1], a[2], a[3], a[4], a[5]);
+			 }
 
 			 Utils.addIndiv(em, getIdnr(), Id_I_BF, "MC M1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
@@ -658,9 +664,11 @@ public class M1 {
 					 Utils.addIndiv(em, getIdnr(), Id_I_BM, "MC M1", "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
 				 }
 			 }
-			 else
-				Utils.addIndiv(em, getIdnr(), Id_I_BM, "MC M1", "BIRTH_DATE", null, "Declared", "Estimated [30/100]", 
-						getMar_cd(), getMar_cm(), getMar_cy() - 100, getMar_cd(), getMar_cm(), getMar_cy() - 30);
+			 else{
+				 int[] a = Utils.range(100, 30, getMar_cd(), getMar_cm(), getMar_cy());					
+				 Utils.addIndiv(em, getIdnr(), Id_I_BM, "MC M1", "BIRTH_DATE", null, "Declared", "Estimated [30/100]", 
+						 a[0], a[1], a[2], a[3], a[4], a[5]);
+			 }
 
 
 			 
