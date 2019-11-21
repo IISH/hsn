@@ -140,7 +140,7 @@ public void convert(EntityManager em){
 		 if(getD1rpcs() != null && getD1rpcs().trim().length() > 0){
 			 String cs = "Unknown";
 			 if(getD1rpcs().equals("1"))
-				 cs = "Unmaried";
+				 cs = "Unmarried";
 			 else
 				 if(getD1rpcs().equals("2"))
 					 cs = "Widowed";
