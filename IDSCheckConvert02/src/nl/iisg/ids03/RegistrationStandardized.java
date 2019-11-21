@@ -2188,10 +2188,10 @@ public class RegistrationStandardized {
     
     public void relateAllToAll(){
 
-    	int traceKey = 101955;
+    	//int traceKey = 101955;
 
-    	if(getKeyToRP() == traceKey)
-    		System.out.println("\nRegistration: " + getKeyToRP() + "  " + getKeyToSourceRegister());
+    	//if(getKeyToRP() == traceKey)
+    		//System.out.println("\nRegistration: " + getKeyToRP() + "  " + getKeyToSourceRegister());
 
     	for(PersonStandardized psA: getPersonsStandardizedInRegistration()){
 
@@ -2212,11 +2212,11 @@ public class RegistrationStandardized {
 
     				x1 = relToHeadA;
 
-    				if(relToHeadA <= 0){
-    					if(getKeyToRP() == traceKey)
-    						System.out.println(psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + x1);
-    					continue;
-    				}
+    				//if(relToHeadA <= 0){
+    				//	if(getKeyToRP() == traceKey)
+    				//		System.out.println(psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + x1);
+    				//	continue;
+    				//}
 
     				if((relToHeadA == ConstRelations2.EXPLICIET_HOOFD  || relToHeadA == ConstRelations2.EXPLICIET_HOOFD_EERSTE_OPVOLGER || relToHeadA == ConstRelations2.EXPLICIET_HOOFD_TWEEDE_OPVOLGER) && 
     						psA.getSex().equalsIgnoreCase("V"))
@@ -2241,11 +2241,11 @@ public class RegistrationStandardized {
 
     							x2 = relToHeadB;
 
-    							if(relToHeadB <= 0){
-    								if(getKeyToRP() == traceKey)
-    									System.out.println(psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + x1 + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + x2);
-    								continue;
-    							}
+    							//if(relToHeadB <= 0){
+    							//	if(getKeyToRP() == traceKey)
+    							//		System.out.println(psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + x1 + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + x2);
+    							//	continue;
+    							//}
 
     							if((relToHeadB == ConstRelations2.EXPLICIET_HOOFD  || relToHeadB == ConstRelations2.EXPLICIET_HOOFD_EERSTE_OPVOLGER || relToHeadB == ConstRelations2.EXPLICIET_HOOFD_TWEEDE_OPVOLGER) && 
     									psB.getSex().equalsIgnoreCase("V"))
@@ -2256,18 +2256,18 @@ public class RegistrationStandardized {
     							
     							int[] relABa = Common1.getRelation(relToHeadA, relToHeadB);
 
-    							if(getKeyToRP() == traceKey){
-    								System.out.println(relToHeadA + " " + relToHeadB);
-    								for(int x: relABa) System.out.println(x);
-    							}
+    							//if(getKeyToRP() == traceKey){
+    							//	System.out.println(relToHeadA + " " + relToHeadB);
+    							//	for(int x: relABa) System.out.println(x);
+    							//}
 
     							int relAB = ConstRelations2.GEEN_VERWANTSCHAP;  // preset 'geen verwantschap'
     							if(relABa != null){   								
 
     								// See if -1 was returned
     								
-    								if(relABa[0] == -1)
-    									System.out.println(psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + x1 + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + x2 + " no relation found!");
+    								if(relABa[0] <= 0);
+    									//System.out.println(psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + x1 + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + x2 +  "   " + relABa[0] +  " no relation found!");
 
 
 
@@ -2306,27 +2306,27 @@ public class RegistrationStandardized {
 
 
 
-    							if(relAB <= 0){
-    								if(getKeyToRP() == traceKey)
-    									System.out.println(psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + x1 + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + x2 + "  " + x3 + "  " + x4);
-    								continue;
-    							}
+    							//if(relAB <= 0){
+    							//	if(getKeyToRP() == traceKey)
+    							//		System.out.println(psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + x1 + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + x2 + "  " + x3 + "  " + x4);
+    							//	continue;
+    							//}
 
     							
-    							if(getKeyToRP() == traceKey){
-    								
-    								System.out.format("%d  %s %d   %d   %d   %d   %d  %d \n", 
-    										relAB, psA.getSex(), psA.getPersonID(), psB.getPersonID(), psA.getPersonID_FA(), psA.getPersonID_MO(),
-        									psB.getPersonID_FA(), psB.getPersonID_MO());
-    							}
+    							//if(getKeyToRP() == traceKey){
+    							//	
+    							//	System.out.format("%d  %s %d   %d   %d   %d   %d  %d \n", 
+    							//			relAB, psA.getSex(), psA.getPersonID(), psB.getPersonID(), psA.getPersonID_FA(), psA.getPersonID_MO(),
+        						//			psB.getPersonID_FA(), psB.getPersonID_MO());
+    							//}
     							relAB = resolveRelation(relAB, psA.getSex(), psA.getPersonID(), psB.getPersonID(), psA.getPersonID_FA(), psA.getPersonID_MO(),
     									psB.getPersonID_FA(), psB.getPersonID_MO());
 
     							x4 = relAB;
 
     							//if(getKeyToRP() == traceKey)
-    							if(getKeyToRP() == traceKey)
-    								System.out.println("0 " +  psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + ConstRelations2.b3kode1[x1] + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + ConstRelations2.b3kode1[x2] + "  " + ConstRelations2.b3kode1[x3] + "  " + ConstRelations2.b3kode1[x4]);
+    							//if(getKeyToRP() == traceKey)
+    							//	System.out.println("0 " +  psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + ConstRelations2.b3kode1[x1] + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + ConstRelations2.b3kode1[x2] + "  " + ConstRelations2.b3kode1[x3] + "  " + ConstRelations2.b3kode1[x4]);
     							//if(getKeyToRP() == traceKey &&  (psA.getNatureOfPerson() != 2   || psB.getNatureOfPerson() != 2)){
     							//	System.out.println("Person A = " + psA.getPersonID() + "  " + psA.getFirstName() + "  " + psA.getFamilyName() + "  , relation to Head = " + relToHeadA);
     							//	System.out.println("Person B = " + psB.getPersonID() + "  " + psB.getFirstName() + "  " + psB.getFamilyName() + "  , relation = " + relToHeadB);
@@ -2340,8 +2340,8 @@ public class RegistrationStandardized {
     									String  []  intersection = Common1.getIntersection(pdsA.getStartDate(), pdsA.getEndDate(), pdsB.getStartDate(), pdsB.getEndDate());
     									if(intersection != null){
 
-    		    							if(getKeyToRP() == traceKey)
-    		    								System.out.println("1 " +  psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + ConstRelations2.b3kode1[x1] + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + ConstRelations2.b3kode1[x2] + "  " + ConstRelations2.b3kode1[x3] + "  " + ConstRelations2.b3kode1[x4]);
+    		    							//if(getKeyToRP() == traceKey)
+    		    							//	System.out.println("1 " +  psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + ConstRelations2.b3kode1[x1] + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + ConstRelations2.b3kode1[x2] + "  " + ConstRelations2.b3kode1[x3] + "  " + ConstRelations2.b3kode1[x4]);
 
     										
     										PDS_AllToAll pds = new PDS_AllToAll();
@@ -2377,8 +2377,8 @@ public class RegistrationStandardized {
     								}
     								else{ // not blood related but no dates
     									
-		    							if(getKeyToRP() == traceKey)
-		    								System.out.println("2 " +  psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + ConstRelations2.b3kode1[x1] + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + ConstRelations2.b3kode1[x2] + "  " + ConstRelations2.b3kode1[x3] + "  " + ConstRelations2.b3kode1[x4]);
+		    							//if(getKeyToRP() == traceKey)
+		    								//System.out.println("2 " +  psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + ConstRelations2.b3kode1[x1] + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + ConstRelations2.b3kode1[x2] + "  " + ConstRelations2.b3kode1[x3] + "  " + ConstRelations2.b3kode1[x4]);
 
     									
     									PDS_AllToAll pds = new PDS_AllToAll();
@@ -2410,8 +2410,8 @@ public class RegistrationStandardized {
     							}
     							else{ // blood related, do not date
     								
-	    							if(getKeyToRP() == traceKey)
-	    								System.out.println("3 " +  psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + ConstRelations2.b3kode1[x1] + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + ConstRelations2.b3kode1[x2] + "  " + ConstRelations2.b3kode1[x3] + "  " + ConstRelations2.b3kode1[x4]);
+	    							//if(getKeyToRP() == traceKey)
+	    							//	System.out.println("3 " +  psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + ConstRelations2.b3kode1[x1] + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + ConstRelations2.b3kode1[x2] + "  " + ConstRelations2.b3kode1[x3] + "  " + ConstRelations2.b3kode1[x4]);
 
 
     								PDS_AllToAll pds = new PDS_AllToAll();
