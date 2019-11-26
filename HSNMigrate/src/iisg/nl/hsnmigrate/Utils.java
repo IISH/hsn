@@ -680,7 +680,8 @@ public class Utils {
 
 				        		
 				        		
-				        		" idnr = 1244  or " + 
+					" idnr = 1243  or " + 
+					" idnr = 1244  or " + 
 				        		" idnr = 1220  or " + 
 				        		" idnr = 1099  or " + 
 				        		" idnr = 2072; "; 
