@@ -660,6 +660,9 @@ public class Utils {
 					 s = conn.createStatement();
 					 //String selTable = "SELECT * FROM " + tabName + " WHERE IDNR < 15000";  // test
 					 String selTable = "SELECT * FROM " + tabName ; 
+
+					 /*
+					 String selTable = "SELECT * FROM " + tabName ; 
 					 
 				         selTable = "SELECT * FROM " + tabName + 
 				        		" where idnr = 1229 or " + 
@@ -685,7 +688,7 @@ public class Utils {
 				        		" idnr = 1220  or " + 
 				        		" idnr = 1099  or " + 
 				        		" idnr = 2072; "; 
-                     
+                     */
 
 					 try {
 						 s.execute(selTable);

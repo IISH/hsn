@@ -259,7 +259,7 @@ public class Utils {
 			String dateType, String estimation, int day, int month, int year){
 		
 		if(!dateType.equalsIgnoreCase("Missing") && Utils.dateIsValid(day, month, year) != 0){
-			System.out.println("IDNR = " + IDNR + ", Id_I = " + Id_I + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
+			System.out.println("1 Source = "+ source + " IDNR = " + IDNR + ", Id_I = " + id_i_1 + "-" + id_i_2 + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
 			return;
 			//startDay = startDay/0;
 		}
@@ -348,7 +348,7 @@ public class Utils {
 		//System.out.println("Idnr = " + " source = " + source + " source2 = " + source2 + " relation = " + relation);
 		
 		if(!dateType.equalsIgnoreCase("Missing") && Utils.dateIsValid(day, month, year) != 0){
-			System.out.println("IDNR = " + IDNR + ", Id_I = " + Id_I + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
+			System.out.println("2 Source = "+ source2 + " IDNR = " + IDNR + ", Id_I = " + Id_I + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
 			return;
 			//startDay = startDay/0;
 		}
@@ -380,7 +380,7 @@ public class Utils {
 			String dateType, String estimation, int day, int month, int year){
 		
 		if(!dateType.equalsIgnoreCase("Missing") && Utils.dateIsValid(day, month, year) != 0){
-			System.out.println("IDNR = " + IDNR + ", Id_I = " + Id_I + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
+			System.out.println("3 Source = "+ source + " IDNR = " + IDNR + ", Id_I = " + Id_I + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
 			return;
 			//startDay = startDay/0;
 		}
@@ -425,7 +425,7 @@ public class Utils {
 			String dateType, String estimation, int day, int month, int year){
 		
 		if(!dateType.equalsIgnoreCase("Missing") && Utils.dateIsValid(day, month, year) != 0){
-			System.out.println("IDNR = " + IDNR + ", Id_I = " + Id_I + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
+			System.out.println("4 Source = "+ source + " IDNR = " + IDNR + ", Id_I = " + Id_I + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
 			return;
 			//startDay = startDay/0;
 		}
@@ -482,7 +482,7 @@ public class Utils {
 			String dateType, String estimation, int day, int month, int year){
 
 		if(!dateType.equalsIgnoreCase("Missing") && Utils.dateIsValid(day, month, year) != 0){
-			System.out.println("IDNR = " + IDNR + ", Id_I = " + Id_I + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
+			System.out.println("5 Source = "+ source + " IDNR = " + IDNR + ", Id_I = " + Id_I + ", type = " + type  + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
 			return;
 			//startDay = startDay/0;
 		}
@@ -547,7 +547,7 @@ public class Utils {
 			String dateType, String estimation, int day, int month, int year){
 		
 		if(!dateType.equalsIgnoreCase("Missing") && Utils.dateIsValid(day, month, year) != 0){
-			System.out.println("IDNR = " + IDNR + ", Id_I = " + Id_I + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
+			System.out.println("6 Source = "+ source + " IDNR = " + IDNR + ", Id_I = " + Id_I + ", type = " + type +  ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
 			return;
 			//startDay = startDay/0;
 		}
@@ -604,8 +604,7 @@ public class Utils {
 			String dateType, String estimation, int day, int month, int year){
 		
 		if(!dateType.equalsIgnoreCase("Missing") && Utils.dateIsValid(day, month, year) != 0){
-			
-			System.out.println("IDNR = " + IDNR + ", Id_I = " + Id_I + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
+			System.out.println("7 Source = "+ source + " IDNR = " + IDNR + ", Id_I = " + Id_I + ", type = " + type + ", value = " + value + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
 			return;
 			//startDay = startDay/0;
 		}
@@ -645,10 +644,11 @@ public class Utils {
 			String dateType, String estimation, int day, int month, int year, int hour, int minute){
 		
 		if(!dateType.equalsIgnoreCase("Missing") && Utils.dateIsValid(day, month, year) != 0){
-			System.out.println("IDNR = " + IDNR + ", Id_I = " + Id_I + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
+			System.out.println("8 Source = "+ source + " IDNR = " + IDNR + ", Id_I = " + Id_I + ", type = " + type + ", value = " + value + ",  date Type = " + dateType + " invalid date: " +  day + " " + month+ " "+year);
 			return;
 			//startDay = startDay/0;
 		}
+
 
 
 		int x = 0;
@@ -688,13 +688,12 @@ public class Utils {
 			String dateType, String estimation, int startDay, int startMonth, int startYear, int endDay, int endMonth, int endYear){
 		
 		
-		if(Utils.dateIsValid(startDay, startMonth, startYear) != 0){
-			System.out.println("IDNR = " + IDNR + ", Id_I = " + Id_I +  ",  date Type = " + dateType + ", invalid date: " +  startDay + " " + startMonth+ " "+startYear);
-
+		if(!dateType.equalsIgnoreCase("Missing") && Utils.dateIsValid(startDay, startMonth, startYear) != 0){
+			System.out.println("9 Source = "+ source + " IDNR = " + IDNR + ", Id_I = " + Id_I + ", type = " + type + ", value = " + value + ",  date Type = " + dateType + " invalid date: " +  startDay + " " + startMonth+ " "+startYear);
 			return;
 			//startDay = startDay/0;
 		}
-		
+
 		//System.out.println("dateType = " + dateType);
 		INDIVIDUAL i = new INDIVIDUAL();
 		
