@@ -331,15 +331,17 @@ public void convert(EntityManager em){
 
 				 if(ceCertificate != null){
 					 //Utils.addIndivContextAndContext(getD1fall(), ceCertificate, em, getIdnr(), Id_I_FA, "DC D1", "", "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
-					 Utils.addIndivContextAndContextCertificate(getD1sdcy(), getD1sdcn(), ceCertificate, em, getIdnr(), Id_I_FA, DC, "DC D1", "Father", "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+					 String father =  getD1infa() != null && getD1infa().trim().equalsIgnoreCase("J") ? father = "Father as Informer" : "Father";
+					 Utils.addIndivContextAndContextCertificate(getD1sdcy(), getD1sdcn(), ceCertificate, em, getIdnr(), Id_I_FA, DC, "DC D1", father, "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
 				 }
 			 }
+			 /*
 			 else{
 				 int[] a = Utils.range(100, 16, 1, 1, getD1rpdy());					 
 				 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "BIRTH_DATE", null, "Declared", "Estimated [16/100]", 
 						 a[0], a[1], a[2], a[3], a[4], a[5]);
 			 }
-
+			 */	
 			 if(getD1infa() != null && getD1infa().trim().equalsIgnoreCase("J")){
 				 if(getD1insg() != null && getD1insg().trim().length() > 0)
 					 Utils.addIndiv(em, getIdnr(), Id_I_FA, "DC D1", "SIGNATURE", Utils.signature(getD1insg()), "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
@@ -445,12 +447,14 @@ public void convert(EntityManager em){
 					 Utils.addIndivContextAndContextCertificate(getD1sdcy(), getD1sdcn(), ceCertificate, em, getIdnr(), Id_I_MO, DC, "DC D1", "Mother", "Event", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
 				 }
 			 }
+			 /*
 			 else{
 				 int[] a = Utils.range(100, 15, 1, 1, getD1rpdy());					 
 				 Utils.addIndiv(em, getIdnr(), Id_I_MO, "DC D1", "BIRTH_DATE", null, "Declared", "Estimated [15/100]", 
 						 a[0], a[1], a[2], a[3], a[4], a[5]);
 			 }
-				 
+				
+			 */
 			 Utils.addIndiv(em, getIdnr(), Id_I_MO, "DC D1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 
 			 Utils.addIndiv(em, getIdnr(), Id_I_MO, "DC D1", "HSN_RESEARCH_PERSON", "Mother RP", "Missing", "Time_invariant", 0, 0, 0);
