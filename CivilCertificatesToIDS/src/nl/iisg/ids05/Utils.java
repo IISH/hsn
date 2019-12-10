@@ -1,5 +1,7 @@
 package nl.iisg.ids05;
 
+import java.time.LocalDate;
+
 import javax.persistence.EntityManager;
 
 import nl.iisg.hsncommon.Common1;
@@ -1116,6 +1118,135 @@ public class Utils {
 		 
 		 return a;
 	 }
+	 
+	 /**
+	  * Only 1 can be > 0!
+	  * @param ageDays
+	  * @param ageWeeks
+	  * @param ageMonths
+	  * @param ageYears
+	  * 
+	  * 
+	  * @param day
+	  * @param month
+	  * @param year
+	  * @return
+	  * 
+	  * We know the age at a certain date. We must calculate a range of possible birthdates
+	  * 
+	  */
+	 public static int[] birthRange(int ageDays, int ageWeeks, int ageMonths, int ageYears, int day, int month, int year){
+		
+		 System.out.println("---------------------");
+		 System.out.println("ageDays = " + ageDays + ", ageWeeks = " + ageWeeks + ", ageMonths = "+ ageMonths + ", ageYears = " + ageYears);
+		 System.out.println("Date = "+  day + "-" + month + "-" + year);
+		 
+		 if(Utils.dateIsValid(day, month, year) != 0)
+			 return null;
+		 
+		 // We have to normalize the input, because sometimes 0 is used instead of -1 
+		 
+		 
+		 if(ageYears == 0 && ageMonths == 0 && ageWeeks == 0 && ageDays == 0){
+			 ageYears = -1;
+			 ageMonths = -1; 
+			 ageWeeks = -1;
+			 ageDays = -1;			 
+		 }
+		 else{
+			 if(ageMonths == 0 && ageWeeks == 0 && ageDays == 0){
+				 ageMonths = -1; 
+				 ageWeeks = -1;
+				 ageDays = -1;			 
+			 }
+			 else{
+				 if(ageWeeks == 0 && ageDays == 0){
+					 ageWeeks = -1;
+					 ageDays = -1;			 
+				 }
+				 else{
+					 if(ageDays == 0){
+						 ageDays = -1;
+					 }
+				 }
+			 }
+		 }
+		 
+		 if(ageYears < 0 && (ageMonths > 0 || ageWeeks > 0 ||  ageDays > 0)) ageYears = 0;
+		 if(ageMonths < 0 && (ageWeeks > 0 ||  ageDays > 0)) ageMonths = 0;
+		 if(ageWeeks < 0 && ageDays > 0) ageWeeks = 0;
+
+		 // End Normalize
+		 
+		 System.out.println("ageDays = " + ageDays + ", ageWeeks = " + ageWeeks + ", ageMonths = "+ ageMonths + ", ageYears = " + ageYears);
+
+		 LocalDate lowestDate = LocalDate.of(year, month, day);
+		 LocalDate highestDate = LocalDate.of(year, month, day);
+		 
+
+		 LocalDate lowestDate1  = null;
+		 LocalDate highestDate1 = null;
+		 
+		 LocalDate lowestDate2  = null;
+		 LocalDate highestDate2 = null;
+		 
+		 LocalDate lowestDate3  = null;
+		 LocalDate highestDate3 = null;
+		 
+		 LocalDate lowestDate4  = null;
+		 LocalDate highestDate4 = null;
+		 
+
+		 
+		 if(ageYears >= 0){			 
+			 lowestDate1 = lowestDate.minusYears(ageYears);
+			 highestDate1 = highestDate.minusYears(ageYears);
+			 
+			 if(ageMonths >= 0){				 
+				 lowestDate2 = lowestDate1.minusMonths(ageMonths);
+				 highestDate2 = highestDate1.minusMonths(ageMonths);
+				 
+				 if(ageWeeks >= 0){					 
+					 lowestDate3 = lowestDate2.minusDays(7 * ageWeeks);
+					 highestDate3 = highestDate2.minusDays(7 * ageWeeks);
+					 
+					 if(ageDays >= 0){						 
+						 lowestDate4 = lowestDate3.minusDays(ageDays);
+						 highestDate4 = highestDate3.minusDays(ageDays);
+					 }
+					 else{
+						 lowestDate4 = lowestDate3.minusDays(6);
+						 highestDate4 = highestDate3;
+					 }
+				 }
+				 else{
+					 //System.out.println("Else 1");
+					 lowestDate3 = lowestDate2.minusMonths(1);
+					 lowestDate4 = lowestDate3.plusDays(1);
+					 highestDate4 = highestDate2;
+				 }
+			 }
+			 else{
+				 lowestDate3 = lowestDate1.minusYears(1);
+				 lowestDate4 = lowestDate3.plusDays(1);
+				 highestDate4 = highestDate1;
+			 }
+			 
+			 
+		 }
+		 else{
+			 System.out.println("Returning null");
+			 return null;
+		 }
+		 
+		 int[] a =  {lowestDate4.getDayOfMonth(),  lowestDate4.getMonthValue(),  lowestDate4.getYear(),
+				     highestDate4.getDayOfMonth(), highestDate4.getMonthValue(), highestDate4.getYear()}; 
+		 if(a != null)
+			 System.out.println(a[0] + "-"+a[1] + "-"+ a[2] + "----" + a[3] + "-" +a[4]+ "-"+ a[5]);
+		 
+		 return a;
+	 }
+
 	 
     public static String sex(String sex){
     	

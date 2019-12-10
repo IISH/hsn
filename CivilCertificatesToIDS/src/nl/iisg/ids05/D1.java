@@ -154,29 +154,38 @@ public void convert(EntityManager em){
 
 			 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "CIVIL_STATUS", cs, "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
 		 }
-		 if(getD1rpay() > 0){
-			 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "AGE_YEARS", (new Integer(getD1rpay())).toString(), "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
-			 if(Utils.dateIsValid(getD1rpdd(), getD1rpdm(), getD1rpdy()) == 0){
-				 int[] a = Utils.birthRange(getD1rpay(), getD1rpdd(), getD1rpdm(), getD1rpdy());
-				 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);
-			 }
+		 
+		 
+		 // Age and birthdate (-range)
+		 
+		 int[] r = Utils.birthRange(getD1rpad(), getD1rpaw(), getD1rpam(), getD1rpay(), getD1rpdd(), getD1rpdm(), getD1rpdy());
+		 
+		 if(r != null){
+			 if(r[0] == r[3] && r[1] == r[4] && r[2] == r[5]) // Exact Date
+				 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "BIRTH_DATE", null, "Declared", "Age_based", r[0], r[1], r[2]);
+			 else	                                          // Range
+				 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "BIRTH_DATE", null, "Declared", "Age_based", r[0], r[1], r[2], r[3], r[4], r[5]);
 		 }
-		 else
-			 if(getD1rpam() > 0)
-				 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "AGE_MONTHS", (new Integer(getD1rpam())).toString(), "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
-			 else
-				 if(getD1rpaw() > 0)
-					 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "AGE_WEEKS", (new Integer(getD1rpaw())).toString(), "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
-				 else
+		 else{                                                // Estimate
+			 int[] b = Utils.range(100, 0, getD1sdcd(), getD1sdcm(), getD1sdcy());			 
+			 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "BIRTH_DATE", null, "Declared", "Estimated [0/100]", b[0], b[1], b[2], b[3], b[4], b[5]);
+		 }
+		 
+
+		 if(getD1rpay() >= 0){
+			 if(getD1rpay() > 0)
+				 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "AGE_YEARS", (new Integer(getD1rpay())).toString(), "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+			 if(getD1rpam() >= 0){
+				 if(getD1rpam() > 0)
+					 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "AGE_MONTHS", (new Integer(getD1rpam())).toString(), "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+				 if(getD1rpaw() >= 0){
+					 if(getD1rpaw() > 0)
+						 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "AGE_WEEKS", (new Integer(getD1rpaw())).toString(), "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
 					 if(getD1rpad() > 0)
 						 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "AGE_DAYS", (new Integer(getD1rpad())).toString(), "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
-		 
-		 
-		 if(getD1rpay() <= 0){
-			 
-			int[] a = Utils.range(100, 0, 1, 1, getD1sdcy());			 
-			Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "BIRTH_DATE", null, "Declared", "Estimated [0/100]",
-					 a[0], a[1], a[2], a[3], a[4], a[5]);
+				 
+				 }
+			 }			 
 		 }
 
 		 
