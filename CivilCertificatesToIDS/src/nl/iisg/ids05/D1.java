@@ -172,9 +172,43 @@ public void convert(EntityManager em){
 		 }
 		 
 
+		 int days = 0;
+		 if(getD1rpay() > 0){
+			 days += ((getD1rpay() * 365) + (getD1rpay() / 4));
+			 if(getD1rpam() > 0){
+				 days += ((getD1rpam() * 30) +  (getD1rpam() / 2));
+				 if(getD1rpaw() > 0){
+					 days += (getD1rpaw() * 7);
+					 if(getD1rpad() > 0)
+						 days += getD1rpad();
+				 
+				 }
+			 }			 
+		 }
+
+		 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "AGE_YEARS", "" + (days / 365), "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+
+		 /*
+		 if(days / 365 > 0)
+			 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "AGE_YEARS", "" + (days / 365), "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+		 else
+			 if(days / 30 > 0 )
+				 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "AGE_MONTHS", "" + (days / 30) , "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+			 else
+				 if(days / 7 > 0 )
+					 	Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "AGE_WEEKS", "" + (days / 7) , "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+				 else
+					 if(days > 0 )
+						 	Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "AGE_DAYS", "" + days , "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+					 else	
+						 	Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "AGE_YEARS", "0", "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+		  */						 	
+						 	
+		 
+		 /*
 		 if(getD1rpay() >= 0){
 			 if(getD1rpay() > 0)
-				 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "AGE_YEARS", (new Integer(getD1rpay())).toString(), "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
+				 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "AGE_YEARS", (new Integer(getD1rpay())).toString(), "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());			
 			 if(getD1rpam() >= 0){
 				 if(getD1rpam() > 0)
 					 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "AGE_MONTHS", (new Integer(getD1rpam())).toString(), "Declared", "Exact", getD1rpdd(), getD1rpdm(), getD1rpdy());
@@ -187,7 +221,7 @@ public void convert(EntityManager em){
 				 }
 			 }			 
 		 }
-
+		  */
 		 
 		 Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "HSN_RESEARCH_PERSON", "HSN RP", "Missing", "Time_invariant", 0, 0, 0);
          Utils.addIndiv(em, getIdnr(), Id_I_RP, "DC D1", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);

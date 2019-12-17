@@ -40,7 +40,7 @@ public class D2 {
     	 
 		 int Id_I_FS = 53 + getD2s_sq(); // Former Spouse
 		 
-		  
+		 String DC = "Death Certificate";
 		 
 		 if(getD2s_ln() != null && getD2s_ln().trim().length() > 0 && !getD2s_ln().trim().equalsIgnoreCase("N")){
 			 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "LAST_NAME", getD2s_ln(), "Missing", "Time_invariant", 0, 0, 0);
@@ -61,73 +61,89 @@ public class D2 {
 			 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "SEX", "Male", "Missing", "Time_invariant", 0, 0, 0);
 			 
 		 
-		 if(getD2s_ca() != null && getD2s_ca().equalsIgnoreCase("J")){
+		 //if(getD2s_ca() != null /* && getD2s_ca().equalsIgnoreCase("J") */){
 
-			 if(getD2s_oc() != null && getD2s_oc().trim().length() > 0)
-				 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "OCCUPATION_STANDARD", getD2s_oc(), "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
-			 if(getD2s_ay() > 0){
-				 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "AGE_YEARS", (new Integer(getD2s_ay())).toString(), "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
-				 if(Utils.dateIsValid(getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy()) == 0){
-					 int[] a = Utils.birthRange(getD2s_ay(), getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
-					 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);			 
-				 }
-			 }
-			 else{
-				 int[] a = Utils.range(100, 15, 1, 1, getD1().getD1sdcy());						 
-				 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "BIRTH_DATE", null, "Declared", "Estimated [15/100]", 
-						 a[0], a[1], a[2], a[3], a[4], a[5]);
-			 }
-
-
-			 ContextElement ceCertificate = null;
-			 if(getD1().getD1sdcc() > 0)
-				 ceCertificate = Contxt.get(getD1().getD1sdcc());  // Look up name in Context System 
-			 else
-				 if(getD1().getD1sdcl() != null && getD1().getD1sdcl().trim().length() > 0)
-					 ceCertificate = Contxt.get2(getD1().getD1sdcl());
-
-
-			 //if(ceCertificate != null)
-			//	 Utils.addIndivContextAndContext(getD2s_ll(), ceCertificate, em, getIdnr(), Id_I_FS, "DC D2", "", "Event", "Exact",
-			//			 getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
-			 
-			 
-			 // Address 
-			 
-			 
-			 if(getD2s_lla() != null){
-
-				 ContextElement ceAddress = null;
-
-				 if(getD2s_lla().getMunicipality() != null)
-					 ceAddress = Contxt.get2(getD2s_lla().getMunicipality());
-				 else 
-					 ceAddress = ceCertificate;
-
-				 if(ceAddress != null){
-
-					 int startDay1   = (new Integer(getD2s_lla().getStartDate().substring(0,2))).intValue();
-					 int startMonth1 = (new Integer(getD2s_lla().getStartDate().substring(3,5))).intValue();
-					 int startYear1  = (new Integer(getD2s_lla().getStartDate().substring(6,10))).intValue();
-
-					 //Utils.addIndivContextAndContext(getD2s_lla().getQuarter(), getD2s_lla().getStreet(), getD2s_lla().getNumber(), getD2s_lla().getAddition(),
-					 //		 ceAddress, em, getIdnr(), Id_I_FS,  "DC D2",  "Member", "Declared", "Exact",  
-					 //		 startDay1, startMonth1, startYear1);
-					 
-					 Utils.addIndivAndContext(getD2s_lla().getQuarter(), getD2s_lla().getStreet(), getD2s_lla().getNumber(), getD2s_lla().getAddition(),
-							 ceAddress, em, getIdnr(), Id_I_FS, "DC D2",  "RESIDENCE_LOCATION", "Declared", "Exact",  
-							 startDay1, startMonth1, startYear1);
-
-
-				 }
-
+		 if(getD2s_oc() != null && getD2s_oc().trim().length() > 0)
+			 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "OCCUPATION_STANDARD", getD2s_oc(), "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+		 if(getD2s_ay() > 0){
+			 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "AGE_YEARS", (new Integer(getD2s_ay())).toString(), "Declared", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+			 if(Utils.dateIsValid(getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy()) == 0){
+				 int[] a = Utils.birthRange(getD2s_ay(), getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+				 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "BIRTH_DATE", null, "Declared", "Age_based", a[0], a[1], a[2], a[3], a[4], a[5]);			 
 			 }
 		 }
 		 else{
-			 int[] a = Utils.range(100, 15, 1, 1, getD1().getD1sdcy());				 
+			 int[] a = Utils.range(100, 15, 1, 1, getD1().getD1sdcy());						 
 			 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "BIRTH_DATE", null, "Declared", "Estimated [15/100]", 
 					 a[0], a[1], a[2], a[3], a[4], a[5]);
 		 }
+
+
+		 ContextElement ceCertificate = null;
+		 if(getD1().getD1sdcc() > 0)
+			 ceCertificate = Contxt.get(getD1().getD1sdcc());  // Look up name in Context System 
+		 else
+			 if(getD1().getD1sdcl() != null && getD1().getD1sdcl().trim().length() > 0)
+				 ceCertificate = Contxt.get2(getD1().getD1sdcl());
+
+		 String relation = "";
+		 
+		 if(getD2s_sq() == 1){
+			 
+			 if(getD2s_ca() == null)                     relation = "Spouse";
+			 else if(getD2s_ca().equalsIgnoreCase("j"))  relation = "Spouse";
+			 else                                        relation = "Former Spouse"; 
+			 
+		 }
+		 else                                            relation = "Former Spouse"; 
+
+		 
+		 if(ceCertificate != null)
+			 Utils.addIndivContextAndContextCertificate(getD1().getD1sdcy(), getD1().getD1sdcn(), ceCertificate, em, getIdnr(), Id_I_FS, DC, "DC D3",
+					 relation, "Event", "Exact", getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+
+
+		 //if(ceCertificate != null)
+		 //	 Utils.addIndivContextAndContext(getD2s_ll(), ceCertificate, em, getIdnr(), Id_I_FS, "DC D2", "", "Event", "Exact",
+		 //			 getD1().getD1rpdd(), getD1().getD1rpdm(), getD1().getD1rpdy());
+
+
+		 // Address 
+
+
+		 if(getD2s_lla() != null){
+
+			 ContextElement ceAddress = null;
+
+			 if(getD2s_lla().getMunicipality() != null)
+				 ceAddress = Contxt.get2(getD2s_lla().getMunicipality());
+			 else 
+				 ceAddress = ceCertificate;
+
+			 if(ceAddress != null){
+
+				 int startDay1   = (new Integer(getD2s_lla().getStartDate().substring(0,2))).intValue();
+				 int startMonth1 = (new Integer(getD2s_lla().getStartDate().substring(3,5))).intValue();
+				 int startYear1  = (new Integer(getD2s_lla().getStartDate().substring(6,10))).intValue();
+
+				 //Utils.addIndivContextAndContext(getD2s_lla().getQuarter(), getD2s_lla().getStreet(), getD2s_lla().getNumber(), getD2s_lla().getAddition(),
+				 //		 ceAddress, em, getIdnr(), Id_I_FS,  "DC D2",  "Member", "Declared", "Exact",  
+				 //		 startDay1, startMonth1, startYear1);
+
+				 Utils.addIndivAndContext(getD2s_lla().getQuarter(), getD2s_lla().getStreet(), getD2s_lla().getNumber(), getD2s_lla().getAddition(),
+						 ceAddress, em, getIdnr(), Id_I_FS, "DC D2",  "RESIDENCE_LOCATION", "Declared", "Exact",  
+						 startDay1, startMonth1, startYear1);
+
+
+			 }
+
+		 }
+
+		 //else{
+		//	 int[] a = Utils.range(100, 15, 1, 1, getD1().getD1sdcy());				 
+		//	 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "BIRTH_DATE", null, "Declared", "Estimated [15/100]", 
+		//			 a[0], a[1], a[2], a[3], a[4], a[5]);
+		 //}
 
 		 Utils.addIndiv(em, getIdnr(), Id_I_FS,  "DC D2", "HSN_IDENTIFIER", "" + getIdnr(), "Missing", "Time_invariant", 0, 0, 0);
 

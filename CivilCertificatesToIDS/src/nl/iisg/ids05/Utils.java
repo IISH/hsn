@@ -1137,9 +1137,9 @@ public class Utils {
 	  */
 	 public static int[] birthRange(int ageDays, int ageWeeks, int ageMonths, int ageYears, int day, int month, int year){
 		
-		 System.out.println("---------------------");
-		 System.out.println("ageDays = " + ageDays + ", ageWeeks = " + ageWeeks + ", ageMonths = "+ ageMonths + ", ageYears = " + ageYears);
-		 System.out.println("Date = "+  day + "-" + month + "-" + year);
+		 //System.out.println("---------------------");
+		 //System.out.println("ageDays = " + ageDays + ", ageWeeks = " + ageWeeks + ", ageMonths = "+ ageMonths + ", ageYears = " + ageYears);
+		 //System.out.println("Date = "+  day + "-" + month + "-" + year);
 		 
 		 if(Utils.dateIsValid(day, month, year) != 0)
 			 return null;
@@ -1178,7 +1178,7 @@ public class Utils {
 
 		 // End Normalize
 		 
-		 System.out.println("ageDays = " + ageDays + ", ageWeeks = " + ageWeeks + ", ageMonths = "+ ageMonths + ", ageYears = " + ageYears);
+		 //System.out.println("ageDays = " + ageDays + ", ageWeeks = " + ageWeeks + ", ageMonths = "+ ageMonths + ", ageYears = " + ageYears);
 
 		 LocalDate lowestDate = LocalDate.of(year, month, day);
 		 LocalDate highestDate = LocalDate.of(year, month, day);
@@ -1235,14 +1235,14 @@ public class Utils {
 			 
 		 }
 		 else{
-			 System.out.println("Returning null");
+			 //System.out.println("Returning null");
 			 return null;
 		 }
 		 
 		 int[] a =  {lowestDate4.getDayOfMonth(),  lowestDate4.getMonthValue(),  lowestDate4.getYear(),
 				     highestDate4.getDayOfMonth(), highestDate4.getMonthValue(), highestDate4.getYear()}; 
-		 if(a != null)
-			 System.out.println(a[0] + "-"+a[1] + "-"+ a[2] + "----" + a[3] + "-" +a[4]+ "-"+ a[5]);
+		 //if(a != null)
+		//	 System.out.println(a[0] + "-"+a[1] + "-"+ a[2] + "----" + a[3] + "-" +a[4]+ "-"+ a[5]);
 		 
 		 return a;
 	 }
