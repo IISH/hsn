@@ -755,8 +755,8 @@ public class Person {
 			
 		
 
-		if(1 == 1)
-			return;
+		//if(1 == 1)
+		//	return;
 		
 		if(arrivalDays[0] == 0 && departureDays[0] == 0){
 

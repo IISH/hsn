@@ -19,8 +19,8 @@ public class CheckManager {
 	
 		KeyChecks k = new KeyChecks();
 	    boolean keysOK = k.CheckKeys(persons, personsDynamic, registrations, registrationAddresses);
-	    if(!keysOK)
-	    	return false;
+	    //if(!keysOK)
+	    //	return false;
 	    
 	    System.out.println("Checking Objects ....");
 	    

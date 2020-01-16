@@ -579,8 +579,8 @@ public class RegistrationStandardized {
 
     	for(PersonStandardized ps: getPersonsStandardizedInRegistration()){
 
-    		if(ps.getEndDate() != null){
-
+    		if(ps.getEndDate() != null && ps.getEndDate().length() == 10){  // because we had a partial date once
+    			
     			if(Utils.dayCount(ps.getEndDate()) > endCount){
 
     				if(ps.getEndFlag() >= 54){

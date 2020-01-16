@@ -516,7 +516,7 @@ public class KeyChecks {
 		
 			if(pd.getValueOfRelatedPerson() == pd.getKeyToRegistrationPersons()){
 				
-				Message m = new Message("1007");  //1007, FT, Regelnummer verwijst voor regelnummer van de relatie naar de eigen regel.
+				Message m = new Message("1314");  //1314, FT, Regelnummer verwijst voor regelnummer van de relatie naar de eigen regel.
 				m.setKeyToRP(pd.getKeyToRP());
 				m.setKeyToSourceRegister(pd.getKeyToSourceRegister());
 				m.setDayEntryHead(pd.getDayEntryHead());

@@ -38,6 +38,10 @@ public class Convert{
 		String userid =        args[2];
 		String password =      args[3];
 		
+		String tableName = "";
+		if(args.length >= 4)
+		   tableName = args[4]; 
+			
 		
 
 		String[] months = {"", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};	
@@ -50,16 +54,16 @@ public class Convert{
 
 			// Start create statement
 			
-			
+			System.out.println("table name = " + tableName);
 
 			String createTable = "CREATE TABLE IF NOT EXISTS ";
 
 			String[] a =  inputFile.split("[.\\\\]");
 
-			createTable += "links_original.";
-			createTable += a[a.length - 2];
-			String tableName = a[a.length - 2];
-			tableName = "links_original." + tableName;
+			createTable += "hsn_msg.";
+			createTable +=  tableName ;
+			//String tableName = a[a.length - 2];
+			tableName = "hsn_msg." + tableName;
 
 			//System.out.println(tableName);
 			createTable += " (";

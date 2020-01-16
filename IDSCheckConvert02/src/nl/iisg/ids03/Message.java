@@ -89,6 +89,7 @@ public class Message {
 
 		// To speed things up 
 		
+		/*
 		Integer repeats = null;
 		if(h.get(getErrorNumber()) == null){
 			h.put(getErrorNumber(), 1);
@@ -101,6 +102,7 @@ public class Message {
 				h.put(getErrorNumber(), ++repeats);
 		}
 		
+		*/
 		//System.out.println("Saving " + this);
 		
 		ArrayList<String>  errorFills = new ArrayList<String>();	
