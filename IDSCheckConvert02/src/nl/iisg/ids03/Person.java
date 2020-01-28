@@ -797,19 +797,21 @@ public class Person {
 
 
 			if(arrivalDays[0] > 0){
-				if(arrivalDays[0] < departureDays[0] && arrivalDays[0] < departureDays[1])  // 2A
-					message("1327");
-				if(arrivalDays[0] < departureDays[0] && arrivalDays[0] > departureDays[1]){  // 2C
-					message("1324");
-					message("1327");
+				if(departureDays[1] != -1){
+					if(arrivalDays[0] < departureDays[0] && arrivalDays[0] < departureDays[1])  // 2A
+						message("1327");
+					if(arrivalDays[0] < departureDays[0] && arrivalDays[0] > departureDays[1]){  // 2C
+						message("1324");
+						message("1327");
 
-				}	
-				if(arrivalDays[0] > departureDays[0] && arrivalDays[0] < departureDays[1])  // 2D
-					message("1327");
-				if(arrivalDays[0] > departureDays[0] && arrivalDays[0] > departureDays[1]){  // 2E
-					message("1329");
-					message("1327");
-				}	
+					}	
+					if(arrivalDays[0] > departureDays[0] && arrivalDays[0] < departureDays[1])  // 2D
+						message("1327");
+					if(arrivalDays[0] > departureDays[0] && arrivalDays[0] > departureDays[1]){  // 2E
+						message("1329");
+						message("1327");
+					}	
+				}
 			}
 			else  // 2B + 2F
 				message("1327");

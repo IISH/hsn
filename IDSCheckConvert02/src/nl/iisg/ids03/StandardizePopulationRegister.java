@@ -156,7 +156,7 @@ public class StandardizePopulationRegister implements Runnable {
         // Check the objects
 
         boolean checkOK = cm.Check(ops, persons, personsDynamic, registrations, registrationAddresses);
-        //checkOK = true;
+        checkOK = true; // Hack!!
         
         
         // Save messages to disk

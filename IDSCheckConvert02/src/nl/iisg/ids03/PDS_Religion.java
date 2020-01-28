@@ -172,6 +172,7 @@ public class PDS_Religion extends PersonDynamicStandardized {
 		String field = getReligionStandardized();
 		int allowedSize = ConstTables.Bigstring;
 		if(field != null && field.length() > allowedSize){
+			//System.out.println("idnr = " + getKeyToRP() + ", size = " + field.length() + ", value = " + field);
 			message("1500", "B33_ST", "RELIGION_ST", "" + allowedSize);
 			field = field.substring(0, allowedSize);
 			setReligionStandardized(field);

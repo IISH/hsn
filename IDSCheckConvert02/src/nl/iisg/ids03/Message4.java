@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="bfout4ft")
-public class Message4 {
+public class Message4{
 
 	@Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
 	@Column(name="RecordID")    private int recordID; 
