@@ -181,6 +181,10 @@ public class Message {
 		em.getTransaction().commit();
 	
 		messages.clear();
+		
+		// Split messages in 2 parts: bfout1ft and fout4ft
+		//
+		
 		//em.close();
 		
 	}

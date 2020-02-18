@@ -427,7 +427,7 @@ public class Registration implements Comparable<Registration>{
 			}
 			if(p.getNatureOfPerson()  == ConstRelations2.FURTHER_APPEARANCE_OF_OP){
 				if(seenFirst == false){
-					message("1165", p.getKeyToRegistrationPersons(), "" + p.getNatureOfPerson());
+					message("1165", p.getKeyToRegistrationPersons());
 				}
 			}
 		}
@@ -500,148 +500,150 @@ public class Registration implements Comparable<Registration>{
 		// Check compare head and his/her (grant)children for age and names
 		
 		
-		String headSex = personsInRegistration.get(0).getSex();
-		String wifeName = null;
-		String headName = personsInRegistration.get(0).getFamilyName();
-		int    headBirthYear = personsInRegistration.get(0).getYearOfBirth();
-		
-		// Get wife name
-		
-		outer:
-		for(Person p: personsInRegistration){
-			for(PersonDynamic pd: p.getDynamicDataOfPerson()){
-				if(pd.getDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD){
-					if(pd.getContentOfDynamicData() == ConstRelations2.ECHTGENOTE_HOOFD){
-						wifeName = p.getFamilyName();
-						if(wifeName != null && wifeName.trim().length() != 0 && wifeName.equalsIgnoreCase(headName)){
-							message("1462", pd.getKeyToRegistrationPersons());
-							break outer;
-						}
+		if(personsInRegistration.size() > 0){
+
+			String headSex = personsInRegistration.get(0).getSex();
+			String wifeName = null;
+			String headName = personsInRegistration.get(0).getFamilyName();
+			int    headBirthYear = personsInRegistration.get(0).getYearOfBirth();
+
+			// Get wife name
+
+			outer:
+				for(Person p: personsInRegistration){
+					for(PersonDynamic pd: p.getDynamicDataOfPerson()){
+						if(pd.getDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD){
+							if(pd.getContentOfDynamicData() == ConstRelations2.ECHTGENOTE_HOOFD){
+								wifeName = p.getFamilyName();
+								if(wifeName != null && wifeName.trim().length() != 0 && wifeName.equalsIgnoreCase(headName)){
+									message("1462", pd.getKeyToRegistrationPersons());
+									break outer;
+								}
+							}
+						}	
 					}
-				}	
-			}
-		}
-		
-		
-
-		for(Person p: personsInRegistration){
-			
-			for(PersonDynamic pd: p.getDynamicDataOfPerson()){
-				
-				if(pd.getDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD){
-
-					if(pd.getContentOfDynamicData() == ConstRelations2.ZOON || pd.getContentOfDynamicData() == ConstRelations2.DOCHTER){
-
-						if(p.getYearOfBirth() > 0 && headBirthYear > 0){
-
-							if(headSex.equalsIgnoreCase("M")){
-
-								// Check if age difference less than 16 years
-
-								if(headBirthYear > p.getYearOfBirth() - 16)
-									if(heads == 1)
-										message("1402", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
-									else
-										message("1411", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
-
-								// Check if age difference more than 80 years
-
-								if(headBirthYear < p.getYearOfBirth() - 80)
-									if(heads == 1)
-										message("1404", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
-									else
-										message("1413", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
-
-								// Check if age difference more than 100 years
-
-								if(headBirthYear < p.getYearOfBirth() - 100)
-									if(heads == 1)
-										message("1403", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
-									else
-										message("1412", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
+				}
 
 
+
+			for(Person p: personsInRegistration){
+
+				for(PersonDynamic pd: p.getDynamicDataOfPerson()){
+
+					if(pd.getDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD){
+
+						if(pd.getContentOfDynamicData() == ConstRelations2.ZOON || pd.getContentOfDynamicData() == ConstRelations2.DOCHTER){
+
+							if(p.getYearOfBirth() > 0 && headBirthYear > 0){
+
+								if(headSex.equalsIgnoreCase("M")){
+
+									// Check if age difference less than 16 years
+
+									if(headBirthYear > p.getYearOfBirth() - 16)
+										if(heads == 1)
+											message("1402", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
+										else
+											message("1411", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
+
+									// Check if age difference more than 80 years
+
+									if(headBirthYear < p.getYearOfBirth() - 80)
+										if(heads == 1)
+											message("1404", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
+										else
+											message("1413", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
+
+									// Check if age difference more than 100 years
+
+									if(headBirthYear < p.getYearOfBirth() - 100)
+										if(heads == 1)
+											message("1403", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
+										else
+											message("1412", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
+
+
+								}
+
+								if(headSex.equalsIgnoreCase("V")){
+
+									// Check if age difference less than 15 years
+
+									if(headBirthYear > p.getYearOfBirth() - 15)
+										message("1405", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
+
+									// Check if age difference more than 45 years
+
+									if(headBirthYear < p.getYearOfBirth() - 45)
+										message("1407", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
+
+									// Check if age difference more than 50 years
+
+									if(headBirthYear < p.getYearOfBirth() - 50)
+										message("1406", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
+
+
+								}
 							}
 
-							if(headSex.equalsIgnoreCase("V")){
+							// Check if child has family name of wife of head (very rare)
 
-								// Check if age difference less than 15 years
+							if(wifeName != null && p.getFamilyName() != null && wifeName.equalsIgnoreCase(p.getFamilyName()))
+								message("1463", pd.getKeyToRegistrationPersons());
 
-								if(headBirthYear > p.getYearOfBirth() - 15)
-									message("1405", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
-
-								// Check if age difference more than 45 years
-
-								if(headBirthYear < p.getYearOfBirth() - 45)
-									message("1407", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
-
-								// Check if age difference more than 50 years
-
-								if(headBirthYear < p.getYearOfBirth() - 50)
-									message("1406", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
+						}
 
 
+						if(pd.getContentOfDynamicData() == ConstRelations2.KLEINZOON || pd.getContentOfDynamicData() == ConstRelations2.KLEINDOCHTER){
+
+							if(p.getYearOfBirth() > 0){
+
+								if(headSex.equalsIgnoreCase("M")){
+
+									// Check if age difference less than 37 years
+
+									if(headBirthYear > p.getYearOfBirth() - 37)
+										message("1442", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
+
+									// Check if age difference more than 80 years
+
+									if(headBirthYear < p.getYearOfBirth() - 80)
+										message("1443", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
+
+									// Check if age difference more than 100 years
+
+									if(headBirthYear < p.getYearOfBirth() - 100)
+										message("1444", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
+
+
+								}
+
+								if(headSex.equalsIgnoreCase("V")){
+
+									// Check if age difference less than 35 years
+
+									if(headBirthYear > p.getYearOfBirth() - 35)
+										message("1445", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
+
+
+								}
 							}
 						}
 
-						// Check if child has family name of wife of head (very rare)
+						// Check if last name non blood related person is the same as last name of head
 
-						if(wifeName != null && p.getFamilyName() != null && wifeName.equalsIgnoreCase(p.getFamilyName()))
-							message("1463", pd.getKeyToRegistrationPersons());
-
-					}
-
-
-					if(pd.getContentOfDynamicData() == ConstRelations2.KLEINZOON || pd.getContentOfDynamicData() == ConstRelations2.KLEINDOCHTER){
-
-						if(p.getYearOfBirth() > 0){
-
-							if(headSex.equalsIgnoreCase("M")){
-
-								// Check if age difference less than 37 years
-
-								if(headBirthYear > p.getYearOfBirth() - 37)
-									message("1442", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
-
-								// Check if age difference more than 80 years
-
-								if(headBirthYear < p.getYearOfBirth() - 80)
-									message("1443", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
-
-								// Check if age difference more than 100 years
-
-								if(headBirthYear < p.getYearOfBirth() - 100)
-									message("1444", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
-
-
-							}
-
-							if(headSex.equalsIgnoreCase("V")){
-
-								// Check if age difference less than 35 years
-
-								if(headBirthYear > p.getYearOfBirth() - 35)
-									message("1445", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
-
-
-							}
+						if(pd.getContentOfDynamicData() <= 0 || (pd.getContentOfDynamicData() != ConstRelations2.ECHTGENOTE_HOOFD 
+								&& pd.getContentOfDynamicData() != ConstRelations2.HOOFD 
+								&& ConstRelations2.b3kode1_Related[pd.getContentOfDynamicData()] == null)){
+							if(p.getFamilyName() != null && headName != null)
+								if(p.getFamilyName().equalsIgnoreCase(headName)){
+									message("1464", pd.getKeyToRegistrationPersons());
+								} 
 						}
-					}
-
-					// Check if last name non blood related person is the same as last name of head
-
-					if(pd.getContentOfDynamicData() <= 0 || (pd.getContentOfDynamicData() != ConstRelations2.ECHTGENOTE_HOOFD 
-							 && pd.getContentOfDynamicData() != ConstRelations2.HOOFD 
-							&& ConstRelations2.b3kode1_Related[pd.getContentOfDynamicData()] == null)){
-						if(p.getFamilyName() != null && headName != null)
-							if(p.getFamilyName().equalsIgnoreCase(headName)){
-								message("1464", pd.getKeyToRegistrationPersons());
-							} 
 					}
 				}
 			}
 		}
-
 		
         // For C Registers some checks when Head dies/leaves and OP still there
 		
@@ -996,7 +998,7 @@ public class Registration implements Comparable<Registration>{
 			//System.out.println("seqNo = " + seqNo + ", getSequenceNumberToAddresses = " + ra.getSequenceNumberToAddresses());
 			if(ra.getSequenceNumberToAddresses() != seqNo){
 				//System.out.println("Message 1064");
-				message("1064"); // 1064, FS, Sleutel van B6 klopt niet (doornummering regels fout)
+				message("1064", "" + ra.getSequenceNumberToAddresses()); // 1064, FS, Sleutel van B6 klopt niet (doornummering regels fout)
 				chronological = false;				
 				break;
 			}
@@ -1070,24 +1072,27 @@ public class Registration implements Comparable<Registration>{
 						        "" + firstAddressDay   + "-" + firstAddressMonth    + "-" + firstAddressYear);
 
 			// Check if date first address more than 5 days before registration date head
-			
-			int headRegistrationDate = 0;
-			int headRegistrationDay =   getPersonsInRegistration().get(0).getDayOfRegistration(); 
-			int headRegistrationMonth = getPersonsInRegistration().get(0).getMonthOfRegistration(); 
-			int headRegistrationYear =  getPersonsInRegistration().get(0).getYearOfRegistration(); 
 
-			if(Common1.dateIsValid(headRegistrationDay, headRegistrationMonth, headRegistrationYear) == 0)				
-				headRegistrationDate = Utils.dayCount(headRegistrationDay, headRegistrationMonth, headRegistrationYear);
+			if(getPersonsInRegistration().size() > 0){
 
-			if(headRegistrationDate > 0 && firstAddressDate > 0 && firstAddressDate + 5 < headRegistrationDate)
-				message("1130", "" + firstAddressDay     + "-" + firstAddressMonth     + "-" + firstAddressYear,
-					            "" + headRegistrationDay + "-" + headRegistrationMonth + "-" + headRegistrationYear);
-			
-			// Check if date first address more than 30 days after registration date head
-			
-			if(headRegistrationDate > 0 && firstAddressDate > 0 && firstAddressDate  > headRegistrationDate + 30)
-				message("1133", "" + firstAddressDay     + "-" + firstAddressMonth     + "-" + firstAddressYear,
-       	                        "" + headRegistrationDay + "-" + headRegistrationMonth + "-" + headRegistrationYear);
+				int headRegistrationDate = 0;
+				int headRegistrationDay =   getPersonsInRegistration().get(0).getDayOfRegistration(); 
+				int headRegistrationMonth = getPersonsInRegistration().get(0).getMonthOfRegistration(); 
+				int headRegistrationYear =  getPersonsInRegistration().get(0).getYearOfRegistration(); 
+
+				if(Common1.dateIsValid(headRegistrationDay, headRegistrationMonth, headRegistrationYear) == 0)				
+					headRegistrationDate = Utils.dayCount(headRegistrationDay, headRegistrationMonth, headRegistrationYear);
+
+				if(headRegistrationDate > 0 && firstAddressDate > 0 && firstAddressDate + 5 < headRegistrationDate)
+					message("1130", "" + firstAddressDay     + "-" + firstAddressMonth     + "-" + firstAddressYear,
+							"" + headRegistrationDay + "-" + headRegistrationMonth + "-" + headRegistrationYear);
+
+				// Check if date first address more than 30 days after registration date head
+
+				if(headRegistrationDate > 0 && firstAddressDate > 0 && firstAddressDate  > headRegistrationDate + 30)
+					message("1133", "" + firstAddressDay     + "-" + firstAddressMonth     + "-" + firstAddressYear,
+							"" + headRegistrationDay + "-" + headRegistrationMonth + "-" + headRegistrationYear);
+			}
 		}
 	}
 

@@ -276,7 +276,8 @@ public class Person {
 
 		checkConsistency(ainb);
 
-		if(getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP){
+		if(getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP ||
+				getNatureOfPerson() == ConstRelations2.FURTHER_APPEARANCE_OF_OP ){
 			returnCode = checkOP(ainb);
 			//System.out.println("checkOP rc = " + returnCode); // ASDZ
 
@@ -1225,12 +1226,13 @@ public class Person {
 					
 					if(p.getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP){
 						firstOP = p;
+
 						break;
 					}
 				}
 				
                 if(firstOP != null){
-                	
+
                 	// Check if the family names match
                 	
                 	if(!getFamilyName().equalsIgnoreCase(firstOP.getFamilyName()))

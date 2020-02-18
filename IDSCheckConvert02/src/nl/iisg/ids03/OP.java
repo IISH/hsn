@@ -1,5 +1,5 @@
 /*
- Naam:    OP (Ondezoekspersoon)
+* Naam:    OP (Ondezoekspersoon)
 * Version: 0.1
 * Author:  Cor Munnik
 * Copyright
@@ -140,20 +140,19 @@ public boolean check(){
 	*/
 	
 	
-	// Check if date head of household used more than once for this OP
+	// Check if date head of household used more than once for this OP in different registrations
 
-	Person p1 = null;
+	UniqueDateCounts.clear();	
+	
 	for(Registration r: getRegistrationsOfOP()){
 		for(Person p: r.getPersonsInRegistration()){
 			if(p.getIsHead() == true){
-				if(p1 != null && p.getDayEntryHead() == p1.getDayEntryHead()
-						&& p.getMonthEntryHead() == p1.getMonthEntryHead() && p.getYearEntryHead() == p1.getYearEntryHead() &&
-                           p.getSex().equalsIgnoreCase(p1.getSex()) && p.getDayOfBirth() == p1.getDayOfBirth() &&
-                           p.getMonthOfBirth() == p1.getMonthOfBirth() && p.getYearOfBirth() == p1.getYearOfBirth()) 
-					message("1057", "" + r.getDayEntryHead() + "-" + r.getMonthEntryHead() + "-" + r.getYearEntryHead());
-				
-				else
-				    p1 = p;	
+				if(Common1.dateIsValid(r.getDayEntryHead(), r.getMonthEntryHead(), r.getYearEntryHead() ) == 0){	
+					if(UniqueDateCounts.add(Utils.dayCount(r.getDayEntryHead(), r.getMonthEntryHead(), r.getYearEntryHead())) == false){					
+						message("1057", "" + r.getDayEntryHead() + "-" + r.getMonthEntryHead() + "-" + r.getYearEntryHead());
+					}
+				}
+				break;  // because we want to check for *different* registrations
 			}
 		}
 	}

@@ -572,6 +572,8 @@ public class RegistrationStandardized {
 
 
     	Ref_AINB ainb = Ref.getAINB(getKeyToSourceRegister());		
+    	if(ainb == null) return;
+    	
     	int endYear = ainb.getEndYearRegister();
     	int endCount  = Utils.dayCount("31-12-" + endYear); 
     	int endCount2 = Utils.dayCount("31-12-" + (endYear + 2)); 
@@ -1520,6 +1522,8 @@ public class RegistrationStandardized {
     	
     	// F 
     	
+    	if(Ref.getAINB(getKeyToSourceRegister()) == null) return;
+    	
     	if(Ref.getAINB(getKeyToSourceRegister()).getTypeRegister().equalsIgnoreCase("C")){ // C-Register
     		for(PersonStandardized ps: getPersonsStandardizedInRegistration()){
     			if(ps.getPersonID_FA() == 0 && ps.getPersonID_MO() == 0){
@@ -1687,6 +1691,8 @@ public class RegistrationStandardized {
      */
     
     public void implicitHeads(){
+    	
+    	if(getPersonsStandardizedInRegistration().size() == 0) return;
 
     	PersonStandardized lastHead = getPersonsStandardizedInRegistration().get(0); 
 
@@ -2624,6 +2630,9 @@ public class RegistrationStandardized {
     private void dateAddresses(){
     	
     	if(getAddressesStandardizedOfRegistration().size() == 0)
+    		return;
+    	
+    	if(getPersonsStandardizedInRegistration().size() == 0)
     		return;
     	
     	// get lowest start date and highest end date among persons in registration

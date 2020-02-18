@@ -166,6 +166,7 @@ public class StandardizePopulationRegister implements Runnable {
         Message.write();
 
         
+        
         if(!checkOK){
 
         	print("Fatal error has occurred. Check bfout1ft and repair");
