@@ -246,6 +246,27 @@ public class Person {
 
 
 	}
+	
+	public boolean higher(PersonDynamic pd){
+
+		if(getKeyToRP()              > pd.getKeyToRP())                  return true;
+		if(getKeyToRP()              < pd.getKeyToRP())                  return false;
+		if(getYearEntryHead()        > pd.getYearEntryHead())            return true;
+		if(getYearEntryHead()        < pd.getYearEntryHead())            return false;
+		if(getMonthEntryHead()       > pd.getMonthEntryHead())           return true;
+		if(getMonthEntryHead()       < pd.getMonthEntryHead())           return false;
+		if(getDayEntryHead()         > pd.getDayEntryHead())             return true;
+		if(getDayEntryHead()         < pd.getDayEntryHead())             return false;
+		if(getKeyToSourceRegister()  > pd.getKeyToSourceRegister())      return true;
+		if(getKeyToSourceRegister()  < pd.getKeyToSourceRegister())      return false;
+		if(getKeyToRegistrationPersons() > pd.getKeyToRegistrationPersons()) return true;
+		if(getKeyToRegistrationPersons() < pd.getKeyToRegistrationPersons()) return false;
+		
+
+		
+		return false;
+		
+	}
 
 	public boolean check(){
 
@@ -1195,20 +1216,20 @@ public class Person {
 				}
 			}
 
-			Ref_GB gb1 = Ref.getGB(getKeyToRP());
+			Ref_RP rp1 = Ref.getRP(getKeyToRP());
 
-			if(gb1 != null){
+			if(rp1 != null){
 
-				// Check that sex OP in B2 is same as in GB/GT
+				// Check that sex OP in B2 is same as in HSNRP
+				
+				if(rp1.getSexRP().equalsIgnoreCase(getSex()) != true)
+					message("1185", getSex(), rp1.getSexRP());
 
-				if(gb1.getSex().equalsIgnoreCase(getSex()) != true)
-					message("1185", getSex(), gb1.getSex());
-
-				// Check that birth year OP in B2 is more or less same as in GB/GT
+				// Check that birth year OP in B2 is more or less same as in HSNRP
 
 
-				if(getYearOfBirth() > gb1.getYearOfBirth() + 1 || getYearOfBirth() < gb1.getYearOfBirth() - 1 )
-					message("1186", new Integer(getYearOfBirth()).toString(), new Integer(gb1.getYearOfBirth()).toString());
+				if(getYearOfBirth() > rp1.getYearOfBirthRP() + 1 || getYearOfBirth() < rp1.getYearOfBirthRP() - 1 )
+					message("1186", new Integer(getYearOfBirth()).toString(), new Integer(rp1.getYearOfBirthRP()).toString());
 
 			}
 
@@ -1251,6 +1272,9 @@ public class Person {
                 		message("1182");
                 	
                 	// Check if the birth place matches
+                	
+                	// XCV
+                	//System.out.println("XCV" + firstOP.getPlaceOfBirth() + "  " + getPlaceOfBirth());
                 	
                 	if(!getPlaceOfBirth().equalsIgnoreCase(firstOP.getPlaceOfBirth()))
                 		message("1183");
@@ -1786,7 +1810,7 @@ public class Person {
 		String EntryDateHead = String.format("%02d-%02d-%04d", getDayEntryHead(), getMonthEntryHead(), getYearEntryHead());
 		String RegistrationDate = String.format("%02d-%02d-%04d", getDayOfRegistration(), getMonthOfRegistration(), getYearOfRegistration());
 		
-		String personNumber = String.format("%04d", getStandardizedPerson().getPersonID());
+		//String personNumber = String.format("%04d", getStandardizedPerson().getPersonID());
 				
 		//System.out.println();
 		System.out.println(Header +
@@ -1794,7 +1818,7 @@ public class Person {
 			"  " + EntryDateHead +
 			"  " + getKeyToSourceRegister() +			
 			"  " + getKeyToRegistrationPersons() +
-			"  " + personNumber +
+		//	"  " + personNumber +
 			"  " + RegistrationDate +
 		    "  " + getFamilyName().trim() + 
 		    "  " + getFirstName().trim() +

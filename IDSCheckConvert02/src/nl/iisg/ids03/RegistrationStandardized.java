@@ -7,6 +7,7 @@
 
 package nl.iisg.ids03;
 
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -1213,43 +1214,69 @@ public class RegistrationStandardized {
 
     		if(ps.getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP || ps.getNatureOfPerson() == ConstRelations2.FURTHER_APPEARANCE_OF_OP){
 
-    			Ref_GB gb = Ref.getGB(ps.getKeyToSourceRegister());
+    			Ref_RP rp = Ref.getRP(ps.getKeyToSourceRegister());
 
-    			if(gb != null){
+    			if(rp != null){
 
-    				String       lastNameFather   = gb.getLastNameFather();
-    				String       firstName1Father = gb.getFirstName1Father();
-    				String       firstName2Father = gb.getFirstName2Father();
-    				String       firstName3Father = gb.getFirstName3Father();
-    				
-    				int NfirstNamesFather = 0;
-    				if(firstName1Father != null) NfirstNamesFather++;
-    				if(firstName2Father != null) NfirstNamesFather++;
-    				if(firstName3Father != null) NfirstNamesFather++;
+    				String       lastNameFather   = rp.getLastNameFather();
 
-    				String       lastNameMother   = gb.getLastNameMother();
-    				String       firstName1Mother = gb.getFirstName1Mother();
-    				String       firstName2Mother = gb.getFirstName2Mother();
-    				String       firstName3Mother = gb.getFirstName3Mother();
-    				
-    				int NfirstNamesMother = 0;
-    				if(firstName1Mother != null) NfirstNamesMother++;
-    				if(firstName2Mother != null) NfirstNamesMother++;
-    				if(firstName3Mother != null) NfirstNamesMother++;
+    				String       firstName1Father = null;
+    				String       firstName2Father = null;
+    				String       firstName3Father = null;
+
+    				if(rp.getFirstNameFather() != null){
+    					String[] a  = rp.getFirstNameFather().split(" ");
+
+    					if(a.length > 0 && a[0] != null){
+    						firstName1Father = a[0];
+
+    					}
+
+    					if(a.length > 1 && a[1] != null){
+    						firstName2Father = a[1];
+
+    					}
+
+    					if(a.length > 2 && a[2] != null){
+    						firstName1Father = a[2];
+    					}
+    				}
+
+    				String       lastNameMother   = rp.getLastNameMother();
+
+    				String       firstName1Mother = null;
+    				String       firstName2Mother = null;
+    				String       firstName3Mother = null;
 
 
+    				if(rp.getFirstNameMother() != null){
+    					String[] b  = rp.getFirstNameMother().split(" ");
 
-    			for(PersonStandardized ps1: getPersonsStandardizedInRegistration()){
+    					if(b.length > 0 && b[0] != null){
+    						firstName1Mother = b[0];
+
+    					}
+    					if(b.length > 1 && b[1] != null){
+    						firstName2Mother = b[1];
+
+    					}
+    					if(b.length > 2 && b[2] != null){
+    						firstName1Mother = b[2];
+    					}
+    				}
+
+
+    				for(PersonStandardized ps1: getPersonsStandardizedInRegistration()){
 
     					if(ps1 == ps)
     						continue;
-    				
+
     					String lastName   = ps1.getFamilyName();
 
     					String [] firstName = ps1.getFirstName().split(" ");
-    					
+
     					int NfirstNames = firstName.length; 
-    					
+
     					String firstName1 = firstName.length > 0 ? firstName[0] : null;
     					String firstName2 = firstName.length > 1 ? firstName[1] : null;
     					String firstName3 = firstName.length > 2 ? firstName[2] : null;
@@ -1258,23 +1285,23 @@ public class RegistrationStandardized {
     					int compareResultFirstName1 = 0;
     					int compareResultFirstName2 = 0;
     					int compareResultFirstName3 = 0;
-    					
+
     					if(ps1.getSex().equalsIgnoreCase("M")){
-    						
+
     						compareResultLastName = compareNames(lastName, lastNameFather);
     						if(compareResultLastName > 2)
     							continue;
-    						
-    						
+
+
     						compareResultFirstName1 = compareNames(firstName1, firstName1Father);
     						if(compareResultFirstName1 > 2)
     							continue;
-    						
+
     						int nrMatchingFirstNames = 1;
-    						
-    						
+
+
     						// 2nd names must match or both not specified
-    						
+
     						if(firstName2 != null &&  firstName2Father != null){
     							compareResultFirstName2 = compareNames(firstName2, firstName2Father);
     							if(compareResultFirstName2 > 2)
@@ -1286,62 +1313,62 @@ public class RegistrationStandardized {
     								continue;
     							else; // both null is OK
     						}
-    						
+
     						// 3rd names must match if both specified
-    						
+
     						if(firstName3 != null &&  firstName3Father != null){
     							compareResultFirstName3 = compareNames(firstName3, firstName3Father);
     							if(compareResultFirstName3 > 2)
     								continue;
     							nrMatchingFirstNames = 3;
     						}
-    						
 
-							if(Utils.dayCount(ps.getDateOfBirth()) - Utils.dayCount(ps1.getDateOfBirth()) > 16 * 365){ // father must be at least 16 year older
-								
-								
-								if(ps.getPersonID_FA() != 0 && ps.getPersonID_FA() != ps1.getPersonID())
-									message("4150", ps.getKeyToPersons());
-								
-								ps.setPersonID_FA(ps1.getPersonID());  // accept the person as father
-								
-								message("4439", ps.getKeyToPersons());
-								
-								if(compareResultLastName != 0)
-									message("4435", ps.getKeyToPersons());
-								
-								if(compareResultFirstName1 != 0)
-									message("4436", ps.getKeyToPersons(), firstName1Father);
-								
-								if(compareResultFirstName2 != 0)
-									message("4436", ps.getKeyToPersons(), firstName2Father);
-								
-								if(compareResultFirstName3 != 0)
-									message("4436", ps.getKeyToPersons(), firstName3Father);
-								
-								if(nrMatchingFirstNames == 1)
-									message("4437",  ps.getKeyToPersons());
-								
-							}
 
-    							
+    						if(Utils.dayCount(ps.getDateOfBirth()) - Utils.dayCount(ps1.getDateOfBirth()) > 16 * 365){ // father must be at least 16 year older
+
+
+    							if(ps.getPersonID_FA() != 0 && ps.getPersonID_FA() != ps1.getPersonID())
+    								message("4150", ps.getKeyToPersons());
+
+    							ps.setPersonID_FA(ps1.getPersonID());  // accept the person as father
+
+    							message("4439", ps.getKeyToPersons());
+
+    							if(compareResultLastName != 0)
+    								message("4435", ps.getKeyToPersons());
+
+    							if(compareResultFirstName1 != 0)
+    								message("4436", ps.getKeyToPersons(), firstName1Father);
+
+    							if(compareResultFirstName2 != 0)
+    								message("4436", ps.getKeyToPersons(), firstName2Father);
+
+    							if(compareResultFirstName3 != 0)
+    								message("4436", ps.getKeyToPersons(), firstName3Father);
+
+    							if(nrMatchingFirstNames == 1)
+    								message("4437",  ps.getKeyToPersons());
+
+    						}
+
+
     					}
     					if(ps1.getSex().equalsIgnoreCase("V")){
-    						
+
     						compareResultLastName = compareNames(lastName, lastNameMother);
     						if(compareResultLastName > 2)
     							continue;
-    						
-    						
+
+
     						compareResultFirstName1 = compareNames(firstName1, firstName1Mother);
     						if(compareResultFirstName1 > 2)
     							continue;
-    						
+
     						int nrMatchingFirstNames = 1;
-    						
-    						
+
+
     						// 2nd names must match or both not specified
-    						
+
     						if(firstName2 != null &&  firstName2Mother != null){
     							compareResultFirstName2 = compareNames(firstName2, firstName2Mother);
     							if(compareResultFirstName2 > 2)
@@ -1353,45 +1380,45 @@ public class RegistrationStandardized {
     								continue;
     							else; // both null is OK
     						}
-    						
+
     						// 3rd names must match if both specified
-    						
+
     						if(firstName3 != null &&  firstName3Mother != null){
     							compareResultFirstName3 = compareNames(firstName3, firstName3Mother);
     							if(compareResultFirstName3 > 2)
     								continue;
     							nrMatchingFirstNames = 3;
     						}
-    						
 
-							if(Utils.dayCount(ps.getDateOfBirth()) - Utils.dayCount(ps1.getDateOfBirth()) > 14 * 365){ // Mother must be at least 14 year older
-								
-								if(ps.getPersonID_MO() != 0 && ps.getPersonID_MO() != ps1.getPersonID())
-									message("4150", ps.getKeyToPersons());
 
-								
-								ps.setPersonID_MO(ps1.getPersonID());  // accept the person as Mother
-								
-								message("4438", ps.getKeyToPersons());
-								
-								if(compareResultLastName != 0)
-									message("4432", ps.getKeyToPersons());
-								
-								if(compareResultFirstName1 != 0)
-									message("4433", ps.getKeyToPersons(), firstName1Mother);
-								
-								if(compareResultFirstName2 != 0)
-									message("4433", ps.getKeyToPersons(), firstName2Mother);
-								
-								if(compareResultFirstName3 != 0)
-									message("4433", ps.getKeyToPersons(), firstName3Mother);
-								
-								if(nrMatchingFirstNames == 1)
-									message("4434", ps.getKeyToPersons());
-								
-							}
+    						if(Utils.dayCount(ps.getDateOfBirth()) - Utils.dayCount(ps1.getDateOfBirth()) > 14 * 365){ // Mother must be at least 14 year older
 
-    							
+    							if(ps.getPersonID_MO() != 0 && ps.getPersonID_MO() != ps1.getPersonID())
+    								message("4150", ps.getKeyToPersons());
+
+
+    							ps.setPersonID_MO(ps1.getPersonID());  // accept the person as Mother
+
+    							message("4438", ps.getKeyToPersons());
+
+    							if(compareResultLastName != 0)
+    								message("4432", ps.getKeyToPersons());
+
+    							if(compareResultFirstName1 != 0)
+    								message("4433", ps.getKeyToPersons(), firstName1Mother);
+
+    							if(compareResultFirstName2 != 0)
+    								message("4433", ps.getKeyToPersons(), firstName2Mother);
+
+    							if(compareResultFirstName3 != 0)
+    								message("4433", ps.getKeyToPersons(), firstName3Mother);
+
+    							if(nrMatchingFirstNames == 1)
+    								message("4434", ps.getKeyToPersons());
+
+    						}
+
+
     					}
 
     				}

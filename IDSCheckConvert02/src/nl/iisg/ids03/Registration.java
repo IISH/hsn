@@ -152,6 +152,32 @@ public class Registration implements Comparable<Registration>{
 
 
 	}
+	
+	public boolean higher(Person p){
+		
+		//System.out.println("In higher");
+		
+		//System.out.println("   Registration " + getKeyToRP() + " " + getKeyToSourceRegister() + "  " + getDayEntryHead() 
+		//+ "-" + getMonthEntryHead() + "-" + getYearEntryHead());
+		
+		//System.out.println("      Person    " + p.getKeyToRP() + " " + p.getKeyToSourceRegister() + "  " + p.getDayEntryHead() 
+		//+ "-" + p.getMonthEntryHead() + "-" + p.getYearEntryHead() + "  "  + p.getKeyToRegistrationPersons());
+
+
+		if(getKeyToRP()              > p.getKeyToRP())                  return true;
+		if(getKeyToRP()              < p.getKeyToRP())                  return false;
+		if(getYearEntryHead()        > p.getYearEntryHead())            return true;
+		if(getYearEntryHead()        < p.getYearEntryHead())            return false;
+		if(getMonthEntryHead()       > p.getMonthEntryHead())           return true;
+		if(getMonthEntryHead()       < p.getMonthEntryHead())           return false;
+		if(getDayEntryHead()         > p.getDayEntryHead())             return true;
+		if(getDayEntryHead()         < p.getDayEntryHead())             return false;
+		if(getKeyToSourceRegister()  > p.getKeyToSourceRegister())      return true;
+		if(getKeyToSourceRegister()  < p.getKeyToSourceRegister())      return false;
+		
+		return false;
+		
+	}
 
 	public boolean contains(PersonDynamic pd){
 
@@ -182,6 +208,25 @@ public class Registration implements Comparable<Registration>{
 
 
 	}
+	
+	public boolean higher(RegistrationAddress ra){
+
+		if(getKeyToRP()              > ra.getKeyToRP())                  return true;
+		if(getKeyToRP()              < ra.getKeyToRP())                  return false;
+		if(getYearEntryHead()        > ra.getYearEntryHead())            return true;
+		if(getYearEntryHead()        < ra.getYearEntryHead())            return false;
+		if(getMonthEntryHead()       > ra.getMonthEntryHead())           return true;
+		if(getMonthEntryHead()       < ra.getMonthEntryHead())           return false;
+		if(getDayEntryHead()         > ra.getDayEntryHead())             return true;
+		if(getDayEntryHead()         < ra.getDayEntryHead())             return false;
+		if(getKeyToSourceRegister()  > ra.getKeyToSourceRegister())      return true;
+		if(getKeyToSourceRegister()  < ra.getKeyToSourceRegister())      return false;
+		
+		return false;
+		
+	}
+
+
 
 	/**
 	 * 

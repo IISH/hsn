@@ -149,7 +149,7 @@ public boolean check(){
 			if(p.getIsHead() == true){
 				if(Common1.dateIsValid(r.getDayEntryHead(), r.getMonthEntryHead(), r.getYearEntryHead() ) == 0){	
 					if(UniqueDateCounts.add(Utils.dayCount(r.getDayEntryHead(), r.getMonthEntryHead(), r.getYearEntryHead())) == false){					
-						message("1057", "" + r.getDayEntryHead() + "-" + r.getMonthEntryHead() + "-" + r.getYearEntryHead());
+						message("1057", "" + p.getDayOfBirth() + "-" + p.getMonthOfBirth() + "-" +p.getYearOfBirth());
 					}
 				}
 				break;  // because we want to check for *different* registrations

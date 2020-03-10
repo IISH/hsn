@@ -505,10 +505,10 @@ public class Utils {
     /**
      * 
      * @param place
-     * @param ainb, gb
+     * @param ainb, rp
      * @return
      */
-    public static String[] transformPlace(String place, Ref_AINB ainb, Ref_GB gb){
+    public static String[] transformPlace(String place, Ref_AINB ainb, Ref_RP rp){
     	
     	String a[] = new String[3];
     	String place1 = place;
@@ -521,9 +521,9 @@ public class Utils {
     			a[2] ="2"; // No value, chosen for the municipality of the register
     		}
     		else{
-    			if(gb != null && gb.getNameMunicipality() != null){
+    			if(rp != null && rp.getBirthPlaceRP() != null){
 
-    				a[0] = gb.getNameMunicipality();
+    				a[0] = rp.getBirthPlaceRP();
     				a[1] = "0"; 
     				a[2] ="4"; // From birth certificate
 

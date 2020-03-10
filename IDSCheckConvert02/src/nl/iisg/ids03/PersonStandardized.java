@@ -357,7 +357,7 @@ public class PersonStandardized {
 
 
 		
-		String[] a = Utils.transformPlace(p.getPlaceOfBirth(), Ref.getAINB(getKeyToSourceRegister()), Ref.getGB(getKeyToRP()));
+		String[] a = Utils.transformPlace(p.getPlaceOfBirth(), Ref.getAINB(getKeyToSourceRegister()), Ref.getRP(getKeyToRP()));
 
 		if(a[0] != null){
 			setPlaceOfBirthStandardized(a[0]);

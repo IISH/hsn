@@ -248,14 +248,13 @@
 		<class>nl.iisg.ref.Ref_Housenumber</class>       	
 		<class>nl.iisg.ref.Ref_Housenumberaddition</class>   
 		<class>nl.iisg.ref.Ref_Address</class>   	
-		<class>nl.iisg.ref.Ref_KG</class>
-		<class>nl.iisg.ref.Ref_RP</class>
+		<class>nl.iisg.ref.Ref_KG</class>  
 		<class>nl.iisg.ref.Ref_BirthAddress</class>  
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://195.169.89.32:3306/links_general?useUnicode=true&amp;characterEncoding=UTF-8" />" 
-			<property name="javax.persistence.jdbc.user" value="corm" />
-			<property name="javax.persistence.jdbc.password" value="7aCdmk-Zvfp0StYk" />
+			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://194.171.4.71:3306/links_general?useUnicode=true&amp;characterEncoding=UTF-8" />" 
+			<property name="javax.persistence.jdbc.user" value="cmu" />
+			<property name="javax.persistence.jdbc.password" value="cmucmu" />
 		</properties>
 	</persistence-unit>
 
@@ -264,9 +263,9 @@
 		<class>nl.iisg.ref.Ref_Profession</class>       	
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://localhost:3306/hsn_ref?useUnicode=true&amp;characterEncoding=UTF-8" />" 
-			<property name="javax.persistence.jdbc.user" value="cor" />
-			<property name="javax.persistence.jdbc.password" value="q1w2e3r4" />
+			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://194.171.4.71:3306/links_general?useUnicode=true&amp;characterEncoding=UTF-8" />" 
+			<property name="javax.persistence.jdbc.user" value="cmu" />
+			<property name="javax.persistence.jdbc.password" value="cmucmu" />
 		</properties>
 	</persistence-unit>
 

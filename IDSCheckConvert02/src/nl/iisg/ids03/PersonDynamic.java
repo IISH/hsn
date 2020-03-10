@@ -1000,31 +1000,32 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 	
 	public void Convert(){
 		
-		
+
 		//showFields();
 		PersonDynamicStandardized pds = PersonDynamicStandardized.PDS_Factory(this.getDynamicDataType()); // create the standardized dynamic data object
-		pds.setOriginalPersonDynamic(this);		
-		pds.setPersonStandardizedToWhomDynamicDataRefers(getPersonToWhomDynamicDataRefers().getStandardizedPerson());
-		//getPersonToWhomDynamicDataRefers().getStandardizedPerson().getDynamicDataOfPersonStandardized().add(pds);
+		if(pds != null){
+			pds.setOriginalPersonDynamic(this);		
+			pds.setPersonStandardizedToWhomDynamicDataRefers(getPersonToWhomDynamicDataRefers().getStandardizedPerson());
+			//getPersonToWhomDynamicDataRefers().getStandardizedPerson().getDynamicDataOfPersonStandardized().add(pds);
 
 
-		setStandardizedPersonDynamic(pds.transform(this));
-		
+			setStandardizedPersonDynamic(pds.transform(this));
 
-		ArrayList<PersonDynamicStandardized> pdsa = getStandardizedPersonDynamic();
-		
-		
-		// Next instructions link PersonDynamicStandardized <-> PersonStandardized
-		
-		for(PersonDynamicStandardized pds1: pdsa){
-			getPersonToWhomDynamicDataRefers().getStandardizedPerson().getDynamicDataOfPersonStandardized().add(pds1);
-			pds1.setPersonStandardizedToWhomDynamicDataRefers(getPersonToWhomDynamicDataRefers().getStandardizedPerson());
-			
+
+			ArrayList<PersonDynamicStandardized> pdsa = getStandardizedPersonDynamic();
+
+
+			// Next instructions link PersonDynamicStandardized <-> PersonStandardized
+
+			for(PersonDynamicStandardized pds1: pdsa){
+				getPersonToWhomDynamicDataRefers().getStandardizedPerson().getDynamicDataOfPersonStandardized().add(pds1);
+				pds1.setPersonStandardizedToWhomDynamicDataRefers(getPersonToWhomDynamicDataRefers().getStandardizedPerson());
+
+			}
 		}
 
-
 	}
-	
+
 	/**
 	 * 
 	 * This routine allocates a Message object and fills it with the parameters.

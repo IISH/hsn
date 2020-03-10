@@ -288,6 +288,52 @@ public class KeyChecks {
 			}
 		}
 		
+		// Check that B2 - B2RNBG starts with 1b
+		System.out.println("Check that B2:B2RNBG - keyToRegistrationPersons starts with 1");
+		
+		for(Registration r: registrations){
+			for(Person p: r.getPersonsInRegistration()){
+
+				if(p.getKeyToRegistrationPersons() != 1){
+					Message m = new Message("1055"); // '1055', 'FS', HSN-volgnummering is in B2 niet goed (begint niet met volgnummer '1')
+					m.setKeyToRP(p.getKeyToRP());
+					m.setKeyToSourceRegister(p.getKeyToSourceRegister());
+					m.setDayEntryHead(p.getDayEntryHead());
+					m.setMonthEntryHead(p.getMonthEntryHead());
+					m.setYearEntryHead(p.getYearEntryHead());
+					m.setKeyToRegistrationPersons(p.getKeyToRegistrationPersons());
+					m.save();
+					keysOK = false;
+					//break;
+				}
+				break;
+			}
+		}
+
+		// Check that B2 - B2RNBG is consecutive
+		System.out.println("Check that B2:B2RNBG - keyToRegistrationPersons is consecutive");
+		
+		for(Registration r: registrations){
+			
+			int sn = 0;
+			for(Person p: r.getPersonsInRegistration()){
+
+				if(p.getKeyToRegistrationPersons() != ++sn){
+					Message m = new Message("1056");         // '1056', 'FS', HSN-volgnummering is niet goed (geconstateerd in B2)
+					m.setKeyToRP(p.getKeyToRP());
+					m.setKeyToSourceRegister(p.getKeyToSourceRegister());
+					m.setDayEntryHead(p.getDayEntryHead());
+					m.setMonthEntryHead(p.getMonthEntryHead());
+					m.setYearEntryHead(p.getYearEntryHead());
+					m.setKeyToRegistrationPersons(p.getKeyToRegistrationPersons());
+					m.save();
+					keysOK = false;
+					break;
+				}
+				
+			}
+		}
+
 		
 		// Check that B2 - B1IDBG - keyToSourceRegister is in ainb
 		System.out.println("Check that B2:B1IDBG - keyToSourceRegister is in ainb");
@@ -310,15 +356,16 @@ public class KeyChecks {
 			}
 		}
 		
-		// Check that B2 - IDNR - keyToHSNResearchPerson is in GB (geboorteakten)
-		System.out.println("Check that B2:IDNR - keyToHSNResearchPerson is in gebuitvr (geboorteakten)");
+		// Check that B2 - IDNR - keyToHSNResearchPerson is in HSNRP (geboorteakten)
+		System.out.println("Check that B2:IDNR - keyToHSNResearchPerson is in HSNRP (geboorteakten)");
 		
 		for(Person p: persons){
 			
-			Ref_GB gb = Ref.getGB(p.getKeyToRP());
+			//Ref_GB gb = Ref.getGB(p.getKeyToRP());
+			Ref_RP rp = Ref.getRP(p.getKeyToRP());
 			
-			if(gb == null){
-				Message m = new Message("1054"); // '1054', 'RF', 'Identificatienummer Onderzoekspersoon NIET in Gbbestand  aanwezig! <idnr>'
+			if(rp == null){
+				Message m = new Message("1054"); // '1054', 'RF', 'Identificatienummer Onderzoekspersoon NIET in HSNRP bestand  aanwezig! <idnr>'
 				m.setKeyToRP(p.getKeyToRP());
 				m.setKeyToSourceRegister(p.getKeyToSourceRegister());
 				m.setDayEntryHead(p.getDayEntryHead());

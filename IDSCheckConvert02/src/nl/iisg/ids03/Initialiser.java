@@ -24,6 +24,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import org.eclipse.persistence.internal.jpa.metadata.sequencing.GeneratedValueMetadata;
+
 import com.linuxense.javadbf.DBFException;
 import com.linuxense.javadbf.DBFField;
 import com.linuxense.javadbf.DBFReader;
@@ -58,7 +60,7 @@ public class Initialiser {
 	 * Ref_Address  
 	 * Ref_FamilyName  
 	 * Ref_FirstName  
-	 * Ref_GB  
+	 * Ref_RP 
 	 * Ref_Housenumber  
 	 * Ref_Housenumberaddition  
 	 * Ref_KG  
@@ -75,7 +77,7 @@ public class Initialiser {
 	 *                RegistrationAddress objects  - for all B6 rows
 	 *                
 	 * Reference:     Ref_AINB                     - from ainb file (gegevens over registers)
-	 *                Ref_GB                       - from GB file (geboortebewijzen)  
+	 *                Ref_RB                       - from RB file (geboortebewijzen)  
 	 *                Ref_KG                       - from KG file (godsdienst)
 	 *                Ref_FamilyName               - from ref_familienaam file (gestandaardiseerde achternamen)
 	 *                Ref_FirstName                  
@@ -325,7 +327,8 @@ public class Initialiser {
 				System.out.println("Load reference tables"); 
 				
 				Ref.loadAINB();
-				Ref.loadGB();
+				//Ref.loadGB();
+				Ref.loadRP();
 				Ref.loadKG();
 
 				Ref.loadFamName();
@@ -480,7 +483,7 @@ public class Initialiser {
 		System.out.println("Load reference tables"); 
 		
 		Ref.loadAINB();
-		Ref.loadGB();
+		Ref.loadRP();
 		Ref.loadKG();
 
 		Ref.loadFamName();
@@ -573,7 +576,26 @@ public class Initialiser {
 		//  Registration <-> Person
 		//  Registration <-> RegistrationAddress
 		//  Person <-> PersonDynamic       
+		
+		/*
+		for(int i = 0; i < registrations.size(); i++){
+			
+			Registration r = registrations.get(i);
+			System.out.println(r.getKeyToRP() + " " + r.getKeyToSourceRegister() + "  " + r.getDayEntryHead() 
+			+ "-" + r.getMonthEntryHead() + "-" + r.getYearEntryHead());
 
+		}
+
+		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++"); 		
+		
+		for(int i = 0; i < persons.size(); i++){
+			
+			Person p = persons.get(i);
+			System.out.println(p.getKeyToRP() + " " + p.getKeyToSourceRegister() + "  " + p.getDayEntryHead() 
+			+ "-" + p.getMonthEntryHead() + "-" + p.getYearEntryHead() + "  "  + p.getKeyToRegistrationPersons());
+
+		}
+	   */
 
 		int i_p = 0;
 		int i_ra = 0;
@@ -605,23 +627,79 @@ public class Initialiser {
 			}
 		}
 		
+		/*
+		for(OP op: ops){
+			System.out.println();
+			    System.out.println("OP              " + op.getKeyToRP());
+			for(Registration r: op.getRegistrationsOfOP()){
+				System.out.println("   Registration " + r.getKeyToRP() + " " + r.getKeyToSourceRegister() + "  " + r.getDayEntryHead() 
+				+ "-" + r.getMonthEntryHead() + "-" + r.getYearEntryHead());
+				
+			}
+			
+		}
+			
+		*/
+		
 		System.out.println("Set Object Links");
 
 		
 		for(OP op: ops){
-			
+			//System.out.println("OP              " + op.getKeyToRP());
 			for(Registration r: op.getRegistrationsOfOP()){
+				//System.out.println("   Registration " + r.getKeyToRP() + " " + r.getKeyToSourceRegister() + "  " + r.getDayEntryHead() 
+				//+ "-" + r.getMonthEntryHead() + "-" + r.getYearEntryHead());
+				while(i_ra < registrationAddresses.size() && r.higher(registrationAddresses.get(i_ra))){  
+					i_ra++;
+				}
 
+				
 				while(i_ra < registrationAddresses.size() && r.contains(registrationAddresses.get(i_ra))){  
 					registrationAddresses.get(i_ra).add(r);
 					r.add(registrationAddresses.get(i_ra));
 					i_ra++;
 				}
 
+				//if(i_p < persons.size()){
+				//	Person p = persons.get(i_p);
+				//	System.out.println("      Person    " + p.getKeyToRP() + " " + p.getKeyToSourceRegister() + "  " + p.getDayEntryHead() 
+				//	+ "-" + p.getMonthEntryHead() + "-" + p.getYearEntryHead() + "  "  + p.getKeyToRegistrationPersons());
+				//}
+				//else
+				//	System.out.println("End of Person List reached)");
+				
+				
+				while(i_p < persons.size() && r.higher(persons.get(i_p))){ 
+					//System.out.println("In registration higher");
+					//System.out.println("   Registration " + r.getKeyToRP() + " " + r.getKeyToSourceRegister() + "  " + r.getDayEntryHead() 
+					//+ "-" + r.getMonthEntryHead() + "-" + r.getYearEntryHead());
+					
+					//Person p = persons.get(i_p);
+					//System.out.println("      Person    " + p.getKeyToRP() + " " + p.getKeyToSourceRegister() + "  " + p.getDayEntryHead() 
+					//+ "-" + p.getMonthEntryHead() + "-" + p.getYearEntryHead() + "  "  + p.getKeyToRegistrationPersons());
+
+					//System.out.println("r.higher(persons.get(i_p) = " + r.higher(persons.get(i_p)));
+					i_p++;
+				}
+				//System.out.println("After registration higher");
+				
+				//if(i_p < persons.size()){
+				//	Person p = persons.get(i_p);
+				//	System.out.println("      Person    " + p.getKeyToRP() + " " + p.getKeyToSourceRegister() + "  " + p.getDayEntryHead() 
+				//	+ "-" + p.getMonthEntryHead() + "-" + p.getYearEntryHead() + "  "  + p.getKeyToRegistrationPersons());
+				//}
+				//else
+				//	System.out.println("End of Person List reached");
+				
 				while(i_p < persons.size() && r.contains(persons.get(i_p))){  
 					persons.get(i_p).add(r);	
 					r.add(persons.get(i_p));
 
+					while(i_pd < personsDynamic.size() && persons.get(i_p).higher(personsDynamic.get(i_pd))  ){
+						i_pd++;
+					}
+
+					
 					while(i_pd < personsDynamic.size() && persons.get(i_p).contains(personsDynamic.get(i_pd))  ){
 						personsDynamic.get(i_pd).add(persons.get(i_p));
 						persons.get(i_p).add(personsDynamic.get(i_pd));
@@ -635,6 +713,33 @@ public class Initialiser {
 			}
 		}
 		
+		
+		/*
+		for(OP op: ops){
+			System.out.println();
+			    System.out.println("OP              " + op.getKeyToRP());
+			for(Registration r: op.getRegistrationsOfOP()){
+				System.out.println("   Registration " + r.getKeyToRP() + " " + r.getKeyToSourceRegister() + "  " + r.getDayEntryHead() 
+				+ "-" + r.getMonthEntryHead() + "-" + r.getYearEntryHead());
+				for(Person p: r.getPersonsInRegistration()){
+					System.out.println("      Person    " + p.getKeyToRP() + " " + p.getKeyToSourceRegister() + "  " + p.getDayEntryHead() 
+					+ "-" + p.getMonthEntryHead() + "-" + p.getYearEntryHead() + "  "  + p.getKeyToRegistrationPersons());
+					for(PersonDynamic pd: p.getDynamicDataOfPerson()){
+						System.out.println("         PersD  " + pd.getKeyToRP() + " " + pd.getKeyToSourceRegister() + "  " + pd.getDayEntryHead() 
+						+ "-" + pd.getMonthEntryHead() + "-" + pd.getYearEntryHead() + "  "  + pd.getKeyToRegistrationPersons() + " " + 
+								pd.getDynamicDataType() + " " + pd.getDynamicDataSequenceNumber()
+						);
+
+						
+					}
+
+					
+				}
+				
+			}
+			
+		}
+	*/
 		
 		System.out.println("Sort Objects");
 		

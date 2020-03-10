@@ -75,6 +75,8 @@ public class Ref {
 	static    List<Ref_KG>                   ref_KG_x  = new ArrayList<Ref_KG>();
 
 	static    List<Ref_GB>                   ref_GB   = new ArrayList<Ref_GB>();
+	
+	static    List<Ref_RP>                   ref_RP   = new ArrayList<Ref_RP>();
 
 	static    List<Ref_Profession>           ref_profession  = null;
 	static    List<Ref_Profession>           ref_profession_x = new ArrayList<Ref_Profession>();
@@ -210,6 +212,34 @@ public class Ref {
 				if(gb1.getKeyToRP() < gb2.getKeyToRP())
 					return 1;
 				if(gb1.getKeyToRP() > gb2.getKeyToRP())
+					return -1;
+				return 0;
+			}
+				});
+		
+
+	}
+
+	public static void loadRP(){ 
+
+		System.out.println("Reading Ref_RP");
+
+		EntityManager em = getEm_ref_2();	
+		Query q = em.createQuery("select r from Ref_RP r");
+		ref_RP = q.getResultList();		
+
+		int count = 0;
+		for(Ref_RP g: ref_RP){
+			count++;
+		}
+		System.out.println("Read    Ref_RP " + count + " rows");
+
+		Collections.sort(ref_RP, new Comparator<Ref_RP>()
+				{
+			public int compare(Ref_RP rp1, Ref_RP rp2){
+				if(rp1.getKeyToRP() < rp2.getKeyToRP())
+					return 1;
+				if(rp1.getKeyToRP() > rp2.getKeyToRP())
 					return -1;
 				return 0;
 			}
@@ -955,6 +985,32 @@ public class Ref {
 
 		if(i >= 0){
 			return(ref_GB.get(i));
+		}
+		else
+			return null;
+	}
+
+	public static Ref_RP getRP(int OPNumber){
+
+		Ref_RP rp = new Ref_RP();
+		rp.setKeyToRP(OPNumber);
+
+
+		int i = Collections.binarySearch(ref_RP, rp, new Comparator<Ref_RP>()
+				{
+			public int compare(Ref_RP rp1, Ref_RP rp2){
+				if(rp1.getKeyToRP() < rp2.getKeyToRP())
+					return 1;
+				if(rp1.getKeyToRP() > rp2.getKeyToRP())
+					return -1;
+				return 0;
+			}
+				});
+
+
+
+		if(i >= 0){
+			return(ref_RP.get(i));
 		}
 		else
 			return null;
