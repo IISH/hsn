@@ -172,7 +172,7 @@ public class Ref {
 
 		System.out.println("Reading Ref_AINB");
 
-		EntityManager em = getNewEm_ref();	
+		EntityManager em = getEm_ref_2();	
 		Query q = em.createQuery("select a from Ref_AINB a");
 		ref_AINB =  q.getResultList();		
 

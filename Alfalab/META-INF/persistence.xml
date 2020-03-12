@@ -224,9 +224,7 @@
 
 
 
-        <persistence-unit name="ref_tables" transaction-type="RESOURCE_LOCAL">
-		<class>nl.iisg.ref.Ref_AINB</class>       		
-		<class>nl.iisg.ref.Ref_GB</class>  		    		
+        <persistence-unit name="ref_tables" transaction-type="RESOURCE_LOCAL">	 		    		
 		<class>nl.iisg.ref.MessageSkeleton</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
@@ -250,6 +248,7 @@
 		<class>nl.iisg.ref.Ref_Address</class>   	
 		<class>nl.iisg.ref.Ref_KG</class>
 		<class>nl.iisg.ref.Ref_RP</class>
+		<class>nl.iisg.ref.Ref_AINB</class> 
 		<class>nl.iisg.ref.Ref_BirthAddress</class>  
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
