@@ -391,7 +391,8 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 			
 			// Check that no second relation to head can be given
 			
-			if(getDynamicDataType() > 1){
+			// Corona Thuis
+			if(getDynamicDataSequenceNumber() > 1){
 				message("1307");
 				
 			}
