@@ -879,7 +879,7 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 	 * The following message numbers can be issued:
 	 * 
 	 * 
-	 * 1461
+	 * 1461 -> 1161 
 	 * 
 	 * 
 	 */
@@ -887,9 +887,10 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 	private void checkConsistencyWithPerson(){
 
 		// Check if b2fcbg - natureOfPerson has the same value as the corresponding Person object
-
+        // Corona
+		
 		if(getNatureOfPerson() != getPersonToWhomDynamicDataRefers().getNatureOfPerson())
-			message("1461", new Integer(getKeyToRegistrationPersons()).toString());
+			message("1161", new Integer(getKeyToRegistrationPersons()).toString());
 		
 		
 	}
