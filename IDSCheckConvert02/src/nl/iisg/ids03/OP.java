@@ -143,7 +143,7 @@ public boolean check(){
 	// Check if date head of household used more than once for this OP in different registrations
 
 	UniqueDateCounts.clear();	
-	
+	/*
 	for(Registration r: getRegistrationsOfOP()){
 		for(Person p: r.getPersonsInRegistration()){
 			if(p.getIsHead() == true){
@@ -153,6 +153,17 @@ public boolean check(){
 					}
 				}
 				break;  // because we want to check for *different* registrations
+			}
+		}
+	}
+	*/
+	
+	// Corona Thuis Test op B4 ipv B2 en gebruik de Hoofddatum in de message
+	for(Registration r: getRegistrationsOfOP()){
+		
+		if(Common1.dateIsValid(r.getDayEntryHead(), r.getMonthEntryHead(), r.getYearEntryHead() ) == 0){	
+			if(UniqueDateCounts.add(Utils.dayCount(r.getDayEntryHead(), r.getMonthEntryHead(), r.getYearEntryHead())) == false){					
+				message("1057", "" + r.getDayEntryHead() + "-" + r.getMonthEntryHead() + "-" +r.getYearEntryHead());
 			}
 		}
 	}
