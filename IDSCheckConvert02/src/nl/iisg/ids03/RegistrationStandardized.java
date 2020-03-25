@@ -584,7 +584,7 @@ public class RegistrationStandardized {
 
     		if(ps.getEndDate() != null && ps.getEndDate().length() == 10){  // because we had a partial date once
     			
-    			if(Utils.dayCount(ps.getEndDate()) > endCount){
+    			if(Utils.dateIsValid(ps.getEndDate()) == 0 && Utils.dayCount(ps.getEndDate()) > endCount){
 
     				if(ps.getEndFlag() >= 54){
     					ps.setEndDate("31-12-" + endYear); 
@@ -618,7 +618,6 @@ public class RegistrationStandardized {
     
     public void minMax(){
     	
-    	//System.out.println("In minmax");
     	
     	//System.out.println("AAAAAA");
     	//for(PersonStandardized ps: getPersonsStandardizedInRegistration()){
@@ -639,7 +638,7 @@ public class RegistrationStandardized {
 
     	for(PersonStandardized ps: getPersonsStandardizedInRegistration()){
     		
-    		if(!cont(ps) || ps.getMaxStartDate() == null)
+    		if(!cont(ps) || ps.getMaxStartDate() == null || Utils.dateIsValid(ps.getMaxStartDate()) != 0)
     			continue;
 
     		
@@ -660,7 +659,7 @@ public class RegistrationStandardized {
     		    		for(PersonDynamicStandardized pds1: ps1.getDynamicDataOfPersonStandardized()){
     		    			if(pds1.getKeyToDistinguishDynamicDataType() == ConstRelations2.AANKOMST){
     		    				if(((PDS_PlaceOfOrigin)pds1).getOriginGroup() == group){
-    		    					if(ps1.getMaxStartDate() != null && Utils.dayCount(ps1.getMaxStartDate()) < minStartDays){
+    		    					if(ps1.getMaxStartDate() != null && Utils.dateIsValid(ps1.getMaxStartDate()) == 0 && Utils.dayCount(ps1.getMaxStartDate()) < minStartDays){
     		    						minStartDate = ps1.getMaxStartDate();
     		    						minStartDays = Utils.dayCount(minStartDate);
     		    					}
@@ -868,12 +867,12 @@ public class RegistrationStandardized {
     	// Check if there are persons with start date > end date
     	
     	for(PersonStandardized ps: getPersonsStandardizedInRegistration()){
-    		if(Utils.dayCount(ps.getStartDate()) > Utils.dayCount(ps.getEndDate()))
+    		if(Utils.dateIsValid(ps.getStartDate()) == 0 && Utils.dateIsValid(ps.getEndDate()) == 0 && Utils.dayCount(ps.getStartDate()) > Utils.dayCount(ps.getEndDate()))
     			//	message("7136", "" + ps.getPersonID());
     			;
     	}
     	
-    	
+   
     }
     
     private static boolean cont(PersonStandardized ps){
@@ -911,9 +910,10 @@ public class RegistrationStandardized {
     	
     	// get highest end date with flag != 61
     	
-    	String highestEndDate = "00-00-0000";
+    	String highestEndDate = "01-01-1600";
     	for(PersonStandardized ps: getPersonsStandardizedInRegistration())
-    		if(ps.getEndFlag() != 61 && Utils.dayCount(ps.getEndDate()) > Utils.dayCount(highestEndDate))
+    		if(ps.getEndFlag() != 61 &&  Utils.dateIsValid(ps.getEndDate()) == 0 &&
+    				Utils.dateIsValid(highestEndDate) == 0 && Utils.dayCount(highestEndDate) > Utils.dayCount(highestEndDate))
     			highestEndDate = ps.getEndDate();
     		
     	
@@ -923,10 +923,12 @@ public class RegistrationStandardized {
     		if(ps.getEndFlag() == 61){ 
     			for(PersonDynamicStandardized pds: ps.getDynamicDataOfPersonStandardized()){
     				if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.VERTREK && pds.getDateOfMutation2().equals("00-00-0000")){
-    					if(Utils.dayCount(highestEndDate) > Utils.dayCount(ps.getStartDate()))  
+    					if(Utils.dateIsValid(ps.getStartDate()) == 0 && Utils.dateIsValid(highestEndDate) == 0 && 
+    							Utils.dayCount(highestEndDate) > Utils.dayCount(ps.getStartDate()))  
     						ps.setEndDate(highestEndDate);
     					else
-    						ps.setEndDate(Utils.dateFromDayCount((Utils.dayCount(ps.getStartDate())) + 365));
+    						if(Utils.dateIsValid(ps.getStartDate()) == 0)
+    							ps.setEndDate(Utils.dateFromDayCount((Utils.dayCount(ps.getStartDate())) + 365));
     					ps.setEndFlag(62);
     				}
     			}

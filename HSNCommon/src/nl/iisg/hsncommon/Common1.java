@@ -92,7 +92,6 @@ public class Common1 {
 	 */
 	 public static int dayCount(int day1, int month1, int year1){
 	
-		 //System.out.println("" + day1+ month1 + year1);
 	
 		 int [] monthLength = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 	
@@ -113,8 +112,8 @@ public class Common1 {
 			 
 		 // Correct for 29-02-xxxx
 		 
-		 if(month1 == 2 && day1 == 29 && !(year1 % 4 == 0 && (year1 % 100 != 0 || year1 % 400 == 0))){
-			 day1 = 1;
+		 if(month1 == 2 && day1 > 28 && !(year1 % 4 == 0 && (year1 % 100 != 0 || year1 % 400 == 0))){
+			 day1 = day1 - 28;
 			 month1 = 3;
 		 }
 		 
@@ -194,8 +193,13 @@ public class Common1 {
 			 }
 		 }
 	
-	
+		 int count = 0;
 		 while(day != day1 || month != month1 || year != year1){
+			 
+			 if(++count > 100 * 365) {
+				 System.out.println("XYZ DC05: " + day1 + "   " + month1 +    "   " + year1);
+				 count = count/0; 
+			 }
 	
 			 //System.out.println("" + day + " " + month + " " + year);
 			 if(day < monthLength[month])
@@ -219,7 +223,7 @@ public class Common1 {
 			 dayCount++;
 	
 		 }
-		 
+
 		 return(dayCount);
 	 }
 

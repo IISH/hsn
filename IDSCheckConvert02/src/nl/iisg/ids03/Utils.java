@@ -197,6 +197,13 @@ public class Utils {
 				 day1 = 1;
 		 }
 			 
+		 // Correct for 29-02-xxxx
+		 
+		 if(month1 == 2 && day1 > 28 && !(year1 % 4 == 0 && (year1 % 100 != 0 || year1 % 400 == 0))){
+			 day1 = day1 - 28;
+			 month1 = 3;
+		 }
+
 
 		 if(year1 > 1800){
 
@@ -274,8 +281,14 @@ public class Utils {
 			 }
 		 }
 
+		 int count = 0;
 
 		 while(day != day1 || month != month1 || year != year1){
+			 
+			 if(++count > 1000 * 365) {
+				 count = count/0; 
+			 }
+
 
 			 //System.out.println("" + day + " " + month + " " + year);
 			 if(day < monthLength[month])

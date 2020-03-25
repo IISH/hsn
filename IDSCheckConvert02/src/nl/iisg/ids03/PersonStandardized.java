@@ -534,9 +534,10 @@ public class PersonStandardized {
 		setStartEst(100);
 
 		// If Person is OP, use OP date (if later)
-
+		
 		if(getNatureOfPerson() == 1 || getNatureOfPerson() == 5){
-			if(Utils.dayCount(getRegistrationStandardizedPersonAppearsIn().getEntryDateRP()) > Utils.dayCount(getStartDate())){				
+			if(Utils.dateIsValid(getRegistrationStandardizedPersonAppearsIn().getEntryDateRP()) == 0  && Utils.dateIsValid(getStartDate()) == 0 &&
+			 Utils.dayCount(getRegistrationStandardizedPersonAppearsIn().getEntryDateRP()) > Utils.dayCount(getStartDate())){				
 				setStartDate(getRegistrationStandardizedPersonAppearsIn().getEntryDateRP());
 				setStartFlag(2);
 				setStartEst(120);				
@@ -1146,7 +1147,7 @@ public class PersonStandardized {
 	public void	giveEndDate2(){
 
 		
-		if(Utils.dayCount(getStartDate()) > Utils.dayCount(getEndDate()))
+		if(Utils.dateIsValid(getStartDate()) == 0 && Utils.dateIsValid(getEndDate()) == 0 && Utils.dayCount(getStartDate()) > Utils.dayCount(getEndDate()))
 			if(58 <= getEndFlag() && getEndFlag() <= 62){
 		    	Ref_AINB ainb = Ref.getAINB(getKeyToSourceRegister());
 		    	if(Utils.dayCount("31-12-" + ainb.getEndYearRegister()) > Utils.dayCount(getEndDate())){
@@ -2416,6 +2417,7 @@ public class PersonStandardized {
 	
 	public void dateDynamicElements(){
 		
+		
 		ArrayList<PersonDynamicStandardized> relationToHead  = new ArrayList<PersonDynamicStandardized>();
 		ArrayList<PersonDynamicStandardized> parentsChildren = new ArrayList<PersonDynamicStandardized>();
 		ArrayList<PersonDynamicStandardized> civilStatus     = new ArrayList<PersonDynamicStandardized>();
@@ -2440,8 +2442,8 @@ public class PersonStandardized {
 		}
 		
 		dateRelationToHead(relationToHead, civilStatus); 
-		dateCivilStatus(civilStatus);       
-		dateReligion(religion, civilStatus);             
+		dateCivilStatus(civilStatus); 
+		dateReligion(religion, civilStatus); 
 		dateOccupation(occupation, civilStatus);  
 		dateArrivalDepartures(origin, destination);
 		
@@ -2467,6 +2469,7 @@ public class PersonStandardized {
 		
 		for(PersonDynamicStandardized pds: destination)
 			getDynamicDataOfPersonStandardized().add(pds);
+		
 				
 	}
 	
