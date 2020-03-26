@@ -1010,6 +1010,7 @@ public class Person {
 	 * This method performs checks on OP Person.
 	 * The following message numbers can be issued:
 	 * 
+	 *  1002
 	 *  1003
 	 *  1004
 	 *  1005
@@ -1073,7 +1074,10 @@ public class Person {
 						returnCode = false;
 					}
 			}
+			else
+				message("1002", ""  + getDayEntryHead() + "-" + getMonthEntryHead() + "-" + getYearEntryHead());  
 
+				
 			// Check that OP date in range Bevolkingsregister
 
 

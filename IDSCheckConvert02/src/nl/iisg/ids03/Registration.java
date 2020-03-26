@@ -1004,7 +1004,7 @@ public class Registration implements Comparable<Registration>{
 			if(Common1.dateIsValid(ra.getDayOfAddress(), ra.getMonthOfAddress(), ra.getYearOfAddress()) == 0){
 				
 				if(Utils.dayCount(ra.getDayOfAddress(), ra.getMonthOfAddress(), ra.getYearOfAddress()) < prevDayCount){
-					//message("1074");
+					message("1074");
 					chronological = false;
 				}
 				else
