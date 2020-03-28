@@ -373,7 +373,9 @@ public class Person {
 	 * 
 	 * This method performs date checks on Person.
 	 * The following message numbers can be issued:
-	 * 
+     *	
+     *	1116
+     *	1117
 	 *  1195
 	 *  1196
 	 *  1197
@@ -396,6 +398,18 @@ public class Person {
 	 */
 
 	public void checkDates(Ref_AINB ainb){
+		
+		
+		int headDateValid = Common1.dateIsValid(getDayEntryHead(), getMonthEntryHead(),getYearEntryHead());
+
+		
+		if(headDateValid == -1)
+			message("1117", "" + getDayEntryHead() + "-" + getMonthEntryHead() + "-" + getYearEntryHead());
+		else 
+			if(headDateValid == 1)
+				message("1116", "" + getDayEntryHead() + "-" + getMonthEntryHead() + "-" + getYearEntryHead());
+			
+
 
 		if(ainb != null){
 			
@@ -1300,8 +1314,6 @@ public class Person {
 	 * This routine performs various checks on the Head of Household
 	 * The following message numbers can be issued  
 	 * 
-	 * 1116
-	 * 1117
 	 * 1120
 	 * 1121
 	 * 1122
@@ -1322,12 +1334,6 @@ public class Person {
 		
 		int headDateValid = Common1.dateIsValid(getDayEntryHead(), getMonthEntryHead(),getYearEntryHead());
 		
-		if(headDateValid == -1)
-			message("1117", "" + getDayEntryHead() + "-" + getMonthEntryHead() + "-" + getYearEntryHead());
-		else 
-			if(headDateValid == 1)
-				message("1116", "" + getDayEntryHead() + "-" + getMonthEntryHead() + "-" + getYearEntryHead());
-			
 			
 		// Next tests only if valid head date
 		

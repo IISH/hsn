@@ -797,7 +797,8 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 
 		// If person is head, perform extra checks
 
-		if(getPersonToWhomDynamicDataRefers().getIsHead() == true && getPersonToWhomDynamicDataRefers().getIsHeadFirstSuccessor() == false){
+		
+		if(getDynamicDataSequenceNumber() == 1 && getPersonToWhomDynamicDataRefers().getIsHead() == true && getPersonToWhomDynamicDataRefers().getIsHeadFirstSuccessor() == false){
 
 			if(Common1.dateIsValid(getDayEntryHead(), getMonthEntryHead(),getYearEntryHead()) == 0){
 				if(Common1.dateIsValid(getDayOfMutation(), getMonthOfMutation(),getYearOfMutation()) == 0){
