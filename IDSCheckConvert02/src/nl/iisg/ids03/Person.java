@@ -15,9 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-
-
-
+import jdk.nashorn.internal.objects.annotations.Getter;
 import nl.iisg.hsncommon.Common1;
 import nl.iisg.hsncommon.ConstRelations2;
 import nl.iisg.ref.*;
@@ -419,12 +417,17 @@ public class Person {
 			int year  = getYearOfRegistration(); 
 			
 			// Check if valid registration date for non-C-register 
+			
+			// For compatibility with old program
+			// Check that registration date != -3/-3/-3 for non C-Register 
 
-			if(Common1.dateIsValid(day, month, year) > 0 && ainb.getTypeRegister().toUpperCase().equals("C") != true)
+
+			if(ainb.getTypeRegister().toUpperCase().equals("C") != true &&
+					(getDayOfRegistration() == -3 && getMonthOfRegistration() == -3 && getYearOfRegistration() == -3))
 				message("1195", "" + getDayOfRegistration() + "-" + getMonthOfRegistration() + "-" + getYearOfRegistration());
 
 			// Check that registration date = -3/-3/-3 for C-Register 
-
+			
 			if(ainb.getTypeRegister().toUpperCase().equals("C") == true &&
 					!(getDayOfRegistration() == -3 && getMonthOfRegistration() == -3 && getYearOfRegistration() == -3))
 				message("1218");
@@ -518,6 +521,7 @@ public class Person {
 		month = getMonthOfRegistration() > 0 ? getMonthOfRegistration() : 1;
 		year  = getYearOfRegistration();
 
+		i2 = Utils.dayCount(day, month, year);
 		i1 = Utils.dayCount(getDayOfDecease(),      getMonthOfDecease(),      getYearOfDecease());
 
 		if( i1 > 0 && i2 > 0 && i2 > i1)
@@ -1060,252 +1064,259 @@ public class Person {
 
 		// Check that the OP date is valid 
 
-		if(Common1.dateIsValid(r.getDayEntryRP(), r.getMonthEntryRP(), r.getYearEntryRP() ) != 0)
+		if(Common1.dateIsValid(r.getDayEntryRP(), r.getMonthEntryRP(), r.getYearEntryRP() ) < 0)
 			message("1003", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP());
+		else
+			if(Common1.dateIsValid(r.getDayEntryRP(), r.getMonthEntryRP(), r.getYearEntryRP() ) > 0)
+				message("1002", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP());
+			else{
 
-		else{
+				int opdate =   Utils.dayCount(r.getDayEntryRP(), r.getMonthEntryRP(), r.getYearEntryRP());
 
-			int opdate =   Utils.dayCount(r.getDayEntryRP(), r.getMonthEntryRP(), r.getYearEntryRP());
-			
-			if(Common1.dateIsValid(getDayEntryHead(), getMonthEntryHead(),getYearEntryHead()) == 0){
+				if(Common1.dateIsValid(getDayEntryHead(), getMonthEntryHead(),getYearEntryHead()) == 0){
 
-				// Check if OP date before date Head
-
-				
-				int headdate = Utils.dayCount(getDayEntryHead(), getMonthEntryHead(),getYearEntryHead());
-
-				if(opdate < headdate)
-					message("1004", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), 
-							"" + getDayEntryHead() + "-" + getMonthEntryHead() + "-" + getYearEntryHead());  
+					// Check if OP date before date Head
 
 
-				// If OP is Head, OP-date and Headdate must be equal
+					int headdate = Utils.dayCount(getDayEntryHead(), getMonthEntryHead(),getYearEntryHead());
 
-				if(getIsHead() == true)
-					if(opdate != headdate){
-						message("1005", "" + getDayEntryHead() + "-" + getMonthEntryHead() + "-" + getYearEntryHead(),  
-								"" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP());
-						returnCode = false;
+					if(opdate < headdate)
+						message("1004", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), 
+								"" + getDayEntryHead() + "-" + getMonthEntryHead() + "-" + getYearEntryHead());  
+
+
+					// If OP is Head, OP-date and Headdate must be equal
+
+					if(getIsHead() == true)
+						if(opdate != headdate){
+							message("1005", "" + getDayEntryHead() + "-" + getMonthEntryHead() + "-" + getYearEntryHead(),  
+									"" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP());
+							returnCode = false;
+						}
+				}
+
+
+				// Check that OP date in range Bevolkingsregister
+
+
+				int startYear = ainb.getStartYearRegisterCorrected() != 0 ? ainb.getStartYearRegisterCorrected() : ainb.getStartYearRegister();  
+				int endYear   = ainb.getEndYearRegisterCorrected()   != 0 ? ainb.getEndYearRegisterCorrected()   : ainb.getEndYearRegister();  
+
+
+				if(ainb != null){
+					if(startYear > 0){
+						if(r.getYearEntryRP() < startYear -1){
+							message("1153", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), (new Integer(startYear)).toString(), (new Integer(endYear)).toString()); 
+						}
 					}
-			}
-			else
-				message("1002", ""  + getDayEntryHead() + "-" + getMonthEntryHead() + "-" + getYearEntryHead());  
 
-				
-			// Check that OP date in range Bevolkingsregister
-
-
-			int startYear = ainb.getStartYearRegisterCorrected() != 0 ? ainb.getStartYearRegisterCorrected() : ainb.getStartYearRegister();  
-			int endYear   = ainb.getEndYearRegisterCorrected()   != 0 ? ainb.getEndYearRegisterCorrected()   : ainb.getEndYearRegister();  
-
-			
-			if(ainb != null){
-				if(startYear > 0){
-					if(r.getYearEntryRP() < startYear -1){
-						message("1153", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), (new Integer(startYear)).toString(), (new Integer(endYear)).toString()); 
+					if(endYear > 0){
+						if(r.getYearEntryRP() > endYear + 1){
+							message("1154", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), (new Integer(startYear)).toString(), (new Integer(endYear)).toString()); 
+						}
 					}
 				}
 
-				if(endYear > 0){
-					if(r.getYearEntryRP() > endYear + 1){
-						message("1154", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), (new Integer(startYear)).toString(), (new Integer(endYear)).toString()); 
-					}
-				}
-			}
+				// Check if OP registration date (if given) more than 20 day before OP date
+				
+				int year  = getYearOfRegistration();
+				int month = getMonthOfRegistration() > 0 ? getMonthOfRegistration() : 1;
+				int day   = getDayOfRegistration()   > 0 ? getDayOfRegistration()   : 1;
 
-			// Check if OP registration date (if given) more than 20 day before OP date
+				if(getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP) {
+					
+					if(Common1.dateIsValid(day, month, year) == 0){
 
-			int year  = getYearOfRegistration();
-			int month = getMonthOfRegistration() > 0 ? getMonthOfRegistration() : 1;
-			int day   = getDayOfRegistration()   > 0 ? getDayOfRegistration()   : 1;
-			
-			if(Common1.dateIsValid(day, month, year) == 0){
-
-				int registrationdate = Utils.dayCount(day, month, year);
-				if(opdate + 20 < registrationdate)
-					message("1155", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), 
-						        	"" + day               + "-" + month               + "-" + year);  
-			}
-
-			// Check that OP date not before birth date OP (if given)
-			
-			year  = getYearOfBirth();
-			month = getMonthOfBirth() > 0 ? getMonthOfBirth() : 1;
-			day   = getDayOfBirth()   > 0 ? getDayOfBirth()   : 1;
-			
-			if(Common1.dateIsValid(day, month, year) == 0){
-
-				int birthdate = Utils.dayCount(day, month, year);
-				if(opdate  < birthdate)
-					message("1156", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), 
+						int registrationdate = Utils.dayCount(day, month, year);
+						if(opdate + 20 < registrationdate)
+							message("1155", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), 
 									"" + day               + "-" + month               + "-" + year);  
-			}
-			
-			// Check that OP date not after decease date OP (if given)
-			
-			year  = getYearOfDecease();
-			month = getMonthOfDecease() > 0 ? getMonthOfDecease() : 12;
-			day   = getDayOfDecease()   > 0 ? getDayOfDecease()   : 28;
-
-			if(Common1.dateIsValid(day, month, year) == 0){
-
-				int deceasedate = Utils.dayCount(day, month, year);
-				if(opdate  > deceasedate)
-					message("1157", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), 
-									"" + day               + "-" + month               + "-" + year);  
-
-
-			}
-
-			// Check that the OP date is not before arrival date of OP
-
-			PersonDynamic pd1 = null;
-			for(PersonDynamic pd : getDynamicDataOfPerson()){
-				if(pd.getDynamicDataType() == ConstRelations2.AANKOMST){
-					pd1 = pd;
-					break;
+					}
 				}
-			}
 
-			if(pd1 != null){
-				
-				year  = pd1.getYearOfMutation();
-				month = pd1.getMonthOfMutation() > 0 ? pd1.getMonthOfMutation() : 1;
-				day   = pd1.getDayOfMutation()   > 0 ? pd1.getDayOfMutation()   : 1;
-				
+				// Check that OP date not before birth date OP (if given)
+
+				year  = getYearOfBirth();
+				month = getMonthOfBirth() > 0 ? getMonthOfBirth() : 1;
+				day   = getDayOfBirth()   > 0 ? getDayOfBirth()   : 1;
+
 				if(Common1.dateIsValid(day, month, year) == 0){
-					int arrivaldate = Utils.dayCount(day, month, year); 
-					if(opdate < arrivaldate)
-						message("1158", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), 
-										"" + day               + "-" + month               + "-" + year);  
-				}	
-			}
 
-			// Check that the OP date is not after departure date of OP
-
-			pd1 = null;
-			for(PersonDynamic pd : getDynamicDataOfPerson()){
-				if(pd.getDynamicDataType() == ConstRelations2.VERTREK){
-					pd1 = pd;
-					break;
+					int birthdate = Utils.dayCount(day, month, year);
+					if(opdate  < birthdate)
+						message("1156", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), 
+								"" + day               + "-" + month               + "-" + year);  
 				}
-			}
 
-			if(pd1 != null){
-				
-				year  = pd1.getYearOfMutation();
-				month = pd1.getMonthOfMutation() > 0 ? pd1.getMonthOfMutation() : 12;
-				day   = pd1.getDayOfMutation()   > 0 ? pd1.getDayOfMutation()   : 28;
-				
+				// Check that OP date not after decease date OP (if given)
+
+				year  = getYearOfDecease();
+				month = getMonthOfDecease() > 0 ? getMonthOfDecease() : 12;
+				day   = getDayOfDecease()   > 0 ? getDayOfDecease()   : 28;
+
 				if(Common1.dateIsValid(day, month, year) == 0){
-					int departuredate = Utils.dayCount(day, month, year); 
-					if(opdate > departuredate)
-						message("1159", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), 
+
+					int deceasedate = Utils.dayCount(day, month, year);
+					if(opdate  > deceasedate)
+						message("1157", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), 
+								"" + day               + "-" + month               + "-" + year);  
+
+
+				}
+
+				// Check that the OP date is not before arrival date of OP
+				
+				PersonDynamic pd1 = null;
+				if(getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP){
+
+
+					for(PersonDynamic pd : getDynamicDataOfPerson()){
+						if(pd.getDynamicDataType() == ConstRelations2.AANKOMST){
+							pd1 = pd;
+							break;
+						}
+					}
+
+
+					if(pd1 != null){
+
+						year  = pd1.getYearOfMutation();
+						month = pd1.getMonthOfMutation() > 0 ? pd1.getMonthOfMutation() : 1;
+						day   = pd1.getDayOfMutation()   > 0 ? pd1.getDayOfMutation()   : 1;
+
+						if(Common1.dateIsValid(day, month, year) == 0){
+							int arrivaldate = Utils.dayCount(day, month, year); 
+							if(opdate < arrivaldate)
+								message("1158", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), 
 										"" + day               + "-" + month               + "-" + year);  
-				}	
-
-
-			}
-
-			// (For KeyToRegistrationPersons - b2rnbg = 2) Check if marriage date later than OP date
-
-			if(getKeyToRegistrationPersons() == 2){
+						}	
+					}
+				}
+				// Check that the OP date is not after departure date of OP
 
 				pd1 = null;
 				for(PersonDynamic pd : getDynamicDataOfPerson()){
-					if(pd.getDynamicDataType() == ConstRelations2.BURGELIJKE_STAAT && pd.getContentOfDynamicData() == ConstRelations2.GEHUWD){
+					if(pd.getDynamicDataType() == ConstRelations2.VERTREK){
 						pd1 = pd;
 						break;
 					}
 				}
 
 				if(pd1 != null){
-					
+
 					year  = pd1.getYearOfMutation();
 					month = pd1.getMonthOfMutation() > 0 ? pd1.getMonthOfMutation() : 12;
 					day   = pd1.getDayOfMutation()   > 0 ? pd1.getDayOfMutation()   : 28;
-					
+
 					if(Common1.dateIsValid(day, month, year) == 0){
-						int marriagedate = Utils.dayCount(day, month, year); 
-						if(opdate < marriagedate)
-							message("1166", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), 
-											"" + day               + "-" + month               + "-" + year);  
+						int departuredate = Utils.dayCount(day, month, year); 
+						if(opdate > departuredate)
+							message("1159", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), 
+									"" + day               + "-" + month               + "-" + year);  
 					}	
+
+
 				}
-			}
 
-			Ref_RP rp1 = Ref.getRP(getKeyToRP());
+				// (For KeyToRegistrationPersons - b2rnbg = 2) Check if marriage date later than OP date
 
-			if(rp1 != null){
+				if(getKeyToRegistrationPersons() == 2){
 
-				// Check that sex OP in B2 is same as in HSNRP
-				
-				if(rp1.getSexRP().equalsIgnoreCase(getSex()) != true)
-					message("1185", getSex(), rp1.getSexRP());
+					pd1 = null;
+					for(PersonDynamic pd : getDynamicDataOfPerson()){
+						if(pd.getDynamicDataType() == ConstRelations2.BURGELIJKE_STAAT && pd.getContentOfDynamicData() == ConstRelations2.GEHUWD){
+							pd1 = pd;
+							break;
+						}
+					}
 
-				// Check that birth year OP in B2 is more or less same as in HSNRP
+					if(pd1 != null){
 
+						year  = pd1.getYearOfMutation();
+						month = pd1.getMonthOfMutation() > 0 ? pd1.getMonthOfMutation() : 12;
+						day   = pd1.getDayOfMutation()   > 0 ? pd1.getDayOfMutation()   : 28;
 
-				if(getYearOfBirth() > rp1.getYearOfBirthRP() + 1 || getYearOfBirth() < rp1.getYearOfBirthRP() - 1 )
-					message("1186", new Integer(getYearOfBirth()).toString(), new Integer(rp1.getYearOfBirthRP()).toString());
-
-			}
-
-			// Check if sex of OP is determined
-
-			if(getSex() != null && getSex().toUpperCase().equals("M") != true  && getSex().toUpperCase().equals("V") != true)
-				message("1187");			
-
-			// Check if second appearance of OP. 
-			
-			if(getNatureOfPerson() == ConstRelations2.FURTHER_APPEARANCE_OF_OP){
-				
-				Person firstOP = null;
-				for(Person p: getRegistrationPersonAppearsIn().getPersonsInRegistration()){
-					
-					if(p.getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP){
-						firstOP = p;
-
-						break;
+						if(Common1.dateIsValid(day, month, year) == 0){
+							int marriagedate = Utils.dayCount(day, month, year); 
+							if(opdate < marriagedate)
+								message("1166", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), 
+										"" + day               + "-" + month               + "-" + year);  
+						}	
 					}
 				}
-				
-                if(firstOP != null){
 
-                	// Check if the family names match
-                	
-                	if(!getFamilyName().equalsIgnoreCase(firstOP.getFamilyName()))
-                		message("1180");
-                	
-                	// Check if the first names match
-                	
-                	if(!getFirstName().equalsIgnoreCase(firstOP.getFirstName()))
-                		message("1181");
-                	
-                	// Check if the birth dates match
-                	
-                	if(getDayOfBirth() != firstOP.getDayOfBirth() || 
-                			getMonthOfBirth() != firstOP.getMonthOfBirth() || 
-                			getYearOfBirth() != firstOP.getYearOfBirth()) 
-                		message("1182");
-                	
-                	// Check if the birth place matches
-                	
-                	// XCV
-                	//System.out.println("XCV" + firstOP.getPlaceOfBirth() + "  " + getPlaceOfBirth());
-                	
-                	if(!getPlaceOfBirth().equalsIgnoreCase(firstOP.getPlaceOfBirth()))
-                		message("1183");
-                	
-                	// Check if the sex matches
-                	
-                	if(!getSex().equalsIgnoreCase(firstOP.getSex()))
-                		message("1184");
-                	
-                }
+				Ref_RP rp1 = Ref.getRP(getKeyToRP());
+
+				if(rp1 != null){
+
+					// Check that sex OP in B2 is same as in HSNRP
+
+					if(rp1.getSexRP().equalsIgnoreCase(getSex()) != true)
+						message("1185", getSex(), rp1.getSexRP());
+
+					// Check that birth year OP in B2 is more or less same as in HSNRP
+
+
+					if(getYearOfBirth() > rp1.getYearOfBirthRP() + 1 || getYearOfBirth() < rp1.getYearOfBirthRP() - 1 )
+						message("1186", new Integer(getYearOfBirth()).toString(), new Integer(rp1.getYearOfBirthRP()).toString());
+
+				}
+
+				// Check if sex of OP is determined
+
+				if(getSex() != null && getSex().toUpperCase().equals("M") != true  && getSex().toUpperCase().equals("V") != true)
+					message("1187");			
+
+				// Check if second appearance of OP. 
+
+				if(getNatureOfPerson() == ConstRelations2.FURTHER_APPEARANCE_OF_OP){
+
+					Person firstOP = null;
+					for(Person p: getRegistrationPersonAppearsIn().getPersonsInRegistration()){
+
+						if(p.getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP){
+							firstOP = p;
+
+							break;
+						}
+					}
+
+					if(firstOP != null){
+
+						// Check if the family names match
+
+						if(!getFamilyName().equalsIgnoreCase(firstOP.getFamilyName()))
+							message("1180");
+
+						// Check if the first names match
+
+						if(!getFirstName().equalsIgnoreCase(firstOP.getFirstName()))
+							message("1181");
+
+						// Check if the birth dates match
+
+						if(getDayOfBirth() != firstOP.getDayOfBirth() || 
+								getMonthOfBirth() != firstOP.getMonthOfBirth() || 
+								getYearOfBirth() != firstOP.getYearOfBirth()) 
+							message("1182");
+
+						// Check if the birth place matches
+
+						// XCV
+						//System.out.println("XCV" + firstOP.getPlaceOfBirth() + "  " + getPlaceOfBirth());
+
+						if(!getPlaceOfBirth().equalsIgnoreCase(firstOP.getPlaceOfBirth()))
+							message("1183");
+
+						// Check if the sex matches
+
+						if(!getSex().equalsIgnoreCase(firstOP.getSex()))
+							message("1184");	
+
+					}
+				}
 			}
-		}
-		return returnCode;
+			return returnCode;
 	}
 
 	
