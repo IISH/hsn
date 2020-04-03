@@ -1430,29 +1430,41 @@ public class Person {
 			
 			// Check if registration date of head earlier than arrival date head or later than departure date of head
 			
-			int registerDate = 0;
-			int registerDay = getDayOfRegistration();
-			int registerMonth = getMonthOfRegistration();
-			int registerYear = getYearOfRegistration();
+			int registerDateEarliest = 0;
+			int registerDay   = getDayOfRegistration()   > 0 ? getDayOfRegistration()   : 1;
+			int registerMonth = getMonthOfRegistration() > 0 ? getMonthOfRegistration() : 1;
+			int registerYear  = getYearOfRegistration();
 			
 			if(Common1.dateIsValid(registerDay, registerMonth, registerYear) == 0)
-				registerDate = Utils.dayCount(registerDay, registerMonth, registerYear);			
+				registerDateEarliest = Utils.dayCount(registerDay, registerMonth, registerYear);			
+
+			int registerDateLatest = 0;
+			registerDay   = getDayOfRegistration()   > 0 ? getDayOfRegistration()   : 28;
+			registerMonth = getMonthOfRegistration() > 0 ? getMonthOfRegistration() : 12;
+			registerYear  = getYearOfRegistration();
 			
+			if(Common1.dateIsValid(registerDay, registerMonth, registerYear) == 0)
+				registerDateLatest = Utils.dayCount(registerDay, registerMonth, registerYear);			
+
+
 			
 			for(PersonDynamic pd: getDynamicDataOfPerson()){
 				
 				switch(pd.getDynamicDataType()){
 
 				case ConstRelations2.AANKOMST:
+					
+					int mutationDay   = pd.getDayOfMutation()   > 0 ? pd.getDayOfMutation()   : 1;
+					int mutationMonth = pd.getMonthOfMutation() > 0 ? pd.getMonthOfMutation() : 1;
 
-					if(Common1.dateIsValid(pd.getDayOfMutation(), pd.getMonthOfMutation(),pd.getYearOfMutation()) == 0){
-						int arrivalDate = Utils.dayCount(pd.getDayOfMutation(), pd.getMonthOfMutation(),pd.getYearOfMutation());
+					if(Common1.dateIsValid(mutationDay, mutationMonth, pd.getYearOfMutation()) == 0){
+						int arrivalDateEarliest = Utils.dayCount(mutationDay, mutationMonth, pd.getYearOfMutation());
 
-						if(registerDate != 0){
+						if(registerDateLatest != 0){
 
-							if(arrivalDate > registerDate)
-								message("1146", "" + registerDay           + "-" + registerMonth           + "-" + registerYear,
-									            "" + pd.getDayOfMutation() + "-" + pd.getMonthOfMutation() + "-" + pd.getYearOfMutation());  
+							if(arrivalDateEarliest > registerDateLatest)
+								message("1146", "" + getDayOfRegistration() + "-" + getMonthOfRegistration() + "-" + getYearOfRegistration(),
+									            "" + pd.getDayOfMutation()  + "-" + pd.getMonthOfMutation()  + "-" + pd.getYearOfMutation());  
 
 						}
 
@@ -1461,14 +1473,17 @@ public class Person {
 					
 				case ConstRelations2.VERTREK:
 
-					if(Common1.dateIsValid(pd.getDayOfMutation(), pd.getMonthOfMutation(),pd.getYearOfMutation()) == 0){
-						int departureDate = Utils.dayCount(pd.getDayOfMutation(), pd.getMonthOfMutation(),pd.getYearOfMutation());
+					mutationDay   = pd.getDayOfMutation()   > 0 ? pd.getDayOfMutation()   : 28;
+					mutationMonth = pd.getMonthOfMutation() > 0 ? pd.getMonthOfMutation() : 12;
 
-						if(registerDate != 0){
+					if(Common1.dateIsValid(mutationDay, mutationMonth, pd.getYearOfMutation()) == 0){
+						int departureDateLatest = Utils.dayCount(mutationDay, mutationMonth, pd.getYearOfMutation());
 
-							if(departureDate < registerDate)
-								message("1147", "" + registerDay           + "-" + registerMonth           + "-" + registerYear,
-									            "" + pd.getDayOfMutation() + "-" + pd.getMonthOfMutation() + "-" + pd.getYearOfMutation());  
+						if(registerDateEarliest != 0){
+
+							if(departureDateLatest < registerDateEarliest)
+								message("1147", "" + getDayOfRegistration() + "-" + getMonthOfRegistration() + "-" + getYearOfRegistration(),
+							                    "" + pd.getDayOfMutation()  + "-" + pd.getMonthOfMutation()  + "-" + pd.getYearOfMutation());  
 
 						}
 

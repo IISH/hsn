@@ -1096,47 +1096,73 @@ public class Registration implements Comparable<Registration>{
 		
 		// Next tests only if chronological addresses
 		
-		int headDate = 0;
-		int firstAddressDate = 0;
-		int firstAddressDay =   getAddressesOfRegistration().get(0).getDayOfAddress();
-		int firstAddressMonth = getAddressesOfRegistration().get(0).getMonthOfAddress();
-		int firstAddressYear =  getAddressesOfRegistration().get(0).getYearOfAddress();
-
 		if(chronological == true){
+			
+			int headDate = 0;
+			int firstAddressDateEarliest = 0;
+			int firstAddressDateLatest   = 0;
+			
+			int firstAddressDay =   getAddressesOfRegistration().get(0).getDayOfAddress();
+			int firstAddressMonth = getAddressesOfRegistration().get(0).getMonthOfAddress();
+			int firstAddressYear =  getAddressesOfRegistration().get(0).getYearOfAddress();
+			
+			int faDayEarliest      = firstAddressDay   > 0 ? firstAddressDay   : 1;
+			int faMonthEarliest    = firstAddressMonth > 0 ? firstAddressMonth : 1;
+
+			int faDayLatest        = firstAddressDay   > 0 ? firstAddressDay   : 28;
+			int faMonthLatest      = firstAddressMonth > 0 ? firstAddressMonth : 12;
+
+
 			
 			if(Common1.dateIsValid(getDayEntryHead(), getMonthEntryHead(), getYearEntryHead()) == 0)				
 				headDate = Utils.dayCount(getDayEntryHead(), getMonthEntryHead(), getYearEntryHead());
 			
-			if(Common1.dateIsValid(firstAddressDay, firstAddressMonth, firstAddressYear) == 0)				
-				firstAddressDate = Utils.dayCount(firstAddressDay, firstAddressMonth, firstAddressYear); 
-
+			if(Common1.dateIsValid(faDayEarliest, faMonthEarliest, firstAddressYear) == 0)				
+				firstAddressDateEarliest = Utils.dayCount(faDayEarliest, faMonthEarliest, firstAddressYear);
+				
+			if(Common1.dateIsValid(faDayLatest, faMonthLatest, firstAddressYear) == 0)				
+				firstAddressDateLatest = Utils.dayCount(faDayLatest, faMonthLatest, firstAddressYear);
+				
 			// Check if the head date is before the first address date 
 
-			if(headDate > 0 && firstAddressDate > 0 && headDate + 20 < firstAddressDate)
+			if(headDate > 0 && firstAddressDateEarliest > 0 && headDate + 20 < firstAddressDateEarliest)
 				message("1128", "" + getDayEntryHead() + "-" + getMonthEntryHead()  + "-" + getYearEntryHead(), 
 						        "" + firstAddressDay   + "-" + firstAddressMonth    + "-" + firstAddressYear);
 
-			// Check if date first address more than 5 days before registration date head
+			// Check if latest date first address more than 5 days before earliest registration date head
 
 			if(getPersonsInRegistration().size() > 0){
 
-				int headRegistrationDate = 0;
+				int headRegistrationDateEarliest = 0;
+				int headRegistrationDateLatest   = 0;
+				
 				int headRegistrationDay =   getPersonsInRegistration().get(0).getDayOfRegistration(); 
 				int headRegistrationMonth = getPersonsInRegistration().get(0).getMonthOfRegistration(); 
 				int headRegistrationYear =  getPersonsInRegistration().get(0).getYearOfRegistration(); 
+				
+				int hrd  = headRegistrationDay   > 0 ? headRegistrationDay   : 28;
+				int hrm  = headRegistrationMonth > 0 ? headRegistrationMonth : 12;
+				
+				if(Common1.dateIsValid(hrd, hrm, headRegistrationYear) == 0)				
+					headRegistrationDateLatest = Utils.dayCount(hrd, hrm, headRegistrationYear);
+				
+				hrd  = headRegistrationDay   > 0 ? headRegistrationDay   : 1;
+				hrm  = headRegistrationMonth > 0 ? headRegistrationMonth : 1;
+				
+				if(Common1.dateIsValid(hrd, hrm, headRegistrationYear) == 0)				
+					headRegistrationDateEarliest = Utils.dayCount(hrd, hrm, headRegistrationYear);
+				
+				
 
-				if(Common1.dateIsValid(headRegistrationDay, headRegistrationMonth, headRegistrationYear) == 0)				
-					headRegistrationDate = Utils.dayCount(headRegistrationDay, headRegistrationMonth, headRegistrationYear);
-
-				if(headRegistrationDate > 0 && firstAddressDate > 0 && firstAddressDate + 5 < headRegistrationDate)
+				if(headRegistrationDateEarliest > 0 && firstAddressDateLatest > 0 && firstAddressDateLatest + 5 < headRegistrationDateEarliest)
 					message("1130", "" + firstAddressDay     + "-" + firstAddressMonth     + "-" + firstAddressYear,
-							"" + headRegistrationDay + "-" + headRegistrationMonth + "-" + headRegistrationYear);
+						        	"" + headRegistrationDay + "-" + headRegistrationMonth + "-" + headRegistrationYear);
 
 				// Check if date first address more than 30 days after registration date head
 
-				if(headRegistrationDate > 0 && firstAddressDate > 0 && firstAddressDate  > headRegistrationDate + 30)
+				if(headRegistrationDateLatest > 0 && firstAddressDateEarliest > 0 && firstAddressDateEarliest  > headRegistrationDateLatest + 30)
 					message("1133", "" + firstAddressDay     + "-" + firstAddressMonth     + "-" + firstAddressYear,
-							"" + headRegistrationDay + "-" + headRegistrationMonth + "-" + headRegistrationYear);
+						        	"" + headRegistrationDay + "-" + headRegistrationMonth + "-" + headRegistrationYear);
 			}
 		}
 	}
