@@ -511,8 +511,8 @@ public class Person {
 		int i2 = Utils.dayCount(day, month, year);
 
 		if(i1 > 0 && i2 > 0 && i1 > i2)
-			message("1204", "" + day                       + "-" + month                    + "-" + year, 
-				        	"" + getDayOfBirth()           + "-" + getMonthOfBirth()        + "-" + getYearOfBirth());
+			message("1204", "" + getDayOfRegistration() + "-" + getMonthOfRegistration() + "-" + year, 
+				        	"" + getDayOfBirth()        + "-" + getMonthOfBirth()        + "-" + getYearOfBirth());
 
 
 		// Check that registration date is earlier than decease date
@@ -525,7 +525,7 @@ public class Person {
 		i1 = Utils.dayCount(getDayOfDecease(),      getMonthOfDecease(),      getYearOfDecease());
 
 		if( i1 > 0 && i2 > 0 && i2 > i1)
-			message("1205", "" + day                       + "-" + month                    + "-" + year, 
+			message("1205", "" + getDayOfRegistration() + "-" + getMonthOfRegistration() + "-" + year, 
 				        	"" + getDayOfDecease()      + "-" + getMonthOfDecease()      + "-" + getYearOfDecease());
 
 		// Check that birth date not later than decease date
@@ -1130,7 +1130,7 @@ public class Person {
 						int registrationdate = Utils.dayCount(day, month, year);
 						if(opdate + 20 < registrationdate)
 							message("1155", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), 
-									"" + day               + "-" + month               + "-" + year);  
+									"" + getDayOfRegistration()  + "-" + getMonthOfRegistration() + "-" + getYearOfRegistration());  
 					}
 				}
 
@@ -1145,7 +1145,7 @@ public class Person {
 					int birthdate = Utils.dayCount(day, month, year);
 					if(opdate  < birthdate)
 						message("1156", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), 
-								"" + day               + "-" + month               + "-" + year);  
+								"" + getDayOfBirth()    + "-" + getMonthOfBirth()               + "-" + getYearOfBirth());  
 				}
 
 				// Check that OP date not after decease date OP (if given)
@@ -1159,7 +1159,7 @@ public class Person {
 					int deceasedate = Utils.dayCount(day, month, year);
 					if(opdate  > deceasedate)
 						message("1157", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), 
-								"" + day               + "-" + month               + "-" + year);  
+								"" + getDayOfDecease()               + "-" + getMonthOfDecease()               + "-" + getYearOfDecease());  
 
 
 				}
@@ -1188,7 +1188,7 @@ public class Person {
 							int arrivaldate = Utils.dayCount(day, month, year); 
 							if(opdate < arrivaldate)
 								message("1158", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), 
-										"" + day               + "-" + month               + "-" + year);  
+										"" + pd1.getDayOfMutation()               + "-" + pd1.getMonthOfMutation()               + "-" + year);  
 						}	
 					}
 				}
@@ -1212,7 +1212,7 @@ public class Person {
 						int departuredate = Utils.dayCount(day, month, year); 
 						if(opdate > departuredate)
 							message("1159", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), 
-									"" + day               + "-" + month               + "-" + year);  
+									"" + pd1.getDayOfMutation()               + "-" + pd1.getMonthOfMutation()               + "-" + year);  
 					}	
 
 
@@ -1240,7 +1240,7 @@ public class Person {
 							int marriagedate = Utils.dayCount(day, month, year); 
 							if(opdate < marriagedate)
 								message("1166", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), 
-										"" + day               + "-" + month               + "-" + year);  
+										"" + pd1.getDayOfMutation()               + "-" + pd1.getMonthOfMutation()               + "-" + year);  
 						}	
 					}
 				}
