@@ -756,6 +756,7 @@ public class Registration implements Comparable<Registration>{
 		}	
 		
 		// Check if marriage dates head and wife of head match 
+		/*
 		
 		ArrayList<Integer>  headDay     = new ArrayList<Integer>();
 		ArrayList<Integer>  headMonth   = new ArrayList<Integer>();
@@ -832,7 +833,61 @@ public class Registration implements Comparable<Registration>{
 				message("1317", "" + headLineNumber, "" + wifeLineNumber);
 		}
 		
+		*/
 		// Next case
+		
+		// Check if mutual marriage dates identical
+		
+		ArrayList<PersonDynamic> a = new ArrayList<PersonDynamic>();
+		
+		for(Person p: getPersonsInRegistration()){			
+			for(PersonDynamic pd: p.getDynamicDataOfPerson()){
+				if(pd.getDynamicDataType() == ConstRelations2.BURGELIJKE_STAAT && 
+						pd.getContentOfDynamicData() == ConstRelations2.GEHUWD &&
+						pd.getValueOfRelatedPerson() > 0) {
+					
+					int day   = pd.getDayOfMutation()   > 0 ? pd.getDayOfMutation()  :  1;
+					int month = pd.getMonthOfMutation() > 0 ? pd.getMonthOfMutation() : 1;
+					int year =  pd.getYearOfMutation();
+
+					if(Common1.dateIsValid(day, month, year)== 0) 						
+						a.add(pd);
+
+				}
+				
+			}
+		}
+		
+		for(PersonDynamic pd1: a) {
+			
+			int day1   = pd1.getDayOfMutation()   > 0 ? pd1.getDayOfMutation()   :  1;
+			int month1 = pd1.getMonthOfMutation() > 0 ? pd1.getMonthOfMutation() :  1;
+			int year1  = pd1.getYearOfMutation();
+
+			boolean foundMatch = false;
+			boolean relatedHasReciprocalDatedEntry = false;
+			
+			for(PersonDynamic pd2: a) {
+								
+				if(pd1.getValueOfRelatedPerson() == pd2.getKeyToRegistrationPersons() && 
+				   pd2.getValueOfRelatedPerson() == pd1.getKeyToRegistrationPersons()	) {
+					
+					relatedHasReciprocalDatedEntry = true;
+															
+					int day2   = pd2.getDayOfMutation()   > 0 ? pd2.getDayOfMutation()   : 1;
+					int month2 = pd2.getMonthOfMutation() > 0 ? pd2.getMonthOfMutation() : 1;
+					int year2  = pd2.getYearOfMutation();
+					
+					if(day1 == day2 && month1 == month2 && year1 == year2) {
+						foundMatch = true;						
+						break;
+					}
+
+				}
+			}
+			if(foundMatch == false && relatedHasReciprocalDatedEntry == true && pd1.getKeyToRegistrationPersons() < pd1.getValueOfRelatedPerson())
+				message("1317", "" + pd1.getKeyToRegistrationPersons(), "" +  pd1.getValueOfRelatedPerson());
+		}
 		
 		CheckIncest();
 		
