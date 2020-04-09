@@ -663,12 +663,11 @@ public class Person {
 		// Check for C - registers that legalPlaceOfLivingInCodes - B2VWNR cannot have certain values  
 
 		if(ainb != null && ainb.getTypeRegister().toUpperCase().equals("C") && getLegalPlaceOfLivingInCodes() != null && 
-				(getLegalPlaceOfLivingInCodes().toUpperCase().equals("V ") == true ||			                      
-						getLegalPlaceOfLivingInCodes().toUpperCase().equals(" V") == true ||			                      
-						getLegalPlaceOfLivingInCodes().toUpperCase().equals("W ") == true ||			                      
-						getLegalPlaceOfLivingInCodes().toUpperCase().equals(" W") == true ||			                      
-						getLegalPlaceOfLivingInCodes().toUpperCase().equals("VW") == true ||			                      
-						getLegalPlaceOfLivingInCodes().toUpperCase().equals("WV") == true))			                      
+				!(getLegalPlaceOfLivingInCodes().toUpperCase().trim().equalsIgnoreCase("V") == true ||			                      
+						getLegalPlaceOfLivingInCodes().toUpperCase().trim().equalsIgnoreCase("W") == true ||			                      
+						getLegalPlaceOfLivingInCodes().toUpperCase().trim().equalsIgnoreCase("N") == true ||			                      
+						getLegalPlaceOfLivingInCodes().toUpperCase().trim().equalsIgnoreCase("VW") == true ||			                      
+						getLegalPlaceOfLivingInCodes().toUpperCase().trim().equalsIgnoreCase("WV") == true))			                      
 
 			message("1251");
 

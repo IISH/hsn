@@ -757,14 +757,16 @@ public class Registration implements Comparable<Registration>{
 		
 		// Check if marriage dates head and wife of head match 
 		
-		int headDay = 0;
-		int headMonth = 0;
-		int headYear = 0;
+		ArrayList<Integer>  headDay     = new ArrayList<Integer>();
+		ArrayList<Integer>  headMonth   = new ArrayList<Integer>();
+		ArrayList<Integer>  headYear    = new ArrayList<Integer>();
+		
 		int headLineNumber = 0;
 		
 		int wifeDay = 0;
 		int wifeMonth = 0;
 		int wifeYear = 0;
+		
 		int wifeLineNumber = 0;
 		
 		for(Person p: getPersonsInRegistration()){
@@ -785,11 +787,11 @@ public class Registration implements Comparable<Registration>{
 				if(pd.getDynamicDataType() == ConstRelations2.BURGELIJKE_STAAT && pd.getContentOfDynamicData() == ConstRelations2.GEHUWD){
 					
 					if(head == true){
-						headDay = pd.getDayOfMutation();
-						headMonth = pd.getMonthOfMutation();
-						headYear = pd.getYearOfMutation();
+						headDay.add(pd.getDayOfMutation());
+						headMonth.add(pd.getMonthOfMutation());
+						headYear.add(pd.getYearOfMutation());
 						headLineNumber = p.getKeyToRegistrationPersons();
-						break; // use first date
+						//break; // use first date
 					}
 					else{
 						if(wife == true){
@@ -804,16 +806,31 @@ public class Registration implements Comparable<Registration>{
 			}
 		}
 
-		if(headDay < 1)   headDay = 1;
-		if(headMonth < 1) headMonth = 1;
-		
 		if(wifeDay < 1)   wifeDay = 1;
 		if(wifeMonth < 1) wifeMonth = 1;
 		
-		if(Common1.dateIsValid(wifeDay, wifeMonth, wifeYear)== 0)
-			if(Common1.dateIsValid(headDay, headMonth, headYear) == 0)
-				if(headDay != wifeDay || headMonth != wifeMonth || headYear != wifeYear)
-					message("1317", "" + headLineNumber, "" + wifeLineNumber);
+		if(Common1.dateIsValid(wifeDay, wifeMonth, wifeYear)== 0) {
+
+			boolean match = false;
+			for(int i = 0; i < headDay.size(); i++) {
+
+				int headDay_   = headDay.get(i);
+				int headMonth_ = headMonth.get(i);
+				int headYear_  = headYear.get(i);
+
+				if(headDay_ < 1)   headDay_ = 1;
+				if(headMonth_ < 1) headMonth_ = 1;
+
+				if(Common1.dateIsValid(headDay_, headMonth_, headYear_) == 0)
+					if(headDay_ == wifeDay || headMonth_ == wifeMonth || headYear_ == wifeYear)
+						match = true;
+
+
+			}
+
+			if(!match)
+				message("1317", "" + headLineNumber, "" + wifeLineNumber);
+		}
 		
 		// Next case
 		
