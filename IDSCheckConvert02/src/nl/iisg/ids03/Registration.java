@@ -270,7 +270,7 @@ public class Registration implements Comparable<Registration>{
 	public boolean check(){
 		
 		boolean returnCode = true;
-		//System.out.println("Check Registration"); 
+		//System.out.println("Check Registration In  " + getKeyToRP()); 
 
 		//showFields();
 		
@@ -309,6 +309,9 @@ public class Registration implements Comparable<Registration>{
 		checkConsistencyAddresses();
 		
 		//System.out.println("    Registration.check, rc =  " + returnCode);
+		
+		//System.out.println("Check Registration Out " + getKeyToRP()); 
+
 		
 		return returnCode;
 
@@ -587,9 +590,9 @@ public class Registration implements Comparable<Registration>{
 
 									if(headBirthYear > p.getYearOfBirth() - 16)
 										if(heads == 1)
-											message("1402", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
+											message("1402", pd.getKeyToRegistrationPersons(), "" + p.getYearOfBirth(), "" + headBirthYear);
 										else
-											message("1411", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
+											message("1411", pd.getKeyToRegistrationPersons(), "" + p.getYearOfBirth(), "" + headBirthYear);
 
 									// Check if age difference more than 80 years
 
@@ -885,8 +888,14 @@ public class Registration implements Comparable<Registration>{
 
 				}
 			}
-			if(foundMatch == false && relatedHasReciprocalDatedEntry == true && pd1.getKeyToRegistrationPersons() < pd1.getValueOfRelatedPerson())
-				message("1317", "" + pd1.getKeyToRegistrationPersons(), "" +  pd1.getValueOfRelatedPerson());
+			if(foundMatch == false)
+				if(relatedHasReciprocalDatedEntry == true && pd1.getKeyToRegistrationPersons() < pd1.getValueOfRelatedPerson())
+					message("1317", "" + pd1.getKeyToRegistrationPersons(), "" +  pd1.getValueOfRelatedPerson());
+				else
+					if(relatedHasReciprocalDatedEntry == false && pd1.getKeyToRegistrationPersons() < pd1.getValueOfRelatedPerson())
+						message("1318", "" + pd1.getKeyToRegistrationPersons(), "" +  pd1.getValueOfRelatedPerson());
+
+		
 		}
 		
 		CheckIncest();

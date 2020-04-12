@@ -267,6 +267,9 @@ public class Person {
 	}
 
 	public boolean check(){
+		
+		//System.out.println("Check Person In  " + getKeyToRP()); 
+
 
 		boolean returnCode = true;
 		//System.out.println("Check Person");
@@ -309,6 +312,7 @@ public class Person {
 			checkExplicitHead(ainb);
 		
 		//System.out.println("        Person.check, rc =  " + returnCode);
+		//System.out.println("Check Person Out " + getKeyToRP()); 
 
 
 		return returnCode;

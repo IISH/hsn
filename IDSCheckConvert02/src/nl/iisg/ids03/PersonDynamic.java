@@ -176,6 +176,9 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 	 */
 	public void check(){
 		
+		//System.out.println("Check PersonDynamic In  " + getKeyToRP()); 
+
+		
 		//System.out.println("Check PersonDynamic");
 
 		//showFields();
@@ -242,6 +245,10 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 		}		
 		
 		checkConsistencyWithPerson();
+		
+		
+		//System.out.println("Check PersonDynamic Out " + getKeyToRP()); 
+
 
 	}
 
@@ -261,9 +268,9 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 		int day   = getDayOfMutation()   > 0 ? getDayOfMutation()   : 1;
 		int month = getMonthOfMutation() > 0 ? getMonthOfMutation() : 1;
 		int year  = getYearOfMutation(); 
+		
+		if(year <= 0) return; 
 
-		if(year < 0)
-			return;
     	 
     	 if(Common1.dateIsValid(day, month, year) == 0){
     		 
@@ -315,7 +322,7 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
     		 }
     	 }
     	 else
-			 message("1320", "" + day + "-" + month + "-" + getYearOfMutation()); 
+			 message("1320", "" + getDayOfMutation() + "-" + getMonthOfMutation() + "-" + getYearOfMutation()); 
     	 
     	 
      }
@@ -619,7 +626,8 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 				getContentOfDynamicData() == ConstRelations2.ONBEKEND_OP_LATER_ONBEKEND_MOMENT_GEHUWD)
 
 
-			if(getValueOfRelatedPerson() < 1 && getValueOfRelatedPerson() != -1 && getValueOfRelatedPerson() != 99)
+			if(getValueOfRelatedPerson() < 1 && getValueOfRelatedPerson() != -1 && getValueOfRelatedPerson() != -2 && getValueOfRelatedPerson() != -3
+			&& getValueOfRelatedPerson() != 99)
 				message("1316", (new Integer(getContentOfDynamicData()).toString()));
 
 
@@ -627,13 +635,12 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 
 		
 		
-		
 		if(getYearOfMutation() > 0){
 			
 			//System.out.println("year = " + getYearOfMutation());
 
-			int day = getDayOfMutation();
-			int month = getMonthOfMutation();
+			int day   = getDayOfMutation()   > 0 ? getDayOfMutation()   : 1;
+			int month = getMonthOfMutation() > 0 ? getMonthOfMutation() : 1;
 			/*
 			if(month < 0 || day < 0){
 
@@ -680,7 +687,8 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 					message("1321", "" + getDayOfMutation() + " - " + getMonthOfMutation() + " - " + getYearOfMutation()); 
 			}	
 		}
-
+		//else
+		//message("1320", "" + getDayOfMutation() + " - " + getMonthOfMutation() + " - " + getYearOfMutation()); 
 
 
 	}
