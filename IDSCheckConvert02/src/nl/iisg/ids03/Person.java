@@ -1568,9 +1568,10 @@ public class Person {
 				if(pd.getDynamicData2().indexOf("###$") >= 0){
 					if(pd.getDynamicData2().length() >= "###$dd/mm/jjjj".length()){
 
-						headDay = new Integer(pd.getDynamicData2().substring(4,6)).intValue();
-						headMonth = new Integer(pd.getDynamicData2().substring(7,9)).intValue();
-						headYear =  new Integer(pd.getDynamicData2().substring(10,14)).intValue();
+						//System.out.println(pd.getDynamicData2());
+						headDay = new Integer(pd.getDynamicData2().substring(4,6).trim()).intValue();
+						headMonth = new Integer(pd.getDynamicData2().substring(7,9).trim()).intValue();
+						headYear =  new Integer(pd.getDynamicData2().substring(10,14).trim()).intValue();
 
 
 					}

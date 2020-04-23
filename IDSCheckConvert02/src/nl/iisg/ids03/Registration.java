@@ -682,7 +682,8 @@ public class Registration implements Comparable<Registration>{
 
 						if(pd.getContentOfDynamicData() <= 0 || (pd.getContentOfDynamicData() != ConstRelations2.ECHTGENOTE_HOOFD 
 								&& pd.getContentOfDynamicData() != ConstRelations2.HOOFD 
-								&& ConstRelations2.b3kode1_Related[pd.getContentOfDynamicData()] == null)){
+								&& (pd.getContentOfDynamicData() < ConstRelations2.b3kode1_Related.length 
+								&& ConstRelations2.b3kode1_Related[pd.getContentOfDynamicData()] == null))){
 							if(p.getFamilyName() != null && headName != null)
 								if(p.getFamilyName().equalsIgnoreCase(headName)){
 									message("1464", pd.getKeyToRegistrationPersons());
@@ -1158,15 +1159,15 @@ public class Registration implements Comparable<Registration>{
 				else{
 					if(curSynchOccurrences == 1)
 						message("1075", "" + curSynch);
-					curSynch = ra.getSynchroneNumber();
-					curSynchOccurrences = 1;
+						curSynchOccurrences = 1;
 				}
 			}
+			curSynch = ra.getSynchroneNumber();
 		}
 		if(curSynchOccurrences == 1)
 			message("1075", "" + curSynch);
 
-		
+
 		// Check that B6SINR == 0 for entries that have a date
 
 		for(RegistrationAddress ra: getAddressesOfRegistration())

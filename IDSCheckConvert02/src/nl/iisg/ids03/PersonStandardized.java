@@ -18,7 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-
+import nl.iisg.hsncommon.Common1;
 import nl.iisg.hsncommon.ConstRelations2;
 import nl.iisg.ref.*;
 
@@ -1147,7 +1147,8 @@ public class PersonStandardized {
 	public void	giveEndDate2(){
 
 		
-		if(Utils.dateIsValid(getStartDate()) == 0 && Utils.dateIsValid(getEndDate()) == 0 && Utils.dayCount(getStartDate()) > Utils.dayCount(getEndDate()))
+		if(Utils.dateIsValid(getStartDate()) == 0 && Utils.dateIsValid(getEndDate()) == 0 &&
+				Utils.dayCount(getStartDate()) > Utils.dayCount(getEndDate()))
 			if(58 <= getEndFlag() && getEndFlag() <= 62){
 		    	Ref_AINB ainb = Ref.getAINB(getKeyToSourceRegister());
 		    	if(Utils.dayCount("31-12-" + ainb.getEndYearRegister()) > Utils.dayCount(getEndDate())){
@@ -1196,7 +1197,10 @@ public class PersonStandardized {
 				estimate = 141;		
 			}
 			
-			if(Utils.dayCount(day, month, year) > Utils.dayCount(getStartDate())){
+			System.out.println("XXX " + getStartDate());
+			
+			if(Common1.dateIsValid(day, month, year) == 0 	&& Common1.dateIsValid(getStartDate()) == 1 
+					&& Utils.dayCount(day, month, year) > Utils.dayCount(getStartDate())){
 				String s = String.format("%02d-%02d-%04d", day, month, year);
 				setStartDate(s);
 				setStartFlag(3);

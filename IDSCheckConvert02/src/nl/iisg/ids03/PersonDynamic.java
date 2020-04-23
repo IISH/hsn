@@ -680,11 +680,14 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 
 			if(getDynamicDataSequenceNumber() > 1 && getDynamicDataType() == ConstRelations2.BURGELIJKE_STAAT){
 
-				int i1 = Utils.dayCount(getDayEntryHead(), getMonthEntryHead(),getYearEntryHead());
-				int i2 = Utils.dayCount(getDayOfMutation(),           getMonthOfMutation(),          getYearOfMutation());
+				if(Common1.dateIsValid(getDayEntryHead(), getMonthEntryHead(),getYearEntryHead()) == 0 && 
+						Common1.dateIsValid(getDayOfMutation(), getMonthOfMutation(), getYearOfMutation()) == 0){
+					int i1 = Utils.dayCount(getDayEntryHead(), getMonthEntryHead(),getYearEntryHead());
+					int i2 = Utils.dayCount(getDayOfMutation(),           getMonthOfMutation(),          getYearOfMutation());
 
-				if(i2 < i1)
-					message("1321", "" + getDayOfMutation() + " - " + getMonthOfMutation() + " - " + getYearOfMutation()); 
+					if(i2 < i1)
+						message("1321", "" + getDayOfMutation() + " - " + getMonthOfMutation() + " - " + getYearOfMutation());
+				}
 			}	
 		}
 		//else
