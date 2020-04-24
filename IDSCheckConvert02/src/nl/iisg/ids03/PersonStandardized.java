@@ -1197,7 +1197,7 @@ public class PersonStandardized {
 				estimate = 141;		
 			}
 			
-			System.out.println("XXX " + getStartDate());
+			//System.out.println("XXX " + getStartDate());
 			
 			if(Common1.dateIsValid(day, month, year) == 0 	&& Common1.dateIsValid(getStartDate()) == 1 
 					&& Utils.dayCount(day, month, year) > Utils.dayCount(getStartDate())){

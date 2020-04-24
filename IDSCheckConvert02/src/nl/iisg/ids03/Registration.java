@@ -1152,21 +1152,20 @@ public class Registration implements Comparable<Registration>{
 		
 		int curSynch = -1;
 		int curSynchOccurrences = 0;;
+
 		for(RegistrationAddress ra: getAddressesOfRegistration()){
-			if(ra.getSynchroneNumber() > 0){
-				if(ra.getSynchroneNumber() == curSynch)
-					curSynchOccurrences++;
-				else{
-					if(curSynchOccurrences == 1)
-						message("1075", "" + curSynch);
-						curSynchOccurrences = 1;
+			if(ra.getSynchroneNumber() != curSynch) {
+				if(curSynchOccurrences == 1) {
+					//System.out.println("Message 1075!");
+					message("1075", "" + curSynch);
 				}
+				curSynchOccurrences = 0;
 			}
+			if(ra.getSynchroneNumber() > 0) curSynchOccurrences++;
 			curSynch = ra.getSynchroneNumber();
 		}
 		if(curSynchOccurrences == 1)
 			message("1075", "" + curSynch);
-
 
 		// Check that B6SINR == 0 for entries that have a date
 

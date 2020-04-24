@@ -841,6 +841,7 @@ public class RegistrationStandardized {
     		int interval = (Utils.dayCount(ps.getMaxStartDate()) - Utils.dayCount(ps.getMinStartDate())) / (groupCount + 1);
     		
     		if(group == 0){    	
+    			System.out.println("ABBC " + ps.getMinStartDate());
     			ps.setStartDate(Utils.dateFromDayCount(Utils.dayCount(ps.getMinStartDate()) + interval));
     			ps.setStartFlag(11);	
     		}
