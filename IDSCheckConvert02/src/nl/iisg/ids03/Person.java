@@ -346,15 +346,15 @@ public class Person {
 		}
         // Check that there is a relation to head 
 		if(relationToHead == 0)
-			message("1302");
+			message("1302", "" + getKeyToRegistrationPersons());
 
 		// Check that there is a civil status
 		if(civilStatus == 0)
-			message("1303");
+			message("1303", "" + getKeyToRegistrationPersons());
 
 		// Check that there is a religion
 		if(religion == 0)
-			message("1304");
+			message("1304", "" + getKeyToRegistrationPersons());
 		
 		// Check consistency arrival/departure dates
 		
