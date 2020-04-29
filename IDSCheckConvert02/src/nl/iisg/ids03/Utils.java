@@ -361,8 +361,9 @@ public class Utils {
     	
     	int count = count1;
     	
-    	if(count <= 0)
+    	if(count <= 0) {
     		count = 1/0; // force exception;
+    	}
     	
     	
     	while(count > 0){

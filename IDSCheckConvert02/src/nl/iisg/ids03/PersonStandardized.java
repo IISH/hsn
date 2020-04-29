@@ -526,12 +526,17 @@ public class PersonStandardized {
 	 * 
 	 */
 	public ArrayList<PersonStandardized>	giveStartDate1(){
+		
+		setStartDate("00-00-0000");
 
 		// Give start date = headDate
-
-		setStartDate(getEntryDateHead());
-		setStartFlag(1);
-		setStartEst(100);
+		
+		if(Utils.dateIsValid(getEntryDateHead()) == 0) {
+			
+			setStartDate(getEntryDateHead());
+			setStartFlag(1);
+			setStartEst(100);
+		}
 
 		// If Person is OP, use OP date (if later)
 		
@@ -1199,7 +1204,7 @@ public class PersonStandardized {
 			
 			//System.out.println("XXX " + getStartDate());
 			
-			if(Common1.dateIsValid(day, month, year) == 0 	&& Common1.dateIsValid(getStartDate()) == 1 
+			if(Common1.dateIsValid(day, month, year) == 0 	&& getStartDate() != null && Common1.dateIsValid(getStartDate()) == 1 
 					&& Utils.dayCount(day, month, year) > Utils.dayCount(getStartDate())){
 				String s = String.format("%02d-%02d-%04d", day, month, year);
 				setStartDate(s);
@@ -1354,8 +1359,12 @@ public class PersonStandardized {
 	 */
 
 	private void getExplicitHeadDate(){
+		
+		
 
-		if(!getStartDate().equals(getEntryDateHead()))
+		if(getStartDate() != null && Common1.dateIsValid(getStartDate()) == 0 &&
+				getEntryDateHead() != null && Common1.dateIsValid(getEntryDateHead()) == 0 &&
+				!getStartDate().equals(getEntryDateHead()))
 			return;
 
 
@@ -3619,6 +3628,7 @@ public class PersonStandardized {
 			int flag = 0;
 			String startDate0 = null;
 			if(Utils.dateIsValid(pds1.getDateOfMutation2()) != 0){
+				System.out.println("ABBC 6 " + getDateOfBirth() + "  " + getEndDate());
 				if(Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getEndDate()))
 					startDate0 = Utils.dateFromDayCount(Utils.dayCount(getEndDate()) - 1);
 				else{
@@ -4292,6 +4302,8 @@ public class PersonStandardized {
 
 
 	public void setStartDate(String startDate) {
+		System.out.println("ABBC startDate =  " + startDate + ", caller = " + Thread.currentThread().getStackTrace()[2].getMethodName() + 
+				",  lineNumber  = " + Thread.currentThread().getStackTrace()[2].getLineNumber());
 		this.startDate = startDate;
 	}
 
