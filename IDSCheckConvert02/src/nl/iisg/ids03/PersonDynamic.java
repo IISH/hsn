@@ -190,7 +190,7 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 
 		// Check if person is Explicit Head
 
-		if(getDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD && getDynamicData2() != null && getDynamicData2().indexOf("$") >= 0)
+		if(getDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD && getDynamicDataSequenceNumber() > 1)
 			getPersonToWhomDynamicDataRefers().setIsHeadFirstSuccessor(true);  
 
 

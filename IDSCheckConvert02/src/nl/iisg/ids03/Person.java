@@ -7,6 +7,10 @@
 
 package nl.iisg.ids03;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 
 import javax.persistence.Column;
@@ -1563,22 +1567,47 @@ public class Person {
 		int headMonth = 0;
 		int headYear = 0;
 		
+		// assumption: DynamicDate2 always has fixed length 50 
+		
 		for(PersonDynamic pd: getDynamicDataOfPerson()){
-			if(pd.getDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD){
-				if(pd.getDynamicData2().indexOf("###$") >= 0){
-					if(pd.getDynamicData2().length() >= "###$dd/mm/jjjj".length()){
-
-						//System.out.println(pd.getDynamicData2());
-						headDay = new Integer(pd.getDynamicData2().substring(4,6).trim()).intValue();
-						headMonth = new Integer(pd.getDynamicData2().substring(7,9).trim()).intValue();
-						headYear =  new Integer(pd.getDynamicData2().substring(10,14).trim()).intValue();
-
-
+			if(pd.getDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD && pd.getDynamicDataSequenceNumber() > 1){
+				if(pd.getDynamicData2().substring(0, 4).equals("###$")) {
+					try {
+						
+						
+						//DateTimeFormatter dtf = new DateTimeFormatter
+						LocalDate date0 = LocalDate.parse(pd.getDynamicData2().substring(4).trim(), 
+							DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT));
+						System.out.println("ABCD " + pd.getDynamicData2().substring(4).trim());
+						System.out.println("ABCD " + date0.getDayOfMonth());
+						System.out.println("ABCD " + date0.getMonthValue());
+						System.out.println("ABCD " + date0.getYear());
+						//if(Common1.dateIsValid(date0.getDayOfMonth(),date0.getMonthValue(),date0.getYear()) != 0)
+							//message("1332",pd.getDynamicData2().substring(4).trim());
+					
 					}
+					catch(DateTimeParseException e) {
+						message("1332",pd.getDynamicData2().substring(4).trim());
+					}
+					
+					//try {
+					//	headDay   = Integer.parseInt(pd.getDynamicData2().substring(4,6));
+					//	headMonth = Integer.parseInt(pd.getDynamicData2().substring(7,9));
+					//	headYear  = Integer.parseInt(pd.getDynamicData2().substring(10,14));
+					//}
+					//catch(NumberFormatException nfe) {message("1332",pd.getDynamicData2().substring(4));}
+
+					//System.out.println(pd.getDynamicData2());
+					//headDay = new Integer(pd.getDynamicData2().substring(4,6).trim()).intValue();
+					//headMonth = new Integer(pd.getDynamicData2().substring(7,9).trim()).intValue();
+					//headYear =  new Integer(pd.getDynamicData2().substring(10,14).trim()).intValue();
 				}
+				else
+					message("1331");
+
 			}	
 		}	
-	
+
 		
 		if(Common1.dateIsValid(headDay, headMonth, headYear) == 0){
 
@@ -1642,8 +1671,7 @@ public class Person {
 			
 		}
 		// No (valid) date for second head
-		else 
-			message("1331");
+		
 		
 
 		// Compare date second explicit head with arrival/departure dates (only first 2)
