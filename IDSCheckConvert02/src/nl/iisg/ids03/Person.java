@@ -1562,34 +1562,37 @@ public class Person {
 	 */
 	
 	private void checkExplicitHead(Ref_AINB ainb){
-		
+
 		int headDay = 0;
 		int headMonth = 0;
 		int headYear = 0;
-		
+
 		// assumption: DynamicDate2 always has fixed length 50 
-		
+
 		for(PersonDynamic pd: getDynamicDataOfPerson()){
 			if(pd.getDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD && pd.getDynamicDataSequenceNumber() > 1){
 				if(pd.getDynamicData2().substring(0, 4).equals("###$")) {
 					try {
-						
-						
+
+
 						//DateTimeFormatter dtf = new DateTimeFormatter
 						LocalDate date0 = LocalDate.parse(pd.getDynamicData2().substring(4).trim(), 
-							DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT));
+								DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT));
 						System.out.println("ABCD " + pd.getDynamicData2().substring(4).trim());
 						System.out.println("ABCD " + date0.getDayOfMonth());
 						System.out.println("ABCD " + date0.getMonthValue());
 						System.out.println("ABCD " + date0.getYear());
-						//if(Common1.dateIsValid(date0.getDayOfMonth(),date0.getMonthValue(),date0.getYear()) != 0)
-							//message("1332",pd.getDynamicData2().substring(4).trim());
-					
+						headDay   = date0.getDayOfMonth();
+						headMonth = date0.getMonthValue();
+						headYear  = date0.getYear();
+						if(Common1.dateIsValid(date0.getDayOfMonth(),date0.getMonthValue(),date0.getYear()) != 0)
+							message("1332",pd.getDynamicData2().substring(4).trim());
+
 					}
 					catch(DateTimeParseException e) {
 						message("1332",pd.getDynamicData2().substring(4).trim());
 					}
-					
+
 					//try {
 					//	headDay   = Integer.parseInt(pd.getDynamicData2().substring(4,6));
 					//	headMonth = Integer.parseInt(pd.getDynamicData2().substring(7,9));
@@ -1608,12 +1611,12 @@ public class Person {
 			}	
 		}	
 
-		
+
 		if(Common1.dateIsValid(headDay, headMonth, headYear) == 0){
 
 			if(ainb != null){
 				// Check if headdate before range bevolkingsregister 
-				
+
 				int startYear = ainb.getStartYearRegisterCorrected() != 0 ? ainb.getStartYearRegisterCorrected() : ainb.getStartYearRegister();  
 				int endYear   = ainb.getEndYearRegisterCorrected()   != 0 ? ainb.getEndYearRegisterCorrected()   : ainb.getEndYearRegister();  
 
@@ -1633,93 +1636,95 @@ public class Person {
 					}
 				}
 			}
-			
+
 			// Check that date second explicit head is later than original head date
-			
+
 			if(getYearEntryHead() >  headYear || (getYearEntryHead()  == headYear  && getMonthEntryHead() > headMonth) ||
-			  (getYearEntryHead() == headYear &&  getMonthEntryHead() == headMonth && getDayEntryHead()   > headDay)) 
+					(getYearEntryHead() == headYear &&  getMonthEntryHead() == headMonth && getDayEntryHead()   > headDay)) 
 				message("1335", "" + headDay           + "-" + headMonth           + "-" + headYear, 
-						        "" + getDayEntryHead() + "-" + getMonthEntryHead() + "-" + getYearEntryHead());
-			
+						"" + getDayEntryHead() + "-" + getMonthEntryHead() + "-" + getYearEntryHead());
+
 			// Check that date second explicit head is not equal to original head date
-			
+
 			if(getYearEntryHead() ==  headYear && getMonthEntryHead() == headMonth && getDayEntryHead() == headDay) 
 				message("1336", "" + headDay           + "-" + headMonth           + "-" + headYear, 
-				                "" + getDayEntryHead() + "-" + getMonthEntryHead() + "-" + getYearEntryHead());
-			
-			
+						"" + getDayEntryHead() + "-" + getMonthEntryHead() + "-" + getYearEntryHead());
+
+
 			// Check that date of second explicit head not after decease date of second explicit head
-			
+
 			if( Common1.dateIsValid(getDayOfDecease(), getMonthOfDecease(), getYearOfDecease()) == 0){
-				
+
 				if(getYearOfDecease() <  headYear || (getYearOfDecease()  == headYear  && getMonthOfDecease() < headMonth) ||
-				  (getYearOfDecease() == headYear &&  getMonthOfDecease() == headMonth && getDayOfDecease()   < headDay)) 
-							message("1337", "" + headDay + "-" + headMonth + "-" + headYear);
-				
+						(getYearOfDecease() == headYear &&  getMonthOfDecease() == headMonth && getDayOfDecease()   < headDay)) 
+					message("1338", "" + headDay + "-" + headMonth + "-" + headYear);
+
 			}
-			
+
 			// Check that date of second explicit head not before birth date of second explicit head
-			
+
 			if( Common1.dateIsValid(getDayOfBirth(), getMonthOfBirth(), getYearOfBirth()) == 0){
-				
+
 				if(getYearOfBirth() >  headYear || (getYearOfBirth()  == headYear  && getMonthOfBirth() > headMonth) ||
-				  (getYearOfBirth() == headYear &&  getMonthOfBirth() == headMonth && getDayOfBirth()   > headDay)) 
-							message("1338", "" + headDay + "-" + headMonth + "-" + headYear);
-				
-			}
-				
-			
-		}
-		// No (valid) date for second head
-		
-		
+						(getYearOfBirth() == headYear &&  getMonthOfBirth() == headMonth && getDayOfBirth()   > headDay)) 
+					message("1337", "" + headDay + "-" + headMonth + "-" + headYear);
 
-		// Compare date second explicit head with arrival/departure dates (only first 2)
-		
-		int arrivals = 0;
-		int departures = 0;
-		for(PersonDynamic pd: getDynamicDataOfPerson()){
-			
-			if(pd.getDynamicDataType() == ConstRelations2.AANKOMST){
-				if(Common1.dateIsValid(pd.getDayOfMutation(), pd.getMonthOfMutation(),pd.getYearOfMutation()) == 0){
-				    if(arrivals < 2){
-				    	
-	                    // Check that date second explicit head not before first/second arrival
-				    	
-						if(pd.getYearOfMutation() >  headYear || (pd.getYearOfMutation()  == headYear  && pd.getMonthOfMutation() > headMonth) ||
-						  (pd.getYearOfMutation() == headYear &&  pd.getMonthOfMutation() == headMonth && pd.getDayOfMutation()   > headDay))
-							if(arrivals++ == 0)
-								message("1339", "" + headDay +               "-" + headMonth +               "-" + headYear, 
-										        "" + pd.getDayOfMutation() + "-" + pd.getMonthOfMutation() + "-" + pd.getYearOfMutation());
-							else
-								message("1340", "" + headDay +               "-" + headMonth +               "-" + headYear, 
-						                        "" + pd.getDayOfMutation() + "-" + pd.getMonthOfMutation() + "-" + pd.getYearOfMutation());
-				    }
-				}   
 			}
-			
-			if(pd.getDynamicDataType() == ConstRelations2.VERTREK){
-				if(Common1.dateIsValid(pd.getDayOfMutation(), pd.getMonthOfMutation(),pd.getYearOfMutation()) == 0){
-				    if(departures < 2){
-				    	
-	                    // Check that date second explicit head not after first/second departure
 
-						if(pd.getYearOfMutation() <  headYear || (pd.getYearOfMutation()  == headYear  && pd.getMonthOfMutation() < headMonth) ||
-						  (pd.getYearOfMutation() == headYear &&  pd.getMonthOfMutation() == headMonth && pd.getDayOfMutation()   < headDay))
-							if(departures++ == 0)
-								message("1341", "" + headDay +               "-" + headMonth +               "-" + headYear, 
-										        "" + pd.getDayOfMutation() + "-" + pd.getMonthOfMutation() + "-" + pd.getYearOfMutation());
-							else
-								message("1342", "" + headDay +               "-" + headMonth +               "-" + headYear, 
-					                	        "" + pd.getDayOfMutation() + "-" + pd.getMonthOfMutation() + "-" + pd.getYearOfMutation());
-				    }
+
+			//}
+			// No (valid) date for second head
+
+
+
+			// Compare date second explicit head with arrival/departure dates (only first 2)
+
+			int arrivals = 0;
+			int departures = 0;
+			for(PersonDynamic pd: getDynamicDataOfPerson()){
+
+				if(pd.getDynamicDataType() == ConstRelations2.AANKOMST){
+					if(Common1.dateIsValid(pd.getDayOfMutation(), pd.getMonthOfMutation(),pd.getYearOfMutation()) == 0){
+						if(arrivals < 2){
+
+							// Check that date second explicit head not before first/second arrival
+
+							if(pd.getYearOfMutation() >  headYear || (pd.getYearOfMutation()  == headYear  && pd.getMonthOfMutation() > headMonth) ||
+									(pd.getYearOfMutation() == headYear &&  pd.getMonthOfMutation() == headMonth && pd.getDayOfMutation()   > headDay))
+								if(arrivals == 0)
+									message("1339", "" + headDay +               "-" + headMonth +               "-" + headYear, 
+											"" + pd.getDayOfMutation() + "-" + pd.getMonthOfMutation() + "-" + pd.getYearOfMutation());
+								else
+									message("1340", "" + headDay +               "-" + headMonth +               "-" + headYear, 
+											"" + pd.getDayOfMutation() + "-" + pd.getMonthOfMutation() + "-" + pd.getYearOfMutation());
+						}
+					}  
+					arrivals++;
+				}
+
+				if(pd.getDynamicDataType() == ConstRelations2.VERTREK){
+					if(Common1.dateIsValid(pd.getDayOfMutation(), pd.getMonthOfMutation(),pd.getYearOfMutation()) == 0){
+						if(departures < 2){
+
+							// Check that date second explicit head not after first/second departure
+
+							if(pd.getYearOfMutation() <  headYear || (pd.getYearOfMutation()  == headYear  && pd.getMonthOfMutation() < headMonth) ||
+									(pd.getYearOfMutation() == headYear &&  pd.getMonthOfMutation() == headMonth && pd.getDayOfMutation()   < headDay))
+								if(departures == 0)
+									message("1341", "" + headDay +               "-" + headMonth +               "-" + headYear, 
+											"" + pd.getDayOfMutation() + "-" + pd.getMonthOfMutation() + "-" + pd.getYearOfMutation());
+								else
+									message("1342", "" + headDay +               "-" + headMonth +               "-" + headYear, 
+											"" + pd.getDayOfMutation() + "-" + pd.getMonthOfMutation() + "-" + pd.getYearOfMutation());
+						}
+					}
+					departures++;
 				}
 			}
 		}
-		
-		
+
 	}
-	
+
 
 	/**
 	 * 
