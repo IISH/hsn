@@ -480,18 +480,18 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 
 					if (getValueOfRelatedPerson() < 1) {  // invalid line number				
 
-						if(code != 9){
+						if(!(code == 9 &&  (getValueOfRelatedPerson() == -2 || getValueOfRelatedPerson() == -3))){
 							message("1356");
 						}
 
 						// Check if grand-children have incorrect relation to mother
 
-						if (code == 1 || code == 2 || code == 3)
+						if (getPersonToWhomDynamicDataRefers().getSex().equalsIgnoreCase("V") && !(code == 1 || code == 2 || code == 3 || code == 9))
 							message("1357");
 
 						// Check if grand-children have incorrect relation to father
 						else
-							if (code == 4 || code == 5 || code == 6)
+							if (getPersonToWhomDynamicDataRefers().getSex().equalsIgnoreCase("M") && !(code == 4 || code == 5 || code == 6 || code == 9))
 								message("1358");
 							else
 								if(code == 9 && getValueOfRelatedPerson() != -2 && getValueOfRelatedPerson() != -3)
