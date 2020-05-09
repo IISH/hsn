@@ -1107,7 +1107,7 @@ public class Registration implements Comparable<Registration>{
 					h.put(Utils.dayCount(ra.getDayOfAddress(), ra.getMonthOfAddress(), ra.getYearOfAddress()), ra.getSynchroneNumber());
 				else
 					if(b6sinr != ra.getSynchroneNumber())
-						message("1073");
+						message("1073",ra.getDayOfAddress() + "-" +  ra.getMonthOfAddress() + "-" + ra.getYearOfAddress());
 
 				// Check if address is bound to the household
 
@@ -1146,15 +1146,17 @@ public class Registration implements Comparable<Registration>{
 		// Check that the B6SINR starts with 1 and is contiguous (1,1,1,2,2,2, 3, 4,4......)
 		// But... It can always drop back to 0, so 1,1,2,2,0,3,3 is OK
 		
-		int curSinr  = 0;
+		int curSinr  = -1;
 		for(RegistrationAddress ra: getAddressesOfRegistration()){
-			if(ra.getSynchroneNumber() != 0 && ra.getSynchroneNumber() != curSinr && ra.getSynchroneNumber() != curSinr + 1){
+			
+			
+			if(ra.getSynchroneNumber() != 0 && curSinr > 0 && ra.getSynchroneNumber() != curSinr && ra.getSynchroneNumber() != curSinr + 1){
 				message("1071");  // 1071, FS, B6SINR klopt niet (doornummering regels fout)
 				break;
 			}
-			else
-				if(ra.getSynchroneNumber() != 0)
-					curSinr = ra.getSynchroneNumber();
+			
+			if(ra.getSynchroneNumber() != 0)
+				curSinr = ra.getSynchroneNumber();
 		}
 
 		
