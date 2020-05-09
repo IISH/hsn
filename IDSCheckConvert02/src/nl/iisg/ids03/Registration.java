@@ -860,11 +860,11 @@ public class Registration implements Comparable<Registration>{
 						pd.getContentOfDynamicData() == ConstRelations2.GEHUWD &&
 						pd.getValueOfRelatedPerson() > 0) {
 					
-					int day   = pd.getDayOfMutation()   > 0 ? pd.getDayOfMutation()  :  1;
-					int month = pd.getMonthOfMutation() > 0 ? pd.getMonthOfMutation() : 1;
-					int year =  pd.getYearOfMutation();
+					//int day   = pd.getDayOfMutation()   > 0 ? pd.getDayOfMutation()  :  1;
+					//int month = pd.getMonthOfMutation() > 0 ? pd.getMonthOfMutation() : 1;
+					//int year =  pd.getYearOfMutation();
 
-					if(Common1.dateIsValid(day, month, year)== 0) 						
+					//if(Common1.dateIsValid(day, month, year)== 0) 						
 						a.add(pd);
 
 				}
