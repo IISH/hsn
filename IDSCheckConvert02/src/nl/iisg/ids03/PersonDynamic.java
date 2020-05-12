@@ -190,7 +190,7 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 
 		// Check if person is Explicit Head
 
-		if(getDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD && getDynamicDataSequenceNumber() > 1)
+		if(getDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD && getKeyToRegistrationPersons() > 1)
 			getPersonToWhomDynamicDataRefers().setIsHeadFirstSuccessor(true);  
 
 
@@ -480,9 +480,9 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 
 					if (getValueOfRelatedPerson() < 1) {  // invalid line number				
 
-						if(!(code == 9 &&  (getValueOfRelatedPerson() == -2 || getValueOfRelatedPerson() == -3))){
-							message("1356");
-						}
+						//if(!(code == 9 &&  (getValueOfRelatedPerson() == -2 || getValueOfRelatedPerson() == -3))){
+						//	message("1356");
+						//}
 
 						// Check if grand-children have incorrect relation to mother
 

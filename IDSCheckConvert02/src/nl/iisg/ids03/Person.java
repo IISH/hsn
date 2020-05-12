@@ -1570,7 +1570,8 @@ public class Person {
 		// assumption: DynamicDate2 always has fixed length 50 
 
 		for(PersonDynamic pd: getDynamicDataOfPerson()){
-			if(pd.getDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD && pd.getDynamicDataSequenceNumber() > 1){
+			if(pd.getDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD &&  pd.getContentOfDynamicData() == ConstRelations2.HOOFD && 
+					pd.getKeyToRegistrationPersons() > 1){
 				if(pd.getDynamicData2().substring(0, 4).equals("###$")) {
 					try {
 
@@ -1579,9 +1580,9 @@ public class Person {
 						LocalDate date0 = LocalDate.parse(pd.getDynamicData2().substring(4).trim(), 
 								DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT));
 						System.out.println("ABCD " + pd.getDynamicData2().substring(4).trim());
-						System.out.println("ABCD " + date0.getDayOfMonth());
-						System.out.println("ABCD " + date0.getMonthValue());
-						System.out.println("ABCD " + date0.getYear());
+						//System.out.println("ABCD " + date0.getDayOfMonth());
+						//System.out.println("ABCD " + date0.getMonthValue());
+						//System.out.println("ABCD " + date0.getYear());
 						headDay   = date0.getDayOfMonth();
 						headMonth = date0.getMonthValue();
 						headYear  = date0.getYear();
@@ -1590,6 +1591,7 @@ public class Person {
 
 					}
 					catch(DateTimeParseException e) {
+						System.out.println("ABCD " + pd.getDynamicData2().substring(4).trim());
 						message("1332",pd.getDynamicData2().substring(4).trim());
 					}
 
@@ -1652,11 +1654,12 @@ public class Person {
 
 
 			// Check that date of second explicit head not after decease date of second explicit head
+			// Equal also not allowed
 
 			if( Common1.dateIsValid(getDayOfDecease(), getMonthOfDecease(), getYearOfDecease()) == 0){
 
 				if(getYearOfDecease() <  headYear || (getYearOfDecease()  == headYear  && getMonthOfDecease() < headMonth) ||
-						(getYearOfDecease() == headYear &&  getMonthOfDecease() == headMonth && getDayOfDecease()   < headDay)) 
+						(getYearOfDecease() == headYear &&  getMonthOfDecease() == headMonth && getDayOfDecease()   <= headDay)) 
 					message("1338", "" + headDay + "-" + headMonth + "-" + headYear);
 
 			}
