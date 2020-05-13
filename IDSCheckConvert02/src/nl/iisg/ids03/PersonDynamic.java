@@ -190,7 +190,7 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 
 		// Check if person is Explicit Head
 
-		if(getDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD && getKeyToRegistrationPersons() > 1)
+		if(getDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD && getContentOfDynamicData() == ConstRelations2.HOOFD && getKeyToRegistrationPersons() > 1)
 			getPersonToWhomDynamicDataRefers().setIsHeadFirstSuccessor(true);  
 
 
@@ -223,7 +223,7 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 
 			// Check that b3:b3gegeven - dynamicData2 correct does not have an explicit head for C-Registers	
 
-			if(getDynamicDataSequenceNumber() == 1 && getDynamicData2().indexOf("$") >= 0 && ainb.getTypeRegister().toUpperCase().equals("C") == true) 
+			if(getContentOfDynamicData() == ConstRelations2.HOOFD && getKeyToRegistrationPersons() > 1 && ainb.getTypeRegister().toUpperCase().equals("C") == true) 
 				message("1362");				
 
 		}
@@ -464,70 +464,40 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 
 		// Check grand-children 
 
-		if (getContentOfDynamicData() == ConstRelations2.KLEINZOON       ||
-				getContentOfDynamicData() == ConstRelations2.KLEINDOCHTER){
+		if (getContentOfDynamicData() == ConstRelations2.KLEINZOON       || getContentOfDynamicData() == ConstRelations2.ACHTERKLEINZOON ||
+				getContentOfDynamicData() == ConstRelations2.KLEINDOCHTER || getContentOfDynamicData() == ConstRelations2.ACHTERKLEINDOCHTER){
 
 			// Check if reference to grand-children correct
 
 			int code = 0;
-			if(getDynamicData2() != null && getDynamicData2().trim().length() > 0){
-
+			if(getDynamicData2() != null && getDynamicData2().trim().length() > 0){      
 				if(Character.isDigit(getDynamicData2().trim().charAt(0))){
-
 					String s =  "" + getDynamicData2().trim().charAt(0); // There is a code
-
 					code = (new Integer(s));
-
 					if (getValueOfRelatedPerson() < 1) {  // invalid line number				
-
-						//if(!(code == 9 &&  (getValueOfRelatedPerson() == -2 || getValueOfRelatedPerson() == -3))){
-						//	message("1356");
-						//}
-
-						// Check if grand-children have incorrect relation to mother
-
-						if (getPersonToWhomDynamicDataRefers().getSex().equalsIgnoreCase("V") && !(code == 1 || code == 2 || code == 3 || code == 9))
-							message("1357");
-
-						// Check if grand-children have incorrect relation to father
-						else
-							if (getPersonToWhomDynamicDataRefers().getSex().equalsIgnoreCase("M") && !(code == 4 || code == 5 || code == 6 || code == 9))
-								message("1358");
-							else
-								if(code == 9 && getValueOfRelatedPerson() != -2 && getValueOfRelatedPerson() != -3)
-									message("1359");
+						if(code == 9 && getValueOfRelatedPerson() != -2 && getValueOfRelatedPerson() != -3)
+							message("1359");
 					}
 					else{ // There is a valid line number
-
 						// Check if correct relation to father or mother specified
-
 						// Bij 1 tm 6 moet een valid regelnummer zijn
 						// bij 9 moet er -2 of -3 staan
 
 						if(code < 1 || code > 6){
 							message("1368");
-
 						}
 					}
-
-
-
 				}		
 				else // no code
 					if(getValueOfRelatedPerson() != 0) // but there is a related person 
 						message("1369");
-
-
 				// Check that value of related person exists in B2 - Person
 
 				if(getValueOfRelatedPerson() > 0){
-
 					Person p = getPersonToWhomDynamicDataRefers();
 					Registration r = p.getRegistrationPersonAppearsIn();
 					Person p2 = null;
-
 					for(Person p1: r.getPersonsInRegistration()){
-
 						if(p1.getKeyToRegistrationPersons() == getValueOfRelatedPerson()){
 							p2 = p1;						
 							break;						
