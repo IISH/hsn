@@ -508,16 +508,16 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 
 						// incorrect relation to mother
 
-						if (code == 1 || code == 2 || code == 3)
-							message("1421", new Integer(getValueOfRelatedPerson()).toString());
+						//if (code == 1 || code == 2 || code == 3)
+						//	message("1421", new Integer(getValueOfRelatedPerson()).toString());
 
 						// Check if grand-children have incorrect relation to father
 
-						else
-							if (code == 4 || code == 5 || code == 6)
-								message("1422", new Integer(getValueOfRelatedPerson()).toString());
-							else
-								message("1423", new Integer(getValueOfRelatedPerson()).toString());
+						//else
+						//	if (code == 4 || code == 5 || code == 6)
+						//		message("1422", new Integer(getValueOfRelatedPerson()).toString());
+						//	else
+						message("1423", new Integer(getValueOfRelatedPerson()).toString());
 					}
 
 					else{

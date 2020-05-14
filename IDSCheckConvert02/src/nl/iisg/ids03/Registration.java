@@ -976,6 +976,18 @@ public class Registration implements Comparable<Registration>{
 							}
 
 							if(p1RelToHead >= 0 && p2RelToHead >= 0){
+								
+								// Check if both persons have same sex
+								
+								if(p1.getSex().equalsIgnoreCase("M") && p2.getSex().equalsIgnoreCase("M")) { 
+									if(p1.getKeyToRegistrationPersons() < p2.getKeyToRegistrationPersons())
+										message("1384", "" + p1.getKeyToRegistrationPersons(), "" + p2.getKeyToRegistrationPersons());
+								}
+								else
+									if(p1.getSex().equalsIgnoreCase("V") && p2.getSex().equalsIgnoreCase("V")) 
+										if(p1.getKeyToRegistrationPersons() < p2.getKeyToRegistrationPersons())
+											message("1385", "" + p1.getKeyToRegistrationPersons(), "" + p2.getKeyToRegistrationPersons());
+
 
 								// Check if head married to own son/daughter 
 
