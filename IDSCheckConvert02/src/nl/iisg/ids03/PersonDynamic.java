@@ -446,18 +446,6 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 				Registration r = p.getRegistrationPersonAppearsIn();
 				Person p2 = null;
 				
-				for(Person p1: r.getPersonsInRegistration()){
-					
-					if(p.getKeyToRegistrationPersons() == getValueOfRelatedPerson()){
-						
-						p2 = p1;						
-						break;						
-					}
-				}
-				
-				if(p2 == null)
-					message("1424", new Integer(getValueOfRelatedPerson()).toString());
-				
 			}
 		}
 		
@@ -593,14 +581,40 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 		if (getContentOfDynamicData() == ConstRelations2.WEDUWNAAR_WEDUWE ||
 				getContentOfDynamicData() == ConstRelations2.GESCHEIDEN       || 
 				getContentOfDynamicData() == ConstRelations2.GEHUWD           || 
-				getContentOfDynamicData() == ConstRelations2.ONBEKEND_OP_LATER_ONBEKEND_MOMENT_GEHUWD)
+				getContentOfDynamicData() == ConstRelations2.ONBEKEND_OP_LATER_ONBEKEND_MOMENT_GEHUWD) {
 
 
-			if(getValueOfRelatedPerson() < 1 && getValueOfRelatedPerson() != -1 && getValueOfRelatedPerson() != -2 && getValueOfRelatedPerson() != -3
-			&& getValueOfRelatedPerson() != 99)
-				message("1316", (new Integer(getContentOfDynamicData()).toString()));
+			if(getValueOfRelatedPerson() < 0) {
+				if(getValueOfRelatedPerson() != -1 && getValueOfRelatedPerson() != -2 && getValueOfRelatedPerson() != -3)
+					message("1316", "" + getContentOfDynamicData());
+			}
 
+			else {
+				if(getValueOfRelatedPerson() > 0) {
+					
+					//System.out.println("AABBC idnr = " + getKeyToRP() + " related person = " + getValueOfRelatedPerson());
 
+					// Check that partner exists
+					Person p2 = null;
+					for(Person p1: getPersonToWhomDynamicDataRefers().getRegistrationPersonAppearsIn().getPersonsInRegistration()){
+
+						if(p1.getKeyToRegistrationPersons() == getValueOfRelatedPerson()){
+
+							p2 = p1;						
+							break;						
+						}
+					}
+					//System.out.println("AABBC idnr = " + getKeyToRP() + " p2s =  " + p2);
+
+					if(p2 == null) {
+						message("1424", "" + getValueOfRelatedPerson());
+					}
+
+				}
+
+			}
+
+		}
 		// Check if valid date mutation
 
 		
