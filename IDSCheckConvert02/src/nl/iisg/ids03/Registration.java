@@ -19,6 +19,8 @@ import nl.iisg.ref.*;
 import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 /**
  * 
  * This class handles the static attributes of a registration 
@@ -1163,7 +1165,7 @@ public class Registration implements Comparable<Registration>{
 			
 			
 			if(ra.getSynchroneNumber() != 0 && curSinr > 0 && ra.getSynchroneNumber() != curSinr && ra.getSynchroneNumber() != curSinr + 1){
-				message("1071");  // 1071, FS, B6SINR klopt niet (doornummering regels fout)
+				message("1071", "" + ra.getSequenceNumberToAddresses());  // 1071, FS, B6SINR klopt niet (doornummering regels fout)
 				break;
 			}
 			
@@ -1173,9 +1175,12 @@ public class Registration implements Comparable<Registration>{
 
 		
 		// Check that if B6SINR > 0, there are at least 2 entries with that value
+		// 1077: And that they have different address type
 		
 		int curSynch = -1;
-		int curSynchOccurrences = 0;;
+		int curSynchOccurrences = 0;
+		
+		Set<String> set = new HashSet<String>();
 
 		for(RegistrationAddress ra: getAddressesOfRegistration()){
 			if(ra.getSynchroneNumber() != curSynch) {
@@ -1184,8 +1189,14 @@ public class Registration implements Comparable<Registration>{
 					message("1075", "" + curSynch);
 				}
 				curSynchOccurrences = 0;
+				set.clear();
 			}
-			if(ra.getSynchroneNumber() > 0) curSynchOccurrences++;
+			if(ra.getSynchroneNumber() > 0) {
+				curSynchOccurrences++;
+				if(!set.add(ra.getAddressType()))
+					message("1077", "" + ra.getSynchroneNumber(), "" + ra.getAddressType());
+
+			}
 			curSynch = ra.getSynchroneNumber();
 		}
 		if(curSynchOccurrences == 1)
