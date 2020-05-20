@@ -390,6 +390,19 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 
 		}
 		
+		// Check that b3gegeven = 1, 2, 3, 4, 5, 6, of 9 voor achter(kleinkinderen)
+		
+		if(getContentOfDynamicData() == ConstRelations2.KLEINDOCHTER || getContentOfDynamicData() == ConstRelations2.ACHTERKLEINDOCHTER ||
+				getContentOfDynamicData() == ConstRelations2.KLEINZOON || getContentOfDynamicData() == ConstRelations2.ACHTERKLEINZOON) {
+			
+			String x = getDynamicData2().trim();
+			
+			if(!(x.equals("1") || x.equals("2") || x.equals("3") || x.equals("4") ||
+			     x.equals("5") || x.equals("6") || x.equals("9"))) {
+				message("1315");
+			    System.out.println("AACCD " + getDynamicData2() + ", l = " + x.length());
+			}
+		}
 		
 		// For C Registers, Check that first person is head
 		

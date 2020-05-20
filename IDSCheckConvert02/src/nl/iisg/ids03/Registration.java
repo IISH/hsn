@@ -545,8 +545,26 @@ public class Registration implements Comparable<Registration>{
 				
 		}
 		
-		
-		
+		// Check that the dated b3 elements are chronological per b3type
+
+		for(Person p: personsInRegistration){
+			int ddtype = 1;
+			int lastDayCount = 0;
+			for (PersonDynamic pd: p.getDynamicDataOfPerson()){				
+				if(pd.getDynamicDataType() != ddtype) {
+					lastDayCount = 0;
+					ddtype = pd.getDynamicDataType();					
+				}
+				if(Common1.dateIsValid(pd.getDayOfMutation(), pd.getMonthOfMutation(), pd.getYearOfMutation()) == 0) {
+					if(Common1.dayCount(pd.getDayOfMutation(), pd.getMonthOfMutation(), pd.getYearOfMutation()) <= lastDayCount)
+						message("1320", pd.getKeyToRegistrationPersons(), "" + pd.getDayOfMutation() + "-" +  pd.getMonthOfMutation()  + "-" +  pd.getYearOfMutation());
+					else
+						lastDayCount = Common1.dayCount(pd.getDayOfMutation(), pd.getMonthOfMutation(), pd.getYearOfMutation());
+					
+				}
+			}
+		}
+
 		// Check compare head and his/her (grant)children for age and names
 		
 		
