@@ -296,13 +296,19 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
     		 }
     		 
              // Check if mutation date before birth date
-    		 
+
+    		int dayL   = getDayOfMutation()   > 0 ? getDayOfMutation()   : 28;
+    		int monthL = getMonthOfMutation() > 0 ? getMonthOfMutation() : 12;
+    		int yearL  = getYearOfMutation(); 
+    		
+   		    int mutationDateL = Utils.dayCount(dayL, monthL, yearL); 
+
     		 Person p = getPersonToWhomDynamicDataRefers();
     		 if(Common1.dateIsValid(p.getDayOfBirth(), p.getMonthOfBirth(), p.getYearOfBirth()) == 0){
     		 
     			 int birthDate = Utils.dayCount(p.getDayOfBirth(), p.getMonthOfBirth(), p.getYearOfBirth());
     			 
-    			 if(mutationDate < birthDate)
+    			 if(mutationDateL < birthDate)
     				 message("1433", "" + day + "-" + month + "-" + getYearOfMutation(), 
     						         "" + p.getDayOfBirth()  + "-" + p.getMonthOfBirth()  + "-" + p.getYearOfBirth());
     					 
@@ -638,6 +644,7 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 
 			int day   = getDayOfMutation()   > 0 ? getDayOfMutation()   : 1;
 			int month = getMonthOfMutation() > 0 ? getMonthOfMutation() : 1;
+		
 			/*
 			if(month < 0 || day < 0){
 
@@ -666,10 +673,14 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 			{
 				Person p = getPersonToWhomDynamicDataRefers();
 				if(Common1.dateIsValid(p.getDayOfBirth(), p.getMonthOfBirth(), p.getYearOfBirth())  == 0){
+			
+					int birthDays = Common1.dayCount(p.getDayOfBirth(), p.getMonthOfBirth(), p.getYearOfBirth()) ;
+					int mutationDays = Common1.dayCount(day, month, getYearOfMutation());
 					
 					// Check if mutation before 15th year of age
 					
-					if(p.getYearOfBirth() + 15 > getYearOfMutation())
+					if(mutationDays > birthDays && mutationDays < birthDays + ((15 * 365) + 3))
+					//if(p.getYearOfBirth() + 15 > getYearOfMutation())
 	    				 message("1435", "" + getDayOfMutation() + "-" + getMonthOfMutation() + "-" + getYearOfMutation(), 
                 				         "" + p.getDayOfBirth()  + "-" + p.getMonthOfBirth()  + "-" + p.getYearOfBirth());
 				}
