@@ -1387,9 +1387,12 @@ public class Person {
 			}
 			// Next tests only if valid birth date
 			
-			if(Common1.dateIsValid(getDayOfBirth(), getMonthOfBirth(),getYearOfBirth()) == 0){
+			int bday   = getDayOfBirth()   > 0 ? getDayOfBirth()   : 1;
+			int bmonth = getMonthOfBirth() > 0 ? getMonthOfBirth() : 1;
+			
+			if(Common1.dateIsValid(bday, bmonth, getYearOfBirth()) == 0){
 				
-				int x = Utils.dayCount(getDayOfBirth(), getMonthOfBirth(),getYearOfBirth());
+				int x = Utils.dayCount(bday,              bmonth,             getYearOfBirth());
 				int y = Utils.dayCount(getDayEntryHead(), getMonthEntryHead(),getYearEntryHead());
 				
 							
@@ -1469,7 +1472,7 @@ public class Person {
 
 						if(registerDateLatest != 0){
 
-							if(arrivalDateEarliest > registerDateLatest)
+							if(arrivalDateEarliest > registerDateLatest + 30)
 								message("1146", "" + getDayOfRegistration() + "-" + getMonthOfRegistration() + "-" + getYearOfRegistration(),
 									            "" + pd.getDayOfMutation()  + "-" + pd.getMonthOfMutation()  + "-" + pd.getYearOfMutation());  
 
@@ -1488,7 +1491,7 @@ public class Person {
 
 						if(registerDateEarliest != 0){
 
-							if(departureDateLatest < registerDateEarliest)
+							if(departureDateLatest < registerDateEarliest - 30)
 								message("1147", "" + getDayOfRegistration() + "-" + getMonthOfRegistration() + "-" + getYearOfRegistration(),
 							                    "" + pd.getDayOfMutation()  + "-" + pd.getMonthOfMutation()  + "-" + pd.getYearOfMutation());  
 

@@ -626,7 +626,7 @@ public class Registration implements Comparable<Registration>{
 
 									// Check if age difference more than 100 years
 
-									if(headBirthYear < p.getYearOfBirth() - 100)
+									if(p.getYearOfBirth() > 0 && headBirthYear < p.getYearOfBirth() - 100)
 										if(heads == 1)
 											message("1403", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
 										else
@@ -680,7 +680,7 @@ public class Registration implements Comparable<Registration>{
 
 						if(pd.getContentOfDynamicData() == ConstRelations2.KLEINZOON || pd.getContentOfDynamicData() == ConstRelations2.KLEINDOCHTER){
 
-							if(p.getYearOfBirth() > 0){
+							if(p.getYearOfBirth() > 0 && headBirthYear > 0){
 
 								if(headSex.equalsIgnoreCase("M")){
 

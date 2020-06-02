@@ -286,9 +286,11 @@ public class RegistrationAddress {
 			if(getNameOfStreet().indexOf("}") >= 0){
 				String temp = getNameOfStreet();
 				int index = temp.indexOf("}");
-				char c = temp.charAt(index-1); 
-				if(Character.isDigit(c) != true){
-					message("1092", getNameOfStreet()); 
+				if(index > 0) {
+					char c = temp.charAt(index-1); 
+					if(Character.isDigit(c) != true){
+						message("1092", getNameOfStreet()); 
+					}
 				}
 
 			}
