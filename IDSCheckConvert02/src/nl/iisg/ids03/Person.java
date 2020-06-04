@@ -338,25 +338,28 @@ public class Person {
 
 
 		int religion = 0;
-		int civilStatus = 0;
-		int relationToHead = 0;
+		//int civilStatus = 0;
+		//int relationToHead = 0;
 
-		for(PersonDynamic pd: getDynamicDataOfPerson()){
-			switch(pd.getDynamicDataType()){
-			case ConstRelations2.RELATIE_TOT_HOOFD: relationToHead++;   break;
-			case ConstRelations2.BURGELIJKE_STAAT:  civilStatus++;      break;
-			case ConstRelations2.GODSDIENST:        religion++;         break;
-			}		
-		}
+		
         // Check that there is a relation to head 
-		if(relationToHead == 0)
-			message("1302", "" + getKeyToRegistrationPersons());
+		// Verwijderd, dit wordt by keychecks al getest
+		
+		//if(relationToHead == 0)
+		//	message("1302", "" + getKeyToRegistrationPersons());
 
 		// Check that there is a civil status
-		if(civilStatus == 0)
-			message("1303", "" + getKeyToRegistrationPersons());
+		// Verwijderd, dit wordt by keychecks al getest
+		//if(civilStatus == 0)
+		//	message("1303", "" + getKeyToRegistrationPersons());
 
-		// Check that there is a religion
+		// Check that there is a religion and that it is not 'null'
+		
+		for(PersonDynamic pd: getDynamicDataOfPerson()){
+			if(pd.getDynamicDataType() == ConstRelations2.GODSDIENST && pd.getDynamicData2() != null &&
+					pd.getDynamicData2().trim().length() > 0)    
+				religion++; 		
+		}
 		if(religion == 0)
 			message("1304", "" + getKeyToRegistrationPersons());
 		
@@ -484,8 +487,12 @@ public class Person {
 		
 		// Check if valid birth date 
 
-		if(Common1.dateIsValid(getDayOfBirth(), getMonthOfBirth(), getYearOfBirth()) == 1)
+		if(Common1.dateIsValid(getDayOfBirth(), getMonthOfBirth(), getYearOfBirth()) != 0)
 			message("1196", "" + getDayOfBirth() + "-" + getMonthOfBirth() + "-" + getYearOfBirth());
+		
+		if(getYearOfBirth() > 1940)
+			message("1196", "" + getDayOfBirth() + "-" + getMonthOfBirth() + "-" + getYearOfBirth());
+
 
 		// Check if valid birth date (Does not contain -1 or -2) 
 

@@ -1116,17 +1116,22 @@ public class Registration implements Comparable<Registration>{
 		
 		for(RegistrationAddress ra: getAddressesOfRegistration()){
 			
-			// Test that b6sinr != 0 if no address date and mixed address types
+			// Test that b6sinr != 0 if no address date and undated mixed address types
+			//
+			// b6vrnr   b6tpnr   b6sinr
+			//
+			// 1        WK       0  \
+			// 2        ST       0  / Possible error
+			// 3        ST       0  \
+			// 4        WK       0  / Possible error
 			
 			if(ra.getYearOfAddress() <= 0 && ra.getSynchroneNumber() == 0){
 				if(undatedSequenceType != null){
 					if(!undatedSequenceType.equalsIgnoreCase(ra.getAddressType()))
-							message("1072");	
+							message("1072", "" + ra.getSequenceNumberToAddresses());	
 							
 				}
-				else
-					undatedSequenceType = ra.getAddressType();
-					
+				undatedSequenceType = ra.getAddressType();					
 			}
 			else
 				undatedSequenceType = null;
