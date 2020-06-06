@@ -466,7 +466,7 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 				 (x.equals("9") && (getValueOfRelatedPerson() == -2 || getValueOfRelatedPerson() == -3)))) {
 				
 				message("1315");
-				if(getValueOfRelatedPerson() > 0)
+				if(getValueOfRelatedPerson() > 0) //
 					message("1369");
 			}
 			else {
