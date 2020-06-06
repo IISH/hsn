@@ -392,19 +392,6 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 
 		}
 		
-		// Check that b3gegeven = 1, 2, 3, 4, 5, 6, of 9 voor achter(kleinkinderen)
-		
-		if(getContentOfDynamicData() == ConstRelations2.KLEINDOCHTER || getContentOfDynamicData() == ConstRelations2.ACHTERKLEINDOCHTER ||
-				getContentOfDynamicData() == ConstRelations2.KLEINZOON || getContentOfDynamicData() == ConstRelations2.ACHTERKLEINZOON) {
-			
-			String x = getDynamicData2().trim();
-			
-			if(!(x.equals("1") || x.equals("2") || x.equals("3") || x.equals("4") ||
-			     x.equals("5") || x.equals("6") || x.equals("9"))) {
-				message("1315");
-			    System.out.println("AACCD " + getDynamicData2() + ", l = " + x.length());
-			}
-		}
 		
 		// For C Registers, Check that first person is head
 		
@@ -451,27 +438,64 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 		}
 
 		
-		// Check wife
-		
-		if (getContentOfDynamicData() == ConstRelations2.ECHTGENOTE_HOOFD){
-			
-			if (getValueOfRelatedPerson() > 0){
-				
-				Person p = getPersonToWhomDynamicDataRefers();
-				Registration r = p.getRegistrationPersonAppearsIn();
-				Person p2 = null;
-				
-			}
-		}
+
+
+		// Check relation to Head versus sex of person
+
+		if(getPersonToWhomDynamicDataRefers().getSex().equalsIgnoreCase("v"))
+			if(getContentOfDynamicData() > 0 && getContentOfDynamicData() < ConstRelations2.b3kode1_Male.length && ConstRelations2.b3kode1_Male[getContentOfDynamicData()] != null)
+				message("1401", new Integer(getKeyToRegistrationPersons()).toString());			
+
+		if(getPersonToWhomDynamicDataRefers().getSex().equalsIgnoreCase("m"))
+			if(getContentOfDynamicData() > 0 && getContentOfDynamicData() < ConstRelations2.b3kode1_Female.length && ConstRelations2.b3kode1_Female[getContentOfDynamicData()] != null)
+				message("1400", new Integer(getKeyToRegistrationPersons()).toString());			
+
 		
 
 		// Check grand-children 
 
 		if (getContentOfDynamicData() == ConstRelations2.KLEINZOON       || getContentOfDynamicData() == ConstRelations2.ACHTERKLEINZOON ||
-				getContentOfDynamicData() == ConstRelations2.KLEINDOCHTER || getContentOfDynamicData() == ConstRelations2.ACHTERKLEINDOCHTER){
+			getContentOfDynamicData() == ConstRelations2.KLEINDOCHTER    || getContentOfDynamicData() == ConstRelations2.ACHTERKLEINDOCHTER){
 
 			// Check if reference to grand-children correct
 
+			String x = getDynamicData2().trim();
+			
+			if(!((x.equals("1") || x.equals("2") || x.equals("3") || x.equals("4") ||
+			      x.equals("5") || x.equals("6") && getValueOfRelatedPerson() > 0) || 
+				 (x.equals("9") && (getValueOfRelatedPerson() == -2 || getValueOfRelatedPerson() == -3)))) {
+				
+				message("1315");
+				if(getValueOfRelatedPerson() > 0)
+					message("1369");
+			}
+			else {
+				if(x.equals("1") || x.equals("2") || x.equals("3") || x.equals("4") || x.equals("5") || x.equals("6")) {
+					if(getValueOfRelatedPerson() <= 0) 
+						message("1368");
+					else {
+						Person p = getPersonToWhomDynamicDataRefers();
+						Registration r = p.getRegistrationPersonAppearsIn();
+						Person p2 = null;
+						for(Person p1: r.getPersonsInRegistration()){
+							if(p1.getKeyToRegistrationPersons() == getValueOfRelatedPerson()){
+								p2 = p1;						
+								break;						
+							}
+						}
+						if(p2 == null)
+							message("1423", "" + getValueOfRelatedPerson());
+						else
+							if((x.equals("1") || x.equals("2") || x.equals("3")) && p2.getSex().equalsIgnoreCase("M"))
+								message("1425", "" + getValueOfRelatedPerson());
+							else
+								if((x.equals("4") || x.equals("5") || x.equals("6")) && p2.getSex().equalsIgnoreCase("V"))
+									message("1426","" + getValueOfRelatedPerson());
+					}
+				}				
+			}
+		}
+            /*			
 			int code = 0;
 			if(getDynamicData2() != null && getDynamicData2().trim().length() > 0){      
 				if(Character.isDigit(getDynamicData2().trim().charAt(0))){
@@ -537,23 +561,13 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 				}
 
 
-				// Check relation to Head versus sex of person
-
-				if(getPersonToWhomDynamicDataRefers().getSex().equalsIgnoreCase("v"))
-					if(getContentOfDynamicData() > 0 && getContentOfDynamicData() < ConstRelations2.b3kode1_Male.length && ConstRelations2.b3kode1_Male[getContentOfDynamicData()] != null)
-						message("1401", new Integer(getKeyToRegistrationPersons()).toString());			
-
-				if(getPersonToWhomDynamicDataRefers().getSex().equalsIgnoreCase("m"))
-					if(getContentOfDynamicData() > 0 && getContentOfDynamicData() < ConstRelations2.b3kode1_Female.length && ConstRelations2.b3kode1_Female[getContentOfDynamicData()] != null)
-						message("1400", new Integer(getKeyToRegistrationPersons()).toString());			
-
 			}
 			else
 				message("1368");
 		}
 
 
-
+        */
 	}
 
 	/**
