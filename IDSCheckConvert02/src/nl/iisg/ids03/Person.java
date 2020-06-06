@@ -363,6 +363,17 @@ public class Person {
 		if(religion == 0)
 			message("1304", "" + getKeyToRegistrationPersons());
 		
+		// Check that b3:b3gegeven - dynamicData2 correct does not have an explicit head for C-Registers	
+		
+		int heads = 0;
+		if(ainb.getTypeRegister().toUpperCase().equals("C"))
+			for(PersonDynamic pd: getDynamicDataOfPerson())
+				if(pd.getDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD &&  pd.getContentOfDynamicData() == ConstRelations2.HOOFD) 
+					heads++;
+
+		if(heads > 1)
+			message("1362");
+		
 		// Check consistency arrival/departure dates
 		
 		checkArrivalDepartures();

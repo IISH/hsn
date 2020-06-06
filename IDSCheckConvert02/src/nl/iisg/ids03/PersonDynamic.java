@@ -221,11 +221,7 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 			if(getDynamicData2().length() >= 4 && getDynamicData2().charAt(3) == '$')
 				message("1361");				
 
-			// Check that b3:b3gegeven - dynamicData2 correct does not have an explicit head for C-Registers	
-
-			if(getContentOfDynamicData() == ConstRelations2.HOOFD && getKeyToRegistrationPersons() > 1 && ainb.getTypeRegister().toUpperCase().equals("C") == true) 
-				message("1362");				
-
+	
 		}
 		
 		// Check that the value of B3RGLN - valueOfRelatedPerson does not refer to the person belonging to this PersonDynamic object
@@ -485,13 +481,13 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 						if(code == 9 && getValueOfRelatedPerson() != -2 && getValueOfRelatedPerson() != -3)
 							message("1359");
 					}
-					else{ // There is a valid line number
+					else{ // There is a line number
 						// Check if correct relation to father or mother specified
 						// Bij 1 tm 6 moet een valid regelnummer zijn
 						// bij 9 moet er -2 of -3 staan
 
 						if(code < 1 || code > 6){
-							message("1368");
+							message("1370");
 						}
 					}
 				}		
@@ -553,7 +549,7 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 
 			}
 			else
-				message("1369");
+				message("1368");
 		}
 
 
