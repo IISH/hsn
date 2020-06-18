@@ -312,20 +312,21 @@ public class RegistrationAddress {
 			}
 
 			// Check if street name contains "/" characters. If so, the characters before it must not be a letter (must be numeric)
+			// Only for [b6tpnr] = 'OA'
 			
-			if(getNameOfStreet().indexOf("/") >= 0){
-				String temp = getNameOfStreet();
-				int index = temp.indexOf("/");
-				if(index > 0){
+			if(getAddressType().equalsIgnoreCase("OA")) {
+				if(getNameOfStreet().indexOf("/") >= 0){
+					String temp = getNameOfStreet();
+					int index = temp.indexOf("/");
+					if(index > 0){
 
-					char c = temp.charAt(index-1);
-					if(Character.isDigit(c) != true){
-						message("1093",  getNameOfStreet()); 
+						char c = temp.charAt(index-1);
+						if(Character.isDigit(c) != true){
+							message("1093",  getNameOfStreet()); 
+						}
 					}
 				}
-
 			}
-
 		}
 
 		// Check that address type is filled in and valid
@@ -357,14 +358,17 @@ public class RegistrationAddress {
 			message("1091");   	
 		}
 
-		// Check that house number does not contain character. But '-' is OK 
+		// Check that house number does not contain character. But '-' is OK. But '0' is not
 		
 		if(getNumber() != null){
 			String number = getNumber().trim();  // Number is String ;-)
-			for(int i = 0; i < number.length(); i++){
-				if(Character.isDigit(number.charAt(i)) != true && number.charAt(i) != '-'){
-					message("1098", getNumber());
-					break;
+			if(number.equals("0")) message("1098", getNumber());
+			else {
+				for(int i = 0; i < number.length(); i++){
+					if(Character.isDigit(number.charAt(i)) != true && number.charAt(i) != '-'){
+						message("1098", getNumber());
+						break;
+					}
 				}
 			}
 		}

@@ -725,7 +725,7 @@ public class Person {
 		// See if parts of the remarks field must be edited/moved
 		
 		if(getRemarks() != null && getRemarks().trim().length() != 0 && !getRemarks().trim().equalsIgnoreCase("N") && getRemarks().indexOf("!!!") < 0){
-			message("1256",  getRemarks());
+			message("1256",  getRemarks().trim());
 		}
 
 	}

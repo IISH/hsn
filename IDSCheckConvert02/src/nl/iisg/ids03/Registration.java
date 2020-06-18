@@ -356,10 +356,9 @@ public class Registration implements Comparable<Registration>{
 				if(getPageNumberOfSource().trim().length() != 0 || getNumberOfHousehold() != 0)
 					message("1113");
 
-			// Check if infoFamilyCardsSystem - B4GKBG IS filled in for register type  G or I
+			// Check if infoFamilyCardsSystem - B4GKBG IS filled in for register type  G 
 
-			if(ainb.getTypeRegister().toUpperCase().equals("G") == true ||
-					ainb.getTypeRegister().toUpperCase().equals("I") == true)
+			if(ainb.getTypeRegister().toUpperCase().equals("G") == true) 
 				if(getInfoFamilyCardsSystem().trim().length() == 0)
 					message("1114");
 
