@@ -735,6 +735,8 @@ public class Person {
 	 *  This routine checks the arrival and departure dates for consistency
 	 *  The following messages can be issued:
 	 *  
+	 *    1322
+	 *    1323
 	 *    1324
 	 *    1325
 	 *    1326
@@ -747,6 +749,7 @@ public class Person {
 	 * 
 	 */
 	
+	@SuppressWarnings("unused")
 	private void checkArrivalDepartures(){
 
 		int arrivalI = 0;
@@ -779,7 +782,7 @@ public class Person {
 			}
 		}
 		
-		// Check that mo more than 2 arrivals or departures
+		// Check that no more than 2 arrivals or departures
 		
 		if(arrivalI > 2)
 			message("1325");
@@ -799,7 +802,7 @@ public class Person {
 		
 		// Check for 2 arrivals and no valid first departure
 		
-		if(arrivalI >= 2 && departureDays[0]  <= 0)
+		if(arrivalDays[0] > 0 && arrivalDays[1] > 0 && departureDays[0]  <= 0)
 			message("1322");
 		
 		// Check that the date of second arrival is valid
@@ -820,8 +823,8 @@ public class Person {
 			
 		
 
-		//if(1 == 1)
-		//	return;
+		if(1 == 1)
+			return;
 		
 		if(arrivalDays[0] == 0 && departureDays[0] == 0){
 
@@ -1045,6 +1048,10 @@ public class Person {
 
 	}
 
+	private void checkArrivalDepartures2() {
+		
+		
+	}
 	
 	/**
 	 * 
