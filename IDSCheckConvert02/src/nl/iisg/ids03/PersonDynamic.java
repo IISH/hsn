@@ -487,12 +487,14 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 						}
 						if(p2 == null)
 							message("1423", "" + getValueOfRelatedPerson());
-						else
+						else {
 							if((x.equals("1") || x.equals("2") || x.equals("3")) && p2.getSex().equalsIgnoreCase("M"))
 								message("1425", "" + getValueOfRelatedPerson());
 							else
 								if((x.equals("4") || x.equals("5") || x.equals("6")) && p2.getSex().equalsIgnoreCase("V"))
 									message("1426","" + getValueOfRelatedPerson());
+							
+						}
 					}
 				}				
 			}
