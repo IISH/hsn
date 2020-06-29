@@ -496,10 +496,16 @@ public class Person {
 
 		}	
 		
-		// Check if valid birth date 
+		// Check if valid birth date. OP only
+		
+		int year1  = getYearOfBirth();
+		int month1 = getMonthOfBirth() > 0 ? getMonthOfBirth() : 1;
+		int day1   = getDayOfBirth()   > 0 ? getDayOfBirth()   : 1;
 
-		if(Common1.dateIsValid(getDayOfBirth(), getMonthOfBirth(), getYearOfBirth()) != 0)
+		if((getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP || getNatureOfPerson() == ConstRelations2.FURTHER_APPEARANCE_OF_OP) &&
+				Common1.dateIsValid(day1, month1, year1) != 0)
 			message("1196", "" + getDayOfBirth() + "-" + getMonthOfBirth() + "-" + getYearOfBirth());
+		
 		
 		if(getYearOfBirth() > 1940)
 			message("1196", "" + getDayOfBirth() + "-" + getMonthOfBirth() + "-" + getYearOfBirth());
@@ -1179,6 +1185,7 @@ public class Person {
 						message("1156", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), 
 								"" + getDayOfBirth()    + "-" + getMonthOfBirth()               + "-" + getYearOfBirth());  
 				}
+				
 
 				// Check that OP date not after decease date OP (if given)
 
