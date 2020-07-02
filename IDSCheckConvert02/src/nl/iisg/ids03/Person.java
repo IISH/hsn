@@ -811,6 +811,11 @@ public class Person {
 		if(arrivalDays[0] > 0 && arrivalDays[1] > 0 && departureDays[0]  <= 0)
 			message("1322");
 		
+		// Check for 2 departures and no valid first arrival
+		
+		if(departureDays[0] > 0 && departureDays[1] > 0 && arrivalDays[0]  <= 0)
+			message("1351");
+		
 		// Check that the date of second arrival is valid
 		
 		if(arrivalI >= 2 && arrivalDays[1] <= 0)
@@ -821,10 +826,21 @@ public class Person {
 		if(departureI >= 2 && departureDays[0] <= 0)
 			message("1328");
 
+		// Check that the date of first arrival is valid (with 2 arrivals !)
+		
+		if(arrivalI >= 2 && arrivalDays[0] <= 0)
+			message("1352");
+
 		// Check that the first arrival earlier than second departure
 		
 		if(arrivalI >= 1 && departureI >= 2 && departureDays[1] > 0 && arrivalDays[0] >= departureDays[1]){
 			message("1329");
+		}
+			
+		// Check that the first departure earlier than second arrival
+		
+		if(departureI >= 1 && arrivalI >= 2 && arrivalDays[1] > 0 && departureDays[0] >= arrivalDays[1]){
+			message("1353");
 		}
 			
 		

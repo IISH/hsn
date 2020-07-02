@@ -755,7 +755,7 @@ public class Registration implements Comparable<Registration>{
 			
 			Person OP = null;
 			for(Person p : getPersonsInRegistration())
-				if(p.getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP || p.getNatureOfPerson() == ConstRelations2.FURTHER_APPEARANCE_OF_OP)
+				if(p.getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP)
 					OP = p;
 			
 			
@@ -766,7 +766,7 @@ public class Registration implements Comparable<Registration>{
 			}
 				
 			if(Common1.dateIsValid(OP.getDayOfDecease(), OP.getMonthOfDecease(), OP.getYearOfDecease()) == 0)
-				 headDeceaseDays = Utils.dayCount(OP.getDayOfDecease(), OP.getMonthOfDecease(), OP.getYearOfDecease());
+				 OPDeceaseDays = Utils.dayCount(OP.getDayOfDecease(), OP.getMonthOfDecease(), OP.getYearOfDecease());
 			
 			
 			
@@ -775,19 +775,23 @@ public class Registration implements Comparable<Registration>{
 			// Check if head deceases and OP still present (splitting of registration necessary)
 			
 			
-			if(headDeceaseDays > 0 && headDeceaseDays < sourceEndDays && (headDeceaseDays < OPLastLeaveDays || (headDeceaseDays < OPDeceaseDays && OPDeceaseDays < sourceEndDays)))
+			if(headDeceaseDays > 0 && headDeceaseDays < sourceEndDays && // Head died during this registration
+					!(OPDeceaseDays > 0 && OPDeceaseDays < sourceEndDays && OPDeceaseDays < headDeceaseDays) && // OP did not die before him
+					!(OPLastLeaveDays > 0 && OPLastLeaveDays < sourceEndDays && OPLastLeaveDays < headDeceaseDays))	// and did not leave before he died				
 					message("1408");
 			
 			
 			// Check if head leaves and OP still present (splitting of registration necessary)
 			
-			if(headLastLeaveDays >0 && ((OPDeceaseDays > headLastLeaveDays && OPDeceaseDays < sourceEndDays && OPLastLeaveDays != headLastLeaveDays) || OPLastLeaveDays > headLastLeaveDays))
-				message("1409");
+			if(headLastLeaveDays > 0 && headLastLeaveDays < sourceEndDays  && // Head left during this registration
+					!(OPDeceaseDays > 0 && OPDeceaseDays < sourceEndDays && OPDeceaseDays < headLastLeaveDays) && // OP did not die before he left
+					!(OPLastLeaveDays > 0 && OPLastLeaveDays < sourceEndDays && OPLastLeaveDays < headLastLeaveDays))	// and did not leave before he left				
+					message("1409");
 				
 			// Check if head leaves or dies and OP still present
 			
-			if(OPLastLeaveDays == 0 && (OPDeceaseDays == 0 || OPDeceaseDays > sourceEndDays) && (headLastLeaveDays > 0 || headDeceaseDays > 0))
-				message("1410");
+			//if(OPLastLeaveDays == 0 && (OPDeceaseDays == 0 || OPDeceaseDays > sourceEndDays) && (headLastLeaveDays > 0 || headDeceaseDays > 0))
+				//message("1410");
 			
 			
 			

@@ -292,6 +292,8 @@ public class RegistrationAddress {
 						message("1092", getNameOfStreet()); 
 					}
 				}
+				else  // field starts with "}", also not allowed
+					message("1092", getNameOfStreet());
 
 			}
 
