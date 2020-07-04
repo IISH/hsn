@@ -394,9 +394,11 @@ public class Utils {
 	
 	/**
 	 * Check if a date is valid 
+	
 	 * 
 	 */
 
+    
 	public static int dateIsValid(String date){
 		
 		int day = (new Integer(date.substring(0,2))).intValue();

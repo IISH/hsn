@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import nl.iisg.hsncommon.Common1;
 import nl.iisg.ref.*;
 
 
@@ -209,6 +210,12 @@ public class RegistrationAddress {
 			monthAddress = getMonthOfAddressAfterInterpretation();
 			dayAddress   = getDayOfAddressAfterInterpretation();
 		}	
+		
+		int earliestDayOfAddress   = dayAddress   > 0 ? dayAddress : 1;
+		int earliestMonthOfAddress = monthAddress > 0 ? monthAddress : 1;
+		
+		int latestDayOfAddress   = dayAddress   > 0 ? dayAddress : 28;
+		int latestMonthOfAddress = monthAddress > 0 ? monthAddress : 12;
 
 		if(yearAddress > 0){
 
@@ -230,18 +237,26 @@ public class RegistrationAddress {
 				}
 			}
 
-			// Check that date first address is no more than 5 days before date entry Head of Household
-			// Check that date first address is no more than 30 days before date entry Head of Household
-			
-			if(monthAddress >= 0 && dayAddress >= 0 && getSequenceNumberToAddresses() == 1){
+			// Check that (latest) date first address is no more than 5 days before date entry Head of Household			
+						
+			if(Common1.dateIsValid(latestDayOfAddress, latestMonthOfAddress, yearAddress) == 0 && getSequenceNumberToAddresses() == 1){
 
-				int n1 = Utils.dayCount(dayAddress, monthAddress, yearAddress);
+				int nl = Utils.dayCount(latestDayOfAddress, latestMonthOfAddress, yearAddress);				
 				int n2 = Utils.dayCount(getDayEntryHead(), getMonthEntryHead(), getYearEntryHead());
 
-				if(n1  < n2 - 5)	
+				if(nl  < n2 - 5)	
 					message("1134", "" + dayAddress + "-" +  monthAddress + "-" + yearAddress);
 
-				if(n1 > n2 + 30)	
+			}
+
+			// Check that (earliest)  date first address is no more than 30 days after date entry Head of Household
+			
+			if(Common1.dateIsValid(earliestDayOfAddress, earliestMonthOfAddress, yearAddress) == 0 && getSequenceNumberToAddresses() == 1){
+
+				int ne = Utils.dayCount(earliestDayOfAddress, earliestMonthOfAddress, yearAddress);				
+				int n2 = Utils.dayCount(getDayEntryHead(), getMonthEntryHead(), getYearEntryHead());
+
+				if(ne > n2 + 30)	
 					message("1135", "" + dayAddress + "-" +  monthAddress + "-" + yearAddress);
 			}
 

@@ -12,6 +12,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -329,8 +331,8 @@ public class Person {
 	 * This method performs consistency check on the dynamic data elements of person (PersonDynamic)
 	 * The following message numbers can be issued:
 	 * 
-	 * 1302
-	 * 1303
+	 * 1310
+	 * 1362
 	 * 1304
 	 */
 
@@ -352,8 +354,19 @@ public class Person {
 		// Verwijderd, dit wordt by keychecks al getest
 		//if(civilStatus == 0)
 		//	message("1303", "" + getKeyToRegistrationPersons());
+		
+	    // Check that the same relation to head is only specified once
+		
+		Set<Integer> r2h = new HashSet<Integer>();
+		
+		for(PersonDynamic pd: getDynamicDataOfPerson()){
+			if(pd.getDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD)
+					if(!r2h.add(pd.getContentOfDynamicData()))
+						message("1310", "" + pd.getContentOfDynamicData());
+		}
+				
 
-		// Check that there is a religion and that it is not 'null'
+	    // Check that there is a religion and that it is not 'null'
 		
 		for(PersonDynamic pd: getDynamicDataOfPerson()){
 			if(pd.getDynamicDataType() == ConstRelations2.GODSDIENST && pd.getDynamicData2() != null &&
