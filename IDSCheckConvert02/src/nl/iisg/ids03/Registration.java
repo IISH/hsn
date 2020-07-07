@@ -639,32 +639,32 @@ public class Registration implements Comparable<Registration>{
 
 									// Check if age difference less than 15 years
 
-									if(headBirthYear > p.getYearOfBirth() - 15)
+									if(headBirthYear > p.getYearOfBirth() - 15) {
 										if(heads == 1)
 											message("1405", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
 									   	else
 									   	 if(heads > 1)
 											message("1414", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
 
-
+									}
 									// Check if age difference more than 45 years
 
-									if(headBirthYear < p.getYearOfBirth() - 45 && headBirthYear >= p.getYearOfBirth() - 50)
+									if(headBirthYear < p.getYearOfBirth() - 45 && headBirthYear >= p.getYearOfBirth() - 50) {
 										if(heads == 1)
 											message("1407", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
 										else
 										 if(heads > 1)
 											message("1416", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
-
+									}
 									// Check if age difference more than 50 years
 
-									if(headBirthYear < p.getYearOfBirth() - 50)
+									if(headBirthYear < p.getYearOfBirth() - 50) {
 										if(heads == 1)
 											message("1406", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
 										else											
 										 if(heads > 1)
 											message("1415", pd.getKeyToRegistrationPersons(), new Integer(p.getYearOfBirth()).toString(), new Integer(headBirthYear).toString());
-
+									}
 
 								}
 							}

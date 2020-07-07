@@ -21,7 +21,8 @@ public class UpdateClientThread implements Runnable {
 
 
 //  String printFileDirectory = "H:\\My Documents\\Eclipse\\Alfalab\\printfiles";
-    String printFileDirectory = "printfiles";
+//   String printFileDirectory = "printfiles";
+    String printFileDirectory = "C:\\Users\\HP\\Temp";
 //  String dbfFileDirectory = "H:\\My Documents\\Eclipse\\Alfalab\\dbffiles";
     String dbfFileDirectory = "dbffiles";
 
@@ -123,6 +124,7 @@ public class UpdateClientThread implements Runnable {
         }
 
         String printFilePath = timestampDir + File.separator + timestampFile + "_" + filename;
+        System.out.println("AAS " + printFilePath); 
         f = new File(printFilePath);
 
         boolean result;
