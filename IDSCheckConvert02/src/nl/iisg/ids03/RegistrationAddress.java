@@ -205,7 +205,7 @@ public class RegistrationAddress {
 		int monthAddress = getMonthOfAddress();
 		int dayAddress   = getDayOfAddress();
 
-		if (yearAddress <= 0){
+		if(getYearOfAddressAfterInterpretation() > 0){
 			yearAddress  = getYearOfAddressAfterInterpretation();
 			monthAddress = getMonthOfAddressAfterInterpretation();
 			dayAddress   = getDayOfAddressAfterInterpretation();
@@ -222,16 +222,18 @@ public class RegistrationAddress {
 			Ref_AINB ainb = Ref.getAINB(getKeyToSourceRegister());
 			if(ainb != null){
 
-				if(ainb.getStartYearRegister() > 0){
-					if(yearAddress < ainb.getStartYearRegister()-1){
-						message("1131", "" + yearAddress, "" + ainb.getStartYearRegister()); 
+				int registerStartYear = ainb.getStartYearRegisterCorrected() > 0 ? ainb.getStartYearRegisterCorrected() : ainb.getStartYearRegister();
+				int registerEndYear   = ainb.getEndYearRegisterCorrected()   > 0 ? ainb.getEndYearRegisterCorrected()   : ainb.getEndYearRegister();
+				if(registerStartYear > 0){
+					if(yearAddress < registerStartYear - 1){
+						message("1131", "" + yearAddress, "" + registerStartYear); 
 
 					}
 				}
 
-				if(ainb.getEndYearRegister() > 0){
-					if(yearAddress > ainb.getEndYearRegister() +1){
-						message("1132",  "" + yearAddress, "" + ainb.getEndYearRegister()); 
+				if(registerEndYear > 0){
+					if(yearAddress > registerEndYear + 1){
+						message("1132",  "" + yearAddress, "" + registerEndYear); 
 
 					}
 				}

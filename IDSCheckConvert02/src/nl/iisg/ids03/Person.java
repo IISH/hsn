@@ -1165,18 +1165,18 @@ public class Person {
 
 				// Check that OP date in range Bevolkingsregister
 
-
-				int startYear = ainb.getStartYearRegisterCorrected() != 0 ? ainb.getStartYearRegisterCorrected() : ainb.getStartYearRegister();  
-				int endYear   = ainb.getEndYearRegisterCorrected()   != 0 ? ainb.getEndYearRegisterCorrected()   : ainb.getEndYearRegister();  
-
-
 				if(ainb != null){
+					
+					int startYear = ainb.getStartYearRegisterCorrected() != 0 ? ainb.getStartYearRegisterCorrected() : ainb.getStartYearRegister();  
+					int endYear   = ainb.getEndYearRegisterCorrected()   != 0 ? ainb.getEndYearRegisterCorrected()   : ainb.getEndYearRegister();  
+
 					if(startYear > 0){
 						if(r.getYearEntryRP() < startYear -1){
 							message("1153", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), (new Integer(startYear)).toString(), (new Integer(endYear)).toString()); 
 						}
 					}
 
+					if(getKeyToRP() == 113056) System.out.println("AAAA " + getKeyToRP() + " endyear " + endYear + " getYearEntryRP() " + r.getYearEntryRP());
 					if(endYear > 0){
 						if(r.getYearEntryRP() > endYear + 1){
 							message("1154", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), (new Integer(startYear)).toString(), (new Integer(endYear)).toString()); 
