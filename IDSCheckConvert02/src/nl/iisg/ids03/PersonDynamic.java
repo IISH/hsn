@@ -282,12 +282,12 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
    					int endYear   = ainb.getEndYearRegisterCorrected()   != 0 ? ainb.getEndYearRegisterCorrected()   : ainb.getEndYearRegister();  
 
     				 if(getYearOfMutation() <  startYear)
-    					 message("1431", "" + day + "-" + month + "-" + getYearOfMutation(), "" + startYear, "" + endYear); 
+    					 message("1431", "" + day + "-" + month + "-" + getYearOfMutation(), "" + startYear + "-" + endYear); 
 
     				 // Check if year mutation  after end year register
 
     				 if(getYearOfMutation() >  endYear)
-    					 message("1432", "" + day + "-" + month + "-" + getYearOfMutation(), "" + startYear, "" + endYear); 
+    					 message("1432", "" + day + "-" + month + "-" + getYearOfMutation(), "" + startYear + "-" + endYear); 
     			 }
     		 }
     		 

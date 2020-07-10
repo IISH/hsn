@@ -1688,7 +1688,7 @@ public class Person {
 
 				if(startYear > 0){
 					if(headYear <= startYear - 1){
-						message("1333", "" + headYear, "" + startYear, "" + endYear); 
+						message("1333", "" + headYear, "" + startYear + "-" + endYear); 
 
 					}
 				}
@@ -1697,7 +1697,7 @@ public class Person {
 
 				if(endYear > 0){
 					if(headYear >= endYear + 1){
-						message("1334", "" + headYear, "" + startYear, "" + endYear); 
+						message("1334", "" + headYear, "" + startYear + "-" + endYear); 
 
 					}
 				}
