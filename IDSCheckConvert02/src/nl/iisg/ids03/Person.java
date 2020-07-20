@@ -1123,10 +1123,16 @@ public class Person {
 		
 		boolean returnCode = true;
 		
-		if(getFamilyName().trim().equalsIgnoreCase("GEEN OP")){
-			System.out.println("GEEN OP!!!");
-			return true;
-		}
+		//if(getFamilyName().trim().equalsIgnoreCase("GEEN OP")){
+		//	System.out.println("GEEN OP!!!");
+		//	return true;
+		//}
+		
+		//Kees 14-07-2020:  ‘Geen OP’ betekent dat er kunstmatig een inschrijving met OP is gemaakt.
+		//Dit komt voor in situaties dat een OP maar een week of wat heeft geleefd en niet is opgenomen 
+		//in het bevolkingsregister. We nemen dan het qua geboortedatum dichtst bij zijnde register en vullen 
+		//dan zelf een OP in met als naam “Geen OP”. 
+		//Deze inschrijving moet op een normale manier behandeld worden
 
 		Registration r = getRegistrationPersonAppearsIn();
 
@@ -1172,14 +1178,13 @@ public class Person {
 					int endYear   = ainb.getEndYearRegisterCorrected()   != 0 ? ainb.getEndYearRegisterCorrected()   : ainb.getEndYearRegister();  
 
 					if(startYear > 0){
-						if(r.getYearEntryRP() < startYear -1){
+						if(r.getYearEntryRP() < startYear){
 							message("1153", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), (new Integer(startYear)).toString(), (new Integer(endYear)).toString()); 
 						}
 					}
 
-					if(getKeyToRP() == 113056) System.out.println("AAAA " + getKeyToRP() + " endyear " + endYear + " getYearEntryRP() " + r.getYearEntryRP());
 					if(endYear > 0){
-						if(r.getYearEntryRP() > endYear + 1){
+						if(r.getYearEntryRP() > endYear){
 							message("1154", "" + r.getDayEntryRP() + "-" + r.getMonthEntryRP() + "-" + r.getYearEntryRP(), (new Integer(startYear)).toString(), (new Integer(endYear)).toString()); 
 						}
 					}
@@ -1427,7 +1432,7 @@ public class Person {
 				int endYear   = ainb.getEndYearRegisterCorrected()   != 0 ? ainb.getEndYearRegisterCorrected()   : ainb.getEndYearRegister();  
 
 				if(startYear > 0){
-					if(getYearEntryHead() <= startYear - 1){
+					if(getYearEntryHead() <= startYear){
 						int difference = startYear - getYearEntryHead();
 						message("1120", "" + getDayEntryHead() + "-" + getMonthEntryHead() + "-" + getYearEntryHead(), (new Integer(difference)).toString(),
 								"" + startYear, "" + endYear); 
@@ -1438,7 +1443,7 @@ public class Person {
 				// Check if headdate after range bevolkingsregister
 
 				if(endYear > 0){
-					if(getYearEntryHead() >= endYear + 1){
+					if(getYearEntryHead() >= endYear){
 						int difference = getYearEntryHead() - endYear;
 						message("1121", "" + getDayEntryHead() + "-" + getMonthEntryHead() + "-" + getYearEntryHead(), (new Integer(difference)).toString(),
 								"" + startYear, "" + endYear); 
