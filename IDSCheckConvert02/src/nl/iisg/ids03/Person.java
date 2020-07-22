@@ -542,7 +542,7 @@ public class Person {
 				if(getYearOfDecease() < 0)
 					message("1213", "" + getDayOfDecease() + "-" + getMonthOfDecease() + "-" + getYearOfDecease());
 				else
-					message("1202");
+					message("1202", "" + getDayOfDecease() + "-" + getMonthOfDecease() + "-" + getYearOfDecease());
 		}
 
 		// Check that registration date is later than birth date
@@ -1432,7 +1432,7 @@ public class Person {
 				int endYear   = ainb.getEndYearRegisterCorrected()   != 0 ? ainb.getEndYearRegisterCorrected()   : ainb.getEndYearRegister();  
 
 				if(startYear > 0){
-					if(getYearEntryHead() <= startYear){
+					if(getYearEntryHead() < startYear){
 						int difference = startYear - getYearEntryHead();
 						message("1120", "" + getDayEntryHead() + "-" + getMonthEntryHead() + "-" + getYearEntryHead(), (new Integer(difference)).toString(),
 								"" + startYear, "" + endYear); 
@@ -1443,7 +1443,7 @@ public class Person {
 				// Check if headdate after range bevolkingsregister
 
 				if(endYear > 0){
-					if(getYearEntryHead() >= endYear){
+					if(getYearEntryHead() > endYear){
 						int difference = getYearEntryHead() - endYear;
 						message("1121", "" + getDayEntryHead() + "-" + getMonthEntryHead() + "-" + getYearEntryHead(), (new Integer(difference)).toString(),
 								"" + startYear, "" + endYear); 
@@ -1649,7 +1649,7 @@ public class Person {
 						//DateTimeFormatter dtf = new DateTimeFormatter
 						LocalDate date0 = LocalDate.parse(pd.getDynamicData2().substring(4).trim(), 
 								DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT));
-						System.out.println("ABCD " + pd.getDynamicData2().substring(4).trim());
+						//System.out.println("ABCD " + pd.getDynamicData2().substring(4).trim());
 						//System.out.println("ABCD " + date0.getDayOfMonth());
 						//System.out.println("ABCD " + date0.getMonthValue());
 						//System.out.println("ABCD " + date0.getYear());
@@ -1693,7 +1693,7 @@ public class Person {
 				int endYear   = ainb.getEndYearRegisterCorrected()   != 0 ? ainb.getEndYearRegisterCorrected()   : ainb.getEndYearRegister();  
 
 				if(startYear > 0){
-					if(headYear <= startYear - 1){
+					if(headYear < startYear){
 						message("1333", "" + headYear, "" + startYear + "-" + endYear); 
 
 					}
@@ -1702,7 +1702,7 @@ public class Person {
 				// Check if headdate after range bevolkingsregister
 
 				if(endYear > 0){
-					if(headYear >= endYear + 1){
+					if(headYear > endYear){
 						message("1334", "" + headYear, "" + startYear + "-" + endYear); 
 
 					}
