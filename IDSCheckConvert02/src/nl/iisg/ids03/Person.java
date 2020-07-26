@@ -25,6 +25,7 @@ import jdk.nashorn.internal.objects.annotations.Getter;
 import nl.iisg.hsncommon.Common1;
 import nl.iisg.hsncommon.ConstRelations2;
 import nl.iisg.ref.*;
+import sun.security.action.GetBooleanAction;
 
 
 /**
@@ -515,12 +516,12 @@ public class Person {
 		int month1 = getMonthOfBirth() > 0 ? getMonthOfBirth() : 1;
 		int day1   = getDayOfBirth()   > 0 ? getDayOfBirth()   : 1;
 
-		if((getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP || getNatureOfPerson() == ConstRelations2.FURTHER_APPEARANCE_OF_OP) &&
-				Common1.dateIsValid(day1, month1, year1) != 0)
-			message("1196", "" + getDayOfBirth() + "-" + getMonthOfBirth() + "-" + getYearOfBirth());
+		//if((getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP || getNatureOfPerson() == ConstRelations2.FURTHER_APPEARANCE_OF_OP) &&
+		//		Common1.dateIsValid(day1, month1, year1) != 0)
+		//	message("1196", "" + getDayOfBirth() + "-" + getMonthOfBirth() + "-" + getYearOfBirth());
 		
 		
-		if(getYearOfBirth() > 1940)
+		if(getYearOfBirth() > 0 && (getYearOfBirth() > 1940 || getYearOfBirth() < 1720))
 			message("1196", "" + getDayOfBirth() + "-" + getMonthOfBirth() + "-" + getYearOfBirth());
 
 
@@ -1134,6 +1135,16 @@ public class Person {
 		//dan zelf een OP in met als naam “Geen OP”. 
 		//Deze inschrijving moet op een normale manier behandeld worden
 
+		// Check birthday OP
+		
+		int dayOfBirth   = getDayOfBirthAfterInterpretation()   != 0 ? getDayOfBirthAfterInterpretation()   : getDayOfBirth();
+		int monthOfBirth = getMonthOfBirthAfterInterpretation() != 0 ? getMonthOfBirthAfterInterpretation() : getMonthOfBirth();
+		int yearOfBirth  = getYearOfBirthAfterInterpretation()  != 0 ? getYearOfBirthAfterInterpretation()  : getYearOfBirth();
+		
+		if(dayOfBirth <= 0 || monthOfBirth <= 0 || yearOfBirth <= 0 ||
+				Utils.dateIsValid(String.format("%02d-%02d-%04d", dayOfBirth, monthOfBirth,yearOfBirth)) != 0)
+			message("1188", "" + dayOfBirth + "-" + monthOfBirth + "-" + yearOfBirth);
+		
 		Registration r = getRegistrationPersonAppearsIn();
 
 		// Check that the OP date is valid 

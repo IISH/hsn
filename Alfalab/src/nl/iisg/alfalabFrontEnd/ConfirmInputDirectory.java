@@ -16,7 +16,7 @@ public class ConfirmInputDirectory extends JDialog {
         pack();
         setResizable(false);
         setLocationRelativeTo(parent);
-        this.setTitle("Please confirm input directory");
+        this.setTitle("Please confirm input directoryc");
 
         getRootPane().setDefaultButton(buttonOK);
 
@@ -92,7 +92,8 @@ public class ConfirmInputDirectory extends JDialog {
 
 			contentPane.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
 			contentPane.setBackground(Color.lightGray);//
-			contentPane.setSize(50, 50);//
+			contentPane.setSize(1, 1);// was 50, 50
+			contentPane.setPreferredSize(new Dimension(600, 80));
 			//======== panel1 ========
 			{
 				panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
@@ -100,7 +101,7 @@ public class ConfirmInputDirectory extends JDialog {
 					GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
 					GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
 					GridConstraints.SIZEPOLICY_CAN_SHRINK,
-					null, new Dimension(80, 30), null));
+					null, new Dimension(80, 30), null)); // was 80, 30
 
 				//======== panel2 ========
 				{

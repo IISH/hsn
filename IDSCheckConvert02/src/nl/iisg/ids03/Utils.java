@@ -897,6 +897,8 @@ public class Utils {
 						methodName += declaredFieldList[i].getName().substring(0,1).toUpperCase();
 						methodName += declaredFieldList[i].getName().substring(1);
 						
+						
+						
 						// Get the method from inputClass by it's name and signature (number of parameters and their types)
 						
 						Method  method = inputClass.getDeclaredMethod(methodName, parameterTypes);
@@ -944,12 +946,23 @@ public class Utils {
 						Object [] e =  new Object[1];
 						e[0] = rowObjects[columnAnnotatedVariableToDBFField[index1]];
 						
+						
+						
 						// Next statement is equivalent to: setVarx(rowObject[Y]);
 						
 						Object retObject = null;
 						if(e[0] != null)
-							retObject = method.invoke(outputObject,(Object []) e); // retObject contains the return code from the setter method, it is void
+						  retObject = method.invoke(outputObject,(Object []) e); // retObject contains the return code from the setter method, it is void
 						
+						//if(e[0] != null) {
+						//	try {
+						//		retObject = method.invoke(outputObject,(Object []) e); // retObject contains the return code from the setter method, it is void
+
+						//	} finally{
+						//		System.out.println("AAS " + methodName);
+						//		System.out.println("AAS " + e[0]);
+						//	}
+						//}
 						index1++; // next ColumnAnnotated field
 					}
 				}
