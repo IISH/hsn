@@ -454,19 +454,21 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 		// Check grand-children 
 
 		if (getContentOfDynamicData() == ConstRelations2.KLEINZOON       || getContentOfDynamicData() == ConstRelations2.ACHTERKLEINZOON ||
-			getContentOfDynamicData() == ConstRelations2.KLEINDOCHTER    || getContentOfDynamicData() == ConstRelations2.ACHTERKLEINDOCHTER){
+				getContentOfDynamicData() == ConstRelations2.KLEINDOCHTER    || getContentOfDynamicData() == ConstRelations2.ACHTERKLEINDOCHTER){
 
 			// Check if reference to grand-children correct
 
 			String x = getDynamicData2().trim();
-			
-			if(!((x.equals("1") || x.equals("2") || x.equals("3") || x.equals("4") ||
-			      x.equals("5") || x.equals("6") && getValueOfRelatedPerson() > 0) || 
-				 (x.equals("9") && (getValueOfRelatedPerson() == -2 || getValueOfRelatedPerson() == -3)))) {
-				
+			if(x.length() == 0) x = " "; // for error message
+
+			if(!(((x.equals("1") || x.equals("2") || x.equals("3") || x.equals("4") ||
+				   x.equals("5") || x.equals("6")) && getValueOfRelatedPerson() > 0) || 
+					(x.equals("9") && (getValueOfRelatedPerson() == -2 || getValueOfRelatedPerson() == -3)))) {
+
+				if(getKeyToRP() == 28081) System.out.println("AAA " + x);
 				//message("1315");
 				message("1370", x, "" + getKeyToRegistrationPersons());
-				
+
 				if(getValueOfRelatedPerson() > 0) //
 					message("1369");
 			}
@@ -492,13 +494,13 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 							else
 								if((x.equals("4") || x.equals("5") || x.equals("6")) && p2.getSex().equalsIgnoreCase("V"))
 									message("1426","" + getValueOfRelatedPerson());
-							
+
 						}
 					}
 				}				
 			}
 		}
-            /*			
+		/*			
 			int code = 0;
 			if(getDynamicData2() != null && getDynamicData2().trim().length() > 0){      
 				if(Character.isDigit(getDynamicData2().trim().charAt(0))){
@@ -570,7 +572,7 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 		}
 
 
-        */
+		 */
 	}
 
 	/**
