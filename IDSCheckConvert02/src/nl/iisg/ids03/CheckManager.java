@@ -3,7 +3,9 @@
 
 package nl.iisg.ids03;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -27,8 +29,12 @@ public class CheckManager {
 	    int c = 0;
 	    boolean returnCode = true;
 	    for(OP op1: ops){
-	    	if(++c % 100 == 0)
+	    	if(++c % 10 == 0) {
+	    		Date date = new Date(); 
+	    		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+	    		System.out.print(formatter.format(date));
 	    		System.out.println("  Checked " + c + " OP's, returnCode = " + returnCode);
+	    		}
 	    	boolean rc = op1.check();
 	    	if(rc == false)
 	    		returnCode = false;

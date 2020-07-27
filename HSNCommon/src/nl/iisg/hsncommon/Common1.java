@@ -196,7 +196,7 @@ public class Common1 {
 		 int count = 0;
 		 while(day != day1 || month != month1 || year != year1){
 			 
-			 if(++count > 100 * 365) {
+			 if(++count > 300 * 365) {
 				 System.out.println("XYZ DC05: " + day1 + "   " + month1 +    "   " + year1);
 				 count = count/0; 
 			 }
@@ -418,12 +418,22 @@ public class Common1 {
 		
 		int [] monthLength = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 		
-		if(year <= 0 || month <= 0 || day <= 0) return -1;
+		if(year < 1600 || month <= 0 || day <= 0) return -1;
 		
 		if(!(month > 0    && month <= 12))     return 1;
 		if(!(day   > 0    && (day  <=  monthLength[month] || (day <= monthLength[2] + 1 && month == 2 && year % 4 == 0 && (year % 100 != 0 || year % 400 == 0))))) return 1;
 		
 	    return 0;		
+		
+	}
+	
+	public static int dateIsValid(String date0){
+		
+		int d = (new Integer(date0.substring(0,2))).intValue();
+		int m = (new Integer(date0.substring(3,5))).intValue();
+		int y = (new Integer(date0.substring(6,10))).intValue();
+
+		return(dateIsValid(d, m, y));
 		
 	}
 	

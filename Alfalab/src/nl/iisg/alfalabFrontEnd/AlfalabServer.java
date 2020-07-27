@@ -23,7 +23,7 @@ import nl.iisg.hsncommon.ConstRelations2;
 import nl.iisg.ids03.*;
 import nl.iisg.ref.*;
 
-import org.omg.CORBA.portable.Delegate;
+//import org.omg.CORBA.portable.Delegate;
 
 public class AlfalabServer extends JFrame implements ActionListener, DocumentListener {
     private final static String GET_MESSAGE_QUEUE_COMMAND = "getMessageQueue";
