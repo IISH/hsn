@@ -86,6 +86,8 @@ public class Message {
 	 */
 
 	public void save(String... fills){
+		
+		//if(1==1) return;
 
 		// To speed things up 
 		
@@ -146,12 +148,21 @@ public class Message {
 				//	String key = String.format("%06d  %02d-%02d-%04d  %06d", getKeyToRP(), getDayEntryHead(), getMonthEntryHead(), getYearEntryHead(), getKeyToSourceRegister());
 				//	System.out.println(key + "     [" + getErrorNumber() + "   " + getErrorType() + "  " + errorout.trim() + "]");
 				//}
-				EntityManagerFactory factory = Persistence.createEntityManagerFactory("popreg_log");
-				EntityManager em = Utils.getEm_log();
 				
-				em.getTransaction().begin();
-				em.persist(this);
-				em.getTransaction().commit();
+				messages.add(this);
+				
+				
+				if(messages.size() > 1000) {
+					EntityManagerFactory factory = Persistence.createEntityManagerFactory("popreg_log");
+					EntityManager em = Utils.getEm_log();
+
+					em.getTransaction().begin();
+					
+					for(Message m: messages)
+						em.persist(m);
+					em.getTransaction().commit();
+					messages.clear();
+				}
 				//em.clear();
 
 				
@@ -173,13 +184,16 @@ public class Message {
 
 	public static void write(){
 
-
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("popreg_log");
 		EntityManager em = Utils.getEm_log();
+
 		em.getTransaction().begin();
-		em.flush();
+		
+		for(Message m: messages)
+			em.persist(m);
 		em.getTransaction().commit();
-	
+		messages.clear();
+
 		messages.clear();
 		
 		// Split messages in 2 parts: bfout1ft and fout4ft

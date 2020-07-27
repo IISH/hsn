@@ -45,6 +45,9 @@ public class OP {
 	  	  
 public boolean check(){
 	
+		
+	System.out.println("OP idnr = "+getKeyToRP());
+	
 	// Following give IDNRs terminating errors
 	//if(getKeyToRP() == 76081 || getKeyToRP() == 76059 || getKeyToRP() == 70796) return true;
 	
@@ -171,13 +174,23 @@ public boolean check(){
 	
 	// Check if page number and line number registration used more than once
 	
-	HashSet<Registration> hashSetRegistrations = new HashSet<Registration>();
+	//HashSet<Registration> hashSetRegistrations = new HashSet<Registration>();
+	HashSet<Integer> hashSetRegistrations = new HashSet<Integer>();
 	
-	for(Registration r: getRegistrationsOfOP())
-		if(hashSetRegistrations.add(r) != true) 
-	       message("1111", r.getPageNumberOfSource(), "" + r.getNumberOfHousehold()); 
+	for(Registration r: getRegistrationsOfOP()) {
+		try {
+			int i = Integer.valueOf(r.getPageNumberOfSource().trim());
+			i = (10000 * i) + r.getNumberOfHousehold();
+			//System.out.println( "AABB + adding: " + i);
+			if(hashSetRegistrations.add(i) != true) 
+				message("1111", r.getPageNumberOfSource(), "" + r.getNumberOfHousehold()); 
+		}
+		catch (Exception e) {
+			//System.out.println( "AABB + exception: ");
+		}
+	}
 
-	
+
 	//System.out.println("  Op.check, returnCode = " + returnCode);
 	return returnCode;
 	
@@ -243,7 +256,7 @@ public void identify(){
  */
 
 public void giveDate(){
-
+	
 	for(RegistrationStandardized rs : getRegistrationsStandardizedOfOP()){
 
 		rs.CreateEqualArrivalGroups();
@@ -262,9 +275,7 @@ public void giveDate(){
 		handleArrivalGroups(rs);
 		
 		rs.MoveLaterDatesAfterEarlierDates();
-		
 		rs. renumber();
-		
 	}
 		
 	for(RegistrationStandardized rs : getRegistrationsStandardizedOfOP()){
@@ -275,7 +286,6 @@ public void giveDate(){
 	
 	for(RegistrationStandardized rs : getRegistrationsStandardizedOfOP())
 		rs.setEndOfRegisterDate();
-	
 	for(RegistrationStandardized rs : getRegistrationsStandardizedOfOP())
 		rs.handleUndatedDeparture();
 
@@ -285,12 +295,12 @@ public void giveDate(){
 			ps.giveStartDate2();
 			
 		
-		
         rs.minMax();
+        
         
 		for(PersonStandardized ps: rs.getPersonsStandardizedInRegistration())
 			ps.giveEndDate2();
-
+		
 	}
 	
 	// date the dynamic data elements
@@ -307,6 +317,7 @@ public void giveDate(){
 	
 	for(RegistrationStandardized rs : getRegistrationsStandardizedOfOP())
 		rs.findFatherAndMother();	
+	
 	
 	// E propagate parent information
 	
@@ -393,7 +404,6 @@ public void giveDate(){
 		
 	}
 
-	
 	
 }
 
