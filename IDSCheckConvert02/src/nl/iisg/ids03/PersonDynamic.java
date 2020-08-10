@@ -461,22 +461,22 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 			String x = getDynamicData2().trim();
 			if(x.length() == 0) x = " "; // for error message
 
-			if(!(((x.equals("1") || x.equals("2") || x.equals("3") || x.equals("4") ||
-				   x.equals("5") || x.equals("6")) && getValueOfRelatedPerson() > 0) || 
-					(x.equals("9") && (getValueOfRelatedPerson() == -2 || getValueOfRelatedPerson() == -3)))) {
+			if(!(x.equals("1") || x.equals("2") || x.equals("3") || x.equals("4") ||
+			      x.equals("5") || x.equals("6")  || x.equals("9"))) {
 
-				if(getKeyToRP() == 28081) System.out.println("AAA " + x);
-				//message("1315");
+				
 				message("1370", x, "" + getKeyToRegistrationPersons());
 
 				if(getValueOfRelatedPerson() > 0) //
 					message("1369");
+				
 			}
+			if(getValueOfRelatedPerson() < 1 && getValueOfRelatedPerson() != -2 && getValueOfRelatedPerson() != -3)
+				message("1368");
+
 			else {
-				if(x.equals("1") || x.equals("2") || x.equals("3") || x.equals("4") || x.equals("5") || x.equals("6")) {
-					if(getValueOfRelatedPerson() <= 0) 
-						message("1368");
-					else {
+				if(getValueOfRelatedPerson() >= 1) {
+					if(x.equals("1") || x.equals("2") || x.equals("3") || x.equals("4") || x.equals("5") || x.equals("6")) {
 						Person p = getPersonToWhomDynamicDataRefers();
 						Registration r = p.getRegistrationPersonAppearsIn();
 						Person p2 = null;
@@ -497,82 +497,9 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 
 						}
 					}
-				}				
-			}
-		}
-		/*			
-			int code = 0;
-			if(getDynamicData2() != null && getDynamicData2().trim().length() > 0){      
-				if(Character.isDigit(getDynamicData2().trim().charAt(0))){
-					String s =  "" + getDynamicData2().trim().charAt(0); // There is a code
-					code = (new Integer(s));
-					if (getValueOfRelatedPerson() < 1) {  // invalid line number				
-						if(code == 9 && getValueOfRelatedPerson() != -2 && getValueOfRelatedPerson() != -3)
-							message("1359");
-					}
-					else{ // There is a line number
-						// Check if correct relation to father or mother specified
-						// Bij 1 tm 6 moet een valid regelnummer zijn
-						// bij 9 moet er -2 of -3 staan
-
-						if(code < 1 || code > 6){
-							message("1370");
-						}
-					}
-				}		
-				else // no code
-					if(getValueOfRelatedPerson() != 0) // but there is a related person 
-						message("1369");
-				// Check that value of related person exists in B2 - Person
-
-				if(getValueOfRelatedPerson() > 0){
-					Person p = getPersonToWhomDynamicDataRefers();
-					Registration r = p.getRegistrationPersonAppearsIn();
-					Person p2 = null;
-					for(Person p1: r.getPersonsInRegistration()){
-						if(p1.getKeyToRegistrationPersons() == getValueOfRelatedPerson()){
-							p2 = p1;						
-							break;						
-						}
-					}
-
-					if(p2 == null){
-
-						// incorrect relation to mother
-
-						//if (code == 1 || code == 2 || code == 3)
-						//	message("1421", new Integer(getValueOfRelatedPerson()).toString());
-
-						// Check if grand-children have incorrect relation to father
-
-						//else
-						//	if (code == 4 || code == 5 || code == 6)
-						//		message("1422", new Integer(getValueOfRelatedPerson()).toString());
-						//	else
-						message("1423", new Integer(getValueOfRelatedPerson()).toString());
-					}
-
-					else{
-
-						if (code == 1 || code == 2 || code == 3)
-							if(p2.getSex().toUpperCase().equals("V") != true)
-								message("1425", new Integer(getValueOfRelatedPerson()).toString());
-
-						if (code == 4 || code == 5 || code == 6)
-							if(p2.getSex().toUpperCase().equals("M") != true)
-								message("1426", new Integer(getValueOfRelatedPerson()).toString());
-
-					}
 				}
-
-
 			}
-			else
-				message("1368");
 		}
-
-
-		 */
 	}
 
 	/**
