@@ -42,7 +42,8 @@ public class AlfalabServerConsole implements Runnable {
 
     private final static String SERVER_CANCEL = "serverCancel";
 
-    private final static String POP_REG_TEST_ERRORS = "popRegTestErrors";
+    private final static String POP_REG_TEST_ERRORS = "popRegTestError"
+    		+ "s";
     private final static String POP_REG_DELETE_FROM_DEF_DB = "popRegDeleteFromDefDB";
     private final static String POP_REG_APPEND_TO_DEF_DB = "popRegAppendToDefDB";
     private final static String POP_REG_TEST_IDNR_DOUBLES = "popRegTestIDnrDoubles";
@@ -1573,10 +1574,14 @@ public class AlfalabServerConsole implements Runnable {
     			//print("Server busy, ignoring file " + filename);
 
     		File f = null;
+    		File d = null;
     		FileOutputStream fos = null;
     		BufferedOutputStream bos = null;;
 
     		if(save){
+    			d = new File(INPUT_DIRECTORY);
+    			d.mkdir();
+    			
     			f = new File(INPUT_DIRECTORY + "/" + filename);
     			if (!f.exists()) {
     				f.createNewFile();
