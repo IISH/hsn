@@ -226,14 +226,14 @@ public class RegistrationAddress {
 				int registerEndYear   = ainb.getEndYearRegisterCorrected()   > 0 ? ainb.getEndYearRegisterCorrected()   : ainb.getEndYearRegister();
 				if(registerStartYear > 0){
 					if(yearAddress < registerStartYear - 1){
-						message("1131", "" + yearAddress, "" + registerStartYear); 
+						message("1131", "" + yearAddress, "" + registerStartYear, "" + registerEndYear); 
 
 					}
 				}
 
 				if(registerEndYear > 0){
 					if(yearAddress > registerEndYear + 1){
-						message("1132",  "" + yearAddress, "" + registerEndYear); 
+						message("1132",  "" + yearAddress, "" + registerEndYear, "" + registerEndYear); 
 
 					}
 				}

@@ -260,76 +260,96 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 	 */
 
      private void checkMutationDate(Ref_AINB ainb){
-    	 
-		int day   = getDayOfMutation()   > 0 ? getDayOfMutation()   : 1;
-		int month = getMonthOfMutation() > 0 ? getMonthOfMutation() : 1;
-		int year  = getYearOfMutation(); 
-		
-		if(year <= 0) return; 
 
-    	 
+    	 int day0   = getDayOfMutationAfterInterpretation()   > 0 ? getDayOfMutationAfterInterpretation()   : getDayOfMutation();
+    	 int month0 = getMonthOfMutationAfterInterpretation() > 0 ? getMonthOfMutationAfterInterpretation() : getMonthOfMutation();
+    	 int year0  = getYearOfMutationAfterInterpretation()  > 0 ? getYearOfMutationAfterInterpretation()  : getYearOfMutation();
+
+
+    	 int day   = day0   > 0 ? day0   : 1;
+    	 int month = month0 > 0 ? month0 : 1;
+    	 int year  = year0; 
+
+    	 if(year <= 0) return; 
+
+
     	 if(Common1.dateIsValid(day, month, year) == 0){
-    		 
+
     		 int mutationDate = Utils.dayCount(day, month, year); 
-    		 
+
     		 if(ainb != null){
 
-    			 if(getDynamicDataType() != ConstRelations2.BURGELIJKE_STAAT){ // for civil status there are many outside the range of the register, they are copied from older registers
 
-    				 // Check if year mutation  before begin year register
-    				 
-   					int startYear = ainb.getStartYearRegisterCorrected() != 0 ? ainb.getStartYearRegisterCorrected() : ainb.getStartYearRegister();  
-   					int endYear   = ainb.getEndYearRegisterCorrected()   != 0 ? ainb.getEndYearRegisterCorrected()   : ainb.getEndYearRegister();  
+    			 // Check if year mutation  before begin year register
 
-    				 if(getYearOfMutation() <  startYear - 1)
-    					 message("1431", "" + day + "-" + month + "-" + getYearOfMutation(), "" + startYear + "-" + endYear); 
+    			 int startYear = ainb.getStartYearRegisterCorrected() != 0 ? ainb.getStartYearRegisterCorrected() : ainb.getStartYearRegister();  
+    			 int endYear   = ainb.getEndYearRegisterCorrected()   != 0 ? ainb.getEndYearRegisterCorrected()   : ainb.getEndYearRegister();  
 
-    				 // Check if year mutation  after end year register
+    			 if(year <  startYear - 1)
+    				 switch(getDynamicDataType()) {
+    				 case(ConstRelations2.RELATIE_TOT_HOOFD): message("1471", "" + day + "-" + month + "-" + year, "" + startYear + "-" + endYear);
+    				 case(ConstRelations2.BURGELIJKE_STAAT):  message("1472", "" + day + "-" + month + "-" + year, "" + startYear + "-" + endYear);
+    				 case(ConstRelations2.AANKOMST):          message("1473", "" + day + "-" + month + "-" + year, "" + startYear + "-" + endYear);
+    				 case(ConstRelations2.VERTREK):           message("1474", "" + day + "-" + month + "-" + year, "" + startYear + "-" + endYear);
+    				 default:
 
-    				 if(getYearOfMutation() >  endYear + 1)
-    					 message("1432", "" + day + "-" + month + "-" + getYearOfMutation(), "" + startYear + "-" + endYear); 
-    			 }
+    				 }
+
+
+    			 // Check if year mutation  after end year register
+
+    			 if(year >  endYear + 1)
+    				 switch(getDynamicDataType()) {
+    				 case(ConstRelations2.RELATIE_TOT_HOOFD): message("1476", "" + day + "-" + month + "-" + year, "" + startYear + "-" + endYear);
+    				 case(ConstRelations2.BURGELIJKE_STAAT):  message("1477", "" + day + "-" + month + "-" + year, "" + startYear + "-" + endYear);
+    				 case(ConstRelations2.AANKOMST):          message("1478", "" + day + "-" + month + "-" + year, "" + startYear + "-" + endYear);
+    				 case(ConstRelations2.VERTREK):           message("1479", "" + day + "-" + month + "-" + year, "" + startYear + "-" + endYear);
+    				 default:
+
+    				 }
+
+
     		 }
-    		 
-             // Check if mutation date before birth date
 
-    		int dayL   = getDayOfMutation()   > 0 ? getDayOfMutation()   : 28;
-    		int monthL = getMonthOfMutation() > 0 ? getMonthOfMutation() : 12;
-    		int yearL  = getYearOfMutation(); 
-    		
-   		    int mutationDateL = Utils.dayCount(dayL, monthL, yearL); 
+    		 // Check if mutation date before birth date
+
+    		 int dayL   = day0   > 0 ? day0   : 28;
+    		 int monthL = month0 > 0 ? month0 : 12;
+    		 int yearL  = year0; 
+
+    		 int mutationDateL = Utils.dayCount(dayL, monthL, yearL); 
 
     		 Person p = getPersonToWhomDynamicDataRefers();
     		 if(Common1.dateIsValid(p.getDayOfBirth(), p.getMonthOfBirth(), p.getYearOfBirth()) == 0){
-    		 
+
     			 int birthDate = Utils.dayCount(p.getDayOfBirth(), p.getMonthOfBirth(), p.getYearOfBirth());
-    			 
+
     			 if(mutationDateL < birthDate)
-    				 message("1433", "" + day + "-" + month + "-" + getYearOfMutation(), 
-    						         "" + p.getDayOfBirth()  + "-" + p.getMonthOfBirth()  + "-" + p.getYearOfBirth());
-    					 
+    				 message("1433", "" + dayL + "-" + monthL + "-" + yearL, 
+    						 "" + p.getDayOfBirth()  + "-" + p.getMonthOfBirth()  + "-" + p.getYearOfBirth());
+
     		 }
-    		 
-    		// Check if mutation date after decease date
-        		 
+
+    		 // Check if mutation date after decease date
+
     		 if(Common1.dateIsValid(p.getDayOfDecease(), p.getMonthOfDecease(), p.getYearOfDecease()) == 0){
 
     			 int deceaseDate = Utils.dayCount(p.getDayOfDecease(), p.getMonthOfDecease(), p.getYearOfDecease());
 
     			 if(mutationDate > deceaseDate)
-    				 message("1434", "" + day  + "-" + month  + "-" + getYearOfMutation(), 
-    						         "" + p.getDayOfDecease() + "-" + p.getMonthOfDecease() + "-" + p.getYearOfDecease());
+    				 message("1434", "" + day  + "-" + month  + "-" + year, 
+    						 "" + p.getDayOfDecease() + "-" + p.getMonthOfDecease() + "-" + p.getYearOfDecease());
 
-        		    		 
+
     		 }
     	 }
     	 else
-			 message("1320", "" + getDayOfMutation() + "-" + getMonthOfMutation() + "-" + getYearOfMutation()); 
-    	 
-    	 
+    		 message("1320", "" + getDayOfMutation() + "-" + getMonthOfMutation() + "-" + getYearOfMutation()); 
+
+
      }
-	
-	
+
+
 	/**
 	 * 
 	 * @param 
