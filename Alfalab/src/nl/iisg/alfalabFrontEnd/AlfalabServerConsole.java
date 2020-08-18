@@ -11,6 +11,9 @@ import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -62,8 +65,7 @@ public class AlfalabServerConsole implements Runnable {
     private final static String RESET_TEMP_DIR = "resetTempDir";
     private final static String ADD_LINKS_DATA= "addLinksData";
     private final static String INITIALISE_HSN = "initialiseHSN";
-
-
+    private final static String LOGIN = "login";
 
     //        private final static String INPUT_DIRECTORY = "C:\\Users\\cro\\Documents\\temp";
     //private final static String INPUT_DIRECTORY = "H:\\My Documents\\Eclipse\\Alfalab\\temp";
@@ -543,6 +545,56 @@ public class AlfalabServerConsole implements Runnable {
             HSNLinksIntegration hli = new HSNLinksIntegration(out);
             workerThread = new Thread(hli);
             workerThread.start(); 
+
+
+        } else if (command.split("[ /]")[0].equals(LOGIN)) {
+ 
+        	String user = command.split("[ /]")[1];        	
+        	String pasw = command.split("[ /]")[2];
+        	
+        	print("Login....");
+            print(command + "\n");
+          
+            
+            System.out.println(System.getProperty("user.dir"));
+            Path path = Paths.get(System.getProperty("user.dir") + "\\bin\\META-INF", "pw.txt");
+            
+            System.out.println(path.toString());
+            boolean found = false;
+            try {
+            	List<String> lines = Files.readAllLines(path);
+
+
+            	for (String line : lines) {
+            		
+            		System.out.println(line);
+
+            		if(user.equals(line.split("/")[0]) && pasw.equals(line.split("/")[1])){
+            			found = true;
+            			break;
+
+            		}
+
+            		
+            	}
+            } catch (IOException e) {
+            	System.out.println(e);
+            }
+
+            if(found)
+            	out.writeUTF("ok");
+            else
+            	out.writeUTF("ko");
+            //File f = System.getProperty("user.dir") + "\\bin\\META-INF\\pw.txt";
+            
+            
+            
+            //File f = new File()
+
+            //print("Started Personal Card to IDS. Please wait..\n");
+            //HSNLinksIntegration hli = new HSNLinksIntegration(out);
+            //workerThread = new Thread(hli);
+            //workerThread.start(); 
 
 
 

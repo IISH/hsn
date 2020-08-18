@@ -261,7 +261,7 @@ public class Convert{
 
 	}  
 	public static Connection getConnection(String database, String userid, String passwrd) throws Exception {
-		String driver = "org.gjt.mm.mysql.Driver";
+		String driver = "com.mysql.cj.jdbc.Driver";//"org.gjt.mm.mysql.Driver";
 		//String url = "jdbc:mysql://localhost/" + database;
 		String url = database;
 		String username = userid;

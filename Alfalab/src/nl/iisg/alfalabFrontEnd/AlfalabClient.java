@@ -597,6 +597,10 @@ public class AlfalabClient extends JFrame implements ActionListener {
             in = new DataInputStream(socket.getInputStream());
             startUpdateThread();
             out.writeUTF(GET_MESSAGE_QUEUE_COMMAND);
+            
+            // Next code for logon
+            
+            Login l = new Login(in, out);
         } catch (UnknownHostException e) {
             System.out.println("Unknown host: " + serverAddress);
             System.exit(1);

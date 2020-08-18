@@ -45,6 +45,7 @@ public class AlfalabServer extends JFrame implements ActionListener, DocumentLis
     private final static String MISC_PRINT_HSN_POP_REG_ALL = "miscPrintHSNPopRegAll";
     private final static String MISC_PRINT_HSN_POP_REG_SELECTED = "miscPrintHSNPopRegSelected";
     private final static String INITIALISE_HSN = "initialiseHSN";
+    private final static String LOGIN = "login";
 
     
 
