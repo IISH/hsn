@@ -821,14 +821,20 @@ public class Person {
 			message("1324");
 		
 		
-		// Check for 2 arrivals and no valid first departure
+		// Check for 2 arrivals and no first departure
 		
-		if(arrivalDays[0] > 0 && arrivalDays[1] > 0 && departureDays[0]  <= 0)
+		//if(arrivalDays[0] > 0 && arrivalDays[1] > 0 && departureDays[0]  <= 0)
+		//	message("1322");
+		
+		if(arrivalI == 2 && departureI == 0)
 			message("1322");
 		
-		// Check for 2 departures and no valid first arrival
+		// Check for 2 departures and no first arrival
 		
-		if(departureDays[0] > 0 && departureDays[1] > 0 && arrivalDays[0]  <= 0)
+		//if(departureDays[0] > 0 && departureDays[1] > 0 && arrivalDays[0]  <= 0)
+		//	message("1351");
+		
+		if(departureI == 2 && arrivalI == 0)
 			message("1351");
 		
 		// Check that the date of second arrival is valid
