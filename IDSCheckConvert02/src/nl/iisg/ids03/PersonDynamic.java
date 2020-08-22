@@ -763,9 +763,12 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 		 * deze botst met de vorige datum
 		 */
 
-		if(getDynamicData2() != null && getDynamicData2().length() > 0  && getDynamicData2().indexOf("&") >= 0 && getDynamicData2().indexOf("*") >= 0 && getYearOfMutation() > 0)
-			message("1347", "" + getDayOfMutation() + "-" +  getMonthOfMutation() + "-" + getYearOfMutation());
+		//if(getDynamicData2() != null && getDynamicData2().length() > 0  && getDynamicData2().indexOf("&") >= 0 && getDynamicData2().indexOf("*") >= 0 && getYearOfMutation() > 0)
+		//	message("1347", "" + getDayOfMutation() + "-" +  getMonthOfMutation() + "-" + getYearOfMutation());
 
+		// See if date occurs in previous registration
+		
+		
 
 		// Check if "*" (or "@" if versieo - versionOriginalDataEntry before 3.40) in first position b3gegeven - dynamicData2
 

@@ -728,15 +728,16 @@ public class Person {
 			message("1254");
 
 		// Check that remarks does not contain '@'
+		// Changed: dat remarks niet == '@'
 
-		if(getRemarks() != null && getRemarks().indexOf("@") >= 0)
+		if(getRemarks() != null && getRemarks().trim().equals("@"))
 			message("1253");
 
 		// Check that remarks2 does not contain '@'
 		// Changed: dat remarks niet == '@'
 
-		if(getRemarks2() != null && getRemarks2().trim().equals("@"))
-			message("1253");
+		//if(getRemarks2() != null && getRemarks2().trim().equals("@"))
+		//	message("1253");
 
 		// Check that remarks does not contain '#'
 

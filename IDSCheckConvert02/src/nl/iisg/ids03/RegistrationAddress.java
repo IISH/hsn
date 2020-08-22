@@ -241,7 +241,7 @@ public class RegistrationAddress {
 
 			// Check that (latest) date first address is no more than 5 days before date entry Head of Household			
 						
-			if(Common1.dateIsValid(latestDayOfAddress, latestMonthOfAddress, yearAddress) == 0 && getSequenceNumberToAddresses() == 1){
+			if(Common1.dateIsValid(latestDayOfAddress, latestMonthOfAddress, yearAddress) == 0 /* && getSequenceNumberToAddresses() == 1 */){
 
 				int nl = Utils.dayCount(latestDayOfAddress, latestMonthOfAddress, yearAddress);				
 				int n2 = Utils.dayCount(getDayEntryHead(), getMonthEntryHead(), getYearEntryHead());
