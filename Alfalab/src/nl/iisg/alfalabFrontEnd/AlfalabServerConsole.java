@@ -93,6 +93,8 @@ public class AlfalabServerConsole implements Runnable {
     Thread workerThread;
     Boolean flushInProgress = false;
     AlfalabServerConsole asc;  // link to the user interface AlfalabServerConsole 
+    
+  
 
     public AlfalabServerConsole(Socket socket) {
 
@@ -298,7 +300,7 @@ public class AlfalabServerConsole implements Runnable {
 
         } else if (command.equals(GET_MESSAGE_QUEUE_COMMAND)) {
 
-            print("Connected.\n");
+          //  print("Connected.\n");
             
         } else if (command.equals(RESET_TEMP_DIR)) {
 
@@ -551,11 +553,7 @@ public class AlfalabServerConsole implements Runnable {
  
         	String user = command.split("[ /]")[1];        	
         	String pasw = command.split("[ /]")[2];
-        	
-        	print("Login....");
-            print(command + "\n");
-          
-            
+        	        	          
             System.out.println(System.getProperty("user.dir"));
             Path path = Paths.get(System.getProperty("user.dir") + "\\bin\\META-INF", "pw.txt");
             
@@ -567,7 +565,7 @@ public class AlfalabServerConsole implements Runnable {
 
             	for (String line : lines) {
             		
-            		System.out.println(line);
+            		//System.out.println(line);
 
             		if(user.equals(line.split("/")[0]) && pasw.equals(line.split("/")[1])){
             			found = true;
@@ -581,10 +579,14 @@ public class AlfalabServerConsole implements Runnable {
             	System.out.println(e);
             }
 
-            if(found)
-            	out.writeUTF("ok");
-            else
-            	out.writeUTF("ko");
+            if(found) {
+            	//print("Login OK");
+            	//out.writeUTF("ok");
+            }
+            else {
+            	print("Invalid username and/or password");
+            	//out.writeUTF("ko");
+            }
             //File f = System.getProperty("user.dir") + "\\bin\\META-INF\\pw.txt";
             
             

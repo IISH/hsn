@@ -288,9 +288,13 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
     			 if(year <  startYear - 1)
     				 switch(getDynamicDataType()) {
     				 case(ConstRelations2.RELATIE_TOT_HOOFD): message("1471", "" + day + "-" + month + "-" + year, "" + startYear + "-" + endYear);
+    				 break;
     				 case(ConstRelations2.BURGELIJKE_STAAT):  message("1472", "" + day + "-" + month + "-" + year, "" + startYear + "-" + endYear);
+    				 break;
     				 case(ConstRelations2.AANKOMST):          message("1473", "" + day + "-" + month + "-" + year, "" + startYear + "-" + endYear);
+    				 break;
     				 case(ConstRelations2.VERTREK):           message("1474", "" + day + "-" + month + "-" + year, "" + startYear + "-" + endYear);
+    				 break;
     				 default:
 
     				 }
@@ -301,9 +305,13 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
     			 if(year >  endYear + 1)
     				 switch(getDynamicDataType()) {
     				 case(ConstRelations2.RELATIE_TOT_HOOFD): message("1476", "" + day + "-" + month + "-" + year, "" + startYear + "-" + endYear);
+    				 break;
     				 case(ConstRelations2.BURGELIJKE_STAAT):  message("1477", "" + day + "-" + month + "-" + year, "" + startYear + "-" + endYear);
+    				 break;
     				 case(ConstRelations2.AANKOMST):          message("1478", "" + day + "-" + month + "-" + year, "" + startYear + "-" + endYear);
+    				 break;
     				 case(ConstRelations2.VERTREK):           message("1479", "" + day + "-" + month + "-" + year, "" + startYear + "-" + endYear);
+    				 break;
     				 default:
 
     				 }

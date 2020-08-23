@@ -50,6 +50,16 @@ public class UpdateClientThread implements Runnable {
                 } else {
                     textArea.append(line + "\n");
                     textArea.setCaretPosition(textArea.getDocument().getLength());  // Force scrolling
+                    
+                    if(line.equals("Invalid username and/or password")) {
+                    	try {
+							Thread.sleep(2000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+                    	System.exit(0);
+                    }
                 }
 
             }
