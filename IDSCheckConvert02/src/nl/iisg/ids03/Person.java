@@ -729,8 +729,10 @@ public class Person {
 
 		// Check that remarks does not contain '@'
 		// Changed: dat remarks niet == '@'
+		// Changed: that remarks does not contain '@'
 
-		if(getRemarks() != null && getRemarks().trim().equals("@"))
+		//if(getRemarks() != null && getRemarks().trim().equals("@"))
+		if(getRemarks() != null && getRemarks().indexOf("@") >= 0)
 			message("1253");
 
 		// Check that remarks2 does not contain '@'

@@ -17,6 +17,7 @@ import java.util.List;
 
 import nl.iisg.hsncommon.Common1;
 import nl.iisg.hsncommon.ConstRelations2;
+import nl.iisg.ids05.Utils;
 
 /**
  * 
@@ -190,9 +191,40 @@ public boolean check(){
 		}
 	}
 
-
+	// 1347 Aankomstdatum <datum> wellicht uit eerdere inschrijving?
+	
+	HashSet<Integer> allRegistrations    = new HashSet<Integer>();
+	HashSet<Integer> currentRegistration = new HashSet<Integer>();
+		
+	for(Registration r: getRegistrationsOfOP()){
+		currentRegistration.clear();
+		for(Person p: r.getPersonsInRegistration()){
+			for(PersonDynamic pd: p.getDynamicDataOfPerson()) {
+				if(pd.getDynamicDataType() == ConstRelations2.AANKOMST) {
+					
+					int mutationDay   = pd.getDayOfMutationAfterInterpretation()   > 0 ? pd.getDayOfMutationAfterInterpretation()   : pd.getDayOfMutation();
+					int mutationMonth = pd.getMonthOfMutationAfterInterpretation() > 0 ? pd.getMonthOfMutationAfterInterpretation() : pd.getMonthOfMutation();
+					int mutationYear  = pd.getYearOfMutationAfterInterpretation()  > 0 ? pd.getYearOfMutationAfterInterpretation()  : pd.getYearOfMutation();
+					
+					if(Common1.dateIsValid(mutationDay, mutationMonth, mutationYear) == 0) {
+						if(allRegistrations.add(Common1.dayCount(mutationDay, mutationMonth, mutationYear))) 
+							currentRegistration.add(Common1.dayCount(mutationDay, mutationMonth, mutationYear)); // date is added in current registration
+						else {                                                                                   // date cannot be added 
+							if(!currentRegistration.contains(Common1.dayCount(mutationDay, mutationMonth, mutationYear)))  // if not added in current registration
+								message("1347", mutationDay + "-" + mutationMonth + "-" + mutationYear);
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	//System.out.println("  Op.check, returnCode = " + returnCode);
 	return returnCode;
+	
+	
+	
+	
 	
 }
 	  	

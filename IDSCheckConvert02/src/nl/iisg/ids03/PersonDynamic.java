@@ -776,6 +776,8 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 
 		// See if date occurs in previous registration
 		
+		// Moved to OP.java
+		
 		
 
 		// Check if "*" (or "@" if versieo - versionOriginalDataEntry before 3.40) in first position b3gegeven - dynamicData2

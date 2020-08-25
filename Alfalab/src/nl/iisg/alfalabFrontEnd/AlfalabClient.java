@@ -51,24 +51,30 @@ public class AlfalabClient extends JFrame implements ActionListener {
     private final static String MISC_PRINT_CONTROLE_A_4000 = "miscPrintControleA4000";
     private final static String MISC_PRINT_CONTROLE_B_4000 = "miscPrintControleB4000";
     private final static String MISC_PRINT_CONTROLE_AB_4000 = "miscPrintControleAB_400";
+    
+    private final static String SERVER_LOGIN = "login ";
 
     private final static int MAX_FILE_SIZE = 10 * 1024 * 1024; // = 10 Megabytes
     
     private final static int portNo = 8009;
 
-    private static String serverAddress = "";
-
+    private static String serverAddress;
+    private static String userName;
+    private static String password ;
+    
     private JButton getDateButton;
     private JButton getMessageQueueButton;
     private JButton openFileButton;
     private JFileChooser fileChooser;
 
     File selectedDir;
-    Socket socket = null;
+    static Socket socket = null;
     DataOutputStream out = null;
     DataInputStream in = null;
     ClientConfig clientConfig;
     Thread HandleUploadAsynchrounouslyThread;
+    
+    boolean loginFailed = false;
 
     public AlfalabClient() {
 
@@ -118,7 +124,7 @@ public class AlfalabClient extends JFrame implements ActionListener {
     		public void run(){
     			
     			try {
-    				out.writeUTF(RESET_TEMP_DIR);
+    				writeUTF(RESET_TEMP_DIR);
     			} catch (IOException e) {
     				// TODO Auto-generated catch block
     				e.printStackTrace();
@@ -127,7 +133,7 @@ public class AlfalabClient extends JFrame implements ActionListener {
 
     			for (File file : files) {
     				try {
-    					out.writeUTF(SEND_FILE_COMMAND);
+    					writeUTF(SEND_FILE_COMMAND);
     				} catch (IOException e) {
     					// TODO Auto-generated catch block
     					e.printStackTrace();
@@ -139,7 +145,7 @@ public class AlfalabClient extends JFrame implements ActionListener {
     			}
 
     			try {
-    				out.writeUTF(command);
+    				writeUTF(command);
     			} catch (IOException e) {
     				// TODO Auto-generated catch block
     				e.printStackTrace();
@@ -159,7 +165,7 @@ public class AlfalabClient extends JFrame implements ActionListener {
             if (source == getMessageQueueButton) {
 
                 textArea.setText("");
-                out.writeUTF(GET_MESSAGE_QUEUE_COMMAND);
+                writeUTF(GET_MESSAGE_QUEUE_COMMAND);
 
             } else if (source == openFileButton) {
 
@@ -172,7 +178,7 @@ public class AlfalabClient extends JFrame implements ActionListener {
             } else if (source == popRegButton2) {
             	int reply = JOptionPane.showConfirmDialog(null, "Run Population Register to IDS?", "Confirm Choice", JOptionPane.YES_NO_OPTION);
             	if (reply == JOptionPane.YES_OPTION)
-            		out.writeUTF(POP_REG_TO_IDS);
+            		writeUTF(POP_REG_TO_IDS);
 
             } else if (source == personalCardsButton1) {
 
@@ -197,7 +203,7 @@ public class AlfalabClient extends JFrame implements ActionListener {
             	
             	 int reply = JOptionPane.showConfirmDialog(null, "Run Personal Cards to IDS?", "Confirm Choice", JOptionPane.YES_NO_OPTION);
             	 if (reply == JOptionPane.YES_OPTION)
-            		 out.writeUTF(PERSONAL_CARDS_TO_IDS);
+            		 writeUTF(PERSONAL_CARDS_TO_IDS);
 
             } else if (source == civilCertsButton1) {
 
@@ -224,12 +230,12 @@ public class AlfalabClient extends JFrame implements ActionListener {
             } else if (source == civilCertsButton2) {
             	int reply = JOptionPane.showConfirmDialog(null, "Run Civil Certificates IDS?", "Confirm Choice", JOptionPane.YES_NO_OPTION);
             	if (reply == JOptionPane.YES_OPTION)
-            		out.writeUTF(CIVIL_CERTS_TO_IDS);
+            		writeUTF(CIVIL_CERTS_TO_IDS);
             	
             } else if (source == addLinksData) {
             	int reply = JOptionPane.showConfirmDialog(null, "Run Add Links Data?\n Is the HSN IDS Ready?", "Confirm Choice", JOptionPane.YES_NO_OPTION);
             	if (reply == JOptionPane.YES_OPTION)
-            		out.writeUTF(ADD_LINKS_DATA);
+            		writeUTF(ADD_LINKS_DATA);
 
             } else if (source == combineIdsSetsButton) {
 
@@ -239,7 +245,7 @@ public class AlfalabClient extends JFrame implements ActionListener {
             	String version = JOptionPane.showInputDialog(null, "Version: ",	"Please enter Version", 1);
 
             	if(version != null)
-            		 out.writeUTF(BUILD_NEW_HSN + " " + version);
+            		 writeUTF(BUILD_NEW_HSN + " " + version);
             	
 
             } else if (source == extractionSetButton) {
@@ -262,7 +268,7 @@ public class AlfalabClient extends JFrame implements ActionListener {
             	String version = JOptionPane.showInputDialog(null, "Version: ",	"Please enter Version", 1);
 
             	if(version != null)
-            		 out.writeUTF(INITIALISE_HSN + " " + version);
+            		 writeUTF(INITIALISE_HSN + " " + version);
 
             	//textArea.append("\nShow Persons             Started\n");
             	//textArea.append("\n");
@@ -291,47 +297,47 @@ public class AlfalabClient extends JFrame implements ActionListener {
             return;
         } else if (miscCommand.equals(MISC_PRINT_HSN_POP_REG_ALL)) {
 
-            out.writeUTF(MISC_PRINT_HSN_POP_REG_ALL);
+            writeUTF(MISC_PRINT_HSN_POP_REG_ALL);
 //            textArea.append("Printing HSN files Population Registers (all) started.\n\n");
 
         } else if (miscCommand.equals(MISC_PRINT_HSN_POP_REG_ERRORS)) {
 
-            out.writeUTF(MISC_PRINT_HSN_POP_REG_ERRORS);
+            writeUTF(MISC_PRINT_HSN_POP_REG_ERRORS);
 //            textArea.append("Printing HSN files Population Registers based on error messages started.\n\n");
 
         } else if (miscCommand.equals(MISC_PRINT_CONTROLE_A_1000)) {
 
-            out.writeUTF(MISC_PRINT_HSN_POP_REG_SELECTED);
+            writeUTF(MISC_PRINT_HSN_POP_REG_SELECTED);
             out.writeInt(3);
 //            textArea.append("Printing HSN files Population Registers Controle A melding 1000-serie Ronde 2 started.\n\n");
 
         } else if (miscCommand.equals(MISC_PRINT_CONTROLE_B_1000)) {
 
-            out.writeUTF(MISC_PRINT_HSN_POP_REG_SELECTED);
+            writeUTF(MISC_PRINT_HSN_POP_REG_SELECTED);
             out.writeInt(4);
 //            textArea.append("Printing HSN files Population Registers Controle B melding 1000-serie Ronde 2 started.\n\n");
 
         } else if (miscCommand.equals(MISC_PRINT_CONTROLE_AB_1000)) {
 
-            out.writeUTF(MISC_PRINT_HSN_POP_REG_SELECTED);
+            writeUTF(MISC_PRINT_HSN_POP_REG_SELECTED);
             out.writeInt(5);
 //            textArea.append("Printing HSN files Population Registers Controle A/B melding 1000-serie Ronde 3 started.\n\n");
 
         } else if (miscCommand.equals(MISC_PRINT_CONTROLE_A_4000)) {
 
-            out.writeUTF(MISC_PRINT_HSN_POP_REG_SELECTED);
+            writeUTF(MISC_PRINT_HSN_POP_REG_SELECTED);
             out.writeInt(6);
 //            textArea.append("Printing HSN files Population Registers Controle A melding 4000-serie Ronde 4 started.\n\n");
 
         } else if (miscCommand.equals(MISC_PRINT_CONTROLE_B_4000)) {
 
-            out.writeUTF(MISC_PRINT_HSN_POP_REG_SELECTED);
+            writeUTF(MISC_PRINT_HSN_POP_REG_SELECTED);
             out.writeInt(7);
 //            textArea.append("Printing HSN files Population Registers Controle B melding 4000-serie Ronde 4 started.\n\n");
 
         } else if (miscCommand.equals(MISC_PRINT_CONTROLE_AB_4000)) {
 
-            out.writeUTF(MISC_PRINT_HSN_POP_REG_SELECTED);
+            writeUTF(MISC_PRINT_HSN_POP_REG_SELECTED);
             out.writeInt(8);
 //            textArea.append("Printing HSN files Population Registers Controle A/B melding 4000-serie Ronde 5 started.\n\n");
 
@@ -360,7 +366,7 @@ public class AlfalabClient extends JFrame implements ActionListener {
     		public void run(){
     			
     			try {
-    				out.writeUTF(RESET_TEMP_DIR);
+    				writeUTF(RESET_TEMP_DIR);
     			} catch (IOException e) {
     				// TODO Auto-generated catch block
     				e.printStackTrace();
@@ -369,7 +375,7 @@ public class AlfalabClient extends JFrame implements ActionListener {
 
     			for (File file : files) {
     				try {
-    					out.writeUTF(SEND_FILE_COMMAND);
+    					writeUTF(SEND_FILE_COMMAND);
     				} catch (IOException e) {
     					// TODO Auto-generated catch block
     					e.printStackTrace();
@@ -381,7 +387,7 @@ public class AlfalabClient extends JFrame implements ActionListener {
     			}
 
     			try {
-    				out.writeUTF(command);
+    				writeUTF(command);
     			} catch (IOException e) {
     				// TODO Auto-generated catch block
     				e.printStackTrace();
@@ -432,28 +438,28 @@ public class AlfalabClient extends JFrame implements ActionListener {
             if (!deleteFromDefDBDialog.getConfirm()) return;
 
             // send DBF file to server:
-            out.writeUTF(SEND_FILE_COMMAND);
+            writeUTF(SEND_FILE_COMMAND);
             //textArea.append("Sending: " + inputDbfFile.getName() + "\n");
             sendFileToServer(inputDbfFile);
             //textArea.append("File sent\n");
 
-            out.writeUTF(POP_REG_DELETE_FROM_DEF_DB);
+            writeUTF(POP_REG_DELETE_FROM_DEF_DB);
 
         } else if (popRegisterCommand.equals(POP_REG_APPEND_TO_DEF_DB)) {
 
             //textArea.append("Append to MySQL_opslag started...\n");
 
-            out.writeUTF(POP_REG_APPEND_TO_DEF_DB);
+            writeUTF(POP_REG_APPEND_TO_DEF_DB);
 
         } else if (popRegisterCommand.equals(POP_REG_TEST_IDNR_DOUBLES)) {
 
             //textArea.append("Testing on IDnr doubles started.\n");
-            out.writeUTF(POP_REG_TEST_IDNR_DOUBLES);
+            writeUTF(POP_REG_TEST_IDNR_DOUBLES);
 
         } else if (popRegisterCommand.equals(POP_REG_REPLACE_DEF_WITH_TEMP)) {
 
             //textArea.append("Replacing of MySQL opslag with MySQL temp started\n");
-            out.writeUTF(POP_REG_REPLACE_DEF_WITH_TEMP);
+            writeUTF(POP_REG_REPLACE_DEF_WITH_TEMP);
 
         }
 
@@ -468,7 +474,7 @@ public class AlfalabClient extends JFrame implements ActionListener {
             BufferedInputStream bis = new BufferedInputStream(fis);
             bis.read(mybytearray, 0, mybytearray.length);
             out.writeLong((int) file.length());
-            out.writeUTF(file.getName());
+            writeUTF(file.getName());
             out.write(mybytearray, 0, mybytearray.length);
             out.flush();
             bis.close();
@@ -505,8 +511,51 @@ public class AlfalabClient extends JFrame implements ActionListener {
             serverAddress = args[0];
         else {
             System.out.println("No host specified.");
+            writeToTextArea("No host specified.");
+            try {
+				Thread.sleep(2000);
+				
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             System.exit(0);
         }
+
+        if (args.length > 1)
+            userName = args[1];
+        else {
+            System.out.println("No username specified.");
+           
+            writeToTextArea("No username specified.");
+            try {
+				Thread.sleep(2000);
+				
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	
+            System.exit(0);
+        }
+        
+        if (args.length > 2)
+            password = args[2];
+        else {
+            System.out.println("No password specified.");
+            writeToTextArea("No password specified.");
+            try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	
+            System.exit(0);
+        }
+        
+        
+
 
         frame.start();
     }
@@ -596,20 +645,73 @@ public class AlfalabClient extends JFrame implements ActionListener {
             out = new DataOutputStream(socket.getOutputStream());
             in = new DataInputStream(socket.getInputStream());
             startUpdateThread();
-            out.writeUTF(GET_MESSAGE_QUEUE_COMMAND);
+            writeUTF(GET_MESSAGE_QUEUE_COMMAND);
             
-            // Next code for logon
             
-            Login l = new Login(in, out);
+            
+            
+            try {
+    			out.writeUTF(SERVER_LOGIN + userName.trim() + "/" + password.trim());
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+           
+            
+           
+
+        
+
+            // Next code for login      
+           //
+            /*
+            
+            Login l = new Login(in, out);            
+            Thread thread = new Thread(l);
+            thread.start();
+            try {
+				thread.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            System.out.println("Regained control");
+            */
+            
+            //Login l = new Login(in, out);
+            //if(!l.isLogonOK()) {
+            //	loginFailed = true;
+            //	Thread.sleep(2000);
+            //	socket.close();
+            //	System.exit(1);
+            //}
+            
+            
         } catch (UnknownHostException e) {
             System.out.println("Unknown host: " + serverAddress);
             System.exit(1);
         } catch (IOException e) {
             System.out.println("No I/O");
             System.exit(1);
-        }
+        //} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		}
     }
 
+    private void writeUTF(String s) throws IOException {    	
+    	if(!loginFailed)
+			
+		out.writeUTF(s);
+			
+    }
+    
+    private static void writeToTextArea(String s) {
+    	
+        textArea.append(s + "\n");
+        textArea.setCaretPosition(textArea.getDocument().getLength());  // Force scrolling
+
+    }
 
     private String timestamp() {
 
@@ -788,7 +890,7 @@ public class AlfalabClient extends JFrame implements ActionListener {
 	// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
 	// Generated using JFormDesigner Evaluation license - Christian Roosendaal
 	private JPanel Interface;
-	private JTextArea textArea;
+	private static JTextArea textArea;
 	private JButton popRegButton1;
 	private JButton popRegButton2;
 	private JButton personalCardsButton1;
