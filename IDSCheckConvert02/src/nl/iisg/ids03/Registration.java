@@ -731,9 +731,11 @@ public class Registration implements Comparable<Registration>{
 		
         // For C Registers some checks when Head dies/leaves and OP still there
 		
+		
+		
 		int headLastLeaveDays = 0;
 		int headDeceaseDays = 0;
-		int OPLastLeaveDays = 0;
+		int OPFirstLeaveDays = 0;
 		int OPDeceaseDays = 0;
 		int sourceEndDays = 0; 
 		
@@ -743,9 +745,14 @@ public class Registration implements Comparable<Registration>{
 			Person head = getPersonsInRegistration().get(0); // must be head for C register
 			
 			for(PersonDynamic pd : head.getDynamicDataOfPerson())
-				if(pd.getDynamicDataType() == ConstRelations2.VERTREK)
-					if(Common1.dateIsValid(pd.getDayOfMutation(), pd.getMonthOfMutation(), pd.getYearOfMutation()) == 0){
-						headLastLeaveDays = Utils.dayCount(pd.getDayOfMutation(), pd.getMonthOfMutation(),pd.getYearOfMutation());
+				if(pd.getDynamicDataType() == ConstRelations2.VERTREK) {
+					
+					int leaveDay   = pd.getDayOfMutation()   > 0 ? pd.getDayOfMutation()   : 28;
+					int leaveMonth = pd.getMonthOfMutation() > 0 ? pd.getMonthOfMutation() : 12 ;
+					
+					if(Common1.dateIsValid(leaveDay,leaveMonth, pd.getYearOfMutation()) == 0){
+						headLastLeaveDays = Utils.dayCount(leaveMonth, leaveMonth, pd.getYearOfMutation());
+					}
 			}
 			
 			
@@ -760,9 +767,14 @@ public class Registration implements Comparable<Registration>{
 			
 			
 			for(PersonDynamic pd : OP.getDynamicDataOfPerson())
-				if(pd.getDynamicDataType() == ConstRelations2.VERTREK)
-					if(Common1.dateIsValid(pd.getDayOfMutation(), pd.getMonthOfMutation(), pd.getYearOfMutation()) == 0){
-						OPLastLeaveDays = Utils.dayCount(pd.getDayOfMutation(), pd.getMonthOfMutation(),pd.getYearOfMutation());
+				if(pd.getDynamicDataType() == ConstRelations2.VERTREK){
+					
+					int leaveDay   = pd.getDayOfMutation()   > 0 ? pd.getDayOfMutation()   : 1;
+					int leaveMonth = pd.getMonthOfMutation() > 0 ? pd.getMonthOfMutation() : 1;
+					
+					if(Common1.dateIsValid(leaveDay,leaveMonth, pd.getYearOfMutation()) == 0){
+						OPFirstLeaveDays = Utils.dayCount(leaveDay,leaveMonth, pd.getYearOfMutation());
+					}
 			}
 				
 			if(Common1.dateIsValid(OP.getDayOfDecease(), OP.getMonthOfDecease(), OP.getYearOfDecease()) == 0)
@@ -770,22 +782,28 @@ public class Registration implements Comparable<Registration>{
 			
 			
 			
-			
+			if(getKeyToRP() == 193929) {
+				
+				System.out.println("XXV " + headLastLeaveDays);						
+				System.out.println("XXV " + OPFirstLeaveDays);						
+			}
 			
 			// Check if head deceases and OP still present (splitting of registration necessary)
+			// Use OP first possible leave date
 			
 			
 			if(headDeceaseDays > 0 && headDeceaseDays < sourceEndDays && // Head died during this registration
 					!(OPDeceaseDays > 0 && OPDeceaseDays < sourceEndDays && OPDeceaseDays < headDeceaseDays) && // OP did not die before him
-					!(OPLastLeaveDays > 0 && OPLastLeaveDays < sourceEndDays && OPLastLeaveDays < headDeceaseDays))	// and did not leave before he died				
+					!(OPFirstLeaveDays > 0 && OPFirstLeaveDays < sourceEndDays && OPFirstLeaveDays < headDeceaseDays))	// and did not leave before he died				
 					message("1408");
 			
 			
 			// Check if head leaves and OP still present (splitting of registration necessary)
+			// Use Head last possible leave date, OP first possible leave date
 			
 			if(headLastLeaveDays > 0 && headLastLeaveDays < sourceEndDays  && // Head left during this registration
 					!(OPDeceaseDays > 0 && OPDeceaseDays < sourceEndDays && OPDeceaseDays < headLastLeaveDays) && // OP did not die before he left
-					!(OPLastLeaveDays > 0 && OPLastLeaveDays < sourceEndDays && OPLastLeaveDays < headLastLeaveDays))	// and did not leave before he left				
+					!(OPFirstLeaveDays > 0 && OPFirstLeaveDays < sourceEndDays && OPFirstLeaveDays < headLastLeaveDays))	// and did not leave before he left				
 					message("1409");
 				
 			// Check if head leaves or dies and OP still present
