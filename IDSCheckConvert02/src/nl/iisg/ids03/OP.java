@@ -211,7 +211,8 @@ public boolean check(){
 							currentRegistration.add(Common1.dayCount(mutationDay, mutationMonth, mutationYear)); // date is added in current registration
 						else {                                                                                   // date cannot be added 
 							if(!currentRegistration.contains(Common1.dayCount(mutationDay, mutationMonth, mutationYear)))  // if not added in current registration
-								message("1347", mutationDay + "-" + mutationMonth + "-" + mutationYear);
+								message("1347", pd.getKeyToSourceRegister(), pd.getDayEntryHead(),pd.getMonthEntryHead(), pd.getYearEntryHead(), pd.getKeyToRegistrationPersons(),
+										mutationDay + "-" + mutationMonth + "-" + mutationYear);
 						}
 					}
 				}
@@ -828,7 +829,18 @@ private void message(String number, String... fills){
 	m.save(fills); 
 }
 
-
+private void message(String number, int b1idbg, int b2dibg, int b2mibg, int b2jibg, int b2rnbg, String... fills){
+	
+	Message m = new Message(number);
+	
+	m.setKeyToRP(getKeyToRP());
+	m.setKeyToSourceRegister(b1idbg);
+	m.setDayEntryHead(b2dibg);
+	m.setMonthEntryHead(b2mibg);
+	m.setYearEntryHead(b2jibg);
+	m.setKeyToRegistrationPersons(b2rnbg);
+	m.save(fills); 
+}
 
 
 public void add(Registration r){
