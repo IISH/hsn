@@ -1173,12 +1173,12 @@ public class Registration implements Comparable<Registration>{
 					if(b6sinr != ra.getSynchroneNumber())
 						message("1073",ra.getDayOfAddress() + "-" +  ra.getMonthOfAddress() + "-" + ra.getYearOfAddress());
 
-				// Check if address is bound to the household
-
-				if(ra.getKeyToRegistrationPersons() != 0)
-						message("1088");
-
 			}
+			
+			// Check if address is bound to the household
+
+			if(ra.getKeyToRegistrationPersons() != 0)
+					message("1088", ra.getKeyToRegistrationPersons());
 		}
 		
 		
