@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class Login extends JFrame implements ActionListener {
+public class Login extends JFrame implements ActionListener, Runnable {
 
     JPanel panel;
     JLabel user_label, password_label, message;
@@ -74,6 +74,18 @@ public class Login extends JFrame implements ActionListener {
 
     }
 
+    public void run(){
+    	
+    	while(!logonOK) {
+    		try {
+			String s = in.readUTF();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        }
+    	
+    }
     
     @Override
     public void actionPerformed(ActionEvent ae)  {
@@ -105,8 +117,8 @@ public class Login extends JFrame implements ActionListener {
             //message.setText(" Hello " + userName
               //      + "");
         } else {
-       	 logonOK = false;
-         dispose();
+       	 
+         //dispose();
 
             //message.setText(" Invalid user.. ");
         }

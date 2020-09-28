@@ -95,6 +95,7 @@ public class Initialiser {
 	 * @param registrations
 	 * @param registrationAddresses
 	 */
+	static boolean inputMySQL = true;  // switch for old/new style
 
 	public void createOriginalBTables(){
 		
@@ -305,20 +306,68 @@ public class Initialiser {
 	
 	public void loadTables(String inputDirectory, List<Person> persons, List<PersonDynamic> personsDynamic, List<Registration> registrations, List<RegistrationAddress> registrationAddresses){
 		
-				List<Person> p = Utils.createObjects("nl.iisg.ids03.Person",  inputDirectory);
+		        EntityManager em = null;
+		        String orderNumber = "NW4";
+		        
+		        if(inputMySQL)
+		        	em = Utils.getEm_original_tabs2();
+		        
+		        List<Person> p = null;
+		        if(inputMySQL) {
+		        	p = em.createQuery("select p from Person p where p.orderNumber like :orderNumber ")
+		        	.setParameter("orderNumber", orderNumber)
+		        	.getResultList();
+		        	System.out.println("Read b2 " + p.size() + " rows ");
+		        }
+		        else	
+				    p = Utils.createObjects("nl.iisg.ids03.Person",  inputDirectory);
+		        
 				persons.addAll(p);
 				Collections.sort(persons, new ComparatorPerson()); 
 				
+				List<PersonDynamic> pd = null;
+		        if(inputMySQL) {
+		        	pd = em.createQuery("select pd from PersonDynamic pd where pd.orderNumber like :orderNumber ")
+				   	.setParameter("orderNumber", orderNumber)
+				   	.getResultList();
+		        	System.out.println("Read b3 " + pd.size() + " rows ");
+		        }
+		        else	
+				    pd = Utils.createObjects("nl.iisg.ids03.PersonDynamic",  inputDirectory);
 				
-				List<PersonDynamic> pd = Utils.createObjects("nl.iisg.ids03.PersonDynamic",  inputDirectory);
+				//List<PersonDynamic> pd = Utils.createObjects("nl.iisg.ids03.PersonDynamic",  inputDirectory);
 				personsDynamic.addAll(pd);
 				Collections.sort(personsDynamic, new ComparatorPersonDynamic()); 
 				
-				List<Registration> r = Utils.createObjects("nl.iisg.ids03.Registration",  inputDirectory);
+				
+				List<Registration> r = null;
+				if(inputMySQL) {
+		        	r = em.createQuery("select r from Registration r where r.orderNumber like :orderNumber ")
+				   	.setParameter("orderNumber", orderNumber)
+				   	.getResultList();
+		        	System.out.println("Read b4 " + r.size() + " rows ");
+
+				}
+		        else	
+				    r = Utils.createObjects("nl.iisg.ids03.Registration",  inputDirectory);
+				
+				
+				//List<Registration> r = Utils.createObjects("nl.iisg.ids03.Registration",  inputDirectory);
 				registrations.addAll(r);
 				Collections.sort(registrations, new ComparatorRegistration()); 
 				
-				List<RegistrationAddress> ra = Utils.createObjects("nl.iisg.ids03.RegistrationAddress",  inputDirectory);
+				List<RegistrationAddress> ra = null;
+				if(inputMySQL) {
+		        	ra = em.createQuery("select ra from RegistrationAddress ra where ra.orderNumber like :orderNumber ")
+			      	.setParameter("orderNumber", orderNumber)
+			       	.getResultList();
+		        	System.out.println("Read b6 " + ra.size() + " rows ");
+
+				}
+		        else	
+				    ra = Utils.createObjects("nl.iisg.ids03.RegistrationAddress",  inputDirectory);
+				
+				//List<RegistrationAddress> ra = Utils.createObjects("nl.iisg.ids03.RegistrationAddress",  inputDirectory);
 				registrationAddresses.addAll(ra);
 				Collections.sort(registrationAddresses, new ComparatorRegistrationAddress()); 
 				
@@ -496,6 +545,8 @@ public class Initialiser {
 		Ref.loadHousenumberaddition(); 
 		
 	}
+	
+	//public vload
 	    
 	/**
 	 * 
@@ -509,16 +560,16 @@ public class Initialiser {
 	
 	public void saveBTables(List<Person> persons, List<PersonDynamic> personsDynamic, List<Registration> registrations, List<RegistrationAddress> registrationAddresses){
 		
+	
 		System.out.println("Start saving B-Tables");
 		
 		try{
 			EntityManager em = Utils.getEm_original_tabs();
 			em.getTransaction().begin();
 		
-			
 			for(Person p: persons)
 				em.persist(p);
-				
+						
 			for(PersonDynamic pd: personsDynamic)
 				em.persist(pd);
 				

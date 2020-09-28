@@ -48,6 +48,10 @@ public class Utils {
 	static EntityManager em_original_tabs = getFactory_original_tabs().createEntityManager();
 	static int em_original_btabs_Count = 0;
 
+	static EntityManagerFactory factory_original_tabs2 = Persistence.createEntityManagerFactory("b_tables_input");
+	static EntityManager em_original_tabs2 = getFactory_original_tabs2().createEntityManager();
+	static int em_original_btabs2_Count = 0;
+
 	static EntityManagerFactory factory_log = Persistence.createEntityManagerFactory("popreg_log");
 	static EntityManager em_log = getFactory_log().createEntityManager(); 
 	static int em_log_Count = 0;
@@ -1102,6 +1106,23 @@ public class Utils {
 
 	public static void setEm_original_tabs(EntityManager em_original_tabs) {
 		Utils.em_original_tabs = em_original_tabs;
+	}
+	
+	
+	public static EntityManagerFactory getFactory_original_tabs2() {
+		return factory_original_tabs2;
+	}
+    
+	public static EntityManager getEm_original_tabs2() {
+		return em_original_tabs2;
+	}
+
+	public static void setEm_original_tabs2(EntityManager em_original_tabs2) {
+		Utils.em_original_tabs2 = em_original_tabs2;
+	}
+
+	public static void setFactory_original_tabs2(EntityManagerFactory factory_original_tabs2) {
+		Utils.factory_original_tabs2 = factory_original_tabs2;
 	}
 
 	public static int getEm_original_btabs_Count() {
