@@ -26,6 +26,7 @@ public class AlfalabClient extends JFrame implements ActionListener {
     private final static String SERVER_CANCEL = "serverCancel";
 
     private final static String POP_REG_TEST_ERRORS = "popRegTestErrors";
+    private final static String POP_REG_TEST_ERRORS2 = "popRegTestErrors2"; // New command to make server use MySQL input tables
     private final static String POP_REG_TO_IDS = "popRegToIDS";
     private final static String POP_REG_DELETE_FROM_DEF_DB = "popRegDeleteFromDefDB";
     private final static String POP_REG_APPEND_TO_DEF_DB = "popRegAppendToDefDB";
@@ -422,6 +423,28 @@ public class AlfalabClient extends JFrame implements ActionListener {
             HandleUploadAsynchrounously h = new HandleUploadAsynchrounously(inputDbfFiles, POP_REG_TEST_ERRORS);                
             HandleUploadAsynchrounouslyThread = new Thread(h);
             HandleUploadAsynchrounouslyThread.start();
+            
+        } else if (popRegisterCommand.equals(POP_REG_TEST_ERRORS2)) {
+
+            File[] inputDbfFiles = openDBFDir();
+
+            // input dir selection canceled by user
+            if (inputDbfFiles == null) return;
+            
+            // YYY
+
+            ConfirmInputDirectory testOnErrorsDialog = new ConfirmInputDirectory(this);
+            testOnErrorsDialog.setInputDirectoryField(selectedDir.toString());
+            testOnErrorsDialog.setVisible(true);
+
+            // user pressed cancel at confirmation dialog
+            if (!testOnErrorsDialog.getConfirm()) return;
+
+            
+            // send DBF files to server:
+            HandleUploadAsynchrounously h = new HandleUploadAsynchrounously(inputDbfFiles, POP_REG_TEST_ERRORS);                
+            HandleUploadAsynchrounouslyThread = new Thread(h);
+            HandleUploadAsynchrounouslyThread.start();
 
         } else if (popRegisterCommand.equals(POP_REG_DELETE_FROM_DEF_DB)) {
 
@@ -558,6 +581,11 @@ public class AlfalabClient extends JFrame implements ActionListener {
 
 
         frame.start();
+    }
+    
+    private String showWorkItems(){
+    	
+    	return null;
     }
 
     private File[] openDBFDir() throws IOException {

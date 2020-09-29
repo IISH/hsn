@@ -55,8 +55,8 @@ public class CreateOriginalBTables {
 		 " OPDRNRO VARCHAR(8), " +
 		 " DATUMO  VARCHAR(10), " +
 		 " INITO   VARCHAR(8), " +
-		 " VERSIEO VARCHAR(8) " +
-
+		 " VERSIEO VARCHAR(8), " +
+		 " OPDRNRI VARCHAR(8) " +
 		 //" UNIQUE i_b2 (B1IDBG, B2DIBG, B2MIBG, B2JIBG, IDNR, B2RNBG) " +
 		 
 		 " ); ";
@@ -96,7 +96,9 @@ public class CreateOriginalBTables {
 		 " OPDRNRO VARCHAR(8), " +
 		 " DATUMO  VARCHAR(10), " +
 		 " INITO   VARCHAR(8), " +
-		 " VERSIEO VARCHAR(8) " +
+		 " VERSIEO VARCHAR(8), " +
+		 " OPDRNRI VARCHAR(8) " +
+
 
 		 //" UNIQUE i_b3 (B1IDBG, B2DIBG, B2MIBG, B2JIBG, IDNR, B2RNBG, B3TYPE, B3VRNR) " +
 
@@ -131,7 +133,9 @@ public class CreateOriginalBTables {
 		 " OPDRNRO VARCHAR(8), " +
 		 " DATUMO  VARCHAR(10), " +
 		 " INITO   VARCHAR(8), " +
-		 " VERSIEO VARCHAR(8) " +
+		 " VERSIEO VARCHAR(8), " +
+		 " OPDRNRI VARCHAR(8) " +
+
 		 
 		 //" UNIQUE i_b4 (B1IDBG, B2DIBG, B2MIBG, B2JIBG, IDNR) " +
 
@@ -172,7 +176,9 @@ public class CreateOriginalBTables {
 		 " OPDRNRO VARCHAR(8), " +
 		 " DATUMO  VARCHAR(10), " +
 		 " INITO   VARCHAR(8), " +
-		 " VERSIEO VARCHAR(8) " +
+		 " VERSIEO VARCHAR(8), " +
+		 " OPDRNRI VARCHAR(8) " +
+
 		 
 		 //" UNIQUE i_b6 (B1IDBG, B2JIBG, B2MIBG, B2DIBG, IDNR, B2RNBG, B6VRNR) " +
 

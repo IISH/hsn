@@ -57,6 +57,8 @@ public class RegistrationAddress {
 	@Column(name = "DATUMO")    	private String   	 dateOriginal;
 	@Column(name = "INITO")     	private String   	 initialOriginal;
 	@Column(name = "VERSIEO")   	private String   	 versionOriginalDataEntry;
+	@Column(name = "OPDRNRI")       private String   	 orderNumberI;
+
 
 	@Transient                      private Registration registrationToWhichAddressRefers;
 	@Transient 						private RegistrationAddressStandardized standardizedRegistrationAddress = null;
@@ -751,6 +753,16 @@ public class RegistrationAddress {
 
 	public void setVersionOriginalDataEntry(String versionOriginalDataEntry) {
 		this.versionOriginalDataEntry = versionOriginalDataEntry;
+	}
+
+
+	public String getOrderNumberI() {
+		return orderNumberI;
+	}
+
+
+	public void setOrderNumberI(String orderNumberI) {
+		this.orderNumberI = orderNumberI;
 	}
 
 

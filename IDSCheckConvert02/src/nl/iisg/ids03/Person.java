@@ -87,6 +87,8 @@ public class Person {
 	@Column(name = "DATUMO")      private String    dateOriginal;
 	@Column(name = "INITO")       private String    initialOriginal;
 	@Column(name = "VERSIEO")     private String    versionOriginalDataEntry;
+	@Column(name = "OPDRNRI")     private String    orderNumberI;
+
 
 	@Transient                    private ArrayList<PersonDynamic> dynamicDataOfPerson = new ArrayList<PersonDynamic>();
 	@Transient  				  private Registration             registrationPersonAppearsIn;
@@ -552,10 +554,15 @@ public class Person {
 		int month = getMonthOfRegistration() > 0 ? getMonthOfRegistration() : 12;
 		int year  = getYearOfRegistration(); 
 
+		int i1 = 0;
+		int i2 = 0;
 		
-		int i1 = Utils.dayCount(getDayOfBirth(),        getMonthOfBirth(),        getYearOfBirth());
-		int i2 = Utils.dayCount(day, month, year);
-
+		if(Common1.dateIsValid(getDayOfBirth(), getMonthOfBirth(), getYearOfBirth()) == 0)
+			i1 = Common1.dayCount(getDayOfBirth(), getMonthOfBirth(), getYearOfBirth());
+		
+		if(Common1.dateIsValid(day, month, year) == 0)
+			i2 = Common1.dayCount(day, month, year);
+						
 		if(i1 > 0 && i2 > 0 && i1 > i2)
 			message("1204", "" + getDayOfRegistration() + "-" + getMonthOfRegistration() + "-" + year, 
 				        	"" + getDayOfBirth()        + "-" + getMonthOfBirth()        + "-" + getYearOfBirth());
@@ -575,11 +582,13 @@ public class Person {
 				        	"" + getDayOfDecease()      + "-" + getMonthOfDecease()      + "-" + getYearOfDecease());
 
 		// Check that birth date not later than decease date
-
-		i1 = Utils.dayCount(getDayOfBirth(),        getMonthOfBirth(),        getYearOfBirth());
-		i2 = Utils.dayCount(getDayOfDecease(),      getMonthOfDecease(),      getYearOfDecease());
-
-
+		
+		if(Common1.dateIsValid(getDayOfBirth(), getMonthOfBirth(), getYearOfBirth()) == 0)
+			i1 = Common1.dayCount(getDayOfBirth(), getMonthOfBirth(), getYearOfBirth());
+		
+		if(Common1.dateIsValid(getDayOfDecease(),      getMonthOfDecease(),      getYearOfDecease()) == 0)
+			i2 = Common1.dayCount(getDayOfDecease(),      getMonthOfDecease(),      getYearOfDecease());
+						
 		if( i1 > 0 && i2 > 0 && i1 > i2)
 			message("1206", "" + getDayOfBirth()        + "-" + getMonthOfBirth()        + "-" + getYearOfBirth(), 
 					        "" + getDayOfDecease()      + "-" + getMonthOfDecease()      + "-" + getYearOfDecease());
@@ -2513,6 +2522,13 @@ public class Person {
 		this.versionOriginalDataEntry = versionOriginalDataEntry;
 	}
 
+	public String getOrderNumberI() {
+		return orderNumberI;
+	}
+
+	public void setOrderNumberI(String orderNumberI) {
+		this.orderNumberI = orderNumberI;
+	}
 
 	public ArrayList<PersonDynamic> getDynamicDataOfPerson() {
 		return dynamicDataOfPerson;

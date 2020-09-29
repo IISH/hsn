@@ -290,6 +290,7 @@ public class Utils {
 		 while(day != day1 || month != month1 || year != year1){
 			 
 			 if(++count > 1000 * 365) {
+				 System.out.println("dayCount input = " + day1 + "-" + month1 + "-" + year1);
 				 count = count/0; 
 			 }
 
@@ -554,6 +555,10 @@ public class Utils {
 
     	else{
     		Ref_Location l = Ref.getLocation(place1);
+    		if(place1.equalsIgnoreCase("Langenholte"))
+    			System.out.println("AAAS3 " + l);
+
+    		//System.out.println("AAAS1 " + place1 + " " + l);
     		if(l != null  && l.getStandardCode() != null && l.getStandardCode().equalsIgnoreCase("y") == true){
     		    if(l.getLocation() != null && l.getLocation().length() > 0){
     		   	    a[0] = l.getLocation();
@@ -563,6 +568,7 @@ public class Utils {
     		}
     		else{
     			if(l == null){
+    				System.out.println("AAAS2 " + place1 + " " + l);
     				Ref_Location l1 = new Ref_Location();
     				l1.setOriginal(place1);
     				l1.setStandardCode("x");
@@ -792,7 +798,7 @@ public class Utils {
 			}
 	
 			// Check that all annotated fields have a corresponding column in the .DBF File
-	
+	        
 			int index = 0; // used to map fields to columns 
 			for (int i = 0; i < declaredFieldList.length; i++) { // Note: this will give *all* fields, not just the annotated ones
 	
@@ -854,13 +860,18 @@ public class Utils {
 							}
 						}
 					}
+					
+					
 	
 					if(found == false){
 	
-						System.out.println("No corresponding column in " + dbfName + ".DBF for Field: " + declaredFieldList[i].getName() + ", annotation: " + columnAnnotatedField.name());
-						System.exit(-1);
+						columnAnnotatedVariableToDBFField[index++] = -1; //  Our "COLUMN=XXXX" annotated variable has no DBF Column 
+						//System.out.println("No corresponding column in " + dbfName + ".DBF for Field: " + declaredFieldList[i].getName() + ", annotation: " + columnAnnotatedField.name());
+						//System.exit(-1);
 	
 					}
+					
+					
 				}
 			}
 			
@@ -879,101 +890,108 @@ public class Utils {
 				int index1 = 0;
 				for(int i = 0; i < declaredFieldList.length; i++){
 					
+					
+
 					Column columnAnnotatedField = declaredFieldList[i].getAnnotation(Column.class);
-	
+
 					if(columnAnnotatedField != null){ // It is one of our "COLUMN=XXXX"-annotated fields
-						
-						// Make ready to invoke the setter of the annotated Field's variable
-						
-						// Set parameter list, only one parameter for setter, with datatype depending on DBF Field's type
-						
-						Class[] parameterTypes = new Class[1];
-						
-						if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_N)
-							parameterTypes[0] = Integer.TYPE;
-						else
-							parameterTypes[0] = String.class;
-						
-						
-						// Create the name of the setter method for this variable ("abcde" -> "setAbcde")
-						
-						String methodName = "set";
-						methodName += declaredFieldList[i].getName().substring(0,1).toUpperCase();
-						methodName += declaredFieldList[i].getName().substring(1);
-						
-						
-						
-						// Get the method from inputClass by it's name and signature (number of parameters and their types)
-						
-						Method  method = inputClass.getDeclaredMethod(methodName, parameterTypes);
-						
-						// Adapt the DBF column data to suit our HSN needs (tranform "1.0" to "1" (integer))
-						
-						if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_N){
-							
-							if(rowObjects[columnAnnotatedVariableToDBFField[index1]] != null){
-								String s = rowObjects[columnAnnotatedVariableToDBFField[index1]].toString();
-	
-								String [] b = s.split("[.]"); 
-								Integer k = new Integer(b[0]);
-								rowObjects[columnAnnotatedVariableToDBFField[index1]] = k;
+
+						if(columnAnnotatedVariableToDBFField[index1] != -1) {
+
+							// Make ready to invoke the setter of the annotated Field's variable
+
+							// Set parameter list, only one parameter for setter, with datatype depending on DBF Field's type
+
+							Class[] parameterTypes = new Class[1];
+
+
+							if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_N)
+								parameterTypes[0] = Integer.TYPE;
+							else
+								parameterTypes[0] = String.class;
+
+
+							// Create the name of the setter method for this variable ("abcde" -> "setAbcde")
+
+							String methodName = "set";
+							methodName += declaredFieldList[i].getName().substring(0,1).toUpperCase();
+							methodName += declaredFieldList[i].getName().substring(1);
+
+
+
+							// Get the method from inputClass by it's name and signature (number of parameters and their types)
+
+							Method  method = inputClass.getDeclaredMethod(methodName, parameterTypes);
+
+							// Adapt the DBF column data to suit our HSN needs (tranform "1.0" to "1" (integer))
+
+							if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_N){
+
+								if(rowObjects[columnAnnotatedVariableToDBFField[index1]] != null){
+									String s = rowObjects[columnAnnotatedVariableToDBFField[index1]].toString();
+
+									String [] b = s.split("[.]"); 
+									Integer k = new Integer(b[0]);
+									rowObjects[columnAnnotatedVariableToDBFField[index1]] = k;
+								}
+
 							}
-							
-						}
-	
-						// Adapt the DBF column data to suit our HSN needs (tranform "Wed Jul 19 00:00:00 CEST 2000" to "19-07-2000")
-						
-						if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_D){
-						
-							// Format  Wed Jul 19 00:00:00 CEST 2000
-							//         0   1   2  3        4    5  
-							
-							if(rowObjects[columnAnnotatedVariableToDBFField[index1]] != null){
-								String s = rowObjects[columnAnnotatedVariableToDBFField[index1]].toString();
-	
-								String[] d = s.trim().split("[ ]"); 
-								for(int ii = 0; ii < months.length; ii++){
-	
-									if(months[ii].equalsIgnoreCase(d[1])){
-										String u = String.format("%02d-%02d-%04d", new Integer(d[2]), new Integer(ii), new Integer(d[5]));
-										rowObjects[columnAnnotatedVariableToDBFField[index1]] = u;
-										break;
+
+							// Adapt the DBF column data to suit our HSN needs (tranform "Wed Jul 19 00:00:00 CEST 2000" to "19-07-2000")
+
+							if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_D){
+
+								// Format  Wed Jul 19 00:00:00 CEST 2000
+								//         0   1   2  3        4    5  
+
+								if(rowObjects[columnAnnotatedVariableToDBFField[index1]] != null){
+									String s = rowObjects[columnAnnotatedVariableToDBFField[index1]].toString();
+
+									String[] d = s.trim().split("[ ]"); 
+									for(int ii = 0; ii < months.length; ii++){
+
+										if(months[ii].equalsIgnoreCase(d[1])){
+											String u = String.format("%02d-%02d-%04d", new Integer(d[2]), new Integer(ii), new Integer(d[5]));
+											rowObjects[columnAnnotatedVariableToDBFField[index1]] = u;
+											break;
+										}
 									}
 								}
 							}
-						}
-						
-						// create object to hold value from DBF Column
-						
-						
-						
-						Object [] e =  new Object[1];
-						e[0] = rowObjects[columnAnnotatedVariableToDBFField[index1]];
-						
-						
-						
-						// Next statement is equivalent to: setVarx(rowObject[Y]);
-						
-						Object retObject = null;
-						if(e[0] != null)
-						  retObject = method.invoke(outputObject,(Object []) e); // retObject contains the return code from the setter method, it is void
-						
-						//if(e[0] != null) {
-						//	try {
-						//		retObject = method.invoke(outputObject,(Object []) e); // retObject contains the return code from the setter method, it is void
 
-						//	} finally{
-						//		System.out.println("AAS " + methodName);
-						//		System.out.println("AAS " + e[0]);
-						//	}
-						//}
+							// create object to hold value from DBF Column
+
+
+
+							Object [] e =  new Object[1];
+							e[0] = rowObjects[columnAnnotatedVariableToDBFField[index1]];
+
+
+
+							// Next statement is equivalent to: setVarx(rowObject[Y]);
+
+							Object retObject = null;
+							if(e[0] != null)
+								retObject = method.invoke(outputObject,(Object []) e); // retObject contains the return code from the setter method, it is void
+
+							//if(e[0] != null) {
+							//	try {
+							//		retObject = method.invoke(outputObject,(Object []) e); // retObject contains the return code from the setter method, it is void
+
+							//	} finally{
+							//		System.out.println("AAS " + methodName);
+							//		System.out.println("AAS " + e[0]);
+							//	}
+							//}
+
+						}
 						index1++; // next ColumnAnnotated field
 					}
 				}
-				
+
 				a.add(outputObject);
 				count++;  // next DBF row
-	
+
 			}	
 					
 			System.out.println("Read    " + dbfName + ".DBF " + count + " rows");	

@@ -3607,123 +3607,132 @@ public class PersonStandardized {
 
 		case 0:
 
-			if(Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getStartDate()) && Utils.dayCount(getDateOfBirth()) + 15 * 365 <= Utils.dayCount(getEndDate())){
-				PersonDynamicStandardized pds = createPersonDynamicStandardized(ConstRelations2.BEROEPSTITEL);
-				((PDS_OccupationalTitle)pds).setOccupationStandardized(profession);
-				((PDS_OccupationalTitle)pds).setOccupationID(professionID);
-				pds.setStartDate(Utils.dateFromDayCount(Utils.dayCount(getDateOfBirth()) + 15 * 365));
-				pds.setStartFlag(51);
-				pds.setStartEst(100);
-				pds.setEndDate(getEndDate());
-				pds.setEndFlag(getEndFlag());
-				pds.setEndEst(getEndEst());
+			if(Common1.dateIsValid(getDateOfBirth()) == 0) {
+				if(Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getStartDate()) && Utils.dayCount(getDateOfBirth()) + 15 * 365 <= Utils.dayCount(getEndDate())){
+					PersonDynamicStandardized pds = createPersonDynamicStandardized(ConstRelations2.BEROEPSTITEL);
+					((PDS_OccupationalTitle)pds).setOccupationStandardized(profession);
+					((PDS_OccupationalTitle)pds).setOccupationID(professionID);
+					pds.setStartDate(Utils.dateFromDayCount(Utils.dayCount(getDateOfBirth()) + 15 * 365));
+					pds.setStartFlag(51);
+					pds.setStartEst(100);
+					pds.setEndDate(getEndDate());
+					pds.setEndFlag(getEndFlag());
+					pds.setEndEst(getEndEst());
 
-				civilStatus.add(pds);
+					civilStatus.add(pds);
 
+				}
 			}
 			break;
 
 		case 1:
 
-			int flag = 0;
-			String startDate0 = null;
-			if(Utils.dateIsValid(pds1.getDateOfMutation2()) != 0){
-				System.out.println("ABBC 6 " + getDateOfBirth() + "  " + getEndDate());
-				if(Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getEndDate()))
-					startDate0 = Utils.dateFromDayCount(Utils.dayCount(getEndDate()) - 1);
-				else{
-					if(Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getStartDate()))
-						startDate0 = Utils.dateFromDayCount(Utils.dayCount(getDateOfBirth()) + 15 * 365);
-					else 
-						startDate0 = getStartDate();
-				flag = 51;
+			if(Common1.dateIsValid(getDateOfBirth()) == 0) {
+				int flag = 0;
+				String startDate0 = null;
+				if(Utils.dateIsValid(pds1.getDateOfMutation2()) != 0){
+					System.out.println("ABBC 6 " + getDateOfBirth() + "  " + getEndDate());
+					if(Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getEndDate()))
+						startDate0 = Utils.dateFromDayCount(Utils.dayCount(getEndDate()) - 1);
+					else{
+						if(Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getStartDate()))
+							startDate0 = Utils.dateFromDayCount(Utils.dayCount(getDateOfBirth()) + 15 * 365);
+						else 
+							startDate0 = getStartDate();
+						flag = 51;
+					}
 				}
+				else{
+					startDate0 = pds1.getDateOfMutation2();
+					if(Utils.dayCount(getDateOfBirth()) + 12 * 365 > Utils.dayCount(pds1.getDateOfMutation2()))
+						startDate0 = Utils.dateFromDayCount(Utils.dayCount(getDateOfBirth()) + 12 * 365);
+					flag = 52;
+				}
+
+
+				pds1.setStartDate(startDate0);
+				pds1.setStartFlag(flag);
+				pds1.setStartEst(100);
+				pds1.setEndDate(getEndDate());
+				pds1.setEndFlag(getEndFlag());
+				pds1.setEndEst(getEndEst());
+
 			}
-			else{
-				startDate0 = pds1.getDateOfMutation2();
-				if(Utils.dayCount(getDateOfBirth()) + 12 * 365 > Utils.dayCount(pds1.getDateOfMutation2()))
-					startDate0 = Utils.dateFromDayCount(Utils.dayCount(getDateOfBirth()) + 12 * 365);
-				flag = 52;
-			}
-			
-			
-			pds1.setStartDate(startDate0);
-			pds1.setStartFlag(flag);
-			pds1.setStartEst(100);
-			pds1.setEndDate(getEndDate());
-			pds1.setEndFlag(getEndFlag());
-			pds1.setEndEst(getEndEst());
 
 			break;
 
 
 		case 2:
 
+			String startDate0 = null;
 			String startDate1 = null;
+			int flag = 0;
 			
-			if(Utils.dateIsValid(pds1.getDateOfMutation2()) != 0){
-				if(Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getEndDate()))
-					startDate0 = Utils.dateFromDayCount(Utils.dayCount(getEndDate()) - 1);
-				else{
-					if(Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getStartDate()))
-						startDate0 = Utils.dateFromDayCount(Utils.dayCount(getDateOfBirth()) + 15 * 365);
-					else 
-						startDate0 = getStartDate();
+			if(Common1.dateIsValid(getDateOfBirth()) == 0) {
+				if(Utils.dateIsValid(pds1.getDateOfMutation2()) != 0){
+					if(Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getEndDate()))
+						startDate0 = Utils.dateFromDayCount(Utils.dayCount(getEndDate()) - 1);
+					else{
+						if(Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getStartDate()))
+							startDate0 = Utils.dateFromDayCount(Utils.dayCount(getDateOfBirth()) + 15 * 365);
+						else 
+							startDate0 = getStartDate();
+					}
+					flag = 51;
 				}
-				flag = 51;
-			}
-			else{
-				startDate0 = pds1.getDateOfMutation2();
-				if(Utils.dayCount(getDateOfBirth()) + 12 * 365 > Utils.dayCount(pds1.getDateOfMutation2()))
-					startDate0 = Utils.dateFromDayCount(Utils.dayCount(getDateOfBirth()) + 12 * 365);
-				flag = 52;
-			}
+				else{
+					startDate0 = pds1.getDateOfMutation2();
+					if(Utils.dayCount(getDateOfBirth()) + 12 * 365 > Utils.dayCount(pds1.getDateOfMutation2()))
+						startDate0 = Utils.dateFromDayCount(Utils.dayCount(getDateOfBirth()) + 12 * 365);
+					flag = 52;
+				}
 
-			if(Utils.dateIsValid(pds2.getDateOfMutation2()) == 0){
-				if(Utils.dayCount(startDate0) > Utils.dayCount(pds2.getDateOfMutation2()))
-					startDate0 = Utils.dateFromDayCount(Utils.dayCount(pds2.getDateOfMutation2()) - 365);
+				if(Utils.dateIsValid(pds2.getDateOfMutation2()) == 0){
+					if(Utils.dayCount(startDate0) > Utils.dayCount(pds2.getDateOfMutation2()))
+						startDate0 = Utils.dateFromDayCount(Utils.dayCount(pds2.getDateOfMutation2()) - 365);
 
-			}
+				}
 
-			pds1.setStartDate(startDate0);
-			pds1.setStartFlag(flag);
-			pds1.setStartEst(100);
+				pds1.setStartDate(startDate0);
+				pds1.setStartFlag(flag);
+				pds1.setStartEst(100);
 
-			if(Utils.dateIsValid(pds2.getDateOfMutation2()) == 0){
-				startDate1 = pds2.getDateOfMutation2();
-				flag = pds2.getDateOfMutationFlag();
-			}
-			else{
-				for(PersonDynamicStandardized pds: civilStatus){
-					if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.BURGELIJKE_STAAT){
-						if(((PDS_CivilStatus)pds).getContentOfDynamicData() == ConstRelations2.GEHUWD){
-							if(Utils.dayCount(pds.getDateOfMutation2()) > Utils.dayCount(pds1.getStartDate())){
-								startDate1 = pds.getDateOfMutation2();
-								flag = 53;
-								break;
+				if(Utils.dateIsValid(pds2.getDateOfMutation2()) == 0){
+					startDate1 = pds2.getDateOfMutation2();
+					flag = pds2.getDateOfMutationFlag();
+				}
+				else{
+					for(PersonDynamicStandardized pds: civilStatus){
+						if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.BURGELIJKE_STAAT){
+							if(((PDS_CivilStatus)pds).getContentOfDynamicData() == ConstRelations2.GEHUWD){
+								if(Utils.dayCount(pds.getDateOfMutation2()) > Utils.dayCount(pds1.getStartDate())){
+									startDate1 = pds.getDateOfMutation2();
+									flag = 53;
+									break;
+								}
 							}
 						}
 					}
+					if(startDate1 == null){
+						startDate1 = Utils.dateFromDayCount((Utils.dayCount(pds1.getStartDate()) + Utils.dayCount(getEndDate())) / 2);
+						flag = 54;
+					}
 				}
-				if(startDate1 == null){
-					startDate1 = Utils.dateFromDayCount((Utils.dayCount(pds1.getStartDate()) + Utils.dayCount(getEndDate())) / 2);
-					flag = 54;
-				}
+
+				//System.out.println(startDate1);
+
+				pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(startDate1) - 1));
+				pds1.setEndFlag(flag);
+				pds1.setEndEst(100);
+
+				pds2.setStartDate(startDate1);
+				pds2.setStartFlag(flag);
+				pds2.setStartEst(100);
+
+				pds2.setEndDate(getEndDate());
+				pds2.setEndFlag(getEndFlag());
+				pds2.setEndEst(getEndEst());
 			}
-
-			//System.out.println(startDate1);
-			
-			pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(startDate1) - 1));
-			pds1.setEndFlag(flag);
-			pds1.setEndEst(100);
-
-			pds2.setStartDate(startDate1);
-			pds2.setStartFlag(flag);
-			pds2.setStartEst(100);
-
-			pds2.setEndDate(getEndDate());
-			pds2.setEndFlag(getEndFlag());
-			pds2.setEndEst(getEndEst());
 
 			break;
 

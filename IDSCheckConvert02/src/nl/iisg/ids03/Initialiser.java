@@ -307,14 +307,14 @@ public class Initialiser {
 	public void loadTables(String inputDirectory, List<Person> persons, List<PersonDynamic> personsDynamic, List<Registration> registrations, List<RegistrationAddress> registrationAddresses){
 		
 		        EntityManager em = null;
-		        String orderNumber = "NW4";
+		        String orderNumber = "KQ1";
 		        
 		        if(inputMySQL)
 		        	em = Utils.getEm_original_tabs2();
 		        
 		        List<Person> p = null;
 		        if(inputMySQL) {
-		        	p = em.createQuery("select p from Person p where p.orderNumber like :orderNumber ")
+		        	p = em.createQuery("select p from Person p where p.orderNumberI like :orderNumber ")
 		        	.setParameter("orderNumber", orderNumber)
 		        	.getResultList();
 		        	System.out.println("Read b2 " + p.size() + " rows ");
@@ -327,7 +327,7 @@ public class Initialiser {
 				
 				List<PersonDynamic> pd = null;
 		        if(inputMySQL) {
-		        	pd = em.createQuery("select pd from PersonDynamic pd where pd.orderNumber like :orderNumber ")
+		        	pd = em.createQuery("select pd from PersonDynamic pd where pd.orderNumberI like :orderNumber ")
 				   	.setParameter("orderNumber", orderNumber)
 				   	.getResultList();
 		        	System.out.println("Read b3 " + pd.size() + " rows ");
@@ -342,7 +342,7 @@ public class Initialiser {
 				
 				List<Registration> r = null;
 				if(inputMySQL) {
-		        	r = em.createQuery("select r from Registration r where r.orderNumber like :orderNumber ")
+		        	r = em.createQuery("select r from Registration r where r.orderNumberI like :orderNumber ")
 				   	.setParameter("orderNumber", orderNumber)
 				   	.getResultList();
 		        	System.out.println("Read b4 " + r.size() + " rows ");
@@ -358,7 +358,7 @@ public class Initialiser {
 				
 				List<RegistrationAddress> ra = null;
 				if(inputMySQL) {
-		        	ra = em.createQuery("select ra from RegistrationAddress ra where ra.orderNumber like :orderNumber ")
+		        	ra = em.createQuery("select ra from RegistrationAddress ra where ra.orderNumberI like :orderNumber ")
 			      	.setParameter("orderNumber", orderNumber)
 			       	.getResultList();
 		        	System.out.println("Read b6 " + ra.size() + " rows ");

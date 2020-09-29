@@ -136,7 +136,31 @@ public class RegistrationAddressStandardized {
 			
 		Ref_AINB ainb = Ref.getAINB(getKeyToSourceRegister());	
 		
-		setMunicipality(ainb.getMunicipality());
+        if(getOriginalAddress().getAddressType().equals("PL")) {
+        	if(getOriginalAddress().getNameOfStreet() != null){ // This is a place!
+    			
+    			String[] b = Utils.transformPlace(getOriginalAddress().getNameOfStreet(), null, null);
+    			
+    			System.out.println("AAAS " + getOriginalAddress().getNameOfStreet() + " " + b[0] +   "  " + b[1]);
+    			
+    			if(b[0] != null){
+    				setMunicipality(b[0]);
+    				setAddressID(new Integer(b[1]).intValue());
+    			}
+    			else{
+    				setMunicipality(getOriginalAddress().getNameOfStreet());
+    				setAddressID(-1);
+    				if(b[1] != null)
+    					message(b[1], getOriginalAddress().getNameOfStreet());
+    			}
+    		}
+        	
+        	else
+            	setMunicipality(ainb.getMunicipality());
+        	
+        }
+        else
+        	setMunicipality(ainb.getMunicipality());
 		
 		if(getLandlord() != null && getLandlord().equalsIgnoreCase("inw$"))
 			setLandlord("Living in");
