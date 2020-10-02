@@ -25,8 +25,9 @@ public class AlfalabClient extends JFrame implements ActionListener {
     private final static String SERVER_EXIT_COMMAND = "exit";
     private final static String SERVER_CANCEL = "serverCancel";
 
-    private final static String POP_REG_TEST_ERRORS = "popRegTestErrors";
+    //private final static String POP_REG_TEST_ERRORS2 = "popRegTestErrors";
     private final static String POP_REG_TEST_ERRORS2 = "popRegTestErrors2"; // New command to make server use MySQL input tables
+    private final static String POP_REG_TEST_ERRORS = "popRegTestErrors"; 
     private final static String POP_REG_TO_IDS = "popRegToIDS";
     private final static String POP_REG_DELETE_FROM_DEF_DB = "popRegDeleteFromDefDB";
     private final static String POP_REG_APPEND_TO_DEF_DB = "popRegAppendToDefDB";
@@ -54,6 +55,8 @@ public class AlfalabClient extends JFrame implements ActionListener {
     private final static String MISC_PRINT_CONTROLE_AB_4000 = "miscPrintControleAB_400";
     
     private final static String SERVER_LOGIN = "login ";
+    private final static String CREATE_WORKITEM_LIST = "createWorkitemList";
+
 
     private final static int MAX_FILE_SIZE = 10 * 1024 * 1024; // = 10 Megabytes
     
@@ -415,10 +418,10 @@ public class AlfalabClient extends JFrame implements ActionListener {
             testOnErrorsDialog.setInputDirectoryField(selectedDir.toString());
             testOnErrorsDialog.setVisible(true);
 
-            // user pressed cancel at confirmation dialog
+            // user pressed cancel at confirmation dialog 
             if (!testOnErrorsDialog.getConfirm()) return;
 
-            
+                     
             // send DBF files to server:
             HandleUploadAsynchrounously h = new HandleUploadAsynchrounously(inputDbfFiles, POP_REG_TEST_ERRORS);                
             HandleUploadAsynchrounouslyThread = new Thread(h);
@@ -426,25 +429,41 @@ public class AlfalabClient extends JFrame implements ActionListener {
             
         } else if (popRegisterCommand.equals(POP_REG_TEST_ERRORS2)) {
 
-            File[] inputDbfFiles = openDBFDir();
+        	
+        	SpecifyWorkItem testOnErrorsDialog = new SpecifyWorkItem(this);
+            //testOnErrorsDialog.setInputDirectoryField(selectedDir.toString());
+            testOnErrorsDialog.setVisible(true);
+            if (!testOnErrorsDialog.getConfirm()) return;
+            
+            String workItem = testOnErrorsDialog.getInputDirectoryField();
+            
+            System.out.println("workitem = " + workItem);
+            writeUTF(POP_REG_TEST_ERRORS + " " + workItem);
+            
+        	//String workItem = selectWorkItem();
+        	//System.out.println("Items " + workItem);
+        	
+        	//ZXC
+        	
+            //File[] inputDbfFiles = openDBFDir();
 
             // input dir selection canceled by user
-            if (inputDbfFiles == null) return;
+            //if (inputDbfFiles == null) return;
             
             // YYY
 
-            ConfirmInputDirectory testOnErrorsDialog = new ConfirmInputDirectory(this);
-            testOnErrorsDialog.setInputDirectoryField(selectedDir.toString());
-            testOnErrorsDialog.setVisible(true);
+            //ConfirmInputDirectory testOnErrorsDialog = new ConfirmInputDirectory(this);
+            ////testOnErrorsDialog.setInputDirectoryField(selectedDir.toString());
+            //testOnErrorsDialog.setVisible(true);
 
             // user pressed cancel at confirmation dialog
-            if (!testOnErrorsDialog.getConfirm()) return;
+            //if (!testOnErrorsDialog.getConfirm()) return;
 
             
             // send DBF files to server:
-            HandleUploadAsynchrounously h = new HandleUploadAsynchrounously(inputDbfFiles, POP_REG_TEST_ERRORS);                
-            HandleUploadAsynchrounouslyThread = new Thread(h);
-            HandleUploadAsynchrounouslyThread.start();
+            //HandleUploadAsynchrounously h = new HandleUploadAsynchrounously(inputDbfFiles, POP_REG_TEST_ERRORS);                
+            //HandleUploadAsynchrounouslyThread = new Thread(h);
+            //HandleUploadAsynchrounouslyThread.start();
 
         } else if (popRegisterCommand.equals(POP_REG_DELETE_FROM_DEF_DB)) {
 
@@ -583,10 +602,7 @@ public class AlfalabClient extends JFrame implements ActionListener {
         frame.start();
     }
     
-    private String showWorkItems(){
-    	
-    	return null;
-    }
+  
 
     private File[] openDBFDir() throws IOException {
 

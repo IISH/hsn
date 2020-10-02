@@ -46,4 +46,5 @@ public class AppendToOpslag {
     public static final String SELECT_BY_IDNR_FROM_B6 = "SELECT a FROM RegistrationAddress a WHERE a.keyToRP = '";
 
     public static final String SELECT_IDNRS_FROM_B2 = "SELECT a.keyToRP FROM Person a";
+    public static final String SELECT_WORKITEMS_FROM_B4 = "SELECT a.orderNumberI FROM Registration a GROUP BY a.orderNumberI ORDER BY a.orderNumberI";
 }

@@ -304,13 +304,27 @@ public class Initialiser {
 		}
 		
 	
-	public void loadTables(String inputDirectory, List<Person> persons, List<PersonDynamic> personsDynamic, List<Registration> registrations, List<RegistrationAddress> registrationAddresses){
+	public void loadTables(String parameter, List<Person> persons, List<PersonDynamic> personsDynamic, List<Registration> registrations, List<RegistrationAddress> registrationAddresses){
+		
+				boolean inputMySQL = false;
 		
 		        EntityManager em = null;
-		        String orderNumber = "KQ1";
+		        String orderNumber = null;
+		        String inputDirectory = null;
 		        
-		        if(inputMySQL)
+		        System.out.println("parameter = " + parameter);
+		        
+		        if(parameter.equals("temp")) {
+		        	inputMySQL = false;
+		        	inputDirectory = parameter;
+		        }
+		        else{
+		        	inputMySQL = true;
+		        	orderNumber = parameter; // An order number was passed, not a directory
 		        	em = Utils.getEm_original_tabs2();
+		        }
+		        
+		        System.out.println("Ordernumber = " + orderNumber);
 		        
 		        List<Person> p = null;
 		        if(inputMySQL) {
@@ -321,6 +335,9 @@ public class Initialiser {
 		        }
 		        else	
 				    p = Utils.createObjects("nl.iisg.ids03.Person",  inputDirectory);
+		        
+		        if(p.size() == 0) 
+		        	return;
 		        
 				persons.addAll(p);
 				Collections.sort(persons, new ComparatorPerson()); 

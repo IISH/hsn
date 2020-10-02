@@ -39,42 +39,42 @@ public class UpdateClientThread implements Runnable {
 
 
     public void receiveText() {
-        try {
-            while (true) {
+    	try {
+    		while (true) {
 
-                String line = "";
-                line = in.readUTF();
+    			String line = "";
 
-                if (line.equals(SEND_FILE_COMMAND)) {
-                    receiveFileFromServer();
-                } else {
-                    textArea.append(line + "\n");
-                    textArea.setCaretPosition(textArea.getDocument().getLength());  // Force scrolling
-                    
-                    if(line.equals("Invalid username and/or password")) {
-                    	try {
-							Thread.sleep(2000);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-                    	System.exit(0);
-                    }
-                }
+    			line = in.readUTF();
 
-            }
-        } catch (IOException e) {
-            System.out.println("Receive failed");
-        }
+    			if (line.equals(SEND_FILE_COMMAND)) {
+    				receiveFileFromServer();
+    			} else {
+    				textArea.append(line + "\n");
+    				textArea.setCaretPosition(textArea.getDocument().getLength());  // Force scrolling
+
+    				if(line.equals("Invalid username and/or password")) {
+    					try {
+    						Thread.sleep(2000);
+    					} catch (InterruptedException e) {
+    						// TODO Auto-generated catch block
+    						e.printStackTrace();
+    					}
+    					System.exit(0);
+    				}
+    			}
+    		}
+    	} catch (IOException e) {
+    		System.out.println("Update Client Thread Receive failed");
+    	}
     }
 
     public void run() {
-        receiveText();
+    	receiveText();
     }
 
     private String timestamp() {
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss");
+    	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss");
         return simpleDateFormat.format(new Date());
 
     }

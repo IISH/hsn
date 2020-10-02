@@ -45,8 +45,7 @@ public class AlfalabServerConsole implements Runnable {
 
     private final static String SERVER_CANCEL = "serverCancel";
 
-    private final static String POP_REG_TEST_ERRORS = "popRegTestError"
-    		+ "s";
+    private final static String POP_REG_TEST_ERRORS = "popRegTestErrors";    	
     private final static String POP_REG_DELETE_FROM_DEF_DB = "popRegDeleteFromDefDB";
     private final static String POP_REG_APPEND_TO_DEF_DB = "popRegAppendToDefDB";
     private final static String POP_REG_TEST_IDNR_DOUBLES = "popRegTestIDnrDoubles";
@@ -340,10 +339,16 @@ public class AlfalabServerConsole implements Runnable {
 
             receiveFileFromClient(true);
 
-        } else if (command.equals(POP_REG_TEST_ERRORS)) {
+        } else if (command.split(" ")[0].equals(POP_REG_TEST_ERRORS)) {
+
+        	String parm = null;
+        	if(command.split(" ")[1] != null)
+        		parm = command.split(" ")[1].trim();
+        	else
+        		parm = INPUT_DIRECTORY;
 
             //print("Started Standardize Population Register. Please wait..\n");
-            StandardizePopulationRegister IDSCheckConvert = new nl.iisg.ids03.StandardizePopulationRegister(out, INPUT_DIRECTORY);
+            StandardizePopulationRegister IDSCheckConvert = new nl.iisg.ids03.StandardizePopulationRegister(out, parm);
             workerThread = new Thread(IDSCheckConvert);
             workerThread.start();
 

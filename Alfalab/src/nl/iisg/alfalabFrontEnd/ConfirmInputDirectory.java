@@ -16,7 +16,7 @@ public class ConfirmInputDirectory extends JDialog {
         pack();
         setResizable(false);
         setLocationRelativeTo(parent);
-        this.setTitle("Please confirm input directoryc");
+        this.setTitle("Please confirm input directory");
 
         getRootPane().setDefaultButton(buttonOK);
 

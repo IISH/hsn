@@ -2172,7 +2172,7 @@ public class Ref {
 		if(ref_location21 != null)
 			for(Ref_Location x: ref_location21.values())
 				Ref.truncateLocation(x);
-	//	if(ref_location22 != null)
+		if(ref_location22 != null)
 			for(Ref_Location x: ref_location22.values())
 				Ref.truncateLocation(x);
 
@@ -2241,7 +2241,9 @@ public class Ref {
 		
 		//System.out.println("ref_address22 count = "+ ref_address22.size());
 		
-		ref_address21.clear();
+		if(ref_address21 != null)
+			ref_address21.clear();
+		
 		if(ref_address22 != null){
 			for (Ref_Address ref_address : ref_address22.values()) {
 				count++;
@@ -2263,7 +2265,9 @@ public class Ref {
 		
 		count = 0;
 		
-		ref_houseNumber21.clear();
+		if(ref_houseNumber21 != null)
+			ref_houseNumber21.clear();
+		
 		if(ref_houseNumber22 != null){
 			for (Ref_Housenumber ref_hn : ref_houseNumber22.values()) {
 				count++;
@@ -2282,7 +2286,9 @@ public class Ref {
 		// Housenumberaddition
 		
 		count = 0;
-		ref_houseNumberAddition21.clear();
+		if(ref_houseNumberAddition21 != null)
+			ref_houseNumberAddition21.clear();
+		
 		if(ref_houseNumberAddition22 != null){
 			for (Ref_Housenumberaddition ref_hna : ref_houseNumberAddition22.values()) {
 				count++;
@@ -2302,7 +2308,9 @@ public class Ref {
 		
 		count = 0;
 		
-		ref_famName21.clear();
+		if(ref_famName21 != null)
+			ref_famName21.clear();
+		
 		if(ref_famName22 != null){
 			for (Ref_FamilyName ref_famname : ref_famName22.values()) {
 				count++;
@@ -2339,7 +2347,8 @@ public class Ref {
 		
 		// FirstName
 
-		ref_firstName21.clear();
+		if(ref_firstName21 != null)
+			ref_firstName21.clear();
 		if(ref_firstName22 != null){
 			for (Ref_FirstName ref_firstname : ref_firstName22.values()) {
 				count++;
@@ -2360,20 +2369,22 @@ public class Ref {
 					em.persist(x); 
 					count++;
 				}
-		
-		for(Ref_Prefix x: ref_prefix_x){	
-			if(x.getNeedSave() == true){
-				em.persist(x);
-				count++;
+
+		if(ref_prefix_x != null) {
+			for(Ref_Prefix x: ref_prefix_x){	
+				if(x.getNeedSave() == true){
+					em.persist(x);
+					count++;
+				}
 			}
+			ref_prefix_x.clear();
 		}
-		ref_prefix_x.clear();
 		System.out.println("Saved " + count + " rows to Ref_Prefix");
 
 
 		
 		// Profession
-		
+
 		count = 0;
 		if(ref_profession != null)
 			for(Ref_Profession x: ref_profession)
@@ -2381,14 +2392,16 @@ public class Ref {
 					em.persist(x);
 					count++;
 				}
-		
-		for(Ref_Profession x: ref_profession_x){
-			if(x.getNeedSave() == true){
-				em.persist(x);
-				count++;
+
+		if(ref_profession_x != null) {
+			for(Ref_Profession x: ref_profession_x){
+				if(x.getNeedSave() == true){
+					em.persist(x);
+					count++;
+				}
 			}
+			ref_profession_x.clear();
 		}
-		ref_profession_x.clear();
 		System.out.println("Saved " + count + " rows to Ref_occupation");
 
 
@@ -2401,14 +2414,16 @@ public class Ref {
 					em.persist(x);
 					count++;
 				}
-		
-		for(Ref_KG x: ref_KG_x){
-			if(x.getNeedSave() == true){
-				em.persist(x);
-				count++;
+
+		if(ref_KG_x != null) {
+			for(Ref_KG x: ref_KG_x){
+				if(x.getNeedSave() == true){
+					em.persist(x);
+					count++;
+				}
 			}
+			ref_KG_x.clear();
 		}
-		ref_KG_x.clear();
 		System.out.println("Saved " + count + " rows to Ref_religion");
 
 		// Relation_B
@@ -2422,14 +2437,16 @@ public class Ref {
 					count++;
 				}
 		
-		for(Ref_Relation_B x: ref_relation_b_x){
-			if(x.getNeedSave() == true){
-				System.out.println(x.getNederlands() + "         " + x.getEngels());
-				em.persist(x);
-				count++;
+		if(ref_relation_b_x != null) {
+			for(Ref_Relation_B x: ref_relation_b_x){
+				if(x.getNeedSave() == true){
+					System.out.println(x.getNederlands() + "         " + x.getEngels());
+					em.persist(x);
+					count++;
+				}
 			}
+			ref_relation_b_x.clear();
 		}
-		ref_relation_b_x.clear();
 		System.out.println("Saved " + count + " rows to Ref_relation_b");
 
 		// Location
@@ -2456,7 +2473,8 @@ public class Ref {
 		
 		count = 0;
 		
-		ref_location21.clear();
+		if(ref_location21 != null)
+				ref_location21.clear();
 		if(ref_location22 != null){
 			for (Ref_Location ref_location : ref_location22.values()) {
 				count++;

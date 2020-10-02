@@ -30,7 +30,7 @@ import javax.swing.*;
 public class StandardizePopulationRegister implements Runnable {
 
 
-    String inputDirectory;
+    String inputDirectory;  // misusing this field, it can also be a workItem, depends on whether there is a :\ in it.
     static JTextArea textArea = null;
     static DataOutputStream out = null;
 
@@ -89,18 +89,19 @@ public class StandardizePopulationRegister implements Runnable {
         if (args.length > 0)
             inputDirectory = args[0];
         else {
-        	System.out.println("No input directory specified");
+        	System.out.println("No input directory or workitem specified");
             System.exit(0);
         }
         
         String [] requiredFiles = {"B2.DBF", "B3.DBF", "B4.DBF", "B6.DBF"};
 
-        String missingFile = Common1.nonExisitingFile(inputDirectory, requiredFiles);
-        if(missingFile != null){
-        	print("Required file " + missingFile + " missing\n");
-        	return;
+        if(inputDirectory.equals("temp")) {  // dirty, but we have no choice
+        	String missingFile = Common1.nonExisitingFile(inputDirectory, requiredFiles);
+        	if(missingFile != null){
+        		print("Required file " + missingFile + " missing\n");
+        		return;
+        	}
         }
-
 
 
         // Initialization
@@ -183,34 +184,34 @@ public class StandardizePopulationRegister implements Runnable {
 
         // Convert the objects
 
-        print("Convert objects...");    
+        //print("Convert objects...");    
 
-        cvm.convert(ops);
+        //cvm.convert(ops);
 
         // Identify the Persons
 
-        print("Identify Persons...");    
+        //print("Identify Persons...");    
 
-        cvm.identify(ops);
+        //cvm.identify(ops);
 
         // Give dates to Persons
 
-        print("Date Persons...");    
+        //print("Date Persons...");    
 
-        cvm.giveDate(ops);
+        //cvm.giveDate(ops);
 
 
         // Determine the relations of all persons in a registry to each other (for all registries)
 
-        print("Determine relations between Persons...");    
+        //print("Determine relations between Persons...");    
 
         
-        cvm.relateAllToAll(ops);
+        //cvm.relateAllToAll(ops);
 
 
         // Print the objects
 
-        cvm.print(ops);
+        //cvm.print(ops);
 
         // Truncate the objects
 
