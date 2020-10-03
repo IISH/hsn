@@ -513,8 +513,10 @@ public class Registration implements Comparable<Registration>{
 				if(p.getYearOfRegistration() > 1750 && p.getYearOfRegistration()  <  1941){  // year valid
 					int day = p.getDayOfRegistration() > 0 ?  p.getDayOfRegistration() : 1;
 					int month = p.getMonthOfRegistration() > 0 ?  p.getMonthOfRegistration() : 1;
-					x = Utils.dayCount(day, month, p.getYearOfRegistration());
-					estimatedDates = true;
+					if(Common1.dateIsValid(day, month, p.getYearOfRegistration()) == 0) {
+						x = Utils.dayCount(day, month, p.getYearOfRegistration());
+						estimatedDates = true;
+					}
 				}
 			}
 			

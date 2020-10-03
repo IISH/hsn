@@ -196,7 +196,7 @@ public class Common1 {
 		 int count = 0;
 		 while(day != day1 || month != month1 || year != year1){
 			 
-			 if(++count > 300 * 365) {
+			 if(++count > 500 * 365) {
 				 System.out.println("XYZ DC05: " + day1 + "   " + month1 +    "   " + year1);
 				 count = count/0; 
 			 }

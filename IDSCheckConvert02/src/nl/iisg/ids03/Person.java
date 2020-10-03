@@ -382,7 +382,7 @@ public class Person {
 		// Check that b3:b3gegeven - dynamicData2 correct does not have an explicit head for C-Registers	
 		
 		int heads = 0;
-		if(ainb.getTypeRegister().toUpperCase().equals("C"))
+		if(ainb != null && ainb.getTypeRegister() != null && ainb.getTypeRegister().toUpperCase().equals("C"))
 			for(PersonDynamic pd: getDynamicDataOfPerson())
 				if(pd.getDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD &&  pd.getContentOfDynamicData() == ConstRelations2.HOOFD) 
 					heads++;
@@ -574,9 +574,14 @@ public class Person {
 		month = getMonthOfRegistration() > 0 ? getMonthOfRegistration() : 1;
 		year  = getYearOfRegistration();
 
-		i2 = Utils.dayCount(day, month, year);
-		i1 = Utils.dayCount(getDayOfDecease(),      getMonthOfDecease(),      getYearOfDecease());
+		
+		if(Common1.dateIsValid(day, month, year) == 0)
+			i1 = Common1.dayCount(day, month, year);
+		
+		if(Common1.dateIsValid(getDayOfDecease(),      getMonthOfDecease(),      getYearOfDecease()) == 0)
+			i2 = Common1.dayCount(getDayOfDecease(),      getMonthOfDecease(),      getYearOfDecease());
 
+		
 		if( i1 > 0 && i2 > 0 && i2 > i1)
 			message("1205", "" + getDayOfRegistration() + "-" + getMonthOfRegistration() + "-" + year, 
 				        	"" + getDayOfDecease()      + "-" + getMonthOfDecease()      + "-" + getYearOfDecease());
@@ -1508,10 +1513,10 @@ public class Person {
 				// Check if Headdate  before 18th birthday head
 				// Only for B, G, C and D registers 
 					else
-						if(ainb.getTypeRegister().equalsIgnoreCase("B") || 
+						if(ainb != null && ainb.getTypeRegister() != null && (ainb.getTypeRegister().equalsIgnoreCase("B") || 
 								ainb.getTypeRegister().equalsIgnoreCase("C") ||
 								ainb.getTypeRegister().equalsIgnoreCase("D") ||
-								ainb.getTypeRegister().equalsIgnoreCase("G"))
+								ainb.getTypeRegister().equalsIgnoreCase("G")))
 							if(y < x + (18 * 365) + 4)
 								message("1144", "" + getDayEntryHead() + "-" + getMonthEntryHead() + "-" + getYearEntryHead(), 
 							         			"" + getDayOfBirth()   + "-" + getMonthOfBirth()   + "-" + getYearOfBirth());

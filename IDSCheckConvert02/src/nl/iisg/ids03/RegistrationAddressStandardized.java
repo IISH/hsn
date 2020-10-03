@@ -156,11 +156,13 @@ public class RegistrationAddressStandardized {
     		}
         	
         	else
-            	setMunicipality(ainb.getMunicipality());
+        		if(ainb != null)
+        			setMunicipality(ainb.getMunicipality());
         	
         }
         else
-        	setMunicipality(ainb.getMunicipality());
+        	if(ainb != null)
+        		setMunicipality(ainb.getMunicipality());
 		
 		if(getLandlord() != null && getLandlord().equalsIgnoreCase("inw$"))
 			setLandlord("Living in");

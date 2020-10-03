@@ -184,15 +184,15 @@ public class StandardizePopulationRegister implements Runnable {
 
         // Convert the objects
 
-        //print("Convert objects...");    
+        print("Convert objects...");    
 
-        //cvm.convert(ops);
+        cvm.convert(ops);
 
         // Identify the Persons
 
-        //print("Identify Persons...");    
+        print("Identify Persons...");    
 
-        //cvm.identify(ops);
+        cvm.identify(ops);
 
         // Give dates to Persons
 

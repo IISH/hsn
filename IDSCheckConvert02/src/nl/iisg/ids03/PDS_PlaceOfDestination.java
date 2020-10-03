@@ -71,7 +71,7 @@ public class PDS_PlaceOfDestination extends PersonDynamicStandardized {
 				if(temp != null && temp.length() >= 2 && temp.substring(0,2).equalsIgnoreCase("VT") == true)
 					setCensus(temp.substring(2));
 
-				if(temp != null && temp.length() <= 1 || (temp.length() >= 2  && temp.substring(0,2).equalsIgnoreCase("VT") != true && temp.substring(0,2).equalsIgnoreCase("O ") != true))				
+				if(temp != null && (temp.length() <= 1 || ((temp.length() >= 2  && temp.substring(0,2).equalsIgnoreCase("VT") != true && temp.substring(0,2).equalsIgnoreCase("O ") != true))))				
 					setRegister(temp);
 			}
 			

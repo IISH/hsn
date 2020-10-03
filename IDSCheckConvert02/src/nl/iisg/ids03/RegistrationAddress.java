@@ -245,12 +245,14 @@ public class RegistrationAddress {
 						
 			if(Common1.dateIsValid(latestDayOfAddress, latestMonthOfAddress, yearAddress) == 0 /* && getSequenceNumberToAddresses() == 1 */){
 
-				int nl = Utils.dayCount(latestDayOfAddress, latestMonthOfAddress, yearAddress);				
-				int n2 = Utils.dayCount(getDayEntryHead(), getMonthEntryHead(), getYearEntryHead());
+				int nl = Utils.dayCount(latestDayOfAddress, latestMonthOfAddress, yearAddress);	
+				
+				if(Common1.dateIsValid(getDayEntryHead(), getMonthEntryHead(), getYearEntryHead()) == 0) {
+					int n2 = Utils.dayCount(getDayEntryHead(), getMonthEntryHead(), getYearEntryHead());
 
-				if(nl  < n2 - 5)	
-					message("1134", "" + dayAddress + "-" +  monthAddress + "-" + yearAddress);
-
+					if(nl  < n2 - 5)	
+						message("1134", "" + dayAddress + "-" +  monthAddress + "-" + yearAddress);
+				}
 			}
 
 			// Check that (earliest)  date first address is no more than 30 days after date entry Head of Household
