@@ -152,6 +152,18 @@
 			<property name="javax.persistence.jdbc.password" value="zaq12wsx" />
 		</properties>
 	</persistence-unit>
+	<persistence-unit name="b_tables_input" transaction-type="RESOURCE_LOCAL">		
+	        <class>nl.iisg.ids03.Person</class>
+	        <class>nl.iisg.ids03.PersonDynamic</class>
+	        <class>nl.iisg.ids03.Registration</class>
+	        <class>nl.iisg.ids03.RegistrationAddress</class>
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/invoer?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" />
+			<property name="javax.persistence.jdbc.user" value="cor" />
+			<property name="javax.persistence.jdbc.password" value="zaq12wsx" />
+		</properties>
+	</persistence-unit>
 	<persistence-unit name="MySQL_opslag" transaction-type="RESOURCE_LOCAL">		
 	        <class>nl.iisg.ids03.PersonStandardized</class>
 	        <class>nl.iisg.ids03.PDS_CivilStatus</class>

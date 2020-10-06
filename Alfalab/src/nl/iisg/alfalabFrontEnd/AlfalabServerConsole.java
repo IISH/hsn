@@ -342,7 +342,7 @@ public class AlfalabServerConsole implements Runnable {
         } else if (command.split(" ")[0].equals(POP_REG_TEST_ERRORS)) {
 
         	String parm = null;
-        	if(command.split(" ")[1] != null)
+        	if(command.split(" ").length > 1 && command.split(" ")[1] != null)
         		parm = command.split(" ")[1].trim();
         	else
         		parm = INPUT_DIRECTORY;
