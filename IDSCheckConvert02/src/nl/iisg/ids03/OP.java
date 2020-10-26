@@ -11,9 +11,12 @@ package nl.iisg.ids03;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import nl.iisg.hsncommon.Common1;
 import nl.iisg.hsncommon.ConstRelations2;
@@ -256,26 +259,37 @@ public void convert(){
 
 public void identify(){
 	
-	ArrayList<PersonStandardized> uniquePersons = new ArrayList<PersonStandardized>();
+	ArrayList<PersonStandardized> testedPersons = new ArrayList<PersonStandardized>();
 	setPersonNumber(1);  // restart for each OP
+	Map<Integer, Set<PersonStandardized>> m = new HashMap<Integer, Set<PersonStandardized>>();
 	
 	for(RegistrationStandardized r : getRegistrationsStandardizedOfOP()){
-		
 		for(PersonStandardized p: r.getPersonsStandardizedInRegistration()){
-			
-			boolean found = false;
-			for(PersonStandardized pu: uniquePersons){
+			for(PersonStandardized pu: testedPersons){
 				
-				if(comparePersons(p, pu) == 0){
-					p.setPersonID(pu.getPersonID());
-					found = true;
-					break;
+				if(p != pu && comparePersons(p, pu) == 0){
+					if(p.getPersonID() == 0) {
+						p.setPersonID(pu.getPersonID());					
+						m.get(pu.getPersonID()).add(p);
+											
+					}
+					else {						
+						if(pu.getKeyToPersons() != p.getPersonID())
+							for(PersonStandardized px: m.get(pu.getPersonID())) {
+								px.setPersonID(p.getPersonID());
+								m.get(p.getPersonID()).add(px);
+							}
+					}
 				}
 			}
-			if(found == false){
-				p.setPersonID(getPersonNumber());
-				uniquePersons.add(p);
+			if(p.getPersonID() == 0){
+				Integer i = new Integer(getPersonNumber());
+				p.setPersonID(i);
+				Set<PersonStandardized> s = new HashSet<PersonStandardized>();
+				m.put(i, s);
+				s.add(p);
 			}
+			testedPersons.add(p);
 		}
 	}
 }
@@ -604,30 +618,33 @@ private int comparePersons(PersonStandardized ps, PersonStandardized pus){
 	//
 	boolean familyNameOK =	CheckFamilyName(ps, pus); 
 	
+	
 	//
 	// Test if different first firstname
 	//
 	
 	boolean firstNameOK = CheckFirstName(ps, pus); 
 	
+	
 	//
 	// Test if different birth dates 
 	//
 	boolean birthDateOK = CheckBirthDate(ps, pus); 
-		
+	
 	//
 	// Test if different sex
 	//
 	
-	boolean sexOK = true;
-	if((ps.getSex().equals("m") == true && pus.getSex().equals("v") == true) || (ps.getSex().equals("v") == true && pus.getSex().equals("m") == true))
-		sexOK = false;
+	boolean sex = (ps.getSex().equalsIgnoreCase("m") &&  pus.getSex().equalsIgnoreCase("m")) ||
+			      (ps.getSex().equalsIgnoreCase("v") &&  pus.getSex().equalsIgnoreCase("v"));
 	
-	// If one test not ok, return false
-	
-	
-	if(familyNameOK != true || firstNameOK != true || birthDateOK != true || sexOK != true)
-		return -1;
+
+	if(!familyNameOK && firstNameOK && birthDateOK)
+		message("4021", ps.getFamilyName(), pus.getFamilyName()); 
+
+	if(!familyNameOK && firstNameOK && birthDateOK)
+		message("4021", ps.getFamilyName(), pus.getFamilyName()); 
+
 	
 	return 0;
 }
@@ -657,14 +674,22 @@ private boolean CheckBirthDate(PersonStandardized ps, PersonStandardized pus){
 	int month2 = (new Integer(date2.split("-")[1])).intValue();
 	int year2  = (new Integer(date2.split("-")[2])).intValue();
 	
+	String id1 = ps.getKeyToRP() + "-" + ps.getKeyToSourceRegister() + "-" + ps.getEntryDateHead() +  "-" + ps.getKeyToPersons();
+	String id2 = pus.getKeyToRP() + "-" + pus.getKeyToSourceRegister() + "-" + pus.getEntryDateHead() +  "-" + pus.getKeyToPersons();
+	
+	id1 = id1 + " " + ps.getFirstName() + " " + ps.getFamilyName();
+	id2 = id2 + " " + pus.getFirstName() + " " + pus.getFamilyName();
+	
+	String id = " " + id1 + " vs " + id2;
 
+	
 	if(date1.equals("00-00-0000") == true || date2.equals("00-00-0000") == true) // invalid dates
 		return false;
 
 	if(year1 == 0 || year2 == 0)
 		return false;
 
-	if(day1 != 0 && month1 != 0 && day2 != 0 && month2 != 0){
+	if(day1 > 0 && month1 > 0 && day2 > 0 && month2 > 0){
 
 		if(Math.abs(day1 - day2) > 1) // days differ significantly
 			if(Math.abs(month1 - month2) != 0 || Math.abs(year1 - year2) != 0)
@@ -674,33 +699,32 @@ private boolean CheckBirthDate(PersonStandardized ps, PersonStandardized pus){
 			if(Math.abs(day1 - day2) > 1 || Math.abs(year1 - year2) != 0)
 				return false;
 
-		if(Math.abs(year1 - year2) != 0){ // years differ
+		if(Math.abs(year1 - year2) != 0) // years differ
 
 			if(Math.abs(day1 - day2) > 1 || Math.abs(month1 - month2) != 0)
 				return false;
-			else{
-				if(date1.substring(6,8).equals(date2.substring(6,8))){ // same century
-
-					if(Math.abs(year1 - year2) <= 2 || 
-							(date1.substring(6,7).equals(date2.substring(6,7)) &&
-									date1.substring(8,9).equals(date2.substring(8,9)) &&
-									date1.substring(9,10).equals(date2.substring(9,10))))
-						; // ok
-					else
-						return false;
-				}
-				else
-					return false;
-			}
-		}	
+		
 	}
+	else
+		if(year1 > 1700 && year1 == year2) {
+			 message("4025", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
+			 return true;			
+		}
+		else return false;
 	
 	if(day1 != day2)
-		 message("4006", (new Integer(day1).toString()), (new Integer(day2).toString())); 
+		 message("4006", (new Integer(day1).toString()), (new Integer(day2).toString()), id); 
 	if(month1 != month2)
-		 message("4007", (new Integer(month1).toString()), (new Integer(month2).toString())); 
-	if(year1 != year2)
-		 message("4008", (new Integer(year1).toString()), (new Integer(year2).toString())); 
+		 message("4007", (new Integer(month1).toString()), (new Integer(month2).toString()), id); 
+	if(year1 != year2) {		
+		if(Math.abs(year1 - year2) % 100 == 0)
+			 message("4012", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
+		else
+			if(Math.abs(year1 - year2) % 10 == 0)
+				message("4010", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
+			else		
+				message("4008", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
+	}
 	
 	return true;
 }
@@ -838,6 +862,19 @@ private void message(String number, int b1idbg, int b2dibg, int b2mibg, int b2ji
 	m.setDayEntryHead(b2dibg);
 	m.setMonthEntryHead(b2mibg);
 	m.setYearEntryHead(b2jibg);
+	m.setKeyToRegistrationPersons(b2rnbg);
+	m.save(fills); 
+}
+
+private void message(String number, int b1idbg, String b2dibg, int b2rnbg, String... fills){
+	
+	Message m = new Message(number);
+	
+	m.setKeyToRP(getKeyToRP());
+	m.setKeyToSourceRegister(b1idbg);
+	m.setDayEntryHead(Integer.parseInt(b2dibg.substring(0,2)));
+	m.setMonthEntryHead(Integer.parseInt(b2dibg.substring(3,5)));
+	m.setYearEntryHead(Integer.parseInt(b2dibg.substring(6,10)));
 	m.setKeyToRegistrationPersons(b2rnbg);
 	m.save(fills); 
 }

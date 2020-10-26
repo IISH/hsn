@@ -140,6 +140,13 @@ public class Message {
 							errorout += "????";                  // we use a dummy value
 					}
 				}
+				
+				if(errorFills.size() > index) { // if there are extra arguments
+					errorout += " ";
+					errorout += errorFills.get(index);
+					//System.out.println("XXZ " + errorFills.get(index));
+				}
+				
 				errorout = errorout.replaceAll("~~", "->");  // get rid of ~~, back to ->
 				errorout = errorout.replaceAll("~@", "<1");  // get rid of ~@, back to <1
 				setErrorText(errorout);
