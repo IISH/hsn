@@ -786,7 +786,7 @@ private boolean CheckFamilyName(PersonStandardized ps, PersonStandardized pus){
 	
 	
 	if(!name1.equals(name2)){
-		 message("3101", ps.getFamilyName(),pus.getFamilyName());
+		 message("4001", ps.getFamilyName(),pus.getFamilyName());
 	}
 		
 	
@@ -839,7 +839,7 @@ private boolean CheckFirstName(PersonStandardized ps, PersonStandardized pus){
 		return false;
 	
 	if(!name1.equals(name2))
-		 message("3103", ps.getFirstName(),pus.getFirstName()); 
+		 message("4003", ps.getFirstName(),pus.getFirstName()); 
 
 	
 	return true;

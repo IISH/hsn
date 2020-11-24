@@ -196,17 +196,17 @@ public class StandardizePopulationRegister implements Runnable {
 
         // Give dates to Persons
 
-        //print("Date Persons...");    
+        print("Date Persons...");    
 
-        //cvm.giveDate(ops);
+        cvm.giveDate(ops);
 
 
         // Determine the relations of all persons in a registry to each other (for all registries)
 
-        //print("Determine relations between Persons...");    
+        print("Determine relations between Persons...");    
 
         
-        //cvm.relateAllToAll(ops);
+        cvm.relateAllToAll(ops);
 
 
         // Print the objects
