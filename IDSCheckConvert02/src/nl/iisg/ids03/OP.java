@@ -267,7 +267,7 @@ public void identify(){
 		for(PersonStandardized p: r.getPersonsStandardizedInRegistration()){
 			for(PersonStandardized pu: testedPersons){
 				
-				if(p != pu && comparePersons(p, pu) == 0){
+				if(p != pu && comparePersons(p, pu)){
 					if(p.getPersonID() == 0) {
 						p.setPersonID(pu.getPersonID());					
 						m.get(pu.getPersonID()).add(p);
@@ -611,7 +611,7 @@ private void showFields(){
  * @return
  */
 
-private int comparePersons(PersonStandardized ps, PersonStandardized pus){
+private boolean comparePersons(PersonStandardized ps, PersonStandardized pus){
 
 	//
 	// Test if different family name
@@ -635,18 +635,49 @@ private int comparePersons(PersonStandardized ps, PersonStandardized pus){
 	// Test if different sex
 	//
 	
-	boolean sex = (ps.getSex().equalsIgnoreCase("m") &&  pus.getSex().equalsIgnoreCase("m")) ||
+	boolean sexOK = (ps.getSex().equalsIgnoreCase("m") &&  pus.getSex().equalsIgnoreCase("m")) ||
 			      (ps.getSex().equalsIgnoreCase("v") &&  pus.getSex().equalsIgnoreCase("v"));
 	
+	if (!familyNameOK && firstNameOK  && birthDateOK  && sexOK ) {
+        message("4121", ps.getFamilyName(), pus.getFamilyName());
+        return false;
+    }
 
-	if(!familyNameOK && firstNameOK && birthDateOK)
-		message("4021", ps.getFamilyName(), pus.getFamilyName()); 
+    if (familyNameOK  && firstNameOK  && birthDateOK == true && !sexOK ) {
+       message("4122", new Integer(pus.getKeyToPersons()).toString());
+        return false;
+    }
+    
+	if (familyNameOK && !firstNameOK  && birthDateOK  && sexOK  ) {
+        message("4123", ps.getFirstName(), pus.getFirstName());
+        return false;
+    }
 
-	if(!familyNameOK && firstNameOK && birthDateOK)
-		message("4021", ps.getFamilyName(), pus.getFamilyName()); 
+    if (familyNameOK && firstNameOK && !birthDateOK  && sexOK ) {
+        message("4126", ps.getFamilyName(), ps.getFirstName(), ps.getDateOfBirth(), pus.getDateOfBirth());
+        return false;
+    }
 
-	
-	return 0;
+    if (!familyNameOK && !firstNameOK && birthDateOK  && sexOK ) {
+        message("4134", ps.getFamilyName(), ps.getFirstName(), pus.getFamilyName(), pus.getFirstName(),ps.getDateOfBirth());
+        return false;
+    }
+
+
+    
+    if (familyNameOK && firstNameOK && birthDateOK  && sexOK ) {
+    	
+    	boolean psIsOP = (ps.getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP)   || (ps.getNatureOfPerson() == ConstRelations2.FURTHER_APPEARANCE_OF_OP);
+    	boolean pusIsOP = (pus.getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP) || (pus.getNatureOfPerson() == ConstRelations2.FURTHER_APPEARANCE_OF_OP);
+
+
+    	if((psIsOP && !pusIsOP) || (!psIsOP && pusIsOP))
+    		message("4131");
+
+    }
+
+    
+	return (familyNameOK && firstNameOK && birthDateOK  && sexOK );
 }
 /**
  * 
@@ -677,8 +708,8 @@ private boolean CheckBirthDate(PersonStandardized ps, PersonStandardized pus){
 	String id1 = ps.getKeyToRP() + "-" + ps.getKeyToSourceRegister() + "-" + ps.getEntryDateHead() +  "-" + ps.getKeyToPersons();
 	String id2 = pus.getKeyToRP() + "-" + pus.getKeyToSourceRegister() + "-" + pus.getEntryDateHead() +  "-" + pus.getKeyToPersons();
 	
-	id1 = id1 + " " + ps.getFirstName() + " " + ps.getFamilyName();
-	id2 = id2 + " " + pus.getFirstName() + " " + pus.getFamilyName();
+	id1 = id1 + " " + ps.getFirstName() + " " + ps.getFamilyName() + " (" + ps.getDateOfBirth() + ")";
+	id2 = id2 + " " + pus.getFirstName() + " " + pus.getFamilyName() + " (" + pus.getDateOfBirth() + ")";
 	
 	String id = " " + id1 + " vs " + id2;
 
@@ -691,23 +722,30 @@ private boolean CheckBirthDate(PersonStandardized ps, PersonStandardized pus){
 
 	if(day1 > 0 && month1 > 0 && day2 > 0 && month2 > 0){
 
-		if(Math.abs(day1 - day2) > 1) // days differ significantly
+		if(Math.abs(day1 - day2) > 1) { // days differ significantly
 			if(Math.abs(month1 - month2) != 0 || Math.abs(year1 - year2) != 0)
 				return false;	
+		}
 
-		if(Math.abs(month1 - month2) != 0) // months differ 
+		if(Math.abs(month1 - month2) != 0) { // months differ 
 			if(Math.abs(day1 - day2) > 1 || Math.abs(year1 - year2) != 0)
 				return false;
+		}
+		
+		if(Math.abs(year1 - year2) != 0) {// years differ
+			
+			if((Math.abs(year1 - year2)) % 10 == 0) {
 
-		if(Math.abs(year1 - year2) != 0) // years differ
-
-			if(Math.abs(day1 - day2) > 1 || Math.abs(month1 - month2) != 0)
-				return false;
+				if(Math.abs(day1 - day2) > 1 || Math.abs(month1 - month2) != 0)
+					return false;
+			}
+			else return false;
+		}
 		
 	}
 	else
 		if(year1 > 1700 && year1 == year2) {
-			 message("4025", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
+			 message("4125", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
 			 return true;			
 		}
 		else return false;
