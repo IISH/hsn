@@ -1772,7 +1772,7 @@ public class AlfalabServerConsole implements Runnable {
             	
                 if (i % 10 == 0) {
                     print(i + " of " + registrations.size() + " registrations read.");
-                    if(i >= 100) return;
+                   // if(i >= 100) return;
                 }
                 i++;
 
@@ -1963,7 +1963,7 @@ public class AlfalabServerConsole implements Runnable {
             for (Registration r : registrations) {
                 if (i % 10 == 0) {
                     print(i + " of " + registrations.size() + " registrations read.");
-                    if(i >= 100) return;
+                    //if(i >= 100) return;
                 }
                 i++;
 
@@ -2064,8 +2064,8 @@ public class AlfalabServerConsole implements Runnable {
             for (Registration r : registrations) {
                 if (i % 10 == 0) {
                     print(i + " of " + registrations.size() + " registrations read.");
-                    if(i >= 100)
-                    	break;
+                    //if(i >= 100)
+                    //	break;
                 }
                 i++;
 

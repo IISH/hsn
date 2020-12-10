@@ -251,6 +251,10 @@ public void convert(){
  * 
  *  This routine loops through all persons that appear in the registrations for this OP
  *  Persons that are thought to be the same are given the same person number
+ *  
+ *  Bij identificeren    01-02-1900 en 01-03-1900   -> gelijk
+                         01-02-1900 en 03-02-1900   -> gelijk
+ *  maar                 01-03-1900 en 03-02-1900   -> niet direct gelijk, maar via vorige twee indirect gelijk  
  * 
  * 
  */
@@ -292,6 +296,22 @@ public void identify(){
 			testedPersons.add(p);
 		}
 	}
+	
+	// Check that all b2fcbg = 1 and b2fcbg = 5 have the same person_ID (These are the OPs)
+	
+	int establishedPerson_ID = 0;
+	for(RegistrationStandardized r : getRegistrationsStandardizedOfOP()){
+		for(PersonStandardized p: r.getPersonsStandardizedInRegistration()){
+			if((p.getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP)   ||
+		       (p.getNatureOfPerson() == ConstRelations2.FURTHER_APPEARANCE_OF_OP)) {
+				if(establishedPerson_ID == 0) establishedPerson_ID = p.getPersonID();
+				else if(p.getPersonID() != establishedPerson_ID) message("4131");
+					
+			}
+		}
+	}
+	
+	
 }
 
 /**
@@ -672,7 +692,7 @@ private boolean comparePersons(PersonStandardized ps, PersonStandardized pus){
 
 
     	if((psIsOP && !pusIsOP) || (!psIsOP && pusIsOP))
-    		message("4131");
+    		message("4132");
 
     }
 
@@ -736,10 +756,17 @@ private boolean CheckBirthDate(PersonStandardized ps, PersonStandardized pus){
 			
 			if((Math.abs(year1 - year2)) % 10 == 0) {
 
-				if(Math.abs(day1 - day2) > 1 || Math.abs(month1 - month2) != 0)
+				if(Math.abs(day1 - day2) > 1 || Math.abs(month1 - month2) != 0) {
 					return false;
+				}
 			}
-			else return false;
+			else {
+				
+				if(date1.substring(0, date1.length() - 1).equals(date2.substring(0, date2.length() - 1))) // only last digits differ
+						message("4009", (new Integer(year1).toString()), (new Integer(year2).toString()), id);
+
+				return false;
+			}
 		}
 		
 	}
@@ -757,11 +784,14 @@ private boolean CheckBirthDate(PersonStandardized ps, PersonStandardized pus){
 	if(year1 != year2) {		
 		if(Math.abs(year1 - year2) % 100 == 0)
 			 message("4012", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
-		else
+		else {
 			if(Math.abs(year1 - year2) % 10 == 0)
 				message("4010", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
-			else		
+			else {		
+				
 				message("4008", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
+			}
+		}
 	}
 	
 	return true;
@@ -879,6 +909,8 @@ private boolean CheckFirstName(PersonStandardized ps, PersonStandardized pus){
 	if(!name1.equals(name2))
 		 message("4003", ps.getFirstName(),pus.getFirstName()); 
 
+	if(ps.getFirstName().split(" ").length > 1 || pus.getFirstName().split(" ").length > 1)
+		 message("4005");  // only 1 firstname used
 	
 	return true;
 }

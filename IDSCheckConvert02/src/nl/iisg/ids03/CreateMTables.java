@@ -29,7 +29,7 @@ public class CreateMTables {
 
 		 "FTKODE       smallint," +
 		 "FTTYPE       varchar(2)," +
-		 "FOUT         varchar(255)" +
+		 "FOUT         varchar(511)" +
 		 
 
 		 ");"; 
