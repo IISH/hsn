@@ -425,6 +425,8 @@ public void giveDate(){
 	// H Check inconsistencies by way of identifiers (One person has different PersonIDs for father or mother in different registrations)
 	
 	HashSet<Integer> h = new HashSet<Integer>();	
+	HashSet<Integer> f = new HashSet<Integer>(); // fathers
+	HashSet<Integer> m = new HashSet<Integer>(); // mothers
 	
 	// Get all personnumbers in all registrations for OP
 	
@@ -436,26 +438,20 @@ public void giveDate(){
 	
 	for(Integer id: h){
 		
-		int id_fa = -1;
-		int id_mo = -1;
+		f.clear();
+		m.clear();
+		String birthdate = "";
 		for(RegistrationStandardized r: getRegistrationsStandardizedOfOP()){
 			for(PersonStandardized p: r.getPersonsStandardizedInRegistration()){
 				if(p.getPersonID() == id){
-					if(id_fa == -1)
-						id_fa = p.getPersonID_FA();
-					else
-						if(id_fa != p.getPersonID_FA()){
-							message("4154", p.getDateOfBirth());					
-						}
-					if(id_mo == -1)
-						id_mo = p.getPersonID_MO();
-					else
-						if(id_mo != p.getPersonID_MO()){
-							message("4155", p.getDateOfBirth());
-						}
+					birthdate = p.getDateOfBirth();
+					m.add(p.getPersonID_MO());
+					f.add(p.getPersonID_FA());
 				}
 			}
 		}
+		if(f.size() > 1) message("4154", birthdate);
+		if(m.size() > 1) message("4155", birthdate);
 	}
 	
 	// Construct implicit Heads

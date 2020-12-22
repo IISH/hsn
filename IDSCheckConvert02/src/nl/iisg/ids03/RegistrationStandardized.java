@@ -1228,8 +1228,8 @@ public class RegistrationStandardized {
 
     		if(ps.getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP || ps.getNatureOfPerson() == ConstRelations2.FURTHER_APPEARANCE_OF_OP){
 
-    			Ref_RP rp = Ref.getRP(ps.getKeyToSourceRegister());
-
+    			Ref_RP rp = Ref.getRP(ps.getKeyToRP());
+    			
     			if(rp != null){
 
     				String       lastNameFather   = rp.getLastNameFather();
