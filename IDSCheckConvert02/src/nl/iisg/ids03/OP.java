@@ -11,6 +11,8 @@ package nl.iisg.ids03;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -555,6 +557,130 @@ public void relateAllToAll(){
 	for(RegistrationStandardized r : getRegistrationsStandardizedOfOP()){
 		r.relateAllToAll();
 	}
+	
+	// Check for inconsistencies in relation to OP (over all registrations)
+	
+	class PersonStandardizedExt extends PersonStandardized {
+		
+		int relationToOP;
+
+		public int getRelationToOP() {
+			return relationToOP;
+		}
+
+		public void setRelationToOP(int relationToOP) {
+			this.relationToOP = relationToOP;
+		}
+
+	}
+	
+	ArrayList<PersonStandardizedExt> ps = new ArrayList<PersonStandardizedExt>();
+	
+	for(RegistrationStandardized r : getRegistrationsStandardizedOfOP()) {
+		
+		int OPKey = 0;
+		
+		for(PersonStandardized p : r.getPersonsStandardizedInRegistration())
+			if(p.getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP)
+				OPKey = p.getKeyToPersons();
+		
+		for(PersonStandardized p : r.getPersonsStandardizedInRegistration()) {	
+		
+			PersonStandardizedExt pse = new PersonStandardizedExt();
+			pse.setDateOfBirth(p.getDateOfBirth());
+			pse.setPersonID(p.getPersonID());
+			pse.setDynamicDataOfPersonStandardized(p.getDynamicDataOfPersonStandardized());
+			
+			for(PersonDynamicStandardized pds : p.getToAll()) {				
+				if(((PDS_AllToAll)pds).getValueOfRelatedPerson() == OPKey) {
+					pse.setRelationToOP(((PDS_AllToAll)pds).getContentOfDynamicData());
+					
+				}
+			}
+			
+			if(p.getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP)
+				pse.setRelationToOP(0); // this is a pseudo-relation, used to distinguish the RP
+			
+			ps.add(pse);
+			
+		}
+			
+	}
+	
+	//System.out.println("FFR " + "ps.size()  = " + ps.size());
+	
+	Collections.sort(ps ,new Comparator<PersonStandardizedExt>() {
+		 public int compare(PersonStandardizedExt p1, PersonStandardizedExt p2) {
+			 Integer p1id = Integer.valueOf((p1.getPersonID()));
+			 Integer p2id = Integer.valueOf((p2.getPersonID()));
+		  return p1id.compareTo(p2id);
+		 }
+	}); 
+	
+	Set<Integer> hh = new HashSet<Integer>();
+	Set<Integer> ho = new HashSet<Integer>();
+	
+	PersonStandardized previousP = null; 
+	
+	for(PersonStandardizedExt p: ps) {
+		if(previousP != null && p.getPersonID() != previousP.getPersonID()) {
+			if(ho.size() > 1) {
+				int prev = -1;
+				for(Integer i: ho) { 
+					if(prev > 0)
+						message("4161", previousP.getDateOfBirth(),
+								prev == 0 ? "OP" : ConstRelations2.b3kode1[prev], 
+								i    == 0 ? "OP" : ConstRelations2.b3kode1[i]);
+					prev = i;
+				}
+			}
+			ho.clear();
+			
+			
+  		}			
+		ho.add(p.getRelationToOP());
+		previousP = p;
+		
+		//for(PersonDynamicStandardized pds : p.getDynamicDataOfPersonStandardized())
+		//	if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD_ST)
+		//		hh.add(((PDS_RelationToHead)pds).getContentOfDynamicData());
+		
+		
+		
+		//System.out.println("FFR " + "hh.size() == " + hh.size());
+	 }
+	
+	// Check for inconsistencies in relation to Head (per Registration)
+	
+   for(RegistrationStandardized r : getRegistrationsStandardizedOfOP()) {
+	   
+	   previousP = null;
+		for(PersonStandardized p : r.getPersonsStandardizedInRegistration()) {
+			
+			if(previousP != null && p != previousP) {  
+				
+				if(hh.size() > 1) {
+					int prev = -1;
+					for(Integer i: hh) { 
+						if(prev > 0)
+							message("4162", previousP.getDateOfBirth(),
+									 ConstRelations2.b3kode1[prev], 
+									 ConstRelations2.b3kode1[i]);
+						prev = i;
+					}
+				}
+				hh.clear();				
+			}
+			
+			for(PersonDynamicStandardized pds : p.getDynamicDataOfPersonStandardized())
+					if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD_ST)
+						hh.add(((PDS_RelationToHead)pds).getContentOfDynamicData());
+			
+			previousP = p;
+		}
+   }
+	
+	//Map m = new HashMap(PersonStandardized)
 }
 
 

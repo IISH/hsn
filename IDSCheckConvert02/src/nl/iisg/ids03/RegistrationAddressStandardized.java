@@ -141,7 +141,7 @@ public class RegistrationAddressStandardized {
     			
     			String[] b = Utils.transformPlace(getOriginalAddress().getNameOfStreet(), null, null);
     			
-    			System.out.println("AAAS " + getOriginalAddress().getNameOfStreet() + " " + b[0] +   "  " + b[1]);
+    			//System.out.println("AAAS " + getOriginalAddress().getNameOfStreet() + " " + b[0] +   "  " + b[1]);
     			
     			if(b[0] != null){
     				setMunicipality(b[0]);

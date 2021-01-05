@@ -2495,8 +2495,8 @@ public class RegistrationStandardized {
     		}
     	}
     }
-
-
+    
+    
    
     /**
      * This routine resolves the actual relation based on the relation returned by getRelation
