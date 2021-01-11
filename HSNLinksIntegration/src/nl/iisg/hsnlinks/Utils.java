@@ -1,10 +1,8 @@
 package nl.iisg.hsnlinks;
 
 
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
+import java.sql.*;
+
 import java.util.ArrayList;
 
 
@@ -12,8 +10,8 @@ import java.util.ArrayList;
 
 import java.util.HashMap;
 
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.Statement;
+//import com.mysql.jdbc.Connection;
+//import com.mysql.jdbc.Statement;
 
 public class Utils {
 	

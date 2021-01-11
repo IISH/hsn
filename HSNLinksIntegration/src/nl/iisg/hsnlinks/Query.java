@@ -4,7 +4,7 @@ import java.io.DataOutputStream;
 
 import javax.swing.JTextArea;
 
-import com.mysql.jdbc.Connection;
+import java.sql.*;
 
 public class Query {
 

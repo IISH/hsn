@@ -36,6 +36,7 @@ import word.api.interfaces.IDocument;
 import word.w2004.Document2004;
 
 public class AlfalabServerConsole implements Runnable {
+	//
     private final static String GET_MESSAGE_QUEUE_COMMAND = "getMessageQueue";
     private final static String GET_DATE_COMMAND = "getDate";
     private final static String SEND_FILE_COMMAND = "sendFile";

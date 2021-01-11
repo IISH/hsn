@@ -21,11 +21,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
+
 import nl.iisg.hsncommon.Common1;
 import nl.iisg.hsncommon.ConstRelations2;
 import nl.iisg.ref.*;
-import sun.security.action.GetBooleanAction;
+
 
 
 /**
@@ -1152,10 +1152,10 @@ public class Person {
 		//	return true;
 		//}
 		
-		//Kees 14-07-2020:  ‘Geen OP’ betekent dat er kunstmatig een inschrijving met OP is gemaakt.
+		//Kees 14-07-2020:  ï¿½Geen OPï¿½ betekent dat er kunstmatig een inschrijving met OP is gemaakt.
 		//Dit komt voor in situaties dat een OP maar een week of wat heeft geleefd en niet is opgenomen 
 		//in het bevolkingsregister. We nemen dan het qua geboortedatum dichtst bij zijnde register en vullen 
-		//dan zelf een OP in met als naam “Geen OP”. 
+		//dan zelf een OP in met als naam ï¿½Geen OPï¿½. 
 		//Deze inschrijving moet op een normale manier behandeld worden
 
 		// Check birthday OP

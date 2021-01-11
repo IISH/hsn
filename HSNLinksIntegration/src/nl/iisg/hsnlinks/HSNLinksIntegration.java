@@ -2,7 +2,7 @@ package nl.iisg.hsnlinks;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,8 +20,8 @@ import nl.iisg.hsncommon.Common1;
 import nl.iisg.hsncommon.ConstRelations;
 import nl.iisg.hsncommon.ConstRelations2;
 
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.Statement;
+//import com.mysql.jdbc.Connection;
+//import com.mysql.jdbc.Statement;
 
 ;
 

@@ -3,7 +3,7 @@ package nl.iisg.hsnlinks;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.jdbc.Connection;
+import java.sql.*;
 
 public class ContextElement {
 	
