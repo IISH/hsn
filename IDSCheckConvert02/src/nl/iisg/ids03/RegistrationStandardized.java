@@ -728,7 +728,7 @@ public class RegistrationStandardized {
         	}
         	
         	if(psBefore != null && psBefore.getEndFlag() <= 57) {
-    			System.out.println("ABBC 1 " + psBefore.getEndDate());
+    			//System.out.println("ABBC 1 " + psBefore.getEndDate());
 
         		ps.setMinStartDate(psBefore.getEndDate());
         	}
@@ -759,7 +759,7 @@ public class RegistrationStandardized {
     		    		for(PersonDynamicStandardized pds1: ps1.getDynamicDataOfPersonStandardized()){
     		    			if(pds1.getKeyToDistinguishDynamicDataType() == ConstRelations2.AANKOMST){
     		    				if(((PDS_PlaceOfOrigin)pds1).getOriginGroup() == group){
-    		    	    			System.out.println("ABBC 4 " + ps.getMinStartDate());
+    		    	    			//System.out.println("ABBC 4 " + ps.getMinStartDate());
 
     		    					ps1.setMinStartDate(ps.getMinStartDate());
     		    				}
@@ -801,12 +801,12 @@ public class RegistrationStandardized {
     		}
     			
     		if(psPrevious != null) {
-    			System.out.println("ABBC 2 " + psPrevious.getStartDate());
+    			//System.out.println("ABBC 2 " + psPrevious.getStartDate());
 
     			ps.setMinStartDate(psPrevious.getStartDate());
     		}
     		else {
-    			System.out.println("ABBC 3 " + ps.getEntryDateHead());
+    			//System.out.println("ABBC 3 " + ps.getEntryDateHead());
 
     			ps.setMinStartDate(ps.getEntryDateHead());
     		}
@@ -852,7 +852,7 @@ public class RegistrationStandardized {
     		int interval = (Utils.dayCount(ps.getMaxStartDate()) - Utils.dayCount(ps.getMinStartDate())) / (groupCount + 1);
     		
     		if(group == 0){    	
-    			System.out.println("ABBC " + ps.getMinStartDate());
+    			//System.out.println("ABBC " + ps.getMinStartDate());
     			ps.setStartDate(Utils.dateFromDayCount(Utils.dayCount(ps.getMinStartDate()) + interval));
     			ps.setStartFlag(11);	
     		}

@@ -52,7 +52,7 @@ public class OP {
 public boolean check(){
 	
 		
-	System.out.println("OP idnr = "+getKeyToRP());
+	//System.out.println("OP idnr = "+getKeyToRP());
 	
 	// Following give IDNRs terminating errors
 	//if(getKeyToRP() == 76081 || getKeyToRP() == 76059 || getKeyToRP() == 70796) return true;

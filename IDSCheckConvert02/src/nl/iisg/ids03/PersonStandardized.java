@@ -3631,7 +3631,7 @@ public class PersonStandardized {
 				int flag = 0;
 				String startDate0 = null;
 				if(Utils.dateIsValid(pds1.getDateOfMutation2()) != 0){
-					System.out.println("ABBC 6 " + getDateOfBirth() + "  " + getEndDate());
+					//System.out.println("ABBC 6 " + getDateOfBirth() + "  " + getEndDate());
 					if(Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getEndDate()))
 						startDate0 = Utils.dateFromDayCount(Utils.dayCount(getEndDate()) - 1);
 					else{
@@ -4311,8 +4311,8 @@ public class PersonStandardized {
 
 
 	public void setStartDate(String startDate) {
-		System.out.println("ABBC startDate =  " + startDate + ", caller = " + Thread.currentThread().getStackTrace()[2].getMethodName() + 
-				",  lineNumber  = " + Thread.currentThread().getStackTrace()[2].getLineNumber());
+		//System.out.println("ABBC startDate =  " + startDate + ", caller = " + Thread.currentThread().getStackTrace()[2].getMethodName() + 
+		//		",  lineNumber  = " + Thread.currentThread().getStackTrace()[2].getLineNumber());
 		this.startDate = startDate;
 	}
 

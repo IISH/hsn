@@ -3,6 +3,14 @@
 	<name>Alfalab</name>
 	<comment></comment>
 	<projects>
+		<project>CivilCertificatesToIDS</project>
+		<project>ConvertPK</project>
+		<project>HSNLinksIntegration</project>
+		<project>HSNMigrate</project>
+		<project>IDS</project>
+		<project>IDSCheckConvert02</project>
+		<project>InitialiseIDS</project>
+		<project>LinksIDS</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

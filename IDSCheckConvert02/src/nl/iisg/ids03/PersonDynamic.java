@@ -707,10 +707,14 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 
 		
 		if(getKeyToRegistrationPersons() == 1 && (getDynamicData2().toUpperCase().indexOf("ID") >= 0   || 
-				                                  getDynamicData2().toUpperCase().indexOf("IDEM") >= 0  ||
-				                                  getDynamicData2().toUpperCase().indexOf("\"") >= 0))
+												  getDynamicData2().toUpperCase().indexOf("IDEM") >= 0  ||
+												  getDynamicData2().toUpperCase().indexOf(",,") >= 0  ||
+				                                  getDynamicData2().toUpperCase().indexOf("\"") >= 0)) {
 
 			message("1346");	
+			
+			
+		}
 
 
 	}

@@ -32,8 +32,8 @@ public class CheckManager {
 	    	if(++c % 10 == 0) {
 	    		Date date = new Date(); 
 	    		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-	    		System.out.print(formatter.format(date));
-	    		System.out.println("  Checked " + c + " OP's, returnCode = " + returnCode);
+	    		//System.out.print(formatter.format(date));
+	    		//System.out.println("  Checked " + c + " OP's, returnCode = " + returnCode);
 	    		}
 	    	boolean rc = op1.check();
 	    	if(rc == false)
