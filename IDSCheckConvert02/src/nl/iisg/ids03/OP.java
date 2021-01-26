@@ -268,6 +268,7 @@ public void identify(){
 	ArrayList<PersonStandardized> testedPersons = new ArrayList<PersonStandardized>();
 	setPersonNumber(1);  // restart for each OP
 	Map<Integer, Set<PersonStandardized>> m = new HashMap<Integer, Set<PersonStandardized>>();
+	boolean m4135 = false;
 	
 	for(RegistrationStandardized r : getRegistrationsStandardizedOfOP()){
 		for(PersonStandardized p: r.getPersonsStandardizedInRegistration()){
@@ -296,6 +297,15 @@ public void identify(){
 				s.add(p);
 			}
 			testedPersons.add(p);
+			String name = p.getFamilyName();
+			if(name.indexOf("@A") >= 0 || name.indexOf("@B") >= 0 || name.indexOf("#A") >= 0 || name.indexOf("#B") >= 0) {
+				if(!m4135) {
+					message("4135");
+					m4135 = true;
+					
+				}
+			}
+
 		}
 	}
 	
@@ -758,20 +768,20 @@ private boolean comparePersons(PersonStandardized ps, PersonStandardized pus){
 	//
 	// Test if different family name
 	//
-	boolean familyNameOK =	CheckFamilyName(ps, pus); 
+	boolean familyNameOK =	CheckFamilyName(ps, pus, false); // no message (yet)
 	
 	
 	//
 	// Test if different first firstname
 	//
 	
-	boolean firstNameOK = CheckFirstName(ps, pus); 
+	boolean firstNameOK = CheckFirstName(ps, pus, false); // no message (yet)
 	
 	
 	//
 	// Test if different birth dates 
 	//
-	boolean birthDateOK = CheckBirthDate(ps, pus); 
+	boolean birthDateOK = CheckBirthDate(ps, pus, false); // no message (yet)
 	
 	//
 	// Test if different sex
@@ -780,6 +790,16 @@ private boolean comparePersons(PersonStandardized ps, PersonStandardized pus){
 	boolean sexOK = (ps.getSex().equalsIgnoreCase("m") &&  pus.getSex().equalsIgnoreCase("m")) ||
 			      (ps.getSex().equalsIgnoreCase("v") &&  pus.getSex().equalsIgnoreCase("v"));
 	
+	// If every test is OK, we do the again to get the messages
+	// This way we only get messages when we know the persons wil be linked (are the same)
+	
+	if(familyNameOK && firstNameOK && birthDateOK  && sexOK) {
+		CheckFamilyName(ps, pus, true);
+		CheckFirstName(ps, pus, true);
+		CheckBirthDate(ps, pus, true);
+
+	}
+
 	if (!familyNameOK && firstNameOK  && birthDateOK  && sexOK ) {
         message("4121", ps.getFamilyName(), pus.getFamilyName());
         return false;
@@ -834,7 +854,7 @@ private boolean comparePersons(PersonStandardized ps, PersonStandardized pus){
  * @param pus
  * @return
  */
-private boolean CheckBirthDate(PersonStandardized ps, PersonStandardized pus){
+private boolean CheckBirthDate(PersonStandardized ps, PersonStandardized pus, boolean giveMessage){
 	
 
 	String date1 = ps.getDateOfBirth();
@@ -885,6 +905,7 @@ private boolean CheckBirthDate(PersonStandardized ps, PersonStandardized pus){
 			else {
 				
 				if(date1.substring(0, date1.length() - 1).equals(date2.substring(0, date2.length() - 1))) // only last digits differ
+					if(giveMessage)
 						message("4009", (new Integer(year1).toString()), (new Integer(year2).toString()), id);
 
 				return false;
@@ -894,25 +915,31 @@ private boolean CheckBirthDate(PersonStandardized ps, PersonStandardized pus){
 	}
 	else
 		if(year1 > 1700 && year1 == year2) {
-			 message("4125", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
+			if(giveMessage)
+				message("4125", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
 			 return true;			
 		}
 		else return false;
-	
+
 	if(day1 != day2)
-		 message("4006", (new Integer(day1).toString()), (new Integer(day2).toString()), id); 
+		if(giveMessage)
+			message("4006", (new Integer(day1).toString()), (new Integer(day2).toString()), id); 
 	if(month1 != month2)
-		 message("4007", (new Integer(month1).toString()), (new Integer(month2).toString()), id); 
+		if(giveMessage)
+			message("4007", (new Integer(month1).toString()), (new Integer(month2).toString()), id); 
 	if(year1 != year2) {		
-		if(Math.abs(year1 - year2) % 100 == 0)
-			 message("4012", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
+		if(Math.abs(year1 - year2) % 100 == 0) {
+			if(giveMessage)
+				message("4012", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
+		}
 		else {
 			if(Math.abs(year1 - year2) % 10 == 0)
-				message("4010", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
-			else {		
-				
-				message("4008", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
-			}
+				if(giveMessage)
+					message("4010", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
+				else {		
+					if(giveMessage)
+						message("4008", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
+				}
 		}
 	}
 	
@@ -931,13 +958,14 @@ private boolean CheckBirthDate(PersonStandardized ps, PersonStandardized pus){
  * @param pus
  * @return
  */
-private boolean CheckFamilyName(PersonStandardized ps, PersonStandardized pus){
+private boolean CheckFamilyName(PersonStandardized ps, PersonStandardized pus, boolean giveMessage){
 	
 	if(ps.getFamilyName() == null || pus.getFamilyName() == null)
 		return false;
 
 	String name1 = ps.getFamilyName().toLowerCase().trim(); 
 	String name2 = pus.getFamilyName().toLowerCase().trim(); 
+	
 
 
 	if(name1 != null && name2 != null){
@@ -976,7 +1004,8 @@ private boolean CheckFamilyName(PersonStandardized ps, PersonStandardized pus){
 	
 	
 	if(!name1.equals(name2)){
-		 message("4001", ps.getFamilyName(),pus.getFamilyName());
+		if(giveMessage)
+			message("4001", ps.getFamilyName(),pus.getFamilyName());
 	}
 		
 	
@@ -995,7 +1024,7 @@ private boolean CheckFamilyName(PersonStandardized ps, PersonStandardized pus){
  * @param pus
  * @return
  */
-private boolean CheckFirstName(PersonStandardized ps, PersonStandardized pus){
+private boolean CheckFirstName(PersonStandardized ps, PersonStandardized pus, boolean giveMessage){
 	
 	if(ps.getFirstName() == null || pus.getFirstName() == null)
 		return false;
@@ -1029,17 +1058,38 @@ private boolean CheckFirstName(PersonStandardized ps, PersonStandardized pus){
 		return false;
 	
 	if(!name1.equals(name2))
-		 message("4003", ps.getFirstName(),pus.getFirstName()); 
-
-	if(ps.getFirstName().split(" ").length > 1 || pus.getFirstName().split(" ").length > 1)
-		 message("4005");  // only 1 firstname used
+		if(giveMessage)
+			message("4003", ps.getFirstName(),pus.getFirstName()); 
 	
+	// We willen een melding als een Dirk Jan wordt gelinkt aan een Dirk, of een ‘Delphina Magdalena” gelijkgesteld wordt aan ‘Delphina Magdalena Johanna’, of Kees Jan aan Kees Dirk
+	// Maar niet als Henk Jan gelijk wordt gesteld aan Henk Jan, ook al is alleen de eerste naam gebruikt voor linking
+	
+	String[] n1 = {"","","","","","",""};
+	String[] n2 = {"","","","","","",""};
+	
+	//System.out.println("AAASX " + ps.getFirstName());
+	
+	for(int i = 0; i < ps.getFirstName().split(" ").length; i++)
+		n1[i] = ps.getFirstName().split(" ")[i];
+	
+	for(int i = 0; i < pus.getFirstName().split(" ").length; i++)
+		n2[i] = pus.getFirstName().split(" ")[i];
+	
+	boolean b4005 = false;
+	for(int i = 1; i < n1.length; i++)
+		if(!n1[i].equalsIgnoreCase(n2[i]))
+			b4005 = true;
+
+	if(b4005 && giveMessage)
+		//message("4005");  // only 1 firstname used
+	    message("4005", ps.getFirstName() + " versus " + pus.getFirstName());  // only 1 firstname used
+
 	return true;
 }
 
 private void message(String number, String... fills){
 	
-	Message m = new Message(number);
+	Message m = new Message(number); 
 	
 	m.setKeyToRP(getKeyToRP());
 	m.save(fills); 
