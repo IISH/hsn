@@ -168,6 +168,8 @@ public boolean check(){
 	*/
 	
 	// Corona Thuis Test op B4 ipv B2 en gebruik de Hoofddatum in de message
+	// vervallen 02-02-2021
+	/*
 	for(Registration r: getRegistrationsOfOP()){
 		
 		if(Common1.dateIsValid(r.getDayEntryHead(), r.getMonthEntryHead(), r.getYearEntryHead() ) == 0){	
@@ -176,7 +178,7 @@ public boolean check(){
 			}
 		}
 	}
-	
+	*/
 	
 	// Check if page number and line number registration used more than once
 	

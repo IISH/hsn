@@ -471,10 +471,12 @@ public class Person {
 				message("1218");
 
 			// Check that registration date for non C-Register is not -3/-3/-3
+			// But if b2annr = 'GEEN OP'  -3/-3/-3 is ok regardless of the register type
 
-			if(ainb.getTypeRegister().toUpperCase().equals("C") != true &&
-					(getDayOfRegistration() == -3 && getMonthOfRegistration() == -3 && getYearOfRegistration() == -3))
-				message("1219");
+			if(!familyName.equalsIgnoreCase("GEEN OP"))
+				if(ainb.getTypeRegister().toUpperCase().equals("C") != true &&
+				(getDayOfRegistration() == -3 && getMonthOfRegistration() == -3 && getYearOfRegistration() == -3))
+					message("1219");
 
 
 			// Check if date of decease not after range register

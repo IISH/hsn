@@ -9,6 +9,7 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -207,6 +208,9 @@ public class Utils {
 			 day1 = day1 - 28;
 			 month1 = 3;
 		 }
+		 
+		 
+			 
 
 
 		 if(year1 > 1800){
@@ -405,6 +409,8 @@ public class Utils {
 
     
 	public static int dateIsValid(String date){
+		
+		if(date == null) return -1;
 		
 		int day = (new Integer(date.substring(0,2))).intValue();
 		int month = (new Integer(date.substring(3,5))).intValue();
@@ -784,6 +790,7 @@ public class Utils {
 			// Get .DBF file column information
 	
 			InputStream inputStream  = new FileInputStream(inputDirectory + File.separator + dbfName + ".DBF");
+			//InputStreamReader isr = new InputStreamReader(inputStream, StandardCharsets.ISO_8859_1);
 	        System.out.println("Opening: " + inputDirectory + File.separator + dbfName + ".DBF");
 			DBFReader reader = new DBFReader(inputStream);
 			
@@ -937,7 +944,7 @@ public class Utils {
 
 							}
 
-							// Adapt the DBF column data to suit our HSN needs (tranform "Wed Jul 19 00:00:00 CEST 2000" to "19-07-2000")
+						    // Adapt the DBF column data to suit our HSN needs (tranform "Wed Jul 19 00:00:00 CEST 2000" to "19-07-2000")
 
 							if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_D){
 
@@ -958,6 +965,30 @@ public class Utils {
 									}
 								}
 							}
+
+						    // Adapt the DBF column data to suit our HSN needs (transform ISO-8859-1 to UTF-8)
+							// This does not work, rowObjects[columnAnnotatedVariableToDBFField[index1]] already is a String
+							// but judging by the output, it has not been created using ISO_8859_1, so it contains invalid characters
+
+							
+							 
+							if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_C){
+
+								if(rowObjects[columnAnnotatedVariableToDBFField[index1]] != null){
+									
+									//System.out.println("ddda " + System.getProperty("file.encoding"));
+									
+									//byte[] b = ((String)rowObjects[columnAnnotatedVariableToDBFField[index1]]).getBytes("UTF-8");
+									//String s = new String(b, StandardCharsets.ISO_8859_1);
+									
+									//System.out.println("ggg " + rowObjects[columnAnnotatedVariableToDBFField[index1]].getClass());
+									//new String((byte[]) rowObjects[columnAnnotatedVariableToDBFField[index1]], StandardCharsets.ISO_8859_1);
+									rowObjects[columnAnnotatedVariableToDBFField[index1]] = rowObjects[columnAnnotatedVariableToDBFField[index1]];
+									
+								}
+							}
+							
+							
 
 							// create object to hold value from DBF Column
 

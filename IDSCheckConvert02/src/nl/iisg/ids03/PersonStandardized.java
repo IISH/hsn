@@ -2574,10 +2574,12 @@ public class PersonStandardized {
 				if(relationToHead.size() == 1){  // Explicit head, 1 record
 
 					PersonDynamicStandardized pds1 = relationToHead.get(0);
-					if(Utils.dayCount(getDateOfRegistration()) > Utils.dayCount(explicitHeadDate) ||
-							Utils.dayCount(getStartDate()) > Utils.dayCount(explicitHeadDate) ||
-							Utils.dayCount(getEndDate())   < Utils.dayCount(explicitHeadDate)){
-						copyDatingInfo(this, pds1);
+					if(getDateOfRegistration() != null && explicitHeadDate != null &&  getStartDate() != null && getEndDate() != null) {
+						if(Utils.dayCount(getDateOfRegistration()) > Utils.dayCount(explicitHeadDate) ||
+								Utils.dayCount(getStartDate()) > Utils.dayCount(explicitHeadDate) ||
+								Utils.dayCount(getEndDate())   < Utils.dayCount(explicitHeadDate)){
+							copyDatingInfo(this, pds1);
+						}
 					}
 					else{
 						int oldCode = ((PDS_RelationToHead)pds1).getContentOfDynamicData();
@@ -3632,10 +3634,10 @@ public class PersonStandardized {
 				String startDate0 = null;
 				if(Utils.dateIsValid(pds1.getDateOfMutation2()) != 0){
 					//System.out.println("ABBC 6 " + getDateOfBirth() + "  " + getEndDate());
-					if(Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getEndDate()))
+					if(Utils.dateIsValid(getEndDate()) == 0 && Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getEndDate()))
 						startDate0 = Utils.dateFromDayCount(Utils.dayCount(getEndDate()) - 1);
 					else{
-						if(Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getStartDate()))
+						if(Utils.dateIsValid(getStartDate()) == 0 && Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getStartDate()))
 							startDate0 = Utils.dateFromDayCount(Utils.dayCount(getDateOfBirth()) + 15 * 365);
 						else 
 							startDate0 = getStartDate();
@@ -3670,7 +3672,7 @@ public class PersonStandardized {
 			
 			if(Common1.dateIsValid(getDateOfBirth()) == 0) {
 				if(Utils.dateIsValid(pds1.getDateOfMutation2()) != 0){
-					if(Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getEndDate()))
+					if(getEndDate() != null && Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getEndDate()))
 						startDate0 = Utils.dateFromDayCount(Utils.dayCount(getEndDate()) - 1);
 					else{
 						if(Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getStartDate()))
@@ -3714,21 +3716,26 @@ public class PersonStandardized {
 						}
 					}
 					if(startDate1 == null){
-						startDate1 = Utils.dateFromDayCount((Utils.dayCount(pds1.getStartDate()) + Utils.dayCount(getEndDate())) / 2);
-						flag = 54;
+						if(pds1.getStartDate() != null && getEndDate() != null) {
+								startDate1 = Utils.dateFromDayCount((Utils.dayCount(pds1.getStartDate()) + Utils.dayCount(getEndDate())) / 2);
+								flag = 54;
+						}
 					}
 				}
 
 				//System.out.println(startDate1);
 
-				pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(startDate1) - 1));
-				pds1.setEndFlag(flag);
-				pds1.setEndEst(100);
+				if(startDate1 != null) {
+					pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(startDate1) - 1));
+					pds1.setEndFlag(flag);
+					pds1.setEndEst(100);
 
-				pds2.setStartDate(startDate1);
-				pds2.setStartFlag(flag);
-				pds2.setStartEst(100);
+					pds2.setStartDate(startDate1);
+					pds2.setStartFlag(flag);
+					pds2.setStartEst(100);
+				}
 
+				
 				pds2.setEndDate(getEndDate());
 				pds2.setEndFlag(getEndFlag());
 				pds2.setEndEst(getEndEst());
