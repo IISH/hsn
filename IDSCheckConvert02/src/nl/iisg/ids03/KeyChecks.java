@@ -484,6 +484,7 @@ public class KeyChecks {
 		
 		
 		for(PersonDynamic pd: personsDynamic){
+			
 			if(prevType != pd.getDynamicDataType()){
 				prevType = pd.getDynamicDataType();
 				if(pd.getDynamicDataSequenceNumber() != 1){
@@ -522,6 +523,7 @@ public class KeyChecks {
 			}
 			
 		}
+		
 		
 		
 		// Check that partial key B6 is in B2 

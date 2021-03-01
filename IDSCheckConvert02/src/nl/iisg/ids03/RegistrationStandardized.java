@@ -1644,9 +1644,13 @@ public class RegistrationStandardized {
     	    			if(Utils.dateIsValid(ps.getDateOfBirth()) == 0  && Utils.dateIsValid(ps1.getDateOfBirth()) == 0 && 
     	    					Utils.dayCount(ps.getDateOfBirth()) - Utils.dayCount(ps1.getDateOfBirth()) > 52 * 365)
     	    				message("4414", ps.getKeyToPersons(), ps.getDateOfBirth(), ps1.getDateOfBirth());
+    	    			
+    	    			// Moved to OP.java
+    	    			/*
     	    			if(Utils.dateIsValid(ps.getDateOfBirth()) == 0  && Utils.dateIsValid(ps1.getDateOfDecease()) == 0)
         	    			if(Utils.dayCount(ps.getDateOfBirth()) - Utils.dayCount(ps1.getDateOfDecease()) > 9 * 30)
         	    				message("4153",  ps.getKeyToPersons(),"" + (Utils.dayCount(ps.getDateOfBirth()) - Utils.dayCount(ps1.getDateOfDecease())));
+        	    				*/
     	    			break;
     	    		}
     	    	}
@@ -1963,14 +1967,16 @@ public class RegistrationStandardized {
         for(PersonDynamicStandardized pds: ps.getDynamicDataOfPersonStandardized()){
         	if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.VERTREK)
         		if(!pds.getDateOfMutation2().equals("00-00-0000"))
-        			departure =  Utils.dayCount(pds.getDateOfMutation2());
+        			if(Common1.dateIsValid(pds.getDateOfMutation2()) == 0)
+        				departure =  Utils.dayCount(pds.getDateOfMutation2());
         }
         
         int arrival = 0;
         for(PersonDynamicStandardized pds: ps.getDynamicDataOfPersonStandardized()){
         	if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.AANKOMST)
         		if(!pds.getDateOfMutation2().equals("00-00-0000"))
-        			arrival =  Utils.dayCount(pds.getDateOfMutation2());
+        			if(Common1.dateIsValid(pds.getDateOfMutation2()) == 0)
+        				arrival =  Utils.dayCount(pds.getDateOfMutation2());
         }
         
     	if(departure > 0 && departure > arrival){ // left for good

@@ -1564,11 +1564,14 @@ public class PersonStandardized {
 			int monthHead = (new Integer(pds.getEntryDateHead().substring(3,5))).intValue();
 			int yearHead  = (new Integer(pds.getEntryDateHead().substring(6,10))).intValue();
 			
+			int dayCount = 0;
+			int estimate = 0;
 			
 			int [] a = Utils.normalize(day, month, year, dayHead, monthHead, yearHead); 
-            int dayCount = Utils.dayCount(a[0], a[1], a[2]);
-            int estimate = a[3];
-			
+			if(Common1.dateIsValid(a[0], a[1], a[2]) == 0) {
+				dayCount = Utils.dayCount(a[0], a[1], a[2]);
+				estimate = a[3];
+			}
 			
 			if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.AANKOMST){				
 				if(arrivalI < 2){				

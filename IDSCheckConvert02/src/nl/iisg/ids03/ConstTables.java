@@ -4,8 +4,8 @@ public class ConstTables {
 
 	
 	 public static final int XBigstring = 256;
-	 public static final int Bigstring = 60;
-	 public static final int Smallstring = 15;
+	 public static final int Bigstring = 128;
+	 public static final int Smallstring = 32;
 	 
 	
 	

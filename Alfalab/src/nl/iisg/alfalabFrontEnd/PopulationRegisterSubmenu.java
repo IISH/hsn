@@ -6,7 +6,7 @@ import java.awt.event.*;
 import com.intellij.uiDesigner.core.*;
 
 public class PopulationRegisterSubmenu extends JDialog {
-    private final static String POP_REG_TEST_ERRORS = "popRegTestErrors";// = popRegTestErrors2 for mySQL input
+    private final static String POP_REG_TEST_ERRORS = "popRegTestErrors2";// = popRegTestErrors2 for mySQL input
     private final static String POP_REG_DELETE_FROM_DEF_DB = "popRegDeleteFromDefDB";
     private final static String POP_REG_APPEND_TO_DEF_DB = "popRegAppendToDefDB";
     private final static String POP_REG_TEST_IDNR_DOUBLES = "popRegTestIDnrDoubles";

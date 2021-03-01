@@ -23,6 +23,8 @@ import java.util.Set;
 import nl.iisg.hsncommon.Common1;
 import nl.iisg.hsncommon.ConstRelations2;
 //import nl.iisg.ids05.Utils;
+import nl.iisg.ref.Ref;
+import nl.iisg.ref.Ref_AINB;
 
 /**
  * 
@@ -227,6 +229,32 @@ public boolean check(){
 		}
 	}
 	
+	// Check 'GEEN OP' situatie 
+
+	int cnt1 = 0;
+	int cnt2 = 0;
+
+	for(Registration r: getRegistrationsOfOP()){
+		for(Person p: r.getPersonsInRegistration()) {	
+			if(p.getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP)
+				cnt2++;
+			if(p.getFamilyName().trim().equalsIgnoreCase("GEEN OP")) {
+				cnt1++;
+
+				//System.out.println("SDDDS " + p.getFamilyName() + " " + p.getFamilyName().length());
+				//break;		
+			}
+		}	
+	}
+
+	if(cnt1 > 0) { 
+		message("4172", "" + cnt1);		
+		if(Ref.getRP(getKeyToRP()) == null)
+			message("4174");
+		if(cnt2 > cnt1)
+			message("4173");
+	}
+
 	//System.out.println("  Op.check, returnCode = " + returnCode);
 	return returnCode;
 	
@@ -322,6 +350,75 @@ public void identify(){
 				else if(p.getPersonID() != establishedPerson_ID) message("4131");
 					
 			}
+		}
+	}
+	
+	// Dit betreft een melding die optreedt als -na identificatie- verschillende hoofden van een huishouden
+	// sterk op elkaar lijken (drie elementen van de vijf hetzelfde zijn: gebdag, gebmnd, gebjaar, achternaam 
+	// en eerste voornaam EN het geboortejaar niet meer dan 20 jaar van elkaar verschilt)
+	
+	
+	ArrayList<String> birthDay = new ArrayList<String>();
+	ArrayList<String> birthMonth = new ArrayList<String>();
+	ArrayList<String> birthYear = new ArrayList<String>();
+	ArrayList<String> firstName = new ArrayList<String>();
+	ArrayList<String> lastName = new ArrayList<String>();
+	ArrayList<Integer> personID = new ArrayList<Integer>();
+	
+	ArrayList[] a = new ArrayList[5];
+	
+	a[0] = birthDay;
+	a[1] = birthMonth;
+	a[2] = birthYear;
+	a[3] = firstName;
+	a[4] = lastName;
+	
+	for(RegistrationStandardized r : getRegistrationsStandardizedOfOP()){
+		for(PersonStandardized p: r.getPersonsStandardizedInRegistration()){
+			for(PersonDynamicStandardized pd: p.getDynamicDataOfPersonStandardized()) {
+				if(pd.getKeyToDistinguishDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD_ST){
+					if(((PDS_RelationToHead)pd).getContentOfDynamicData() == ConstRelations2.HOOFD ||
+				       ((PDS_RelationToHead)pd).getContentOfDynamicData() == ConstRelations2.EXPLICIET__HOOFD_ALLENSTAAND ||
+                       ((PDS_RelationToHead)pd).getContentOfDynamicData() == ConstRelations2.EXPLICIET_HOOFD ||
+                       ((PDS_RelationToHead)pd).getContentOfDynamicData() == ConstRelations2.EXPLICIET_HOOFD_EERSTE_OPVOLGER ||
+                       ((PDS_RelationToHead)pd).getContentOfDynamicData() == ConstRelations2.EXPLICIET_HOOFD_TWEEDE_OPVOLGER ||
+                       ((PDS_RelationToHead)pd).getContentOfDynamicData() == ConstRelations2.EXPLICIET_HOOFD_DERDE_OPVOLGER){
+
+						birthYear.add(p.getDateOfBirth().substring(6,10));
+						birthMonth.add(p.getDateOfBirth().substring(3,5));
+						birthDay.add(p.getDateOfBirth().substring(0,2));
+						firstName.add(p.getFirstName().split(" ")[0]);
+						lastName.add(p.getFamilyName());		
+						
+						personID.add(p.getPersonID());
+						break;
+					}
+				}
+			}
+		}
+	}
+	
+	for(int i = 0; i < birthDay.size(); i++) {
+		for(int j = i; j < birthDay.size(); j++) {
+			
+			int equals = 0;
+			
+			if(birthDay.get(i).equals(birthDay.get(j))) equals++;
+			if(birthMonth.get(i).equals(birthMonth.get(j))) equals++;
+			if(birthYear.get(i).equals(birthYear.get(j))) equals++;
+			
+			if((lastName.get(i).length() <= 5 && Common1.LevenshteinDistance(lastName.get(i), lastName.get(j)) <= 1) ||
+		       (lastName.get(i).length() >  5 && Common1.LevenshteinDistance(lastName.get(i), lastName.get(j)) <= 2)) equals++; 
+
+			if((firstName.get(i).length() <= 5 && Common1.LevenshteinDistance(firstName.get(i), firstName.get(j)) <= 1) ||
+		       (firstName.get(i).length() >  5 && Common1.LevenshteinDistance(firstName.get(i), firstName.get(j)) <= 2)) equals++;
+		
+			if(equals >= 3 && Math.abs(Integer.parseInt(birthYear.get(i)) - Integer.parseInt(birthYear.get(j))) <= 20 &&
+					personID.get(i) != personID.get(j))
+				
+				message("4151",
+					firstName.get(i), lastName.get(i), birthDay.get(i) + "-" + birthMonth.get(i) +  "-" + birthYear.get(i),
+					firstName.get(j), lastName.get(j), birthDay.get(j) + "-" + birthMonth.get(j) +  "-" + birthYear.get(j));
 		}
 	}
 	
@@ -435,6 +532,31 @@ public void giveDate(){
 	
 	for(RegistrationStandardized rs : getRegistrationsStandardizedOfOP())
 		rs.findFatherAndMother2();	
+	
+	// G Check inconsistencies by way of birth dates
+	
+	HashSet<Integer> h0 = new HashSet<Integer>();
+	
+	for(RegistrationStandardized r: getRegistrationsStandardizedOfOP()){
+		for(PersonStandardized ps: r.getPersonsStandardizedInRegistration()){
+			if(h0.contains(ps.getPersonID())) continue;
+			if(ps.getPersonID_MO() != 0){
+			x:	for(RegistrationStandardized r1: getRegistrationsStandardizedOfOP()){
+					for(PersonStandardized ps1: r1.getPersonsStandardizedInRegistration()){
+						if(ps1.getPersonID() == ps.getPersonID_MO()){
+							if(Utils.dateIsValid(ps.getDateOfBirth()) == 0  && Utils.dateIsValid(ps1.getDateOfDecease()) == 0) {
+								if(Utils.dayCount(ps.getDateOfBirth()) - Utils.dayCount(ps1.getDateOfDecease()) > 9 * 30) {
+									message("4153", "" + (Utils.dayCount(ps.getDateOfBirth()) - Utils.dayCount(ps1.getDateOfDecease())));
+									h0.add(ps.getPersonID());
+									break x;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 	
 	// H Check inconsistencies by way of identifiers (One person has different PersonIDs for father or mother in different registrations)
 	
@@ -639,7 +761,7 @@ public void relateAllToAll(){
 			if(ho.size() > 1) {
 				int prev = -1;
 				for(Integer i: ho) { 
-					if(prev > 0)
+					if(prev >= 0 && i >= 0)
 						message("4161", previousP.getDateOfBirth(),
 								prev == 0 ? "OP" : ConstRelations2.b3kode1[prev], 
 								i    == 0 ? "OP" : ConstRelations2.b3kode1[i]);
@@ -674,7 +796,7 @@ public void relateAllToAll(){
 				if(hh.size() > 1) {
 					int prev = -1;
 					for(Integer i: hh) { 
-						if(prev > 0)
+						if(prev >= 0 && i >= 0)
 							message("4162", previousP.getDateOfBirth(),
 									 ConstRelations2.b3kode1[prev], 
 									 ConstRelations2.b3kode1[i]);

@@ -782,7 +782,7 @@ public class Initialiser {
 		}
 		
 		
-		/*
+		
 		for(OP op: ops){
 			System.out.println();
 			    System.out.println("OP              " + op.getKeyToRP());
@@ -807,7 +807,7 @@ public class Initialiser {
 			}
 			
 		}
-	*/
+	
 		
 		System.out.println("Sort Objects");
 		
