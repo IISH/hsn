@@ -574,7 +574,7 @@ public class Utils {
     		}
     		else{
     			if(l == null){
-    				System.out.println("AAAS2 " + place1 + " " + l);
+    				//System.out.println("AAAS2 " + place1 + " " + l);
     				Ref_Location l1 = new Ref_Location();
     				l1.setOriginal(place1);
     				l1.setStandardCode("x");

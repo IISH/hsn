@@ -781,7 +781,7 @@ public class Initialiser {
 			}
 		}
 		
-		
+		/*
 		
 		for(OP op: ops){
 			System.out.println();
@@ -807,7 +807,7 @@ public class Initialiser {
 			}
 			
 		}
-	
+	    */ 
 		
 		System.out.println("Sort Objects");
 		

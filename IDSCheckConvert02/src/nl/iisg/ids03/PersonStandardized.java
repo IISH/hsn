@@ -735,7 +735,7 @@ public class PersonStandardized {
 			
 			if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.VERTREK){
 				
-				if(Utils.dayCount(pds.getDateOfMutation2()) > 0){
+				if(Utils.dateIsValid(pds.getDateOfMutation2()) == 0 && Utils.dayCount(pds.getDateOfMutation2()) > 0){
 					
 					int day   = new Integer(pds.getDateOfMutation2().substring(0,2)).intValue();
 					int month = new Integer(pds.getDateOfMutation2().substring(3,5)).intValue();
@@ -1272,16 +1272,18 @@ public class PersonStandardized {
 
 		if(arrDay != 100 && (depDay == 100 || Utils.dayCount(arrDay, arrMonth, arrYear) <= Utils.dayCount(depDay, depMonth, depYear))){
 			String s = String.format("%02d-%02d-%04d", arrDay, arrMonth, arrYear);
-			if(Utils.dayCount(arrDay, arrMonth, arrYear) > Utils.dayCount(getStartDate())){				
-				setStartDate(s);
-				setStartFlag(4);
-				setStartEst(estimate);
-
-			}
-			else
-				if(getEntryDateHead().equals(getStartDate()) && getEntryDateHead().equals(s)){
+			if(Utils.dateIsValid(s) == 0 && Utils.dateIsValid(getStartDate()) == 0){
+				if(Utils.dayCount(arrDay, arrMonth, arrYear) > Utils.dayCount(getStartDate())){				
+					setStartDate(s);
 					setStartFlag(4);
+					setStartEst(estimate);
+
 				}
+				else
+					if(getEntryDateHead().equals(getStartDate()) && getEntryDateHead().equals(s)){
+						setStartFlag(4);
+					}
+			}
 		}
 	}
 
@@ -1341,13 +1343,15 @@ public class PersonStandardized {
         if(previousPersonStartDate.equals("00-00-0000"))
         		return;
 
-        if(Utils.dayCount(entDay, entMonth, entYear) > Utils.dayCount(getStartDate())){
-        	if(Utils.dayCount(entDay, entMonth, entYear) > Utils.dayCount(previousPersonStartDate)){
-        		if(Utils.dayCount(previousPersonStartDate) > Utils.dayCount(getStartDate())){
-        			String s = String.format("%02d-%02d-%04d", entDay, entMonth, entYear);
-        			setStartDate(s);
-        			setStartFlag(5);
-        			setStartEst(estimate);
+        if(Common1.dateIsValid(entDay, entMonth, entYear) == 0 && Utils.dateIsValid(getStartDate()) == 0) {
+        	if(Utils.dayCount(entDay, entMonth, entYear) > Utils.dayCount(getStartDate())){
+        		if(Utils.dayCount(entDay, entMonth, entYear) > Utils.dayCount(previousPersonStartDate)){
+        			if(Utils.dayCount(previousPersonStartDate) > Utils.dayCount(getStartDate())){
+        				String s = String.format("%02d-%02d-%04d", entDay, entMonth, entYear);
+        				setStartDate(s);
+        				setStartFlag(5);
+        				setStartEst(estimate);
+        			}
         		}
         	}
         }
