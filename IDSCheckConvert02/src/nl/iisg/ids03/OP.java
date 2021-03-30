@@ -378,11 +378,8 @@ public void identify(){
 			for(PersonDynamicStandardized pd: p.getDynamicDataOfPersonStandardized()) {
 				if(pd.getKeyToDistinguishDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD_ST){
 					if(((PDS_RelationToHead)pd).getContentOfDynamicData() == ConstRelations2.HOOFD ||
-				       ((PDS_RelationToHead)pd).getContentOfDynamicData() == ConstRelations2.EXPLICIET__HOOFD_ALLENSTAAND ||
-                       ((PDS_RelationToHead)pd).getContentOfDynamicData() == ConstRelations2.EXPLICIET_HOOFD ||
-                       ((PDS_RelationToHead)pd).getContentOfDynamicData() == ConstRelations2.EXPLICIET_HOOFD_EERSTE_OPVOLGER ||
-                       ((PDS_RelationToHead)pd).getContentOfDynamicData() == ConstRelations2.EXPLICIET_HOOFD_TWEEDE_OPVOLGER ||
-                       ((PDS_RelationToHead)pd).getContentOfDynamicData() == ConstRelations2.EXPLICIET_HOOFD_DERDE_OPVOLGER){
+				       (((PDS_RelationToHead)pd).getContentOfDynamicData() >= ConstRelations2.EXPLICIET_HOOFD_ALLENSTAAND ||
+                        ((PDS_RelationToHead)pd).getContentOfDynamicData() <= ConstRelations2.IMPLICIET_HOOFD_GEEN_VERWANT)) {
 
 						birthYear.add(p.getDateOfBirth().substring(6,10));
 						birthMonth.add(p.getDateOfBirth().substring(3,5));
@@ -397,6 +394,8 @@ public void identify(){
 			}
 		}
 	}
+	
+	Set<Integer> aa = new HashSet<Integer>();
 	
 	for(int i = 0; i < birthDay.size(); i++) {
 		for(int j = i; j < birthDay.size(); j++) {
@@ -416,9 +415,14 @@ public void identify(){
 			if(equals >= 3 && Math.abs(Integer.parseInt(birthYear.get(i)) - Integer.parseInt(birthYear.get(j))) <= 20 &&
 					personID.get(i) != personID.get(j))
 				
-				message("4151",
-					firstName.get(i), lastName.get(i), birthDay.get(i) + "-" + birthMonth.get(i) +  "-" + birthYear.get(i),
-					firstName.get(j), lastName.get(j), birthDay.get(j) + "-" + birthMonth.get(j) +  "-" + birthYear.get(j));
+				if(!aa.contains(personID.get(i) + 1000 * personID.get(j)) && !aa.contains(personID.get(j) + 1000 * personID.get(i))) {
+
+					message("4151",
+							firstName.get(i), lastName.get(i), birthDay.get(i) + "-" + birthMonth.get(i) +  "-" + birthYear.get(i),
+							firstName.get(j), lastName.get(j), birthDay.get(j) + "-" + birthMonth.get(j) +  "-" + birthYear.get(j));
+
+					aa.add(personID.get(i) + 1000 * personID.get(j));
+				}
 		}
 	}
 	

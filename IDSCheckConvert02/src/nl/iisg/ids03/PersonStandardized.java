@@ -809,6 +809,9 @@ public class PersonStandardized {
 			start = false;
 			for(RegistrationStandardized rs: getRegistrationStandardizedPersonAppearsIn().getOp().getRegistrationsStandardizedOfOP()){
 				
+				//if(getKeyToRP() == 159225 && getKeyToSourceRegister() == 163308)
+					//System.out.println("AAAA rs.getEntryDateRP() = " + rs.getEntryDateRP());
+				
 				if(rs == currentRegistration){
 					start = true;
 					continue;
@@ -816,12 +819,22 @@ public class PersonStandardized {
 				
 				if(start == true){ // if we get here, there is a next registration
 					
-					setEndDate(rs.getEntryDateRP());
-					setEndFlag(54);
-					setEndEst(120);
-					return true;
-					
+					// We have to test if the next RP date is later than the start date of the RP in the current register
+					// Because the RP could have left and return at a later date
+					// This happens sometimes
+
+					if(Utils.dateIsValid(getStartDate()) == 0 && Utils.dateIsValid(rs.getEntryDateRP()) == 0) {
+						if(Utils.dayCount(rs.getEntryDateRP()) > Utils.dayCount(getStartDate())){
+							setEndDate(rs.getEntryDateRP());
+							setEndFlag(54);
+							setEndEst(120);
+							return true;
+						}
+						else return false;
+					}
+					else return false;
 				}
+				
 			}
 		}
 		
@@ -879,12 +892,22 @@ public class PersonStandardized {
 							return false;
 					}
 					
-					setEndDate(rs.getEntryDateHead());
-					setEndFlag(55);
-					setEndEst(110);
-					return true;
-					
+					// We have to test if the next Head date is later than the start date of the Head in the current register
+					// Because the RP could have left and return at a later date
+					// This happens sometimes
+
+					if(Utils.dateIsValid(getStartDate()) == 0 && Utils.dateIsValid(rs.getEntryDateHead()) == 0) {
+						if(Utils.dayCount(rs.getEntryDateHead()) > Utils.dayCount(getStartDate())){
+							setEndDate(rs.getEntryDateHead());
+							setEndFlag(55);
+							setEndEst(110);
+							return true;
+						}
+						else return false;
+					}
+					else return false;
 				}
+						
 			}
 		}
 		
@@ -999,20 +1022,29 @@ public class PersonStandardized {
 				// find person in this registration
 				
 				for(PersonStandardized ps: rs.getPersonsStandardizedInRegistration()){
-					if(ps.getPersonID() == persNumber){						
-						setEndDate(ps.getStartDate());
-						setEndFlag(57);
-						setEndEst(ps.getStartEst());
-						//System.out.println(" ---> " + getEndDate() + "  " +  getEndFlag() + "  " + getEndEst());
-						//ps.print();
-						return true;
+					if(ps.getPersonID() == persNumber){		
+						
+						
+						// We have to test if the start date next register is later than the start date of
+						// this person
+						// Because the person could have left and return at a later date
+						// This happens sometimes
+
+						if(Utils.dateIsValid(getStartDate()) == 0 && Utils.dateIsValid(ps.getStartDate()) == 0) {
+							if(Utils.dayCount(ps.getStartDate()) > Utils.dayCount(getStartDate())){
+								setEndDate(ps.getStartDate());
+								setEndFlag(57);
+								setEndEst(ps.getStartEst());
+								return true;
+							}
+							else return false;
+						}
+						else return false;
 					}
 				}
+				return false;
 			}
 		}
-		
-		
-		
 		
 		return false;
 	}

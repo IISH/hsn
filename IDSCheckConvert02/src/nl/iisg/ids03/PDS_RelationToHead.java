@@ -192,6 +192,9 @@ public class PDS_RelationToHead extends PersonDynamicStandardized {
 	}
 
 	public void setContentOfDynamicData(int contentOfDynamicData) {
+		//if(getKeyToRP() == 159225 && getKeyToSourceRegister() == 163308 && contentOfDynamicData == 0) {
+		//	int a = 1/0;
+		///}
 		this.contentOfDynamicData = contentOfDynamicData;
 	}
 

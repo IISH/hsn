@@ -142,7 +142,7 @@ public class ConstRelations2 {
 	public static final int LOGE =                                 98;
 	public static final int ANDERS_BYZONDERHEDEN =                 99;
 	
-	public static final int EXPLICIET__HOOFD_ALLENSTAAND =        105;
+	public static final int EXPLICIET_HOOFD_ALLENSTAAND =         105;
 	public static final int EXPLICIET_HOOFD =                     106;
 	public static final int EXPLICIET_HOOFD_EERSTE_OPVOLGER =     107;
 	public static final int EXPLICIET_HOOFD_TWEEDE_OPVOLGER =     108;

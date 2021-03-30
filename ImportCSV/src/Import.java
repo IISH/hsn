@@ -93,7 +93,7 @@ public class Import {
 					//System.out.println(rsmd.getColumnName(i) + " " + rsmd.getColumnType(i) + 
 					//		" " + rsmd.getColumnTypeName(i) + " " + t);
 					
-					System.out.println(i + "   " + rsmd.getColumnType(i) + "   " +t );
+					//System.out.println(i + "   " + rsmd.getColumnType(i) + "   " +t );
 					switch(rsmd.getColumnType(i)) {
 					
 					case Types.INTEGER:
@@ -151,7 +151,7 @@ public class Import {
 				if(cnt == 1000 ) {
 
 					s =  s.substring(0,s.length() - 1) + ";";
-					System.out.println(s);
+					//System.out.println(s);
 					stmt.executeUpdate(s); 
 					
 					s = insertStmt;

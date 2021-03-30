@@ -1006,7 +1006,7 @@ public class RegistrationStandardized {
     					
     					if(getPersonsStandardizedInRegistration().size() == 1){
     						head = ps;
-    						((PDS_RelationToHead)pds).setContentOfDynamicData(ConstRelations2.EXPLICIET__HOOFD_ALLENSTAAND);
+    						((PDS_RelationToHead)pds).setContentOfDynamicData(ConstRelations2.EXPLICIET_HOOFD_ALLENSTAAND);
     					}
     					else{
     						if(ps.getOriginalPerson().getIsHead() == true && ps.getOriginalPerson().getIsHeadFirstSuccessor() == false){
@@ -1762,13 +1762,23 @@ public class RegistrationStandardized {
     	if(getPersonsStandardizedInRegistration().size() == 0) return;
 
     	PersonStandardized lastHead = getPersonsStandardizedInRegistration().get(0); 
+    	
+    	// 
+    	// Look for the *last* head
+    	
+    	for(PersonStandardized ps: getPersonsStandardizedInRegistration()){
+    		if(ps.getOriginalPerson().getIsHead()){
+    			lastHead = ps;
+	    	}
+    	}
 
     	// See if there is 1 explicit head
+    	// Look for the *last* one
 
     	for(PersonStandardized ps: getPersonsStandardizedInRegistration()){
     		if(ps.getOriginalPerson().getIsHeadFirstSuccessor()){
     			lastHead = ps;
-    			break;
+    			//break; // Look for the *last* one
     		}
     	}
 
@@ -1811,8 +1821,6 @@ public class RegistrationStandardized {
     				}
 
 
-
-
     				// All persons in the registration that are still alive when the previous head dies get a new code (= new PDS) for their relation to the new head
 
     				for(PersonStandardized ps: getPersonsStandardizedInRegistration()){
@@ -1835,8 +1843,9 @@ public class RegistrationStandardized {
     							}
     						}
     						
+
     						if(relToOriginalHead <= 0)
-    							continue; 
+    							continue;  
     						
     						pdsLast.setEndDate(Utils.dateFromDayCount(personEndDate(lastHead)));
 
@@ -1887,8 +1896,10 @@ public class RegistrationStandardized {
 
 
     							}
+    							
 
-    							newCode = Math.abs(newCode % 1000); // transform
+    							if(newCode > 1000)
+    								newCode = Math.abs(newCode % 1000); // transform
 
     							((PDS_RelationToHead)pdsnew).setContentOfDynamicData(newCode);
 
@@ -2268,10 +2279,14 @@ public class RegistrationStandardized {
     
     public void relateAllToAll(){
 
-    	//int traceKey = 101955;
+    	int traceKey = 159225;
+    	int traceReg = 163308;
+    	boolean trace = false;
 
-    	//if(getKeyToRP() == traceKey)
-    		//System.out.println("\nRegistration: " + getKeyToRP() + "  " + getKeyToSourceRegister());
+    	//if(getKeyToRP() == traceKey && getKeyToSourceRegister() == traceReg) {
+    	//	trace = true;
+    	//	System.out.println("\nRegistration: " + getKeyToRP() + "  " + getKeyToSourceRegister());
+    	//}
 
     	for(PersonStandardized psA: getPersonsStandardizedInRegistration()){
 
@@ -2336,8 +2351,10 @@ public class RegistrationStandardized {
     							
     							int[] relABa = Common1.getRelation(relToHeadA, relToHeadB);
 
-    							//if(getKeyToRP() == traceKey){
-    							//	System.out.println(relToHeadA + " " + relToHeadB);
+    							//if(trace && psB.getPersonID() == 1){
+    							//	System.out.println();
+    							//	System.out.println(psA.getPersonID() +  " " + relToHeadA);
+    							//	System.out.println(psB.getPersonID() +  " " + relToHeadB);
     							//	for(int x: relABa) System.out.println(x);
     							//}
 
