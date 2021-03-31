@@ -66,7 +66,7 @@ public class Common1 {
 			int start = Math.max(start1, start2);		
 			int end   = Math.min(end1, end2);
 				
-			if(start <= end){
+			if(start > 0 && start <= end){
 					
 				a[0] = dateFromDayCount(start);
 				a[1] = dateFromDayCount(end);

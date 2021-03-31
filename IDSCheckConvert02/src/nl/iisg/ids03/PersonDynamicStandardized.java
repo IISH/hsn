@@ -428,7 +428,7 @@ public class PersonDynamicStandardized {
 	
 	public String getDateOfMutation2() {
 		
-		if(getDateOfMutation() != null && getDateOfMutation().substring(6, 10).equals("0000"))
+		if(getDateOfMutation() != null && getDateOfMutation().length() == 10 && getDateOfMutation().substring(6, 10).equals("0000"))
 			return("00-00-0000");
 		
 		return dateOfMutation;

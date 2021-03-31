@@ -1348,7 +1348,8 @@ public class RegistrationStandardized {
     							}
 
 
-    							if(Utils.dayCount(ps.getDateOfBirth()) - Utils.dayCount(ps1.getDateOfBirth()) > 16 * 365){ // father must be at least 16 year older
+    							if(Common1.dateIsValid(ps.getDateOfBirth()) == 0 && Common1.dateIsValid(ps1.getDateOfBirth()) == 0 &&
+    									Utils.dayCount(ps.getDateOfBirth()) - Utils.dayCount(ps1.getDateOfBirth()) > 16 * 365){ // father must be at least 16 year older
 
     								foundFather = true;
 
@@ -2146,19 +2147,21 @@ public class RegistrationStandardized {
     					break;
     				
     				// look for first marriage of wife after end date previous head
-    				
+
     				int relatedPerson = 0;
-					for(PersonDynamicStandardized pds: psWife.getDynamicDataOfPersonStandardized()){
+    				for(PersonDynamicStandardized pds: psWife.getDynamicDataOfPersonStandardized()){
     					if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.BURGELIJKE_STAAT){
     						if(((PDS_CivilStatus)pds).getContentOfDynamicData() == ConstRelations2.GEHUWD){
-    							if(Utils.dayCount(pds.getDateOfMutation2()) > dayCountPreviousHead){
-    								relatedPerson = pds.getValueOfRelatedPerson();
-    								break;
-    								
+    							if(Common1.dateIsValid(pds.getDateOfMutation2()) == 0) {
+    								if(Utils.dayCount(pds.getDateOfMutation2()) > dayCountPreviousHead){
+    									relatedPerson = pds.getValueOfRelatedPerson();
+    									break;
+
+    								}
     							}
     						}
     					}
-					}
+    				}
 					
 					if(relatedPerson == 0)
 						break;
@@ -2434,43 +2437,46 @@ public class RegistrationStandardized {
 
     							if(ConstRelations2.b3kode1_Related[relAB] == null){ // not blood related, so lets try to date
     								if(pdsA.getStartDate() != null || pdsB.getStartDate() != null){
-    									String  []  intersection = Common1.getIntersection(pdsA.getStartDate(), pdsA.getEndDate(), pdsB.getStartDate(), pdsB.getEndDate());
-    									if(intersection != null){
+    						//			if(Common1.dateIsValid(pdsA.getStartDate()) == 0 && Common1.dateIsValid(pdsA.getEndDate()) == 0 && 
+    						//					Common1.dateIsValid(pdsB.getStartDate()) == 0 && Common1.dateIsValid(pdsB.getEndDate()) == 0) {
+    										String  []  intersection = Common1.getIntersection(pdsA.getStartDate(), pdsA.getEndDate(), pdsB.getStartDate(), pdsB.getEndDate());
+    										if(intersection != null){
 
-    		    							//if(getKeyToRP() == traceKey)
-    		    							//	System.out.println("1 " +  psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + ConstRelations2.b3kode1[x1] + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + ConstRelations2.b3kode1[x2] + "  " + ConstRelations2.b3kode1[x3] + "  " + ConstRelations2.b3kode1[x4]);
+    											//if(getKeyToRP() == traceKey)
+    											//	System.out.println("1 " +  psA.getFirstName() + " " + psA.getFamilyName() +  "  "  + ConstRelations2.b3kode1[x1] + "  " + psB.getFirstName() + " " + psB.getFamilyName() + "  " + ConstRelations2.b3kode1[x2] + "  " + ConstRelations2.b3kode1[x3] + "  " + ConstRelations2.b3kode1[x4]);
 
-    										
-    										PDS_AllToAll pds = new PDS_AllToAll();
 
-    										pds.setStartDate(intersection[0]);
-    										pds.setEndDate(intersection[1]);
+    											PDS_AllToAll pds = new PDS_AllToAll();
 
-    										pds.setKeyToSourceRegister(psA.getKeyToSourceRegister());
-    										pds.setEntryDateHead(psA.getEntryDateHead());
-    										pds.setKeyToRP(psA.getKeyToRP());
-    										pds.setKeyToRegistrationPersons(psA.getKeyToPersons());
-    										pds.setKeyToDistinguishDynamicDataType(34);
-    										pds.setDynamicDataSequenceNumber(psA.getToAll().size() + 1); 
-    										pds.setContentOfDynamicData(relAB); 
+    											pds.setStartDate(intersection[0]);
+    											pds.setEndDate(intersection[1]);
 
-    										pds.setValueOfRelatedPerson(psB.getKeyToPersons()); 
-    										pds.setNatureOfPerson(psA.getNatureOfPerson());
+    											pds.setKeyToSourceRegister(psA.getKeyToSourceRegister());
+    											pds.setEntryDateHead(psA.getEntryDateHead());
+    											pds.setKeyToRP(psA.getKeyToRP());
+    											pds.setKeyToRegistrationPersons(psA.getKeyToPersons());
+    											pds.setKeyToDistinguishDynamicDataType(34);
+    											pds.setDynamicDataSequenceNumber(psA.getToAll().size() + 1); 
+    											pds.setContentOfDynamicData(relAB); 
 
-    										pds.setDateOfMutation("00-00-0000");
-    										pds.setDateOfMutationFlag(0);
+    											pds.setValueOfRelatedPerson(psB.getKeyToPersons()); 
+    											pds.setNatureOfPerson(psA.getNatureOfPerson());
 
-    										pds.setVersionLastTimeOfDataEntry(psA.getVersionLastTimeOfDataEntry());
-    										pds.setResearchCodeOriginal(psA.getResearchCodeOriginal());
-    										pds.setVersionOriginalDataEntry(psA.getVersionOriginalDataEntry());
-    										pds.setDate0(psA.getDate0());
+    											pds.setDateOfMutation("00-00-0000");
+    											pds.setDateOfMutationFlag(0);
 
-    										//pds.setOriginalPersonDynamic(null);
-    										pds.setPersonStandardizedToWhomDynamicDataRefers(psA);
+    											pds.setVersionLastTimeOfDataEntry(psA.getVersionLastTimeOfDataEntry());
+    											pds.setResearchCodeOriginal(psA.getResearchCodeOriginal());
+    											pds.setVersionOriginalDataEntry(psA.getVersionOriginalDataEntry());
+    											pds.setDate0(psA.getDate0());
 
-    										psA.getToAll().add(pds);
+    											//pds.setOriginalPersonDynamic(null);
+    											pds.setPersonStandardizedToWhomDynamicDataRefers(psA);
 
-    									}
+    											psA.getToAll().add(pds);
+
+    										}
+    									//}
     								}
     								else{ // not blood related but no dates
     									
@@ -2773,7 +2779,11 @@ public class RegistrationStandardized {
     		for(RegistrationAddressStandardized ras: getAddressesStandardizedOfRegistration()){
     			
     			if(ras.getDateOfAddress() != null && !ras.getDateOfAddress().substring(6).equals("0000")){
-    				dayCount[count] = Utils.dayCount(ras.getDateOfAddress());
+    				if(Common1.dateIsValid(ras.getDateOfAddress()) == 0){
+    					dayCount[count] = Utils.dayCount(ras.getDateOfAddress());
+    				}
+    				else
+    					dayCount[count] = 0;
     			}
     			else{
     				dayCount[count] = 0;

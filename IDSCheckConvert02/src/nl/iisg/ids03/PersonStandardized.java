@@ -1301,20 +1301,23 @@ public class PersonStandardized {
 			arrMonth = 1;
 			estimate = 141;		
 		}
-
-		if(arrDay != 100 && (depDay == 100 || Utils.dayCount(arrDay, arrMonth, arrYear) <= Utils.dayCount(depDay, depMonth, depYear))){
-			String s = String.format("%02d-%02d-%04d", arrDay, arrMonth, arrYear);
-			if(Utils.dateIsValid(s) == 0 && Utils.dateIsValid(getStartDate()) == 0){
-				if(Utils.dayCount(arrDay, arrMonth, arrYear) > Utils.dayCount(getStartDate())){				
-					setStartDate(s);
-					setStartFlag(4);
-					setStartEst(estimate);
-
-				}
-				else
-					if(getEntryDateHead().equals(getStartDate()) && getEntryDateHead().equals(s)){
+		
+		
+		if(Common1.dateIsValid(arrDay, arrMonth, arrYear) == 0 && Common1.dateIsValid(depDay, depMonth, depYear) == 0){
+			if(arrDay != 100 && (depDay == 100 || Utils.dayCount(arrDay, arrMonth, arrYear) <= Utils.dayCount(depDay, depMonth, depYear))){
+				String s = String.format("%02d-%02d-%04d", arrDay, arrMonth, arrYear);
+				if(Utils.dateIsValid(s) == 0 && Utils.dateIsValid(getStartDate()) == 0){
+					if(Utils.dayCount(arrDay, arrMonth, arrYear) > Utils.dayCount(getStartDate())){				
+						setStartDate(s);
 						setStartFlag(4);
+						setStartEst(estimate);
+
 					}
+					else
+						if(getEntryDateHead().equals(getStartDate()) && getEntryDateHead().equals(s)){
+							setStartFlag(4);
+						}
+				}
 			}
 		}
 	}
@@ -1590,15 +1593,29 @@ public class PersonStandardized {
 		for(PersonDynamicStandardized pds: getDynamicDataOfPersonStandardized()){			
 			
 			
+			int day   = 0;
+			int month = 0;
+			int year  = 0;
 			
+			if(pds.getDateOfMutation2().length() == 10) {
+				day   = (new Integer(pds.getDateOfMutation2().substring(0,2))).intValue();
+				month = (new Integer(pds.getDateOfMutation2().substring(3,5))).intValue();
+				year  = (new Integer(pds.getDateOfMutation2().substring(6,10))).intValue();
+			}
+			else
+				continue;
 			
-			int day   = (new Integer(pds.getDateOfMutation2().substring(0,2))).intValue();
-			int month = (new Integer(pds.getDateOfMutation2().substring(3,5))).intValue();
-			int year  = (new Integer(pds.getDateOfMutation2().substring(6,10))).intValue();
+			int dayHead   = 0;
+			int monthHead = 0;
+			int yearHead  = 0;
 			
-			int dayHead   = (new Integer(pds.getEntryDateHead().substring(0,2))).intValue();
-			int monthHead = (new Integer(pds.getEntryDateHead().substring(3,5))).intValue();
-			int yearHead  = (new Integer(pds.getEntryDateHead().substring(6,10))).intValue();
+			if(pds.getEntryDateHead().length() == 10) {
+				dayHead   = (new Integer(pds.getEntryDateHead().substring(0,2))).intValue();
+				monthHead = (new Integer(pds.getEntryDateHead().substring(3,5))).intValue();
+				yearHead  = (new Integer(pds.getEntryDateHead().substring(6,10))).intValue();
+			}
+			else
+				continue;
 			
 			int dayCount = 0;
 			int estimate = 0;
@@ -2161,11 +2178,13 @@ public class PersonStandardized {
 			ps2.setStartFlag(8);		
 			
 			// set end date on current record
-			
-			setEndDate(Utils.dateFromDayCount(depDays[0]));
-			setEndEst(depEst[0]);
-			setEndFlag(8);
-			
+
+			if(depDays[0] > 0) {
+				setEndDate(Utils.dateFromDayCount(depDays[0]));
+				setEndEst(depEst[0]);
+				setEndFlag(8);
+			}
+
 			return a;
 
 		}
