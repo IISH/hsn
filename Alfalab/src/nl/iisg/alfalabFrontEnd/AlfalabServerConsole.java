@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Scanner;
 
 import iisg.nl.hsnmigrate.StandardizeCivilCertificates;
 import nl.iisg.convertPK.StandardizePersonalCards;
@@ -560,32 +561,48 @@ public class AlfalabServerConsole implements Runnable {
         	String user = command.split("[ /]")[1];        	
         	String pasw = command.split("[ /]")[2];
         	        	          
-            System.out.println(System.getProperty("user.dir"));
-            Path path = Paths.get(System.getProperty("user.dir") + "\\bin\\META-INF", "pw.txt");
+            //System.out.println(System.getProperty("user.dir"));
+            //Path path = Paths.get(System.getProperty("user.dir") + "\\bin\\META-INF", "pw.txt");
             
-            System.out.println(path.toString());
+        	
+        	//System.out.println("java.class.path = " + System.getProperty("java.class.path"));
+        	//System.out.println("user.dir = " + System.getProperty("user.dir"));
+        	//System.out.println("user.home = " + System.getProperty("user.home"));
+        	
+        	InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("META-INF/pw.txt");
+
+        	boolean found = false;
+        	Scanner sc = new Scanner(inputStream);
+        	while(sc.hasNextLine()){
+        		String line = sc.nextLine();
+        		if(user.equals(line.split("/")[0]) && pasw.equals(line.split("/")[1])){
+        			found = true;
+        			break;
+        		}
+        	}
+        	/*
+            URL u = getClass().getProtectionDomain().getCodeSource().getLocation();
+            URL u1 = new URL(u, "META-INF/pw.txt");
+            
+            System.out.println("u1 = " + u1.toString());
+            
+            System.out.println("URL = " + u1);
             boolean found = false;
-            try {
-            	List<String> lines = Files.readAllLines(path);
-
-
-            	for (String line : lines) {
-            		
-            		//System.out.println(line);
-
-            		if(user.equals(line.split("/")[0]) && pasw.equals(line.split("/")[1])){
-            			found = true;
-            			break;
-
-            		}
-
-            		
-            	}
-            } catch (IOException e) {
-            	System.out.println(e);
+            Scanner s = new Scanner(u1.openStream());
+            while(s.hasNextLine()){
+                String line = s.nextLine();
+                //System.out.println(">>" + line);
+                if(user.equals(line.split("/")[0]) && pasw.equals(line.split("/")[1])){
+        			found = true;
+        			break;
+                }
+                
             }
 
+            InputStream is = this.getClass().getClassLoader().getResourceAsStream("foo.txt");
+            */
             if(found) {
+            	//System.out.println("Print to client");
             	//print("Login OK");
             	//out.writeUTF("ok");
             }
@@ -603,7 +620,7 @@ public class AlfalabServerConsole implements Runnable {
             //HSNLinksIntegration hli = new HSNLinksIntegration(out);
             //workerThread = new Thread(hli);
             //workerThread.start(); 
-
+            
 
 
         } else if (command.equals(MISC_PRINT_HSN_POP_REG_ALL)) {
@@ -1606,6 +1623,7 @@ public class AlfalabServerConsole implements Runnable {
     }
     
     public void print(String line) {
+    	System.out.println("Writing to Client: " + line);
     	if (out != null) {
     		try {
     			out.writeUTF(line);

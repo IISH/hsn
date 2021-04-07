@@ -196,8 +196,8 @@ public class Common1 {
 		 int count = 0;
 		 while(day != day1 || month != month1 || year != year1){
 			 
-			 if(++count > 500 * 365) {
-				 System.out.println("XYZ DC05: " + day1 + "   " + month1 +    "   " + year1);
+			 if(++count > 550 * 365) {
+				 System.out.println("XYZ DC05: " + day1 + "   " + month1 +    "   " + year1 + "  " + count);
 				 count = count/0; 
 			 }
 	
@@ -428,6 +428,8 @@ public class Common1 {
 	}
 	
 	public static int dateIsValid(String date0){
+		
+		if(date0 == null || date0.length() != 10) return -1;
 		
 		int d = (new Integer(date0.substring(0,2))).intValue();
 		int m = (new Integer(date0.substring(3,5))).intValue();

@@ -41,7 +41,7 @@ public class Person {
 @Column(name = "Id_D_C")  				private String 	  id_DC; 	// contextID Decease place   
 @Column(name = "Relation_RP")  			private String 	  relationRP; // relation with RP
 @Column(name = "Original_Relation_RP")  private String 	  originalRelationRP;   // relation with RP
-@Column(name = "Function")  			private String 	  function; // witness or informer
+@Column(name = "Function1")  			private String 	  function; // witness or informer
 
 @Transient                              private int       idWithinGroup; // PersonID within group (RP's, mother's, etc,..)
 @Transient                              private ArrayList<INDIVIDUAL>    individual    = new ArrayList<INDIVIDUAL>();

@@ -1061,13 +1061,14 @@ private boolean CheckBirthDate(PersonStandardized ps, PersonStandardized pus, bo
 				message("4012", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
 		}
 		else {
-			if(Math.abs(year1 - year2) % 10 == 0)
+			if(Math.abs(year1 - year2) % 10 == 0) {
 				if(giveMessage)
-					message("4010", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
-				else {		
-					if(giveMessage)
-						message("4008", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
-				}
+					message("4010", (new Integer(year1).toString()), (new Integer(year2).toString()), id);
+			}
+			else {		
+				if(giveMessage)
+					message("4008", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
+			}
 		}
 	}
 	

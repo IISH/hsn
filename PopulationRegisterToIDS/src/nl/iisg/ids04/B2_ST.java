@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import nl.iisg.hsncommon.Common1;
 import nl.iisg.idscontext.ContextElement;
 import nl.iisg.idscontext.Contxt;
 
@@ -123,8 +124,15 @@ public class B2_ST {
 			
 			for(B6_ST b6: getRegistrationStandardizedPersonAppearsIn().getAddressesStandardizedOfRegistration()){ // via B4_ST to B6_ST
 				
+				if(Common1.dateIsValid(getStartDate()) != 0) break;	
+				if(Common1.dateIsValid(getEndDate()) != 0) break;	
+				if(Common1.dateIsValid(b6.getStartDate()) != 0) continue;
+				if(Common1.dateIsValid(b6.getEndDate()) != 0) continue;	
+				
 				int start = Math.max(Utils.dayCount(getStartDate()), Utils.dayCount(b6.getStartDate()));
 				int end   = Math.min(Utils.dayCount(getEndDate()),   Utils.dayCount(b6.getEndDate()));
+				
+				if(Common1.dateIsValid(getStartDate()) == 0)
 				
 				if(start <= end){					
 					

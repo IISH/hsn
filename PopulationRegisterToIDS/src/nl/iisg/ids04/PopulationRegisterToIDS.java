@@ -128,12 +128,17 @@ public class PopulationRegisterToIDS implements Runnable{
 
 		int idCount = 0;
 	    for(OP op: ops){
+	    	//System.out.println("AASD 1 idnr = " + op.getKeyToRP());
 	    	op.convert(em);
+	    	//System.out.println("AASD 2 idnr = " + op.getKeyToRP());
 	    	for(B4_ST r: op.getRegistrationsStandardizedOfOP()){
+	    		//System.out.println("AASD 3 idnr = " + op.getKeyToRP());
 	    		for(B2_ST p: r.getPersonsStandardizedInRegistration()){
 	    			p.convert(em);
+	    			//System.out.println("AASD 4 idnr = " + op.getKeyToRP());
 	    		}
 	    	}
+	    	//System.out.println("AASD 5 idnr = " + op.getKeyToRP());
 	    	if(++idCount % 100 == 0){
 	    		em.getTransaction().commit();
 	    		em.clear();

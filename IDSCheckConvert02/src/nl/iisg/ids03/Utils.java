@@ -504,19 +504,24 @@ public class Utils {
 
     
     public static void persist(Object o){
-    	
+
+
+    	if(o == null) return;
+
     	EntityManager em = null;
-    	
+
     	if(o instanceof nl.iisg.ids03.PersonDynamicStandardized ||
     			o instanceof nl.iisg.ids03.PersonStandardized ||
     			o instanceof nl.iisg.ids03.RegistrationStandardized ||
-    			o instanceof nl.iisg.ids03.RegistrationAddressStandardized)    		
+    			o instanceof nl.iisg.ids03.RegistrationAddressStandardized) {    		
 
     		em = getEm_tabs();
-    		
-        em.persist(o);
-    	
+
+    		em.persist(o);
+    	}
     }
+    
+    
     public static void commit(){
     	
     	EntityManager em = getEm_tabs();

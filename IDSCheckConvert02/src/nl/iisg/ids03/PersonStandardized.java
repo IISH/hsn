@@ -691,19 +691,22 @@ public class PersonStandardized {
 		// Check if there is an undated or later departure
 
 		for(PersonDynamicStandardized pds: getDynamicDataOfPersonStandardized()){
-			if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.VERTREK)				
-				if(Utils.dayCount(pds.getDateOfMutation2()) < 0)
-					message("4362");
-				else
-					if(Utils.dayCount(pds.getDateOfMutation2()) > dayCount)
-						message("4363"); 
+			if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.VERTREK)	{	
+				if(pds.getDateOfMutation2() != null) {
+					if(Utils.dayCount(pds.getDateOfMutation2()) < 0)
+						message("4362");
+					else
+						if(Utils.dayCount(pds.getDateOfMutation2()) > dayCount)
+							message("4363"); 
+				}
+			}
 		}
 		
-		// Check if later records exist
+		// Check if later records exist 
 		
 		boolean later = false;
 		for(PersonDynamicStandardized pds: getDynamicDataOfPersonStandardized()){
-			if(Utils.dayCount(pds.getDateOfMutation2()) > dayCount){
+			if(Common1.dateIsValid(pds.getDateOfMutation2()) == 0 && Utils.dayCount(pds.getDateOfMutation2()) > dayCount){
 				later = true;
 				break;
 			}
@@ -1060,47 +1063,50 @@ public class PersonStandardized {
 		
 		
 		for(PersonDynamicStandardized pds: getDynamicDataOfPersonStandardized()){
-			
-			if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.BURGELIJKE_STAAT){
-				
-				if(((PDS_CivilStatus)pds).getCivilStatusFlag() == ConstRelations2.GEHUWD){					
-					
-					
-					// Check that marriage in range register
-					
-					Ref_AINB ainb = Ref.getAINB(getKeyToSourceRegister());
-					
-					int marriageYear = new Integer(pds.getDateOfMutation2().substring(6,10)).intValue();
-					
-					if(marriageYear >= ainb.getStartYearRegister() && marriageYear <= ainb.getEndYearRegister()){
-						
-						int marriageDay   = new Integer(pds.getDateOfMutation2().substring(0,2)).intValue();
-					    int marriageMonth = new Integer(pds.getDateOfMutation2().substring(3,5)).intValue();
-					    int estimate = 100; // presume exact
 
-					    if(marriageYear < 1750)
-					    	return false;
-					    if(marriageDay < 1){			
-					    	marriageDay = 1;
-					    	estimate = 131;			
-					    }
-					    if(marriageMonth < 1){			
-					    	marriageMonth = 1;
-					    	estimate = 141;		
-					    }
-					    
-					    if(Utils.dayCount(marriageDay, marriageMonth, marriageYear) > Utils.dayCount(getStartDate())){
-					    	setEndDate(String.format("%02d-%02d-%04d", marriageDay, marriageMonth, marriageYear));
-							setEndFlag(58);
-							setEndEst(estimate);
-							return true;
-					    }
-				   }		
+			if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.BURGELIJKE_STAAT){
+
+				if(((PDS_CivilStatus)pds).getCivilStatusFlag() == ConstRelations2.GEHUWD){					
+
+
+					// Check that marriage in range register
+
+					Ref_AINB ainb = Ref.getAINB(getKeyToSourceRegister());
+
+					int marriageYear = new Integer(pds.getDateOfMutation2().substring(6,10)).intValue();
+
+					if(marriageYear >= ainb.getStartYearRegister() && marriageYear <= ainb.getEndYearRegister()){
+
+						if(Common1.dateIsValid(pds.getDateOfMutation2()) == 0) {
+
+							int marriageDay   = new Integer(pds.getDateOfMutation2().substring(0,2)).intValue();
+							int marriageMonth = new Integer(pds.getDateOfMutation2().substring(3,5)).intValue();
+							int estimate = 100; // presume exact
+
+							if(marriageYear < 1750)
+								return false;
+							if(marriageDay < 1){			
+								marriageDay = 1;
+								estimate = 131;			
+							}
+							if(marriageMonth < 1){			
+								marriageMonth = 1;
+								estimate = 141;		
+							}
+							if(Common1.dateIsValid(marriageDay, marriageMonth, marriageYear) == 0 && Common1.dateIsValid(getStartDate()) == 0)
+								if(Utils.dayCount(marriageDay, marriageMonth, marriageYear) > Utils.dayCount(getStartDate())){
+									setEndDate(String.format("%02d-%02d-%04d", marriageDay, marriageMonth, marriageYear));
+									setEndFlag(58);
+									setEndEst(estimate);
+									return true;
+								}
+						}
+					}
 				}
 			}
 		}
-		
-		
+
+
 		return false;
 	}
 	
@@ -1157,8 +1163,9 @@ public class PersonStandardized {
 				else{
 				    censusNr = 0;
 					for(int i = 3; i <= censusYear.length; i++){
-						if(Utils.dayCount("01-01-" + censusYear[i]) > Utils.dayCount(getStartDate()))
-							break;
+						if(Common1.dateIsValid("01-01-" + censusYear[i]) == 0 && Common1.dateIsValid(getStartDate()) == 0)
+							if(Utils.dayCount("01-01-" + censusYear[i]) > Utils.dayCount(getStartDate()))
+								break;
 						censusNr++;
 					}
 				}
@@ -1267,6 +1274,8 @@ public class PersonStandardized {
 
 		for(PersonDynamicStandardized pds: getDynamicDataOfPersonStandardized()){
 
+			if(Common1.dateIsValid(pds.getDateOfMutation2()) != 0)  continue;
+			
 			if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.AANKOMST){
 
 				if(arrDay == 100){					
@@ -1375,7 +1384,7 @@ public class PersonStandardized {
 		//    -- later than the date of the previous person
 		//    -- previous person date is later than date established so far
 
-        if(previousPersonStartDate.equals("00-00-0000"))
+        if(previousPersonStartDate != null && previousPersonStartDate.equals("00-00-0000"))
         		return;
 
         if(Common1.dateIsValid(entDay, entMonth, entYear) == 0 && Utils.dateIsValid(getStartDate()) == 0) {
@@ -1416,8 +1425,9 @@ public class PersonStandardized {
 			previousPersonStartDate = ps.getStartDate();			
 		}
 
-		if(Utils.dayCount(getStartDate()) >= Utils.dayCount(previousPersonStartDate))
-			return;
+		if(Common1.dateIsValid(getStartDate()) == 0 && Common1.dateIsValid(previousPersonStartDate) == 0)
+			if(Utils.dayCount(getStartDate()) >= Utils.dayCount(previousPersonStartDate))
+				return;
 
 		// find if secondary head and get date
 
@@ -1440,8 +1450,9 @@ public class PersonStandardized {
 		if(expHeadDate.equals("00-00-0000"))
 			return;
 
-		if(Utils.dayCount(expHeadDate) <= Utils.dayCount(previousPersonStartDate))
-			return;
+		if(Common1.dateIsValid(expHeadDate) == 0 && Common1.dateIsValid(previousPersonStartDate) == 0)
+			if(Utils.dayCount(expHeadDate) <= Utils.dayCount(previousPersonStartDate))
+				return;
 		
 		// look at later birth or arrival records
 
@@ -1451,13 +1462,15 @@ public class PersonStandardized {
 				start = true;
 				continue;
 			}
-			if(start == true){			
-			    if(Utils.dayCount(ps.getDateOfBirth()) < Utils.dayCount(expHeadDate))
-			    	return;
+			if(start == true){	
+				if(Common1.dateIsValid(ps.getDateOfBirth()) == 0 && Common1.dateIsValid(expHeadDate) == 0)
+					if(Utils.dayCount(ps.getDateOfBirth()) < Utils.dayCount(expHeadDate))
+						return;
 				for(PersonDynamicStandardized pds: ps.getDynamicDataOfPersonStandardized()){	
 					if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.AANKOMST)
-						if(Utils.dayCount(pds.getDateOfMutation2()) < Utils.dayCount(expHeadDate))
-							return;
+						if(Common1.dateIsValid(pds.getDateOfMutation2()) == 0 && Common1.dateIsValid(expHeadDate) == 0)
+							if(Utils.dayCount(pds.getDateOfMutation2()) < Utils.dayCount(expHeadDate))
+								return;
 				
 				}	
 			}
@@ -1476,7 +1489,7 @@ public class PersonStandardized {
 
 	private void getMarriageDate(){
 
-		if(!getStartDate().equals(getEntryDateHead()))
+		if(getStartDate() != null && !getStartDate().equals(getEntryDateHead()))
 			return;
 
 
@@ -1489,8 +1502,9 @@ public class PersonStandardized {
 			previousPersonStartDate = ps.getStartDate();			
 		}
 
-		if(Utils.dayCount(getStartDate()) >= Utils.dayCount(previousPersonStartDate))
-			return;
+		if(Common1.dateIsValid(getStartDate()) == 0 && Common1.dateIsValid(previousPersonStartDate) == 0)
+			if(Utils.dayCount(getStartDate()) >= Utils.dayCount(previousPersonStartDate))
+				return;
 
 		// See if person not related to Head as son or daughter
 
@@ -1519,13 +1533,14 @@ public class PersonStandardized {
 				}
 			}
 		}
-		if(marriageDate.equals("00-00-0000"))
+		if(marriageDate != null && marriageDate.equals("00-00-0000"))
 			return;
 
 		// See if marriage date later than foregoing date
 
-		if(Utils.dayCount(marriageDate) <= Utils.dayCount(previousPersonStartDate))
-			return;
+		if(Common1.dateIsValid(marriageDate) == 0 && Common1.dateIsValid(previousPersonStartDate) == 0)
+			if(Utils.dayCount(marriageDate) <= Utils.dayCount(previousPersonStartDate))
+				return;
 
 
 		// look at later birth or arrival records
@@ -1536,13 +1551,15 @@ public class PersonStandardized {
 				start = true;
 				continue;
 			}
-			if(start == true){			
-			    if(Utils.dayCount(ps.getDateOfBirth()) < Utils.dayCount(marriageDate))
-			    	return;
+			if(start == true){	
+				if(Common1.dateIsValid(ps.getDateOfBirth()) == 0 && Common1.dateIsValid(marriageDate) == 0)
+					if(Utils.dayCount(ps.getDateOfBirth()) < Utils.dayCount(marriageDate))
+						return;
 				for(PersonDynamicStandardized pds: ps.getDynamicDataOfPersonStandardized()){	
 					if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.AANKOMST)
-						if(Utils.dayCount(pds.getDateOfMutation2()) < Utils.dayCount(marriageDate))
-							return;
+						if(Common1.dateIsValid(marriageDate) == 0 && Common1.dateIsValid(pds.getDateOfMutation2()) == 0)
+							if(Utils.dayCount(pds.getDateOfMutation2()) < Utils.dayCount(marriageDate))
+								return;
 				
 				}	
 			}
@@ -1553,12 +1570,14 @@ public class PersonStandardized {
 		int depDays = 0;
 		for(PersonDynamicStandardized pds: getDynamicDataOfPersonStandardized()){	
 			if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.VERTREK)
-				depDays = Utils.dayCount(pds.getDateOfMutation2());
+				if(Common1.dateIsValid(pds.getDateOfMutation2()) == 0)
+					depDays = Utils.dayCount(pds.getDateOfMutation2());
 		}	
 
 		if(depDays != 0)
-			if(depDays < Utils.dayCount(marriageDate) + 365)
-				return;
+			if(Common1.dateIsValid(marriageDate) == 0)
+				if(depDays < Utils.dayCount(marriageDate) + 365)
+					return;
 		
 
 		setStartDate(marriageDate);
@@ -1597,7 +1616,7 @@ public class PersonStandardized {
 			int month = 0;
 			int year  = 0;
 			
-			if(pds.getDateOfMutation2().length() == 10) {
+			if(Common1.dateIsValid(pds.getDateOfMutation2()) == 0) {
 				day   = (new Integer(pds.getDateOfMutation2().substring(0,2))).intValue();
 				month = (new Integer(pds.getDateOfMutation2().substring(3,5))).intValue();
 				year  = (new Integer(pds.getDateOfMutation2().substring(6,10))).intValue();
@@ -1609,7 +1628,7 @@ public class PersonStandardized {
 			int monthHead = 0;
 			int yearHead  = 0;
 			
-			if(pds.getEntryDateHead().length() == 10) {
+			if(Common1.dateIsValid(pds.getEntryDateHead()) == 0) {
 				dayHead   = (new Integer(pds.getEntryDateHead().substring(0,2))).intValue();
 				monthHead = (new Integer(pds.getEntryDateHead().substring(3,5))).intValue();
 				yearHead  = (new Integer(pds.getEntryDateHead().substring(6,10))).intValue();
@@ -1810,15 +1829,19 @@ public class PersonStandardized {
 
 		// set start data on new PersonStandardized element
 
-		ps.setStartDate(Utils.dateFromDayCount(arrDays[0]));
-		ps.setStartEst(arrEst[0]); 
-		ps.setStartFlag(8);
+		if(arrDays[0] > 0) {
+			ps.setStartDate(Utils.dateFromDayCount(arrDays[0]));
+			ps.setStartEst(arrEst[0]); 
+			ps.setStartFlag(8);
+		}
 
 		// set end date on current PersonStandardized
 
-		setEndDate(Utils.dateFromDayCount(depDays[0]));
-		setEndEst(depEst[0]);
-		setEndFlag(8); 
+		if(depDays[0] > 0) {
+			setEndDate(Utils.dateFromDayCount(depDays[0]));
+			setEndEst(depEst[0]);
+			setEndFlag(8);
+		}
 
 
 		return(a); 
@@ -1854,20 +1877,25 @@ public class PersonStandardized {
 		
 		// set start date new Person
 		
-		ps.setStartDate(Utils.dateFromDayCount(arrDays[1]));
-		ps.setStartEst(arrEst[1]);
-		ps.setStartFlag(8);
+		if(arrDays[0] > 0) {
+			ps.setStartDate(Utils.dateFromDayCount(arrDays[1]));
+			ps.setStartEst(arrEst[1]);
+			ps.setStartFlag(8);
+		}
 
 		// estimate the departure date
 
-		String estDate = Utils.dateFromDayCount((arrDays[0] + arrDays[1])/2);
-		pdsd.setDateOfMutation(estDate);
+		String estDate = "";
+		if((arrDays[0] + arrDays[1])/2 > 0){
+			estDate = Utils.dateFromDayCount((arrDays[0] + arrDays[1])/2);
+			pdsd.setDateOfMutation(estDate);
 		
 		// set end date on this PersonStandardized
 		
-		setEndDate(estDate);
-		setEndEst(202);
-		setEndFlag(8);
+			setEndDate(estDate);
+			setEndEst(202);
+			setEndFlag(8);
+		}
 
 		// add new departure record to this PersonStandardized
 
@@ -1890,15 +1918,19 @@ public class PersonStandardized {
 
 		move(arr[1], ps); // move 2nd arrival element
 
-		ps.setStartDate(Utils.dateFromDayCount(arrDays[1]));					
-		ps.setStartEst(arrEst[1]); 
-		ps.setStartFlag(8);		
+		if(arrDays[1] > 0) {
+			ps.setStartDate(Utils.dateFromDayCount(arrDays[1]));					
+			ps.setStartEst(arrEst[1]); 
+			ps.setStartFlag(8);	
+		}
 
 		// set end date on this PersonStandardized
 		
-		setEndDate(Utils.dateFromDayCount(depDays[0]));
-		setEndEst(depEst[0]);
-		setEndFlag(8);
+		if(depDays[0] > 0) {
+			setEndDate(Utils.dateFromDayCount(depDays[0]));
+			setEndEst(depEst[0]);
+			setEndFlag(8);
+		}
 		
 		return(a); 
 
@@ -1920,9 +1952,11 @@ public class PersonStandardized {
 
 		// set start data on person 1
 
-		ps1.setStartDate(Utils.dateFromDayCount(arrDays[0]));
-		ps1.setStartEst(arrEst[0]);
-		ps1.setStartFlag(8);
+		if(arrDays[0] > 0) {
+			ps1.setStartDate(Utils.dateFromDayCount(arrDays[0]));
+			ps1.setStartEst(arrEst[0]);
+			ps1.setStartFlag(8);
+		}
 		
 		// create new departure record like the existing one
 
@@ -1936,9 +1970,12 @@ public class PersonStandardized {
 
 
 		// estimate the departure date
-
-		String estDate = Utils.dateFromDayCount((arrDays[0] + arrDays[1])/2);
-		pdsd.setDateOfMutation(estDate);	  
+		
+		String estDate = "";
+		if((arrDays[0] + arrDays[1])/2 > 0) {
+			estDate = Utils.dateFromDayCount((arrDays[0] + arrDays[1])/2);
+			pdsd.setDateOfMutation(estDate);	  
+		}
 
 		pdsd.setPersonStandardizedToWhomDynamicDataRefers(ps1); // point to 1st new PersonStandardized
 		ps1.getDynamicDataOfPersonStandardized().add(pdsd);
@@ -1953,15 +1990,19 @@ public class PersonStandardized {
 
 		// set start data on person 2
 
-		ps2.setStartDate(Utils.dateFromDayCount(arrDays[1]));
-		ps2.setStartEst(arrEst[1]);
-		ps2.setStartFlag(8);		
+		if(arrDays[1] > 0) {
+			ps2.setStartDate(Utils.dateFromDayCount(arrDays[1]));
+			ps2.setStartEst(arrEst[1]);
+			ps2.setStartFlag(8);	
+		}
 
 		// set end date on this person
 		
-		setEndDate(Utils.dateFromDayCount(depDays[0]));
-		setEndEst(depEst[0]);
-		setEndFlag(8);
+		if(depDays[0] > 0) {
+			setEndDate(Utils.dateFromDayCount(depDays[0]));
+			setEndEst(depEst[0]);
+			setEndFlag(8);
+		}
 		
 		return(a); 
 
@@ -1986,15 +2027,19 @@ public class PersonStandardized {
 
 		// set start data on new person 
 
-		ps.setStartDate(Utils.dateFromDayCount(arrDays[1]));
-		ps.setStartEst(arrEst[1]);
-		ps.setStartFlag(8);					
+		if(arrDays[1] > 0) {
+			ps.setStartDate(Utils.dateFromDayCount(arrDays[1]));
+			ps.setStartEst(arrEst[1]);
+			ps.setStartFlag(8);	
+		}
 
 		// set end date on this person
 		
-		setEndDate(Utils.dateFromDayCount(depDays[0]));
-		setEndEst(depEst[0]);
-		setEndFlag(8);	
+		if(depDays[0] > 0) {
+			setEndDate(Utils.dateFromDayCount(depDays[0]));
+			setEndEst(depEst[0]);
+			setEndFlag(8);	
+		}
 		
 		return a;
 
@@ -2027,8 +2072,11 @@ public class PersonStandardized {
 
 		// estimate the arrival date
 
-		String estDate = Utils.dateFromDayCount((depDays[0] + depDays[1])/2);
-		pdsa.setDateOfMutation(estDate);	
+		String estDate = "";
+		if((depDays[0] + depDays[1])/2 > 0) {
+			estDate = Utils.dateFromDayCount((depDays[0] + depDays[1])/2);
+			pdsa.setDateOfMutation(estDate);	
+		}
 
 		// link the elements
 
@@ -2045,23 +2093,29 @@ public class PersonStandardized {
 		
 		// set end date on 1st new person
 		
-		ps1.setEndDate(Utils.dateFromDayCount(depDays[1]));
-		ps1.setEndFlag(8);
-		ps1.setEndEst(depEst[1]);
+		if(depDays[1] > 0) {
+			ps1.setEndDate(Utils.dateFromDayCount(depDays[1]));
+			ps1.setEndFlag(8);
+			ps1.setEndEst(depEst[1]);
+		}
 
 		move(arr[1], ps2);   // move 2nd arrival to new person 2
 
 		// set start data on new person 2
 
-		ps2.setStartDate(Utils.dateFromDayCount(arrDays[1]));
-		ps2.setStartEst(arrEst[1]);
-		ps2.setStartFlag(8);
+		if(arrDays[1] > 0) {
+			ps2.setStartDate(Utils.dateFromDayCount(arrDays[1]));
+			ps2.setStartEst(arrEst[1]);
+			ps2.setStartFlag(8);
+		}
 		
 		// set end date on this person
 		
-		setEndDate(Utils.dateFromDayCount(depDays[0]));
-		setEndEst(depEst[0]);
-		setEndFlag(8);	
+		if(depDays[0] > 0) {
+			setEndDate(Utils.dateFromDayCount(depDays[0]));
+			setEndEst(depEst[0]);
+			setEndFlag(8);	
+		}
 
 		return a;
 
@@ -2094,8 +2148,11 @@ public class PersonStandardized {
 
 		// estimate the departure date
 
-		String estDate = Utils.dateFromDayCount((arrDays[0] + arrDays[1])/2);
-		pdsd.setDateOfMutation(estDate);
+		String estDate = "";
+		if((arrDays[0] + arrDays[1])/2 > 0) {
+			estDate = Utils.dateFromDayCount((arrDays[0] + arrDays[1])/2);
+			pdsd.setDateOfMutation(estDate);
+		}
 
 		// add the arrival record to person 1
 
@@ -2121,21 +2178,27 @@ public class PersonStandardized {
 
 		// set start date on person 2
 		
-		ps2.setStartDate(Utils.dateFromDayCount(arrDays[1]));
-		ps2.setStartEst(arrEst[1]);
-		ps2.setStartFlag(8);
+		if(arrDays[1] > 0) {
+			ps2.setStartDate(Utils.dateFromDayCount(arrDays[1]));
+			ps2.setStartEst(arrEst[1]);
+			ps2.setStartFlag(8);
+		}
 
 		// set end date on person 2
 		
-		ps2.setStartDate(Utils.dateFromDayCount(depDays[1]));
-		ps2.setStartEst(depEst[1]);
-		ps2.setStartFlag(8);
+		if(depDays[1] > 0) {
+			ps2.setStartDate(Utils.dateFromDayCount(depDays[1]));
+			ps2.setStartEst(depEst[1]);
+			ps2.setStartFlag(8);
+		}
 		
 		// set end date on this person
 		
-		setEndDate(Utils.dateFromDayCount(depDays[0]));
-		setEndEst(depEst[0]);
-		setEndFlag(8);	
+		if(depDays[0] > 0) {
+			setEndDate(Utils.dateFromDayCount(depDays[0]));
+			setEndEst(depEst[0]);
+			setEndFlag(8);	
+		}
 
 		return a;
 
@@ -2160,22 +2223,27 @@ public class PersonStandardized {
 			move(dep[1], ps1);// move 2nd departure to new person 1
 
 			// set start and end date on ps1
-			
-			ps1.setStartDate(Utils.dateFromDayCount(arrDays[0]));
-			ps1.setStartEst(arrEst[0]);			
-			ps1.setStartFlag(8);					
+			if(arrDays[0] > 0) {
+				ps1.setStartDate(Utils.dateFromDayCount(arrDays[0]));
+				ps1.setStartEst(arrEst[0]);			
+				ps1.setStartFlag(8);	
+			}
 
-			ps1.setEndDate(Utils.dateFromDayCount(depDays[1]));
-			ps1.setEndEst(100);			
-			ps1.setEndFlag(8);					
+			if(depDays[1] > 0) {
+				ps1.setEndDate(Utils.dateFromDayCount(depDays[1]));
+				ps1.setEndEst(100);			
+				ps1.setEndFlag(8);		
+			}
 
 			move(arr[1], ps2); // move second arrival to second new person
 
 			// set start date on ps2
 			
-			ps2.setStartDate(Utils.dateFromDayCount(arrDays[1]));
-			ps2.setStartEst(arrEst[1]);
-			ps2.setStartFlag(8);		
+			if(arrDays[1] > 0) {
+				ps2.setStartDate(Utils.dateFromDayCount(arrDays[1]));
+				ps2.setStartEst(arrEst[1]);
+				ps2.setStartFlag(8);
+			}
 			
 			// set end date on current record
 
@@ -2620,19 +2688,24 @@ public class PersonStandardized {
 				PersonDynamicStandardized pds2 = relationToHead.get(1);
 
 				copyDatingInfo(this, pds1);
-				pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(explicitHeadDate) - 1));	
-				pds1.setEndFlag(flag);
+				if(Common1.dateIsValid(explicitHeadDate) == 0) {
+					pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(explicitHeadDate) - 1));	
+					pds1.setEndFlag(flag);
+				}
 
 				copyDatingInfo(this, pds2);
-				pds2.setStartDate(explicitHeadDate);
-				pds2.setStartFlag(flag);	
+				if(Common1.dateIsValid(explicitHeadDate) == 0) {
+					pds2.setStartDate(explicitHeadDate);
+					pds2.setStartFlag(flag);	
+				}
 			}
 
 			else{ 
 				if(relationToHead.size() == 1){  // Explicit head, 1 record
 
 					PersonDynamicStandardized pds1 = relationToHead.get(0);
-					if(getDateOfRegistration() != null && explicitHeadDate != null &&  getStartDate() != null && getEndDate() != null) {
+					if(Common1.dateIsValid(getDateOfRegistration()) == 0 && Common1.dateIsValid(explicitHeadDate) == 0 &&
+							Common1.dateIsValid(getStartDate()) == 0 && Common1.dateIsValid(getEndDate()) == 0){
 						if(Utils.dayCount(getDateOfRegistration()) > Utils.dayCount(explicitHeadDate) ||
 								Utils.dayCount(getStartDate()) > Utils.dayCount(explicitHeadDate) ||
 								Utils.dayCount(getEndDate())   < Utils.dayCount(explicitHeadDate)){
@@ -2648,14 +2721,18 @@ public class PersonStandardized {
 						}
 						
 						copyDatingInfo(this, pds1);
-						pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(explicitHeadDate) - 1));	// ,,
-						pds1.setEndFlag(flag);
+						if(Common1.dateIsValid(explicitHeadDate) == 0) {
+							pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(explicitHeadDate) - 1));	// ,,
+							pds1.setEndFlag(flag);
+						}
 
 						PersonDynamicStandardized pds2 = pds1.copyPersonDynamicStandardized();
 						copyDatingInfo(this, pds2);
-						pds2.setStartDate(explicitHeadDate);
-						pds2.setStartFlag(flag);
-						relationToHead.add(pds2);
+						if(Common1.dateIsValid(explicitHeadDate) == 0) {
+							pds2.setStartDate(explicitHeadDate);
+							pds2.setStartFlag(flag);
+							relationToHead.add(pds2);
+						}
 
 						//((PDS_RelationToHead)pds2).setDynamicData2("-----");
 
@@ -2739,43 +2816,47 @@ public class PersonStandardized {
 							
 						}
 						
-						if(splitDate1 == null || splitDate1.equals("00-00-0000"))
-							splitDate1 = Utils.dateFromDayCount((Utils.dayCount(getEndDate()) + Utils.dayCount(getStartDate()))/2);
+						if(splitDate1 == null || splitDate1.equals("00-00-0000")) {
+							if(Common1.dateIsValid(getStartDate()) == 0 && Common1.dateIsValid(getEndDate()) == 0) {
+							    splitDate1 = Utils.dateFromDayCount((Utils.dayCount(getEndDate()) + Utils.dayCount(getStartDate()))/2);
 						
-						
-						if(Utils.dayCount(splitDate1) < Utils.dayCount(explicitHeadDate)){
-							
-							copyDatingInfo(this, pds1);
-							pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(splitDate1) - 1));	
-							pds1.setEndFlag(flag3);
-							
-							copyDatingInfo(this, pds2);
-							pds2.setStartDate(splitDate1);
-							pds2.setStartFlag(flag3);							
-							pds2.setEndDate(Utils.dateFromDayCount(Utils.dayCount(explicitHeadDate) - 1));	
-							pds2.setEndFlag(flag);
+							    if(Common1.dateIsValid(splitDate1) == 0 && Common1.dateIsValid(explicitHeadDate) == 0) {	    
+							    	if(Utils.dayCount(splitDate1) < Utils.dayCount(explicitHeadDate)){
 
-							copyDatingInfo(this, pds3);
-							pds2.setStartDate(explicitHeadDate);
-							pds2.setStartFlag(flag);	
+							    		copyDatingInfo(this, pds1);
+							    		pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(splitDate1) - 1));	
+							    		pds1.setEndFlag(flag3);
 
-						}
-						else{
-							
-							copyDatingInfo(this, pds1);
-							pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(explicitHeadDate) - 1));	
-							pds1.setEndFlag(flag);
-							
-							copyDatingInfo(this, pds2);
-							pds2.setStartDate(explicitHeadDate);
-							pds2.setStartFlag(flag);							
-							pds2.setEndDate(Utils.dateFromDayCount(Utils.dayCount(splitDate1) - 1));	
-							pds2.setEndFlag(flag3);
+							    		copyDatingInfo(this, pds2);
+							    		pds2.setStartDate(splitDate1);
+							    		pds2.setStartFlag(flag3);							
+							    		pds2.setEndDate(Utils.dateFromDayCount(Utils.dayCount(explicitHeadDate) - 1));	
+							    		pds2.setEndFlag(flag);
 
-							copyDatingInfo(this, pds3);
-							pds2.setStartDate(splitDate1);
-							pds2.setStartFlag(flag3);	
-							
+							    		copyDatingInfo(this, pds3);
+							    		pds2.setStartDate(explicitHeadDate);
+							    		pds2.setStartFlag(flag);	
+
+							    	}
+							    	else{
+
+							    		copyDatingInfo(this, pds1);
+							    		pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(explicitHeadDate) - 1));	
+							    		pds1.setEndFlag(flag);
+
+							    		copyDatingInfo(this, pds2);
+							    		pds2.setStartDate(explicitHeadDate);
+							    		pds2.setStartFlag(flag);							
+							    		pds2.setEndDate(Utils.dateFromDayCount(Utils.dayCount(splitDate1) - 1));	
+							    		pds2.setEndFlag(flag3);
+
+							    		copyDatingInfo(this, pds3);
+							    		pds2.setStartDate(splitDate1);
+							    		pds2.setStartFlag(flag3);	
+
+							    	}
+							    }
+							}
 						}
 					}
 				}
@@ -2817,18 +2898,24 @@ public class PersonStandardized {
 					}
 					
 					if(date == null || date.equals("00-00-0000")){
-						date = Utils.dateFromDayCount((Utils.dayCount(getEndDate()) + Utils.dayCount(getStartDate()))/2);
+						if(Common1.dateIsValid(getEndDate()) == 0 && Common1.dateIsValid(getStartDate()) == 0) {
+							date = Utils.dateFromDayCount((Utils.dayCount(getEndDate()) + Utils.dayCount(getStartDate()))/2);
+						}
 					}
 					
 					
 					
 					copyDatingInfo(this, pds1);
-					pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(date) - 1));	
-					pds1.setEndFlag(flag1);
+					if(Common1.dateIsValid(date) == 0) {
+						pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(date) - 1));	
+						pds1.setEndFlag(flag1);
+					}
 					
 					copyDatingInfo(this, pds2);
-					pds2.setStartDate(date);
-					pds2.setStartFlag(flag1);
+					if(Common1.dateIsValid(date) == 0) {
+						pds2.setStartDate(date);
+						pds2.setStartFlag(flag1);
+					}
 					
 				}
 		}
@@ -2850,37 +2937,43 @@ public class PersonStandardized {
 		PersonDynamicStandardized pds3 = civilStatus.size() >= 3 ?  civilStatus.get(2) : null;
 		
 		// for mutation dates with flag 41 or 42 replace month and/or day with Start month and/or day if Start year matches mutation year
-
-		if(pds1 != null &&  pds1.getDateOfMutation2().substring(6,10).equals(getStartDate().substring(6,10))){
-			if(pds1.getDateOfMutationFlag() == 41)
-				pds1.setDateOfMutation(getStartDate());
-			if(pds1.getDateOfMutationFlag() == 42)
-				if(pds1.getDateOfMutation2().substring(3,4).equals(getStartDate().substring(3,4)))
+		if(pds1 != null && Common1.dateIsValid(pds1.getDateOfMutation2()) == 0 && Common1.dateIsValid(getStartDate()) == 0) {
+			if(pds1.getDateOfMutation2().substring(6,10).equals(getStartDate().substring(6,10))){
+				if(pds1.getDateOfMutationFlag() == 41)
 					pds1.setDateOfMutation(getStartDate());
+				if(pds1.getDateOfMutationFlag() == 42)
+					if(pds1.getDateOfMutation2().substring(3,4).equals(getStartDate().substring(3,4)))
+						pds1.setDateOfMutation(getStartDate());
+			}
 		}
-
-		if(pds2 != null &&  pds2.getDateOfMutation2().substring(6,10).equals(getStartDate().substring(6,10))){
-			if(pds2.getDateOfMutationFlag() == 41)
-				pds2.setDateOfMutation(getStartDate());
-			if(pds2.getDateOfMutationFlag() == 42)
-				if(pds2.getDateOfMutation2().substring(3,4).equals(getStartDate().substring(3,4)))
+		
+		if(pds2 != null && Common1.dateIsValid(pds2.getDateOfMutation2()) == 0 && Common1.dateIsValid(getStartDate()) == 0) {
+			if(pds2.getDateOfMutation2().substring(6,10).equals(getStartDate().substring(6,10))){
+				if(pds2.getDateOfMutationFlag() == 41)
 					pds2.setDateOfMutation(getStartDate());
+				if(pds2.getDateOfMutationFlag() == 42)
+					if(pds2.getDateOfMutation2().substring(3,4).equals(getStartDate().substring(3,4)))
+						pds2.setDateOfMutation(getStartDate());
+			}
 		}
 
-		if(pds3 != null &&  pds3.getDateOfMutation2().substring(6,10).equals(getStartDate().substring(6,10))){
-			if(pds3.getDateOfMutationFlag() == 41)
-				pds3.setDateOfMutation(getStartDate());
-			if(pds3.getDateOfMutationFlag() == 42)
-				if(pds3.getDateOfMutation2().substring(3,4).equals(getStartDate().substring(3,4)))
+		if(pds3 != null && Common1.dateIsValid(pds3.getDateOfMutation2()) == 0 && Common1.dateIsValid(getStartDate()) == 0) {
+			if(pds3 != null &&  pds3.getDateOfMutation2().substring(6,10).equals(getStartDate().substring(6,10))){
+				if(pds3.getDateOfMutationFlag() == 41)
 					pds3.setDateOfMutation(getStartDate());
+				if(pds3.getDateOfMutationFlag() == 42)
+					if(pds3.getDateOfMutation2().substring(3,4).equals(getStartDate().substring(3,4)))
+						pds3.setDateOfMutation(getStartDate());
+			}
 		}
-
 		
 		// replace "unknown" with data from previous registration if possible
 		
-		if(pds1 != null && ((PDS_CivilStatus)pds1).getContentOfDynamicData() == ConstRelations2.ONBEKEND){					
-			if(Utils.dateIsValid(pds1.getDateOfMutation2()) == 0  && Utils.dayCount(pds1.getDateOfMutation2()) - Utils.dayCount(getDateOfBirth()) < 15 * 365){
-				((PDS_CivilStatus)pds1).setContentOfDynamicData(ConstRelations2.ONGEHUWD);
+		if(pds1 != null && ((PDS_CivilStatus)pds1).getContentOfDynamicData() == ConstRelations2.ONBEKEND){	
+			if(Common1.dateIsValid(pds1.getDateOfMutation2()) == 0 && Common1.dateIsValid(getDateOfBirth()) == 0) {
+				if(Utils.dayCount(pds1.getDateOfMutation2()) - Utils.dayCount(getDateOfBirth()) < 15 * 365){
+					((PDS_CivilStatus)pds1).setContentOfDynamicData(ConstRelations2.ONGEHUWD);
+				}
 			}
 			else{					
 				int civilStatus1 = 0;
@@ -2906,55 +2999,58 @@ public class PersonStandardized {
 		
 		switch(civilStatus.size()){		
 		case 1:
-			if(Utils.dateIsValid(pds1.getDateOfMutation2()) != 0){				
+			if(pds1 != null && Utils.dateIsValid(pds1.getDateOfMutation2()) != 0){				
 				copyDatingInfo(this, pds1);
 				((PDS_CivilStatus)pds1).setCivilStatusFlag(52); 
 			}
 			else{
-				if(Utils.dayCount(pds1.getDateOfMutation2()) > Utils.dayCount(getStartDate())){
-					PersonDynamicStandardized pdsnew = pds1.copyPersonDynamicStandardized();
-					pdsnew.setDateOfMutation("00-00-0000");
-					copyDatingInfo(this, pdsnew);
-					pdsnew.setEndDate(Utils.dateFromDayCount(Utils.dayCount(pds1.getDateOfMutation2()) - 1));
-					pdsnew.setEndFlag(32);
-					pdsnew.setEndEst(100); 
-					((PDS_CivilStatus)pdsnew).setCivilStatusFlag(52);
-					civilStatus.add(0, pdsnew); // add before
-					
-					switch(((PDS_CivilStatus)pds1).getContentOfDynamicData()){
-					case ConstRelations2.WEDUWNAAR_WEDUWE:
-						((PDS_CivilStatus)pdsnew).setContentOfDynamicData(ConstRelations2.GEHUWD);
-					case ConstRelations2.GESCHEIDEN:
-						((PDS_CivilStatus)pdsnew).setContentOfDynamicData(ConstRelations2.GEHUWD);
-					case ConstRelations2.GEHUWD:
-						((PDS_CivilStatus)pdsnew).setContentOfDynamicData(ConstRelations2.ONBEKEND);
-						
-						if(Utils.dayCount(pdsnew.getStartDate()) - Utils.dayCount(getDateOfBirth()) < 15 * 365){
-							((PDS_CivilStatus)pdsnew).setContentOfDynamicData(ConstRelations2.ONGEHUWD);
-						}
-						else{					
-							int civilStatus1 = 0;
-							for(RegistrationStandardized rs: getRegistrationStandardizedPersonAppearsIn().getOp().getRegistrationsStandardizedOfOP()){
-								if(rs == getRegistrationStandardizedPersonAppearsIn())
-									break;
-								for(PersonStandardized ps: rs.getPersonsStandardizedInRegistration()){
-									if(ps.getPersonID() == getPersonID()){
-										for(PersonDynamicStandardized pds: ps.getDynamicDataOfPersonStandardized()){
-											if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.BURGELIJKE_STAAT){
-												civilStatus1 = ((PDS_CivilStatus)pds).getContentOfDynamicData();	
-											}								
+				if(pds1 != null && Common1.dateIsValid(pds1.getDateOfMutation2()) == 0  && Common1.dateIsValid(getStartDate()) == 0) {
+					if(Utils.dayCount(pds1.getDateOfMutation2()) > Utils.dayCount(getStartDate())){
+						PersonDynamicStandardized pdsnew = pds1.copyPersonDynamicStandardized();
+						pdsnew.setDateOfMutation("00-00-0000");
+						copyDatingInfo(this, pdsnew);
+						pdsnew.setEndDate(Utils.dateFromDayCount(Utils.dayCount(pds1.getDateOfMutation2()) - 1));
+						pdsnew.setEndFlag(32);
+						pdsnew.setEndEst(100); 
+						((PDS_CivilStatus)pdsnew).setCivilStatusFlag(52);
+						civilStatus.add(0, pdsnew); // add before
+
+						switch(((PDS_CivilStatus)pds1).getContentOfDynamicData()){
+						case ConstRelations2.WEDUWNAAR_WEDUWE:
+							((PDS_CivilStatus)pdsnew).setContentOfDynamicData(ConstRelations2.GEHUWD);
+						case ConstRelations2.GESCHEIDEN:
+							((PDS_CivilStatus)pdsnew).setContentOfDynamicData(ConstRelations2.GEHUWD);
+						case ConstRelations2.GEHUWD:
+							((PDS_CivilStatus)pdsnew).setContentOfDynamicData(ConstRelations2.ONBEKEND);
+
+							if(pdsnew != null && Common1.dateIsValid(pdsnew.getStartDate()) == 0 && Common1.dateIsValid(getDateOfBirth()) == 0 &&
+							   Utils.dayCount(pdsnew.getStartDate()) - Utils.dayCount(getDateOfBirth()) < 15 * 365){
+								((PDS_CivilStatus)pdsnew).setContentOfDynamicData(ConstRelations2.ONGEHUWD);
+							}
+							else{					
+								int civilStatus1 = 0;
+								for(RegistrationStandardized rs: getRegistrationStandardizedPersonAppearsIn().getOp().getRegistrationsStandardizedOfOP()){
+									if(rs == getRegistrationStandardizedPersonAppearsIn())
+										break;
+									for(PersonStandardized ps: rs.getPersonsStandardizedInRegistration()){
+										if(ps.getPersonID() == getPersonID()){
+											for(PersonDynamicStandardized pds: ps.getDynamicDataOfPersonStandardized()){
+												if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.BURGELIJKE_STAAT){
+													civilStatus1 = ((PDS_CivilStatus)pds).getContentOfDynamicData();	
+												}								
+											}
 										}
 									}
 								}
+								if(civilStatus1 != 0)
+									((PDS_CivilStatus)pdsnew).setContentOfDynamicData(civilStatus1); 						
 							}
-							if(civilStatus1 != 0)
-								((PDS_CivilStatus)pdsnew).setContentOfDynamicData(civilStatus1); 						
+
 						}
-					
+
 					}
-					
 				}
-				
+
 				pds1.setStartDate(pds1.getDateOfMutation2());
 				pds1.setStartFlag(32);
 				pds1.setStartEst(100); 
@@ -2966,7 +3062,7 @@ public class PersonStandardized {
 			}
 			break;
 		case 2:
-			if(Utils.dateIsValid(pds1.getDateOfMutation2()) != 0){	
+			if(Utils.dateIsValid(pds1.getDateOfMutation2()) == 0){	
 				copyDatingInfo(this, pds1);
 				((PDS_CivilStatus)pds1).setCivilStatusFlag(52);  // declared 
 				if(Utils.dateIsValid(pds2.getDateOfMutation2()) == 0){
@@ -2978,7 +3074,7 @@ public class PersonStandardized {
 				else; // done
 			}
 			else{ // date1 valid
-				if(pds1.getDateOfMutation2().equals(getStartDate())){
+				if(pds1 != null && pds1.getDateOfMutation2() != null && getStartDate() != null && pds1.getDateOfMutation2().equals(getStartDate())){
 					copyDatingInfo(this, pds1);
 					((PDS_CivilStatus)pds1).setCivilStatusFlag(51);  // event
 					pds1.setStartFlag(32); // date from b32_st  
@@ -2992,28 +3088,30 @@ public class PersonStandardized {
 
 				}
 				else{
-					if(Utils.dayCount(pds1.getDateOfMutation2()) > Utils.dayCount(getStartDate())){ // extra record before record 1
-						PersonDynamicStandardized pdsnew = pds1.copyPersonDynamicStandardized();
-						pdsnew.setDateOfMutation("00-00-0000");
-						copyDatingInfo(this, pdsnew);
-						pdsnew.setEndDate(Utils.dateFromDayCount(Utils.dayCount(pds1.getDateOfMutation2()) - 1));
-						pdsnew.setEndFlag(32);
-						pdsnew.setEndEst(100); 
-						((PDS_CivilStatus)pdsnew).setCivilStatusFlag(52);
-						civilStatus.add(0, pdsnew); // add before
-						
-						copyDatingInfo(this, pds1);
-						
-						pds1.setStartDate(pds1.getDateOfMutation2());
-						pds1.setStartFlag(32);
-						pds1.setStartEst(100);
-						
-						if(Utils.dateIsValid(pds2.getDateOfMutation2()) == 0){
-							pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(pds2.getDateOfMutation2()) - 1));
-							pds1.setEndFlag(32); // date from b32_st
-							pds1.setEndEst(100);				
+					if(pds1 != null && Common1.dateIsValid(pds1.getDateOfMutation2()) == 0 && Common1.dateIsValid(getStartDate()) == 0) {
+						if(Utils.dayCount(pds1.getDateOfMutation2()) > Utils.dayCount(getStartDate())){ // extra record before record 1
+							PersonDynamicStandardized pdsnew = pds1.copyPersonDynamicStandardized();
+							pdsnew.setDateOfMutation("00-00-0000");
+							copyDatingInfo(this, pdsnew);
+							pdsnew.setEndDate(Utils.dateFromDayCount(Utils.dayCount(pds1.getDateOfMutation2()) - 1));
+							pdsnew.setEndFlag(32);
+							pdsnew.setEndEst(100); 
+							((PDS_CivilStatus)pdsnew).setCivilStatusFlag(52);
+							civilStatus.add(0, pdsnew); // add before
+
+							copyDatingInfo(this, pds1);
+
+							pds1.setStartDate(pds1.getDateOfMutation2());
+							pds1.setStartFlag(32);
+							pds1.setStartEst(100);
+
+							if(Utils.dateIsValid(pds2.getDateOfMutation2()) == 0){
+								pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(pds2.getDateOfMutation2()) - 1));
+								pds1.setEndFlag(32); // date from b32_st
+								pds1.setEndEst(100);				
+							}
+							else; // done
 						}
-						else; // done
 					}
 					copyDatingInfo(this, pds1);
 					pds1.setStartDate(pds1.getDateOfMutation2());
@@ -3057,7 +3155,8 @@ public class PersonStandardized {
 									}
 								}
 								if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.AANKOMST){
-									if(Utils.dateIsValid(pds.getDateOfMutation2()) == 0){
+									if(pds != null && Utils.dateIsValid(pds.getDateOfMutation2()) == 0 &&
+											pds1 != null && Utils.dateIsValid(pds1.getStartDate()) == 0){
 										if(Utils.dayCount(pds.getDateOfMutation2()) > Utils.dayCount(pds1.getStartDate()))
 											arrivalDate = pds.getDateOfMutation2();
 									}
@@ -3068,9 +3167,11 @@ public class PersonStandardized {
 					}
 					if(married == true && arrivalDate != null){
 						
-						pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(arrivalDate) - 1));
-						pds1.setEndFlag(51);
-						pds1.setEndEst(100);
+						if(arrivalDate != null &&  Common1.dateIsValid(arrivalDate) == 0) {
+							pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(arrivalDate) - 1));
+							pds1.setEndFlag(51);
+							pds1.setEndEst(100);
+						}
 						
 						pds2.setStartDate(arrivalDate);
 						pds2.setStartEst(100);
@@ -3083,10 +3184,10 @@ public class PersonStandardized {
 			break;
 			
 		case 3:
-			if(Utils.dateIsValid(pds1.getDateOfMutation2()) != 0){	
+			if(pds1 != null && Utils.dateIsValid(pds1.getDateOfMutation2()) != 0){	
 				copyDatingInfo(this, pds1);
 				((PDS_CivilStatus)pds1).setCivilStatusFlag(52);  // declared 
-				if(Utils.dateIsValid(pds2.getDateOfMutation2()) == 0){
+				if(pds2 != null && Utils.dateIsValid(pds2.getDateOfMutation2()) == 0){
 					//System.out.println("-->" + pds2.getDateOfMutation2());
 					pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(pds2.getDateOfMutation2()) - 1));
 					pds1.setEndFlag(32); // date from b32_st
@@ -3095,7 +3196,7 @@ public class PersonStandardized {
 				else; // done
 			}
 			else{ // date1 valid
-				if(pds1.getDateOfMutation2().equals(getStartDate())){
+				if(pds1 != null && pds1.getDateOfMutation2() != null && getStartDate() != null && pds1.getDateOfMutation2().equals(getStartDate())){
 					copyDatingInfo(this, pds1);
 					((PDS_CivilStatus)pds1).setCivilStatusFlag(51);  // event
 					pds1.setStartFlag(32); // date from b32_st  
@@ -3109,7 +3210,8 @@ public class PersonStandardized {
 
 				}
 				else{
-					if(Utils.dayCount(pds1.getDateOfMutation2()) > Utils.dayCount(getStartDate())){ // extra record before record 1
+					if(pds1 != null && Utils.dateIsValid(pds1.getDateOfMutation2()) == 0 && Utils.dateIsValid(getStartDate()) == 0 &&
+							Utils.dayCount(pds1.getDateOfMutation2()) > Utils.dayCount(getStartDate())){ // extra record before record 1
 						PersonDynamicStandardized pdsnew = pds1.copyPersonDynamicStandardized();
 						copyDatingInfo(this, pdsnew);
 						pdsnew.setEndDate(Utils.dateFromDayCount(Utils.dayCount(pds1.getDateOfMutation2()) - 1));
@@ -3303,22 +3405,25 @@ public class PersonStandardized {
 				}
 				//System.out.println("date = " + date);
 				if(date == null || Utils.dateIsValid(date) != 0)
-					date = Utils.dateFromDayCount((Utils.dayCount(getStartDate()) + Utils.dayCount(getEndDate())) / 2);
-				
+					if(Common1.dateIsValid(getStartDate()) == 0 && Common1.dateIsValid(getEndDate()) == 0)
+						date = Utils.dateFromDayCount((Utils.dayCount(getStartDate()) + Utils.dayCount(getEndDate())) / 2);
+
 				//System.out.println("date = " + date);
-				
+
 				//System.out.println();
-					
+
 				copyDatingInfo(this, pds1);
 				copyDatingInfo(this, pds2);
-				
-				pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(date) - 1));
-				pds1.setEndFlag(77); // marriage end date
-				pds1.setEndEst(100);
-				
-				pds2.setStartDate(date);
-				pds2.setStartFlag(77); // marriage start date
-				pds2.setStartEst(100);
+
+				if(Utils.dateIsValid(date) != 0) {
+					pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(date) - 1));
+					pds1.setEndFlag(77); // marriage end date
+					pds1.setEndEst(100);
+
+					pds2.setStartDate(date);
+					pds2.setStartFlag(77); // marriage start date
+					pds2.setStartEst(100);
+				}
 				
 				break;
 				
@@ -3350,7 +3455,8 @@ public class PersonStandardized {
 						date2 = Utils.dateFromDayCount(( 2 * Utils.dayCount(getStartDate()) + Utils.dayCount(getEndDate())) / 3);					
 					}
 					else
-						date1 = Utils.dateFromDayCount((Utils.dayCount(getStartDate()) + Utils.dayCount(date2)) / 2);
+						if(Common1.dateIsValid(getStartDate()) == 0 && Common1.dateIsValid(getEndDate()) == 0)
+							date1 = Utils.dateFromDayCount((Utils.dayCount(getStartDate()) + Utils.dayCount(date2)) / 2);
 				}
 				else{
 					if(date2 == null || Utils.dateIsValid(date2) != 0){
@@ -3363,23 +3469,31 @@ public class PersonStandardized {
 				copyDatingInfo(this, pds1);
 				copyDatingInfo(this, pds2);
 				copyDatingInfo(this, pds3);
-				
-				pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(date1) - 1));
-				pds1.setEndFlag(77); // marriage end date
-				pds1.setEndEst(100);
-				
-				pds2.setStartDate(date1);
-				pds2.setStartFlag(77); // marriage start date
-				pds2.setStartEst(100);
-				
-				pds2.setEndDate(Utils.dateFromDayCount(Utils.dayCount(date2) - 1));
-				pds2.setEndFlag(77); // marriage end date
-				pds2.setEndEst(100);
-				
-				pds3.setStartDate(date2);
-				pds3.setStartFlag(77); // marriage start date
-				pds3.setStartEst(100);
-				
+
+				if(Utils.dateIsValid(date1) != 0) {
+
+					pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(date1) - 1));
+					pds1.setEndFlag(77); // marriage end date
+					pds1.setEndEst(100);
+
+					pds2.setStartDate(date1);
+					pds2.setStartFlag(77); // marriage start date
+					pds2.setStartEst(100);
+				}
+
+				if(Utils.dateIsValid(date2) != 0) {
+
+
+					pds2.setEndDate(Utils.dateFromDayCount(Utils.dayCount(date2) - 1));
+					pds2.setEndFlag(77); // marriage end date
+					pds2.setEndEst(100);
+
+					pds3.setStartDate(date2);
+					pds3.setStartFlag(77); // marriage start date
+					pds3.setStartEst(100);
+				}
+
+
 			
 			}
 			
@@ -3424,19 +3538,22 @@ public class PersonStandardized {
 					}
 				}
 				if(date == null || Utils.dateIsValid(date) != 0)
-					date = Utils.dateFromDayCount(Utils.dayCount(getStartDate()) + Utils.dayCount(getEndDate()) / 2);
+					if(Common1.dateIsValid(getStartDate()) == 0 && Common1.dateIsValid(getEndDate()) == 0)
+						date = Utils.dateFromDayCount(Utils.dayCount(getStartDate()) + Utils.dayCount(getEndDate()) / 2);
 
 				
 				copyDatingInfo(this, pds1);
 				copyDatingInfo(this, pds2);
-				
-				pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(date) - 1));
-				pds1.setEndFlag(77); // marriage end date
-				pds1.setEndEst(100);
-				
-				pds2.setStartDate(date);
-				pds2.setStartFlag(77); // marriage start date
-				pds2.setStartEst(100);
+
+				if(Utils.dateIsValid(date) == 0) {
+					pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(date) - 1));
+					pds1.setEndFlag(77); // marriage end date
+					pds1.setEndEst(100);
+
+					pds2.setStartDate(date);
+					pds2.setStartFlag(77); // marriage start date
+					pds2.setStartEst(100);
+				}
 
 				
 				if(((PDS_Religion)pds1).getReligionStandardized() != null && ((PDS_Religion)pds1).getReligionStandardized().equalsIgnoreCase(idem)){
@@ -3476,16 +3593,23 @@ public class PersonStandardized {
 				
 				if(date1 == null || Utils.dateIsValid(date1) != 0){
 					if(date2 == null || Utils.dateIsValid(date2) != 0){
-						date1 = Utils.dateFromDayCount(Utils.dayCount(getStartDate()) + Utils.dayCount(getEndDate()) / 3);
-						date2 = Utils.dateFromDayCount(( 2 * Utils.dayCount(getStartDate()) + Utils.dayCount(getEndDate())) / 3);					
+						if(Common1.dateIsValid(getStartDate()) == 0 && Common1.dateIsValid(getEndDate()) == 0) {
+
+							date1 = Utils.dateFromDayCount(Utils.dayCount(getStartDate()) + Utils.dayCount(getEndDate()) / 3);
+							date2 = Utils.dateFromDayCount(( 2 * Utils.dayCount(getStartDate()) + Utils.dayCount(getEndDate())) / 3);
+						}
 					}
 					else
-						date1 = Utils.dateFromDayCount(Utils.dayCount(getStartDate()) + Utils.dayCount(date2) / 2);
+						if(Common1.dateIsValid(getStartDate()) == 0 && Common1.dateIsValid(getEndDate()) == 0)
+
+							date1 = Utils.dateFromDayCount(Utils.dayCount(getStartDate()) + Utils.dayCount(date2) / 2);
 				}
 				else{
 					if(date2 == null || Utils.dateIsValid(date2) != 0){
-						date2 = Utils.dateFromDayCount(Utils.dayCount(getEndDate()) + Utils.dayCount(date1) / 2);
-						
+						if(Common1.dateIsValid(getEndDate()) == 0)
+
+							date2 = Utils.dateFromDayCount(Utils.dayCount(getEndDate()) + Utils.dayCount(date1) / 2);
+
 					}
 					else; // done
 				}
@@ -3494,22 +3618,27 @@ public class PersonStandardized {
 				copyDatingInfo(this, pds2);
 				copyDatingInfo(this, pds3);
 				
-				pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(date1) - 1));
-				pds1.setEndFlag(77); // marriage end date
-				pds1.setEndEst(100);
-				
-				pds2.setStartDate(date1);
-				pds2.setStartFlag(77); // marriage start date
-				pds2.setStartEst(100);
-				
-				pds2.setEndDate(Utils.dateFromDayCount(Utils.dayCount(date2) - 1));
-				pds2.setEndFlag(77); // marriage end date
-				pds2.setEndEst(100);
-				
-				pds3.setStartDate(date2);
-				pds3.setStartFlag(77); // marriage start date
-				pds3.setStartEst(100);
+				if(Utils.dateIsValid(date1) == 0) {
+					pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(date1) - 1));
+					pds1.setEndFlag(77); // marriage end date
+					pds1.setEndEst(100);
 
+					pds2.setStartDate(date1);
+					pds2.setStartFlag(77); // marriage start date
+					pds2.setStartEst(100);
+				}
+
+
+				if(Utils.dateIsValid(date2) == 0) {
+					pds2.setEndDate(Utils.dateFromDayCount(Utils.dayCount(date2) - 1));
+					pds2.setEndFlag(77); // marriage end date
+					pds2.setEndEst(100);
+
+					pds3.setStartDate(date2);
+					pds3.setStartFlag(77); // marriage start date
+					pds3.setStartEst(100);
+				}
+				
 				int i = 0;
 
 				if(((PDS_Religion)pds1).getReligionStandardized() != null && ((PDS_Religion)pds1).getReligionStandardized().equalsIgnoreCase(idem)){
@@ -3610,7 +3739,8 @@ public class PersonStandardized {
 					((PDS_Religion)pdsNew).setReligionFlag(((PDS_Religion)pds).getReligionFlag());
 					apds.add(pdsNew);
 					
-					if(Utils.dayCount(startDate1) < Utils.dayCount(startDate)){
+					if(Common1.dateIsValid(startDate1) == 0 && Common1.dateIsValid(startDate) == 0 &&
+							Utils.dayCount(startDate1) < Utils.dayCount(startDate)){
 						pdsNew.setStartDate(pdsDitto.getStartDate());
 						pdsNew.setStartFlag(pdsDitto.getStartFlag());
 						pdsNew.setStartEst(pdsDitto.getStartEst());						
@@ -3620,7 +3750,8 @@ public class PersonStandardized {
 						pdsNew.setStartFlag(pds.getStartFlag());
 						pdsNew.setStartEst(pds.getStartEst());						
 					}
-					if(Utils.dayCount(endDate1) > Utils.dayCount(endDate)){
+					if(Common1.dateIsValid(endDate1) == 0 && Common1.dateIsValid(endDate) == 0 &&
+							Utils.dayCount(endDate1) > Utils.dayCount(endDate)){
 						pdsNew.setEndDate(pdsDitto.getEndDate());
 						pdsNew.setEndFlag(pdsDitto.getEndFlag());
 						pdsNew.setEndEst(pdsDitto.getEndEst());						
@@ -3672,9 +3803,11 @@ public class PersonStandardized {
 					PersonDynamicStandardized pds = createPersonDynamicStandardized(ConstRelations2.BEROEPSTITEL);
 					((PDS_OccupationalTitle)pds).setOccupationStandardized(profession);
 					((PDS_OccupationalTitle)pds).setOccupationID(professionID);
-					pds.setStartDate(Utils.dateFromDayCount(Utils.dayCount(getDateOfBirth()) + 15 * 365));
-					pds.setStartFlag(51);
-					pds.setStartEst(100);
+					if(Utils.dateIsValid(getDateOfBirth()) != 0) {
+						pds.setStartDate(Utils.dateFromDayCount(Utils.dayCount(getDateOfBirth()) + 15 * 365));
+						pds.setStartFlag(51);
+						pds.setStartEst(100);
+					}
 					pds.setEndDate(getEndDate());
 					pds.setEndFlag(getEndFlag());
 					pds.setEndEst(getEndEst());
@@ -3704,7 +3837,9 @@ public class PersonStandardized {
 				}
 				else{
 					startDate0 = pds1.getDateOfMutation2();
-					if(Utils.dayCount(getDateOfBirth()) + 12 * 365 > Utils.dayCount(pds1.getDateOfMutation2()))
+					
+					if(Utils.dateIsValid(pds1.getDateOfMutation2()) != 0 &&
+							Utils.dayCount(getDateOfBirth()) + 12 * 365 > Utils.dayCount(pds1.getDateOfMutation2()))
 						startDate0 = Utils.dateFromDayCount(Utils.dayCount(getDateOfBirth()) + 12 * 365);
 					flag = 52;
 				}
@@ -3730,13 +3865,16 @@ public class PersonStandardized {
 			
 			if(Common1.dateIsValid(getDateOfBirth()) == 0) {
 				if(Utils.dateIsValid(pds1.getDateOfMutation2()) != 0){
-					if(getEndDate() != null && Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getEndDate()))
+					if(Common1.dateIsValid(getEndDate()) == 0 &&							
+							Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getEndDate()))
 						startDate0 = Utils.dateFromDayCount(Utils.dayCount(getEndDate()) - 1);
 					else{
-						if(Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getStartDate()))
-							startDate0 = Utils.dateFromDayCount(Utils.dayCount(getDateOfBirth()) + 15 * 365);
-						else 
-							startDate0 = getStartDate();
+						if(Common1.dateIsValid(getStartDate()) == 0) {
+							if(Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getStartDate()))
+								startDate0 = Utils.dateFromDayCount(Utils.dayCount(getDateOfBirth()) + 15 * 365);
+							else 
+								startDate0 = getStartDate();
+						}
 					}
 					flag = 51;
 				}
@@ -3765,7 +3903,8 @@ public class PersonStandardized {
 					for(PersonDynamicStandardized pds: civilStatus){
 						if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.BURGELIJKE_STAAT){
 							if(((PDS_CivilStatus)pds).getContentOfDynamicData() == ConstRelations2.GEHUWD){
-								if(Utils.dayCount(pds.getDateOfMutation2()) > Utils.dayCount(pds1.getStartDate())){
+								if(Common1.dateIsValid(pds.getDateOfMutation2()) == 0 && Common1.dateIsValid(pds1.getStartDate()) == 0 &&
+										Utils.dayCount(pds.getDateOfMutation2()) > Utils.dayCount(pds1.getStartDate())){
 									startDate1 = pds.getDateOfMutation2();
 									flag = 53;
 									break;
@@ -3774,16 +3913,16 @@ public class PersonStandardized {
 						}
 					}
 					if(startDate1 == null){
-						if(pds1.getStartDate() != null && getEndDate() != null) {
-								startDate1 = Utils.dateFromDayCount((Utils.dayCount(pds1.getStartDate()) + Utils.dayCount(getEndDate())) / 2);
-								flag = 54;
+						if(Common1.dateIsValid(pds1.getStartDate()) == 0 && Common1.dateIsValid(getEndDate()) == 0) {
+							startDate1 = Utils.dateFromDayCount((Utils.dayCount(pds1.getStartDate()) + Utils.dayCount(getEndDate())) / 2);
+							flag = 54;
 						}
 					}
 				}
 
 				//System.out.println(startDate1);
 
-				if(startDate1 != null) {
+				if(Common1.dateIsValid(startDate1) == 0) {
 					pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(startDate1) - 1));
 					pds1.setEndFlag(flag);
 					pds1.setEndEst(100);

@@ -44,7 +44,12 @@ public class UpdateClientThread implements Runnable {
 
     			String line = "";
 
+    			//System.out.println("Try to read...");
+    			
+    			
     			line = in.readUTF();
+    			
+    			//System.out.println("Read succes");
 
     			if (line.equals(SEND_FILE_COMMAND)) {
     				receiveFileFromServer();
@@ -64,6 +69,7 @@ public class UpdateClientThread implements Runnable {
     			}
     		}
     	} catch (IOException e) {
+    		System.out.println(e);
     		System.out.println("Update Client Thread Receive failed");
     	}
     }

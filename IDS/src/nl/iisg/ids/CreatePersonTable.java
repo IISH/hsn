@@ -13,12 +13,12 @@ public class CreatePersonTable {
 		 "Id_I_new VARCHAR(50), " +
 		 "Start_code SMALLINT, " +
 		 "Familyname VARCHAR(80), " +
-		 "Prefix_Familyname VARCHAR(15), " +
+		 "Prefix_Familyname VARCHAR(50), " +
 		 "Firstname VARCHAR(80), " +
 		 "Sex CHAR(1), " +
 		 "Original_Relation_RP VARCHAR(100), " + 
 		 "Relation_RP VARCHAR(100), " +
-		 "Function VARCHAR(20), " +
+		 "Function1 VARCHAR(20), " +
 		 "Birthday TINYINT, " +
 		 "Birthmonth TINYINT, " +
 		 "Birthyear SMALLINT, " +

@@ -242,7 +242,7 @@ public class Registration implements Comparable<Registration>{
 		
 		if(o instanceof Registration) {
 			Registration r = (Registration) o;
-			if(r.getPageNumberOfSource() == getPageNumberOfSource() && r.getNumberOfHousehold() == getNumberOfHousehold())
+			if(r.getPageNumberOfSource().equals(getPageNumberOfSource()) && r.getNumberOfHousehold() == getNumberOfHousehold())
 				return true;
 			else
 				return false; 
