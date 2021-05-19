@@ -56,7 +56,8 @@ public class Common1 {
 		}
 			
 			
-		if(startDate1 != null && endDate1 != null && startDate2 != null && endDate2 != null){
+		if(Common1.dateIsValid(startDate1) == 0 && Common1.dateIsValid(endDate1) == 0 &&
+				Common1.dateIsValid(startDate2) == 0 && Common1.dateIsValid(endDate2) == 0) {
 		
 			int start1 = dayCount(startDate1);
 			int end1   = dayCount(endDate1);

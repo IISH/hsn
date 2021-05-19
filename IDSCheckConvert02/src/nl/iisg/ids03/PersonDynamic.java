@@ -439,9 +439,9 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 			    	message("1305");
 			}
 			
-			// Check that second and further persons have relation code to Head = -3
+			// Check that second and further persons have relation code to Head = -3, but not for "GEEN OP" 
 			else
-				if(getContentOfDynamicData() != -3)
+				if(getContentOfDynamicData() != -3 && !getPersonToWhomDynamicDataRefers().getFamilyName().trim().equalsIgnoreCase("GEEN OP"))
 					message("1306");
 
 		}

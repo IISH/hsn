@@ -1178,12 +1178,14 @@ public class RegistrationStandardized {
     		}
     		if(ps0 != null){  // found one parent, try find the other one
     			PersonDynamicStandardized pds0 = null;
-    			int searchDays = Utils.dayCount(ps.getDateOfBirth()) + 300;
-    			for(PersonDynamicStandardized pds: ps0.getDynamicDataOfPersonStandardized()){
-    				if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.BURGELIJKE_STAAT){
-    					if(((PDS_CivilStatus)pds).getContentOfDynamicData() == ConstRelations2.GEHUWD){
-    						if(Utils.dayCount(pds.getDateOfMutation2()) < searchDays){
-    							pds0 = pds;
+    			if(Common1.dateIsValid(ps.getDateOfBirth()) == 0) {
+    				int searchDays = Utils.dayCount(ps.getDateOfBirth()) + 300;
+    				for(PersonDynamicStandardized pds: ps0.getDynamicDataOfPersonStandardized()){
+    					if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.BURGELIJKE_STAAT){
+    						if(((PDS_CivilStatus)pds).getContentOfDynamicData() == ConstRelations2.GEHUWD){
+    							if(Utils.dayCount(pds.getDateOfMutation2()) < searchDays){
+    								pds0 = pds;
+    							}
     						}
     					}
     				}
@@ -1495,7 +1497,8 @@ public class RegistrationStandardized {
 
     		        		for(Marriages marriage: getMarriagesHead()){
 
-    		        			if(marriage.getStartDate() == null || marriage.getEndDate() == null)
+    		        			if(Common1.dateIsValid(marriage.getStartDate()) != 0 || 
+    		        					Common1.dateIsValid(marriage.getEndDate()) != 0)
     		        				continue;
 
     		        			int start = Utils.dayCount(marriage.getStartDate());
@@ -1529,10 +1532,14 @@ public class RegistrationStandardized {
     	// D Stepchildren
     	
     	for(PersonStandardized ps: getPersonsStandardizedInRegistration()){
+    		
+    		if(Common1.dateIsValid(ps.getDateOfBirth()) != 0) continue;
+    		
     		for(PersonDynamicStandardized pds: ps.getDynamicDataOfPersonStandardized()){
     			if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD_ST){
     				if(((PDS_RelationToHead)pds).getContentOfDynamicData() == ConstRelations2.STIEFZOON || ((PDS_RelationToHead)pds).getContentOfDynamicData() == ConstRelations2.STIEFDOCHTER ||
     						((PDS_RelationToHead)pds).getContentOfDynamicData() == ConstRelations2.PLEEGZOON || ((PDS_RelationToHead)pds).getContentOfDynamicData() == ConstRelations2.PLEEGDOCHTER){
+    					
     					
     					int dayCount = Utils.dayCount(ps.getDateOfBirth());
     					

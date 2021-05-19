@@ -102,6 +102,7 @@ public class Convert{
 			createTable = createTable.substring(0, createTable.length()-2) + ");";
 			
 			System.out.println("----> "+ createTable);
+			System.out.println("----> "+ database);
 
 			Connection conn = getConnection(database, userid, password);
 			Statement stmt = conn.createStatement();

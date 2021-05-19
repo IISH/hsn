@@ -35,7 +35,7 @@ public class Import {
 
 		try{  
 			//Class.forName("com.mysql.jdbc.Driver");  
-			Connection con=DriverManager.getConnection(connectString + database, userid, password);  
+			Connection con=DriverManager.getConnection(connectString + database + "?serverTimezone=CET&amp", userid, password);  
 
 			File            file       = new File(filename);    //creates a new file instance  
 			FileReader      fr         = new FileReader(file);   //reads the file  
@@ -52,7 +52,7 @@ public class Import {
 			ResultSetMetaData rsmd = null;
 			ResultSet rs = null;
 			
-			while((line=br.readLine())!=null)  
+		y:	while((line=br.readLine())!=null)  
 			{  
 				
 				tot++;
@@ -89,7 +89,7 @@ public class Import {
 				String[] a = line.split(";");
 				s = s + " (";
 				int i = 1;
-				for(String t: a) {
+			x:	for(String t: a) {
 					//System.out.println(rsmd.getColumnName(i) + " " + rsmd.getColumnType(i) + 
 					//		" " + rsmd.getColumnTypeName(i) + " " + t);
 					
@@ -111,7 +111,36 @@ public class Import {
 					}
 					
 					
+					switch(rsmd.getColumnName(i)) {
+					
+					case "DATUM":
+						int k = t.indexOf(" ");
+						if(k > 0)
+							t = t.substring(0,k) + "\"";
+						break;
+						
+					case "GEMNAAM":
+						
+						//System.out.println(t);
+						
+						if(t.trim().equalsIgnoreCase("\"Antwerpen\"")) continue y;
+						break;
+						
+					case "B1IDBG":
+						System.out.println(t);
+						if(t.trim().indexOf("Meerdervoort") >= 0) continue y;
+						if(t.trim().equalsIgnoreCase("1590.00")) continue y;
+						if(t.trim().equalsIgnoreCase("170096.00")) continue y;
+						if(t.trim().equalsIgnoreCase("0")) continue y;
+						if(t.trim().equalsIgnoreCase("3050.00")) continue y;
+						break;
+					}
+					
 					i++;
+					
+					
+					
+					
 					
 					
 					s = s + t + ",";
@@ -148,10 +177,10 @@ public class Import {
 				
 				cnt++;
 
-				if(cnt == 1000 ) {
+				if(cnt == 1) {
 
 					s =  s.substring(0,s.length() - 1) + ";";
-					//System.out.println(s);
+					System.out.println(s);
 					stmt.executeUpdate(s); 
 					
 					s = insertStmt;
