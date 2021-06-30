@@ -576,6 +576,8 @@ public class Person {
 		month = getMonthOfRegistration() > 0 ? getMonthOfRegistration() : 1;
 		year  = getYearOfRegistration();
 
+		i1 = 0;
+		i2 = 0;
 		
 		if(Common1.dateIsValid(day, month, year) == 0)
 			i1 = Common1.dayCount(day, month, year);
@@ -584,7 +586,7 @@ public class Person {
 			i2 = Common1.dayCount(getDayOfDecease(),      getMonthOfDecease(),      getYearOfDecease());
 
 		
-		if( i1 > 0 && i2 > 0 && i2 > i1)
+		if( i1 > 0 && i2 > 0 && i1 > i2)
 			message("1205", "" + getDayOfRegistration() + "-" + getMonthOfRegistration() + "-" + year, 
 				        	"" + getDayOfDecease()      + "-" + getMonthOfDecease()      + "-" + getYearOfDecease());
 

@@ -1257,10 +1257,11 @@ public class Registration implements Comparable<Registration>{
 			message("1075", "" + curSynch);
 
 		// Check that B6SINR == 0 for entries that have a date
-
-		for(RegistrationAddress ra: getAddressesOfRegistration())
-			if(ra.getYearOfAddress() > 0 && ra.getSynchroneNumber() != 0)
-				message("1076");
+        // Vervallen 07-06-2021
+		
+		//for(RegistrationAddress ra: getAddressesOfRegistration())
+		//if(ra.getYearOfAddress() > 0 && ra.getSynchroneNumber() != 0)
+		//	message("1076");
 
 		
 		

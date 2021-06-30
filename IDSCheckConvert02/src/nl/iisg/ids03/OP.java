@@ -297,36 +297,66 @@ public void identify(){
 	
 	ArrayList<PersonStandardized> testedPersons = new ArrayList<PersonStandardized>();
 	setPersonNumber(1);  // restart for each OP
-	Map<Integer, Set<PersonStandardized>> m = new HashMap<Integer, Set<PersonStandardized>>();
+	//Map<Integer, Set<PersonStandardized>> m = new HashMap<Integer, Set<PersonStandardized>>();
 	boolean m4135 = false;
+	Set<String> ids = new HashSet<String>();
+	
 	
 	for(RegistrationStandardized r : getRegistrationsStandardizedOfOP()){
 		for(PersonStandardized p: r.getPersonsStandardizedInRegistration()){
 			for(PersonStandardized pu: testedPersons){
+				boolean mess  = false;
 				
-				if(p != pu && comparePersons(p, pu)){
+				// remove duplicate messages
+				
+				if(ids.add(
+						String.format("%s+%s+%s/%s+%s+%s",
+								pu.getFamilyName().trim(), pu.getFirstName().trim(), pu.getDateOfBirth(),
+								p.getFamilyName().trim(),  p.getFirstName().trim(),  p.getDateOfBirth()
+								
+								)
+						)) {
+					
+					ids.add(
+							String.format("%s+%s+%s/%s+%s+%s",
+									p.getFamilyName().trim(), p.getFirstName().trim(), p.getDateOfBirth(),
+									pu.getFamilyName().trim(),pu.getFirstName().trim(),pu.getDateOfBirth()
+									
+									)
+							);
+					
+					mess = true;
+					
+				}
+								
+				//mess = true;
+				if(p != pu && comparePersons(p, pu, mess)){
 					if(p.getPersonID() == 0) {
 						p.setPersonID(pu.getPersonID());					
-						m.get(pu.getPersonID()).add(p);
+						//m.get(pu.getPersonID()).add(p);
 											
 					}
-					else {						
+					/*
+					else {	
+						System.out.println("Dit kan niet!!");
 						if(pu.getKeyToPersons() != p.getPersonID())
 							for(PersonStandardized px: m.get(pu.getPersonID())) {
 								px.setPersonID(p.getPersonID());
 								m.get(p.getPersonID()).add(px);
 							}
 					}
+					*/
 				}
 			}
 			if(p.getPersonID() == 0){
 				Integer i = new Integer(getPersonNumber());
 				p.setPersonID(i);
-				Set<PersonStandardized> s = new HashSet<PersonStandardized>();
-				m.put(i, s);
-				s.add(p);
+				//Set<PersonStandardized> s = new HashSet<PersonStandardized>();
+				//m.put(i, s);
+				//s.add(p);
 			}
 			testedPersons.add(p);
+			
 			String name = p.getFamilyName();
 			if(name.indexOf("@A") >= 0 || name.indexOf("@B") >= 0 || name.indexOf("#A") >= 0 || name.indexOf("#B") >= 0) {
 				if(!m4135) {
@@ -891,7 +921,7 @@ private void showFields(){
  * @return
  */
 
-private boolean comparePersons(PersonStandardized ps, PersonStandardized pus){
+private boolean comparePersons(PersonStandardized ps, PersonStandardized pus, boolean giveMess){
 
 	//
 	// Test if different family name
@@ -919,43 +949,43 @@ private boolean comparePersons(PersonStandardized ps, PersonStandardized pus){
 			      (ps.getSex().equalsIgnoreCase("v") &&  pus.getSex().equalsIgnoreCase("v"));
 	
 	// If every test is OK, we do the again to get the messages
-	// This way we only get messages when we know the persons wil be linked (are the same)
+	// This way we only get messages when we know the persons will be linked (are the same)
 	
-	if(familyNameOK && firstNameOK && birthDateOK  && sexOK) {
+	if(familyNameOK && firstNameOK && birthDateOK  && sexOK && giveMess) {
 		CheckFamilyName(ps, pus, true);
 		CheckFirstName(ps, pus, true);
 		CheckBirthDate(ps, pus, true);
 
 	}
 
-	if (!familyNameOK && firstNameOK  && birthDateOK  && sexOK ) {
+	if (!familyNameOK && firstNameOK  && birthDateOK  && sexOK && giveMess) {
         message("4121", ps.getFamilyName(), pus.getFamilyName());
         return false;
     }
 
-    if (familyNameOK  && firstNameOK  && birthDateOK == true && !sexOK ) {
+    if (familyNameOK  && firstNameOK  && birthDateOK == true && !sexOK && giveMess) {
        message("4122", new Integer(pus.getKeyToPersons()).toString());
         return false;
     }
     
-	if (familyNameOK && !firstNameOK  && birthDateOK  && sexOK  ) {
+	if (familyNameOK && !firstNameOK  && birthDateOK  && sexOK && giveMess ) {
         message("4123", ps.getFirstName(), pus.getFirstName());
         return false;
     }
 
-    if (familyNameOK && firstNameOK && !birthDateOK  && sexOK ) {
+    if (familyNameOK && firstNameOK && !birthDateOK  && sexOK  && giveMess) {
         message("4126", ps.getFamilyName(), ps.getFirstName(), ps.getDateOfBirth(), pus.getDateOfBirth());
         return false;
     }
 
-    if (!familyNameOK && !firstNameOK && birthDateOK  && sexOK ) {
+    if (!familyNameOK && !firstNameOK && birthDateOK  && sexOK && giveMess) {
         message("4134", ps.getFamilyName(), ps.getFirstName(), pus.getFamilyName(), pus.getFirstName(),ps.getDateOfBirth());
         return false;
     }
 
 
     
-    if (familyNameOK && firstNameOK && birthDateOK  && sexOK ) {
+    if (familyNameOK && firstNameOK && birthDateOK  && sexOK  && giveMess) {
     	
     	boolean psIsOP = (ps.getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP)   || (ps.getNatureOfPerson() == ConstRelations2.FURTHER_APPEARANCE_OF_OP);
     	boolean pusIsOP = (pus.getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP) || (pus.getNatureOfPerson() == ConstRelations2.FURTHER_APPEARANCE_OF_OP);
@@ -1134,7 +1164,11 @@ private boolean CheckFamilyName(PersonStandardized ps, PersonStandardized pus, b
 	
 	if(!name1.equals(name2)){
 		if(giveMessage)
-			message("4001", ps.getFamilyName(),pus.getFamilyName());
+			message("4001", 
+					ps.getKeyToSourceRegister(),
+					ps.getEntryDateHead(),
+					ps.getKeyToPersons(),
+					ps.getFamilyName(),pus.getFamilyName());
 	}
 		
 	
