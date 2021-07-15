@@ -79,21 +79,26 @@ public class StandardizePersonalCards implements Runnable {
 
         String [] requiredFiles = {"PKKND.DBF", "PKHUW.DBF", "PKEIGKND.DBF", "PKBRP.DBF", "PKBYZ.DBF", "PKADRES.DBF", "P7.DBF", "P8.DBF"};
         boolean MSAccess = false;
+        boolean mySQL = false;
+        if(inputDirectory.equalsIgnoreCase("temp")) {
+        	String missingFile = Common1.nonExisitingFile(inputDirectory, requiredFiles);
+        	if(missingFile != null){
+        		//String[] requiredFile = {"PK.ACCDB"};
+        		String[] requiredFile = {"HSN_PK_2019_08_12.ACCDB"};
+        		String missingFile2 = Common1.nonExisitingFile(inputDirectory, requiredFile);
+        		if(missingFile2 != null){
+        			print("Required file " + missingFile + " missing\n");
+        			print("Required file " + missingFile2 + " missing\n");
 
-        String missingFile = Common1.nonExisitingFile(inputDirectory, requiredFiles);
-        if(missingFile != null){
-        	//String[] requiredFile = {"PK.ACCDB"};
-        	String[] requiredFile = {"HSN_PK_2019_08_12.ACCDB"};
-            String missingFile2 = Common1.nonExisitingFile(inputDirectory, requiredFile);
-        	if(missingFile2 != null){
-        		print("Required file " + missingFile + " missing\n");
-        		print("Required file " + missingFile2 + " missing\n");
-        		
-        		return;
+        			return;
+        		}
+        		else
+        			MSAccess = true;
         	}
-        	else
-        		MSAccess = true;
         }
+        else
+        	mySQL = true;
+        
         
         print("Creating databases....");
         
@@ -129,52 +134,141 @@ public class StandardizePersonalCards implements Runnable {
         List<P7> p7L = null; 
         List<P8> p8L = null; 
 
-        
-        if(MSAccess == true){
+        if(mySQL) {
+        	        	      	
+        	String orderNumber = inputDirectory;
+        	
+            EntityManagerFactory factory = Persistence.createEntityManagerFactory("tables_input2");
+            EntityManager em = factory.createEntityManager();
+        	
+            //
+            
+            pkkndL = em.createQuery("select x from PkKnd x where x.orderNumberI like :orderNumber ")
+            		.setParameter("orderNumber", orderNumber)
+            		.getResultList();
+            System.out.println("Read PkKnd " + pkkndL.size() + " rows ");
 
-            pkkndL = Utils.createObjects2("nl.iisg.convertPK.PkKnd", inputDirectory);
-            print("Read PKKND.DBF, " + pkkndL.size() + " rows");
-            pkbrpL = Utils.createObjects2("nl.iisg.convertPK.PkBrp", inputDirectory);
+            print("Read PKKND " + pkkndL.size() + " rows");
+
+            //    	
+                                  
+            pkbrpL = em.createQuery("select x from PkBrp x where x.orderNumberI like :orderNumber ")
+            		.setParameter("orderNumber", orderNumber)
+            		.getResultList();
+            
+            System.out.println("Read PkBrp " + pkbrpL.size() + " rows ");
+
             print("Read PKBRP.DBF, " + pkbrpL.size() + " rows");
-            pkhuwL = Utils.createObjects2("nl.iisg.convertPK.PkHuw", inputDirectory);
-            print("Read PKHUW.DBF, " + pkhuwL.size() + " rows");
-            pkeigkndL = Utils.createObjects2("nl.iisg.convertPK.PkEigknd", inputDirectory);
-            print("Read PKEIGKND.DBF, " + pkeigkndL.size() + " rows");
-            pkadresL = Utils.createObjects2("nl.iisg.convertPK.PkAdres", inputDirectory);
-            print("Read PKADRES.DBF, " + pkadresL.size() + " rows");
-            pkbyzL = Utils.createObjects2("nl.iisg.convertPK.PkByz", inputDirectory);
-            print("Read PKBYZ.DBF, " + pkbyzL.size() + " rows");
-            p7L = Utils.createObjects2("nl.iisg.convertPK.P7", inputDirectory);
-            print("Read P7.DBF, " + p7L.size() + " rows");
-            p8L = Utils.createObjects2("nl.iisg.convertPK.P8", inputDirectory);
-            print("Read P8.DBF, " + p8L.size() + " rows");
 
-        }
-        
-        else{
-        	
-            pkkndL = Utils.createObjects("nl.iisg.convertPK.PkKnd", inputDirectory);
-            print("Read PKKND.DBF, " + pkkndL.size() + " rows");
-            pkbrpL = Utils.createObjects("nl.iisg.convertPK.PkBrp", inputDirectory);
-            print("Read PKBRP.DBF, " + pkbrpL.size() + " rows");
-            pkhuwL = Utils.createObjects("nl.iisg.convertPK.PkHuw", inputDirectory);
-            print("Read PKHUW.DBF, " + pkhuwL.size() + " rows");
-            pkeigkndL = Utils.createObjects("nl.iisg.convertPK.PkEigknd", inputDirectory);
-            print("Read PKEIGKND.DBF, " + pkeigkndL.size() + " rows");
-            pkadresL = Utils.createObjects("nl.iisg.convertPK.PkAdres", inputDirectory);
-            print("Read PKADRES.DBF, " + pkadresL.size() + " rows");
-            pkbyzL = Utils.createObjects("nl.iisg.convertPK.PkByz", inputDirectory);
-            print("Read PKBYZ.DBF, " + pkbyzL.size() + " rows");
-            p7L = Utils.createObjects("nl.iisg.convertPK.P7", inputDirectory);
-            print("Read P7.DBF, " + p7L.size() + " rows");
-            p8L = Utils.createObjects("nl.iisg.convertPK.P8", inputDirectory);
-            print("Read P8.DBF, " + p8L.size() + " rows");
+            //    
+            
+            pkhuwL = em.createQuery("select x from PkHuw x where x.orderNumberI like :orderNumber ")
+            		.setParameter("orderNumber", orderNumber)
+            		.getResultList();
+            
+            System.out.println("Read PkHuw " + pkhuwL.size() + " rows ");
 
-        	
-        	
-        	
+            print("Read PKHUW " + pkhuwL.size() + " rows");
+
+            //    	
+            
+            pkeigkndL = em.createQuery("select x from PkEigknd x where x.orderNumberI like :orderNumber ")
+            		.setParameter("orderNumber", orderNumber)
+            		.getResultList();
+            
+            System.out.println("Read PkEigknd " + pkeigkndL.size() + " rows ");
+
+            print("Read PKEIGKND " + pkeigkndL.size() + " rows");
+
+            //    	
+            
+            pkadresL = em.createQuery("select x from PkAdres x where x.orderNumberI like :orderNumber ")
+            		.setParameter("orderNumber", orderNumber)
+            		.getResultList();
+            
+            System.out.println("Read PkAdres " + pkadresL.size() + " rows ");
+
+            print("Read PKADRES " + pkadresL.size() + " rows");
+
+            //    	
+            
+            pkbyzL = em.createQuery("select x from PkByz x where x.orderNumberI like :orderNumber ")
+            		.setParameter("orderNumber", orderNumber)
+            		.getResultList();
+            
+            System.out.println("Read PkByz " + pkbyzL.size() + " rows ");
+
+            print("Read PKBYZ " + pkbyzL.size() + " rows");
+
+            //    	
+            
+            p7L = em.createQuery("select x from P7 x where x.orderNumberI like :orderNumber ")
+            		.setParameter("orderNumber", orderNumber)
+            		.getResultList();
+            
+            System.out.println("Read P7 " + p7L.size() + " rows ");
+
+            print("Read P7 " + p7L.size() + " rows");
+
+            // 
+            
+            p8L = em.createQuery("select x from P8 x where x.orderNumberI like :orderNumber ")
+            		.setParameter("orderNumber", orderNumber)
+            		.getResultList();
+            System.out.println("Read P8 " + p8L.size() + " rows ");
+
+            print("Read P8 " + p8L.size() + " rows");             	
+
+                	
         }
-        
+        else
+        {
+        	if(MSAccess == true){
+
+        		pkkndL = Utils.createObjects2("nl.iisg.convertPK.PkKnd", inputDirectory);
+        		print("Read PKKND.DBF, " + pkkndL.size() + " rows");
+        		pkbrpL = Utils.createObjects2("nl.iisg.convertPK.PkBrp", inputDirectory);
+        		print("Read PKBRP.DBF, " + pkbrpL.size() + " rows");
+        		pkhuwL = Utils.createObjects2("nl.iisg.convertPK.PkHuw", inputDirectory);
+        		print("Read PKHUW.DBF, " + pkhuwL.size() + " rows");
+        		pkeigkndL = Utils.createObjects2("nl.iisg.convertPK.PkEigknd", inputDirectory);
+        		print("Read PKEIGKND.DBF, " + pkeigkndL.size() + " rows");
+        		pkadresL = Utils.createObjects2("nl.iisg.convertPK.PkAdres", inputDirectory);
+        		print("Read PKADRES.DBF, " + pkadresL.size() + " rows");
+        		pkbyzL = Utils.createObjects2("nl.iisg.convertPK.PkByz", inputDirectory);
+        		print("Read PKBYZ.DBF, " + pkbyzL.size() + " rows");
+        		p7L = Utils.createObjects2("nl.iisg.convertPK.P7", inputDirectory);
+        		print("Read P7.DBF, " + p7L.size() + " rows");
+        		p8L = Utils.createObjects2("nl.iisg.convertPK.P8", inputDirectory);
+        		print("Read P8.DBF, " + p8L.size() + " rows");
+
+        	}
+
+        	else{
+
+        		pkkndL = Utils.createObjects("nl.iisg.convertPK.PkKnd", inputDirectory);
+        		print("Read PKKND.DBF, " + pkkndL.size() + " rows");
+        		pkbrpL = Utils.createObjects("nl.iisg.convertPK.PkBrp", inputDirectory);
+        		print("Read PKBRP.DBF, " + pkbrpL.size() + " rows");
+        		pkhuwL = Utils.createObjects("nl.iisg.convertPK.PkHuw", inputDirectory);
+        		print("Read PKHUW.DBF, " + pkhuwL.size() + " rows");
+        		pkeigkndL = Utils.createObjects("nl.iisg.convertPK.PkEigknd", inputDirectory);
+        		print("Read PKEIGKND.DBF, " + pkeigkndL.size() + " rows");
+        		pkadresL = Utils.createObjects("nl.iisg.convertPK.PkAdres", inputDirectory);
+        		print("Read PKADRES.DBF, " + pkadresL.size() + " rows");
+        		pkbyzL = Utils.createObjects("nl.iisg.convertPK.PkByz", inputDirectory);
+        		print("Read PKBYZ.DBF, " + pkbyzL.size() + " rows");
+        		p7L = Utils.createObjects("nl.iisg.convertPK.P7", inputDirectory);
+        		print("Read P7.DBF, " + p7L.size() + " rows");
+        		p8L = Utils.createObjects("nl.iisg.convertPK.P8", inputDirectory);
+        		print("Read P8.DBF, " + p8L.size() + " rows");
+
+
+
+
+        	}
+        }
+
         // Save the Object Lists
 
         try {
@@ -215,7 +309,7 @@ public class StandardizePersonalCards implements Runnable {
 
         } catch (Exception e) {
             if(e.getMessage() != null)
-            	print(e.getMessage());
+            	System.out.println(e.getMessage());
         }
 
 
@@ -2571,20 +2665,24 @@ public class StandardizePersonalCards implements Runnable {
             }
         }
 
+        String id = String.format("%s %s (%s) vs %s %s (%s)",
+        		p.getFirstName(), p.getFamilyName(), p.getDateOfBirth(),
+        		pu.getFirstName(), pu.getFamilyName(), pu.getDateOfBirth());
+        
         if (day1 != day2)
-            message(p.getKeyToRP(), "4006", (new Integer(day1).toString()), (new Integer(day2).toString()));
+            message(p.getKeyToRP(), "4006", (new Integer(day1).toString()), (new Integer(day2).toString()), id);
         if (month1 != month2)
-            message(p.getKeyToRP(), "4007", (new Integer(month1).toString()), (new Integer(month2).toString()));
+            message(p.getKeyToRP(), "4007", (new Integer(month1).toString()), (new Integer(month2).toString()), id);
         if (year1 != year2) {
 
             if (Math.abs(year1 - year2) <= 2)
-                message(p.getKeyToRP(), "4008", (new Integer(year1).toString()), (new Integer(year2).toString()));
+                message(p.getKeyToRP(), "4008", (new Integer(year1).toString()), (new Integer(year2).toString()), id);
             else
             	if(date1.substring(9, 10).equals(date2.substring(9, 10)))
-            		message(p.getKeyToRP(), "4010", (new Integer(year1).toString()), (new Integer(year2).toString()));
+            		message(p.getKeyToRP(), "4010", (new Integer(year1).toString()), (new Integer(year2).toString()), id);
             	else{
             		if(day1 == day2 && month1 == month2 && Math.abs(year1 - year2) == 100)
-                		message(p.getKeyToRP(), "4011", (new Integer(year1).toString()), (new Integer(year2).toString()));
+                		message(p.getKeyToRP(), "4011", (new Integer(year1).toString()), (new Integer(year2).toString()), id);
             		
             	}
         }

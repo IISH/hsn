@@ -29,6 +29,7 @@ public class P7 {
 	 @Column(name="DATUMO")         private  String   datumo;           // original date   
 	 @Column(name="INITO")          private  String   inito;            // original initials    
 	 @Column(name="VERSIEO")        private  String   versieo;          // original version
+	 @Column(name="OPDRNRI")        private  String   orderNumberI;     // order number 2
 	 
      @Transient 	                private  PkKnd    pkHolder;         // PK-Holder
 
@@ -158,6 +159,14 @@ public class P7 {
 	}
 	public void setVersieo(String versieo) {
 		this.versieo = versieo;
+	}
+	
+	public String getorderNumberI() {
+		return orderNumberI;
+	}
+
+	public void setorderNumberI(String orderNumberI) {
+		this.orderNumberI = orderNumberI;
 	}
 
 	public PkKnd getPkHolder() {

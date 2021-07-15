@@ -34,8 +34,10 @@ public class AlfalabClient extends JFrame implements ActionListener {
     private final static String POP_REG_TEST_IDNR_DOUBLES = "popRegTestIDnrDoubles";
     private final static String POP_REG_REPLACE_DEF_WITH_TEMP = "popRegReplaceDefWithTemp";
     private final static String PERSONAL_CARDS_CONVERSION = "personalCardsConversion";
+    //private final static String PERSONAL_CARDS_CONVERSION2 = "personalCardsConversion2"; // New command to make server use MySQL input tables
     private final static String PERSONAL_CARDS_TO_IDS = "personalCardsToIDS";
     private final static String CIVIL_CERTS_CONVERSION = "civilCertsConversion";
+    //private final static String CIVIL_CERTS_CONVERSION = "civilCertsConversion2"; // New command to make server use MySQL input tables
     private final static String CIVIL_CERTS_TO_IDS= "civilCertsToIDS";
     private final static String ADD_LINKS_DATA= "addLinksData";
     private final static String BUILD_NEW_HSN = "buildNewHSN";
@@ -61,6 +63,9 @@ public class AlfalabClient extends JFrame implements ActionListener {
     private final static int MAX_FILE_SIZE = 10 * 1024 * 1024; // = 10 Megabytes
     
     private final static int portNo = 8009;
+    
+    private final static boolean mySQL_PC = true; // Use MySQL for Personal Cards
+    private final static boolean mySQL_CC = true; // Use MySQL for Civil Certificates
 
     private static String serverAddress;
     private static String userName;
@@ -185,23 +190,37 @@ public class AlfalabClient extends JFrame implements ActionListener {
             		writeUTF(POP_REG_TO_IDS);
 
             } else if (source == personalCardsButton1) {
+            	
+            	if(mySQL_PC) {
 
-                File[] inputDbfFiles = openDBFDir();
+                	SpecifyWorkItem testOnErrorsDialog = new SpecifyWorkItem(this);
+                    //testOnErrorsDialog.setInputDirectoryField(selectedDir.toString());
+                    testOnErrorsDialog.setVisible(true);
+                    if (!testOnErrorsDialog.getConfirm()) return;
+                    
+                    String workItem = testOnErrorsDialog.getInputDirectoryField();
+                    
+                    System.out.println("workitem = " + workItem);
+                    writeUTF(PERSONAL_CARDS_CONVERSION + " " + workItem);
+            	}
+            	else {
+            		File[] inputDbfFiles = openDBFDir();
 
-                // input dir selection canceled by user
-                if (inputDbfFiles == null) return;
+            		// input dir selection canceled by user
+            		if (inputDbfFiles == null) return;
 
-                ConfirmInputDirectory c = new ConfirmInputDirectory(this);
-                c.setInputDirectoryField(selectedDir.toString());
-                c.setVisible(true);
+            		ConfirmInputDirectory c = new ConfirmInputDirectory(this);
+            		c.setInputDirectoryField(selectedDir.toString());
+            		c.setVisible(true);
 
-                // user pressed cancel at confirmation dialog
-                if (!c.getConfirm()) return;
-                
-                // send DBF files to server:
-                HandleUploadAsynchrounously h = new HandleUploadAsynchrounously(inputDbfFiles, PERSONAL_CARDS_CONVERSION);                
-                HandleUploadAsynchrounouslyThread = new Thread(h);
-                HandleUploadAsynchrounouslyThread.start();
+            		// user pressed cancel at confirmation dialog
+            		if (!c.getConfirm()) return;
+
+            		// send DBF files to server:
+            		HandleUploadAsynchrounously h = new HandleUploadAsynchrounously(inputDbfFiles, PERSONAL_CARDS_CONVERSION);                
+            		HandleUploadAsynchrounouslyThread = new Thread(h);
+            		HandleUploadAsynchrounouslyThread.start();
+            	}
 
             } else if (source == personalCardsButton2) {
             	
@@ -211,25 +230,42 @@ public class AlfalabClient extends JFrame implements ActionListener {
 
             } else if (source == civilCertsButton1) {
 
-                File[] inputDbfFiles = openDBFDir();
+            	if(mySQL_CC) {
+            		
+                	SpecifyWorkItem testOnErrorsDialog = new SpecifyWorkItem(this);
+                    //testOnErrorsDialog.setInputDirectoryField(selectedDir.toString());
+                    testOnErrorsDialog.setVisible(true);
+                    if (!testOnErrorsDialog.getConfirm()) return;
+                    
+                    String workItem = testOnErrorsDialog.getInputDirectoryField();
+                    
+                    System.out.println("workitem = " + workItem);
+                    writeUTF(CIVIL_CERTS_CONVERSION + " " + workItem);
 
-                // input dir selection canceled by user
-                if (inputDbfFiles == null) return;
-                
-                ConfirmInputDirectory c = new ConfirmInputDirectory(this);
-                c.setInputDirectoryField(selectedDir.toString());
-                c.setVisible(true);
+            		          		
+            	}
 
-                // user pressed cancel at confirmation dialog
-                if (!c.getConfirm()) return;
+            	else {
+            		File[] inputDbfFiles = openDBFDir();
+
+            		// input dir selection canceled by user
+            		if (inputDbfFiles == null) return;
+
+            		ConfirmInputDirectory c = new ConfirmInputDirectory(this);
+            		c.setInputDirectoryField(selectedDir.toString());
+            		c.setVisible(true);
+
+            		// user pressed cancel at confirmation dialog
+            		if (!c.getConfirm()) return;
 
 
-                // send DBF files to server:
-                
-                HandleUploadAsynchrounously h = new HandleUploadAsynchrounously(inputDbfFiles, CIVIL_CERTS_CONVERSION);
-                
-                HandleUploadAsynchrounouslyThread = new Thread(h);
-                HandleUploadAsynchrounouslyThread.start();
+            		// send DBF files to server:
+
+            		HandleUploadAsynchrounously h = new HandleUploadAsynchrounously(inputDbfFiles, CIVIL_CERTS_CONVERSION);
+
+            		HandleUploadAsynchrounouslyThread = new Thread(h);
+            		HandleUploadAsynchrounouslyThread.start();
+            	}
                 
             } else if (source == civilCertsButton2) {
             	int reply = JOptionPane.showConfirmDialog(null, "Run Civil Certificates IDS?", "Confirm Choice", JOptionPane.YES_NO_OPTION);

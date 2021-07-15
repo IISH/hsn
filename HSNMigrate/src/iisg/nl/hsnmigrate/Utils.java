@@ -393,12 +393,13 @@ public class Utils {
 						 }
 					 }
 
-					 //if(found == false){
+					 if(found == false){
+						 columnAnnotatedVariableToDBFField[index++] = -1; // This is ok, we don't set this field
 					 //
 					 //	System.out.println("No corresponding column in " + dbfName + ".DBF for Field: " + declaredFieldList[i].getName() + ", annotation: " + columnAnnotatedField.name());
 					 //	System.exit(-1);
 					 //
-					 //}
+					 }
 				 }
 			 }
 
@@ -424,90 +425,91 @@ public class Utils {
 					 GeneratedValue generatedValue = declaredFieldList[i].getAnnotation(GeneratedValue.class);				
 
 					 if(columnAnnotatedField != null && generatedValue == null){ // It is one of our "COLUMN=XXXX"-annotated fields
+						 if(columnAnnotatedVariableToDBFField[index1] != -1) { // For -1 we have no column in the DBF table
 
-						 // Make ready to invoke the setter of the annotated Field's variable
+							 // Make ready to invoke the setter of the annotated Field's variable
 
-						 // Set parameter list, only one parameter for setter, with datatype depending on DBF Field's type
-
-
-
-						 if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_N)
-							 parameterTypes[0] = Integer.TYPE;
-						 else
-							 parameterTypes[0] = String.class;
+							 // Set parameter list, only one parameter for setter, with datatype depending on DBF Field's type
 
 
-						 // Create the name of the setter method for this variable ("abcde" -> "setAbcde")
 
-						 String methodName = "set";
-						 methodName += declaredFieldList[i].getName().substring(0,1).toUpperCase();
-						 methodName += declaredFieldList[i].getName().substring(1);
+							 if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_N)
+								 parameterTypes[0] = Integer.TYPE;
+							 else
+								 parameterTypes[0] = String.class;
 
-						 // Get the method from inputClass by it's name and signature (number of parameters and their types)
 
-						 Method  method = inputClass.getDeclaredMethod(methodName, parameterTypes);
+							 // Create the name of the setter method for this variable ("abcde" -> "setAbcde")
 
-						 // Adapt the DBF column data to suit our HSN needs (tranform "1.0" to "1" (integer))
+							 String methodName = "set";
+							 methodName += declaredFieldList[i].getName().substring(0,1).toUpperCase();
+							 methodName += declaredFieldList[i].getName().substring(1);
 
-						 if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_N){
+							 // Get the method from inputClass by it's name and signature (number of parameters and their types)
 
-							 if(rowObjects[columnAnnotatedVariableToDBFField[index1]] != null){
-								 String s = rowObjects[columnAnnotatedVariableToDBFField[index1]].toString();
+							 Method  method = inputClass.getDeclaredMethod(methodName, parameterTypes);
 
-								 String [] b = s.split("[.]"); 
-								 Integer k = new Integer(b[0]);
+							 // Adapt the DBF column data to suit our HSN needs (tranform "1.0" to "1" (integer))
 
-								 rowObjects[columnAnnotatedVariableToDBFField[index1]] = k;
-							 }
+							 if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_N){
 
-						 }
+								 if(rowObjects[columnAnnotatedVariableToDBFField[index1]] != null){
+									 String s = rowObjects[columnAnnotatedVariableToDBFField[index1]].toString();
 
-						 // Adapt the DBF column data to suit our HSN needs (tranform "Wed Jul 19 00:00:00 CEST 2000" to "19-07-2000")
+									 String [] b = s.split("[.]"); 
+									 Integer k = new Integer(b[0]);
 
-						 if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_D){
-
-							 // Format  Wed Jul 19 00:00:00 CEST 2000
-							 //         0   1   2  3        4    5  
-
-							 if(rowObjects[columnAnnotatedVariableToDBFField[index1]] != null){
-								 String s = rowObjects[columnAnnotatedVariableToDBFField[index1]].toString();
-
-								 String[] d = s.trim().split("[ ]"); 
-								 for(int ii = 0; ii < months.length; ii++){
-
-									 if(months[ii].equalsIgnoreCase(d[1])){
-
-										 String u = String.format("%02d-%02d-%04d", new Integer(d[2]), new Integer(ii), new Integer(d[5]));
-
-										 rowObjects[columnAnnotatedVariableToDBFField[index1]] = u;
-										 break;
-									 }
+									 rowObjects[columnAnnotatedVariableToDBFField[index1]] = k;
 								 }
 
 							 }
+
+							 // Adapt the DBF column data to suit our HSN needs (tranform "Wed Jul 19 00:00:00 CEST 2000" to "19-07-2000")
+
+							 if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_D){
+
+								 // Format  Wed Jul 19 00:00:00 CEST 2000
+								 //         0   1   2  3        4    5  
+
+								 if(rowObjects[columnAnnotatedVariableToDBFField[index1]] != null){
+									 String s = rowObjects[columnAnnotatedVariableToDBFField[index1]].toString();
+
+									 String[] d = s.trim().split("[ ]"); 
+									 for(int ii = 0; ii < months.length; ii++){
+
+										 if(months[ii].equalsIgnoreCase(d[1])){
+
+											 String u = String.format("%02d-%02d-%04d", new Integer(d[2]), new Integer(ii), new Integer(d[5]));
+
+											 rowObjects[columnAnnotatedVariableToDBFField[index1]] = u;
+											 break;
+										 }
+									 }
+
+								 }
+							 }
+
+							 // Adapt the DBF column data to suit our HSN needs: Trim strings
+
+							 if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_C){
+								 if(rowObjects[columnAnnotatedVariableToDBFField[index1]] != null)
+									 rowObjects[columnAnnotatedVariableToDBFField[index1]] = ((String) rowObjects[columnAnnotatedVariableToDBFField[index1]]).trim();
+							 }
+
+
+							 // create object to hold value from DBF Column
+
+
+
+
+							 e[0] = rowObjects[columnAnnotatedVariableToDBFField[index1]];
+
+							 // Next statement is equivalent to: setVarx(rowObject[Y]);
+
+							 Object retObject = null;
+							 if(e[0] != null)
+								 retObject = method.invoke(outputObject,(Object []) e); // retObject contains the return code from the setter method, it is void
 						 }
-
-						 // Adapt the DBF column data to suit our HSN needs: Trim strings
-
-						 if(fieldTypesDBF[columnAnnotatedVariableToDBFField[index1]] == DBFField.FIELD_TYPE_C){
-							 if(rowObjects[columnAnnotatedVariableToDBFField[index1]] != null)
-								 rowObjects[columnAnnotatedVariableToDBFField[index1]] = ((String) rowObjects[columnAnnotatedVariableToDBFField[index1]]).trim();
-						 }
-
-
-						 // create object to hold value from DBF Column
-
-
-
-
-						 e[0] = rowObjects[columnAnnotatedVariableToDBFField[index1]];
-
-						 // Next statement is equivalent to: setVarx(rowObject[Y]);
-
-						 Object retObject = null;
-						 if(e[0] != null)
-							 retObject = method.invoke(outputObject,(Object []) e); // retObject contains the return code from the setter method, it is void
-
 						 index1++; // next ColumnAnnotated field
 					 }
 				 }
@@ -775,8 +777,10 @@ public class Utils {
 
 					 if(found == false){
 
-						 System.out.println("No corresponding column in " + tabName + ". for Field: " + declaredFieldList[i].getName() + ", annotation: " + columnAnnotatedField.name());
-						 System.exit(-1);
+						 columnAnnotatedVariableToMSAField[index++] = -1; //  Our "COLUMN=XXXX" annotated variable has no MSA Column
+					     // This is allowed now, we just do not set this variable	 
+						 //System.out.println("No corresponding column in " + tabName + ". for Field: " + declaredFieldList[i].getName() + ", annotation: " + columnAnnotatedField.name());
+						 //System.exit(-1);
 
 					 }
 				 }
@@ -803,67 +807,68 @@ public class Utils {
 
 					 if(columnAnnotatedField != null && generatedValue == null){ // It is one of our "COLUMN=XXXX"-annotated fields
 
-						 // Make ready to invoke the setter of the annotated Field's variable
+						 if(columnAnnotatedVariableToMSAField[index1] != -1) { // For -1 we have no column in the MSA table
+							 // Make ready to invoke the setter of the annotated Field's variable
 
-						 // Set parameter list, only one parameter for setter, with datatype depending on  Field's type
+							 // Set parameter list, only one parameter for setter, with datatype depending on  Field's type
 
-						 //if(count == 0){
-							// System.out.println("index1 = " + index1);
-							// System.out.println("columnAnnotatedVariableToMSAField[index1] = " + columnAnnotatedVariableToMSAField[index1]);
-							// System.out.println("fieldNamesMSA[columnAnnotatedVariableToMSAField[index1]] =  " + fieldNamesMSA[columnAnnotatedVariableToMSAField[index1]]);
-							// System.out.println("fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]] =  " + fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]]);
-						// }
+							 //if(count == 0){
+							 // System.out.println("index1 = " + index1);
+							 // System.out.println("columnAnnotatedVariableToMSAField[index1] = " + columnAnnotatedVariableToMSAField[index1]);
+							 // System.out.println("fieldNamesMSA[columnAnnotatedVariableToMSAField[index1]] =  " + fieldNamesMSA[columnAnnotatedVariableToMSAField[index1]]);
+							 // System.out.println("fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]] =  " + fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]]);
+							 // }
 
-						 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("DOUBLE") ||
-								 fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("INTEGER")  ) 
-							 parameterTypes[0] = Integer.TYPE;
-						 else
-							 parameterTypes[0] = String.class;
-
-
-						 // Create the name of the setter method for this variable ("abcde" -> "setAbcde")
-
-						 String methodName = "set";
-						 methodName += declaredFieldList[i].getName().substring(0,1).toUpperCase();
-						 methodName += declaredFieldList[i].getName().substring(1);
-
-						 // Get the method from inputClass by it's name and signature (number of parameters and their types)
-						 //System.out.println("parameterTypes[0] =  " + parameterTypes[0]);
-
-						 Method  method = inputClass.getDeclaredMethod(methodName, parameterTypes);
+							 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("DOUBLE") ||
+									 fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("INTEGER")  ) 
+								 parameterTypes[0] = Integer.TYPE;
+							 else
+								 parameterTypes[0] = String.class;
 
 
-						 // create object to hold value from MSA Column		
+							 // Create the name of the setter method for this variable ("abcde" -> "setAbcde")
 
-						 e[0] = null;
+							 String methodName = "set";
+							 methodName += declaredFieldList[i].getName().substring(0,1).toUpperCase();
+							 methodName += declaredFieldList[i].getName().substring(1);
 
-						 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("DOUBLE") || 
-								 fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("INTEGER")) 
-							 e[0] = rs.getInt(columnAnnotatedVariableToMSAField[index1] + 1);
+							 // Get the method from inputClass by it's name and signature (number of parameters and their types)
+							 //System.out.println("parameterTypes[0] =  " + parameterTypes[0]);
 
-						 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("VARCHAR")) {
-							 e[0] = rs.getString(columnAnnotatedVariableToMSAField[index1] + 1);
-							
-							 //if(e[0] == null) e[0] = ""; // We do this because the old DBF reader did it, and the code above relies on it
-						 }
+							 Method  method = inputClass.getDeclaredMethod(methodName, parameterTypes);
 
-						 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("TIMESTAMP")){
 
-							 Date d = rs.getDate(columnAnnotatedVariableToMSAField[index1] + 1);
-							 if(d != null){
-								 String ss = d.toString();							
-								 String u =  ss.substring(8, 10) + "-" + ss.substring(5, 7) + "-" + ss.substring(0, 4);
+							 // create object to hold value from MSA Column		
 
-								 e[0] = u;
+							 e[0] = null;
+
+							 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("DOUBLE") || 
+									 fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("INTEGER")) 
+								 e[0] = rs.getInt(columnAnnotatedVariableToMSAField[index1] + 1);
+
+							 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("VARCHAR")) {
+								 e[0] = rs.getString(columnAnnotatedVariableToMSAField[index1] + 1);
+
+								 //if(e[0] == null) e[0] = ""; // We do this because the old DBF reader did it, and the code above relies on it
 							 }
+
+							 if(fieldTypesMSA[columnAnnotatedVariableToMSAField[index1]].equalsIgnoreCase("TIMESTAMP")){
+
+								 Date d = rs.getDate(columnAnnotatedVariableToMSAField[index1] + 1);
+								 if(d != null){
+									 String ss = d.toString();							
+									 String u =  ss.substring(8, 10) + "-" + ss.substring(5, 7) + "-" + ss.substring(0, 4);
+
+									 e[0] = u;
+								 }
+							 }
+
+							 // Next statement is equivalent to: setVarx(rowObject[Y]);
+
+							 Object retObject = null;
+							 if(e[0] != null)
+								 retObject = method.invoke(outputObject,(Object []) e); // retObject contains the return code from the setter method, it is void
 						 }
-
-						 // Next statement is equivalent to: setVarx(rowObject[Y]);
-
-						 Object retObject = null;
-						 if(e[0] != null)
-							 retObject = method.invoke(outputObject,(Object []) e); // retObject contains the return code from the setter method, it is void
-
 						 index1++; // next ColumnAnnotated field
 					 }
 				 }

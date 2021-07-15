@@ -576,7 +576,8 @@ public class TableDefinitions {
 			"OPDRNRO    varchar(" + Smallstring + ")," + 
 			"DATUMO     varchar(10)," + 
 			"INITO      varchar(" + Smallstring + ")," +    
-			"VERSIEO    varchar(" + Smallstring + ")" + 
+			"VERSIEO    varchar(" + Smallstring + ")," + 
+			"OPDRNRI    varchar(3) " + 
 
 		 "  );";
 
@@ -606,7 +607,8 @@ public class TableDefinitions {
 		 "OPDRNRO        varchar(" + Smallstring + ")," + 
 		 "DATUMO         varchar(10)," + 
 		 "INITO          varchar(" + Smallstring + ")," +    
-		 "VERSIEO        varchar(" + Smallstring + ")" + 
+		 "VERSIEO        varchar(" + Smallstring + ")," + 
+	     "OPDRNRI        varchar(3) " + 
 		 "  );";
 
 	 public static final String PKEIGKND = 		 
@@ -654,7 +656,8 @@ public class TableDefinitions {
 		 "OPDRNRO         varchar(" + Smallstring + ")," + 
 		 "DATUMO          varchar(10)," + 
 		 "INITO           varchar(" + Smallstring + ")," +    
-		 "VERSIEO         varchar(" + Smallstring + ")" + 
+		 "VERSIEO         varchar(" + Smallstring + ")," + 
+		 "OPDRNRI         varchar(3) " + 
 
 		 "  );";
 
@@ -707,7 +710,9 @@ public class TableDefinitions {
 		 "OPDRNRO    varchar(" + Smallstring + ")," + 
 		 "DATUMO     varchar(10)," + 
 		 "INITO      varchar(" + Smallstring + ")," +    
-		 "VERSIEO    varchar(" + Smallstring + ")" + 
+		 "VERSIEO    varchar(" + Smallstring + ")," + 
+		 "OPDRNRI    varchar(3) " + 
+
 
 		 "  );";
 
@@ -729,7 +734,8 @@ public class TableDefinitions {
 		 "OPDRNRO    	 varchar(" + Smallstring + ")," + 
 		 "DATUMO     	 varchar(10)," + 
 		 "INITO      	 varchar(" + Smallstring + ")," +    
-		 "VERSIEO    	 varchar(" + Smallstring + ")" + 
+		 "VERSIEO    	 varchar(" + Smallstring + ")," + 
+         "OPDRNRI        varchar(3) " + 
 
 		 "  );";
 
@@ -752,7 +758,8 @@ public class TableDefinitions {
 		 "OPDRNRO    varchar(" + Smallstring + ")," + 
 		 "DATUMO     varchar(10)," + 
 		 "INITO      varchar(" + Smallstring + ")," +    
-		 "VERSIEO    varchar(" + Smallstring + ")" + 
+		 "VERSIEO    varchar(" + Smallstring + ")," + 
+	     "OPDRNRI    varchar(3) " + 
 
 		 "  );";
 
@@ -780,7 +787,8 @@ public class TableDefinitions {
 		 "OPDRNRO    	  varchar(" + Smallstring + ")," + 
 		 "DATUMO     	  varchar(10)," + 
 		 "INITO      	  varchar(" + Smallstring + ")," +    
-		 "VERSIEO    	  varchar(" + Smallstring + ")" + 
+		 "VERSIEO    	  varchar(" + Smallstring + ")," + 
+		 "OPDRNRI         varchar(3) " + 
 
 		 "  );";
 
@@ -826,7 +834,8 @@ public class TableDefinitions {
 		 "OPDRNRO    	 varchar(" + Smallstring + ")," + 
 		 "DATUMO     	 varchar(10)," + 
 		 "INITO      	 varchar(" + Smallstring + ")," +    
-		 "VERSIEO    	 varchar(" + Smallstring + ")" + 
+		 "VERSIEO    	 varchar(" + Smallstring + ")," + 
+         "OPDRNRI        varchar(3) " + 
 
 		 "  );";
 

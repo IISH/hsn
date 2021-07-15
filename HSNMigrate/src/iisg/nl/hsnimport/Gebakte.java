@@ -24,22 +24,24 @@ public class Gebakte {
      @Column(name="GEMNR")       private int gemnr;
      @Column(name="JAAR")        private int jaar;
      @Column(name="AKTENR")      private int aktenr;
-     @Column(name="IDNR")        private int idnr;
+@Id  @Column(name="IDNR")        private int idnr;
      @Column(name="GEBKODE")     private int gebkode;
      @Column(name="OVERSAMP")    private String oversamp;
-     @Column(name="ARCH")        private String arch;
+//     @Column(name="ARCH")        private String arch;
      @Column(name="OPDRNR")      private String opdrnr;
      @Column(name="DATUM")       private String datum;
      @Column(name="INIT")        private String init;
      @Column(name="VERSIE")      private String versie;
      @Column(name="ONDRZKO")     private String ondrzko;
-     @Column(name="ARCHO")       private String archo;
+//     @Column(name="ARCHO")       private String archo;
      @Column(name="OPDRNRO")     private String opdrnro;
      @Column(name="DATUMO")      private String datumo;
      @Column(name="INITO")       private String inito;
      @Column(name="VERSIEO")     private String versieo;
-     @Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
-     @Column(name="RecordID") private int recordID;
+     @Column(name="OPDRNRI")    private String orderNumberI;
+
+     //@Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
+     //@Column(name="RecordID") private int recordID;
 
  @Transient                      private Stpb stpb;
  
@@ -101,101 +103,134 @@ public void setGebkode(int gebkode) {
 	this.gebkode = gebkode;
 }
 
+public String getOrderNumberI() {
+	return orderNumberI;
+}
+
+public void setOrderNumberI(String orderNumberI) {
+	this.orderNumberI = orderNumberI;
+}
+
+
+
 public String getOversamp() {
 	return oversamp;
 }
+
+
 
 public void setOversamp(String oversamp) {
 	this.oversamp = oversamp;
 }
 
-public String getArch() {
-	return arch;
-}
 
-public void setArch(String arch) {
-	this.arch = arch;
-}
 
 public String getOpdrnr() {
 	return opdrnr;
 }
 
+
+
 public void setOpdrnr(String opdrnr) {
 	this.opdrnr = opdrnr;
 }
+
+
 
 public String getDatum() {
 	return datum;
 }
 
+
+
 public void setDatum(String datum) {
 	this.datum = datum;
 }
+
+
 
 public String getInit() {
 	return init;
 }
 
+
+
 public void setInit(String init) {
 	this.init = init;
 }
+
+
 
 public String getVersie() {
 	return versie;
 }
 
+
+
 public void setVersie(String versie) {
 	this.versie = versie;
 }
+
+
 
 public String getOndrzko() {
 	return ondrzko;
 }
 
+
+
 public void setOndrzko(String ondrzko) {
 	this.ondrzko = ondrzko;
 }
 
-public String getArcho() {
-	return archo;
-}
 
-public void setArcho(String archo) {
-	this.archo = archo;
-}
 
 public String getOpdrnro() {
 	return opdrnro;
 }
 
+
+
 public void setOpdrnro(String opdrnro) {
 	this.opdrnro = opdrnro;
 }
+
+
 
 public String getDatumo() {
 	return datumo;
 }
 
+
+
 public void setDatumo(String datumo) {
 	this.datumo = datumo;
 }
+
+
 
 public String getInito() {
 	return inito;
 }
 
+
+
 public void setInito(String inito) {
 	this.inito = inito;
 }
+
+
 
 public String getVersieo() {
 	return versieo;
 }
 
+
+
 public void setVersieo(String versieo) {
 	this.versieo = versieo;
 }
+
 
 
 public Stpb getStpb() {
@@ -207,17 +242,6 @@ public void setStpb(Stpb stpb) {
 }
 
 
-
-public int getRecordID() {
-	return recordID;
-}
-
-
-
-public void setRecordID(int recordID) {
-	this.recordID = recordID;
-}
- 
  
 
 }

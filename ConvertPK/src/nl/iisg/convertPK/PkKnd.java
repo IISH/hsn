@@ -125,6 +125,7 @@ public class PkKnd {
 	 @Column(name="DATUMO")    private String  datumo;        // original date   
 	 @Column(name="INITO")     private String  inito;         // original initials    
 	 @Column(name="VERSIEO")   private String  versieo;       // original version
+	 @Column(name="OPDRNRI")   private String  orderNumberI;  // order number 2
     
     // Next come object fields that are not saved. 
     // They are marked "Transient"
@@ -2240,6 +2241,17 @@ public class PkKnd {
 
 	public void setVersieo(String versieo) {
 		this.versieo = versieo;
+	}
+
+	
+
+	public String getOrderNumberI() {
+		return orderNumberI;
+	}
+
+
+	public void setOrderNumberI(String orderNumberI) {
+		this.orderNumberI = orderNumberI;
 	}
 
 

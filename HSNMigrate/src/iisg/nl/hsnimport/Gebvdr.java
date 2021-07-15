@@ -17,7 +17,7 @@ import javax.persistence.Transient;
 @Table(name="gebvdr")
 public class Gebvdr {
 
-     @Column(name="IDNR")        private int idnr;
+  @Id@Column(name="IDNR")        private int idnr;
      @Column(name="GEGVR")       private String gegvr;
      @Column(name="ANMVR")       private String anmvr;
      @Column(name="TUSVR")       private String tusvr;
@@ -35,19 +35,21 @@ public class Gebvdr {
      @Column(name="G5VOOM")      private int g5voom;
      @Column(name="G5VOOJ")      private int g5vooj;
      @Column(name="G5VOGO")      private String g5vogo;
-     @Column(name="ARCH")        private String arch;
+  //   @Column(name="ARCH")        private String arch;
      @Column(name="OPDRNR")      private String opdrnr;
      @Column(name="DATUM")       private String datum;
      @Column(name="INIT")        private String init;
      @Column(name="VERSIE")      private String versie;
      @Column(name="ONDRZKO")     private String ondrzko;
-     @Column(name="ARCHO")       private String archo;
+  //   @Column(name="ARCHO")       private String archo;
      @Column(name="OPDRNRO")     private String opdrnro;
      @Column(name="DATUMO")      private String datumo;
      @Column(name="INITO")       private String inito;
      @Column(name="VERSIEO")     private String versieo;
-     @Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
-     @Column(name="RecordID") private int recordID;
+     @Column(name="OPDRNRI")     private String orderNumberI;
+
+     //@Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
+     //@Column(name="RecordID") private int recordID;
  
  @Transient                      private Gebknd gebknd;
  
@@ -228,14 +230,6 @@ public void setG5vogo(String g5vogo) {
 	this.g5vogo = g5vogo;
 }
 
-public String getArch() {
-	return arch;
-}
-
-public void setArch(String arch) {
-	this.arch = arch;
-}
-
 public String getOpdrnr() {
 	return opdrnr;
 }
@@ -276,14 +270,6 @@ public void setOndrzko(String ondrzko) {
 	this.ondrzko = ondrzko;
 }
 
-public String getArcho() {
-	return archo;
-}
-
-public void setArcho(String archo) {
-	this.archo = archo;
-}
-
 public String getOpdrnro() {
 	return opdrnro;
 }
@@ -316,6 +302,14 @@ public void setVersieo(String versieo) {
 	this.versieo = versieo;
 }
 
+public String getOrderNumberI() {
+	return orderNumberI;
+}
+
+public void setOrderNumberI(String orderNumberI) {
+	this.orderNumberI = orderNumberI;
+}
+
 public Gebknd getGebknd() {
 	return gebknd;
 }
@@ -326,19 +320,5 @@ public void setGebknd(Gebknd gebknd) {
 
 
 
-public int getRecordID() {
-	return recordID;
-}
-
-
-
-public void setRecordID(int recordID) {
-	this.recordID = recordID;
-}
-
-
-
- 
- 
 
 }

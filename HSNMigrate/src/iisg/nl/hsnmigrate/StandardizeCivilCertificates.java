@@ -23,6 +23,7 @@ import iisg.nl.hsnimport.Plaats;
 import iisg.nl.hsnimport.Beheer;
 import iisg.nl.hsnlog.Log;
 import nl.iisg.hsncommon.Common1;
+
 import nl.iisg.ref.*;
 
 import iisg.nl.hsnmigrate.StatView;
@@ -440,331 +441,635 @@ public class StandardizeCivilCertificates  implements Runnable {
 	private static boolean loadDBFTables(String inputFiles){
 		
 		
-	
+		boolean inputMySQL = false;
 		
 		
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("import");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("import"); // Our copy of the input tables
 		EntityManager em = emf.createEntityManager();
 		
+
+		EntityManagerFactory emf2 = null; // Input tables
+		EntityManager emi = null;
+
+		String orderNumber = null;
+		String inputDirectory = null;
+
+		System.out.println("parameter = " + inputFiles);
+
+		if(inputFiles.equalsIgnoreCase("temp")) {
+			inputMySQL = false;
+			inputDirectory = inputFiles;			
+		}
+		else{
+			inputMySQL = true;
+			orderNumber = inputFiles; // An order number was passed, not a directory
+			//em = Utils.getEm_original_tabs2();
+			emf2 = Persistence.createEntityManagerFactory("tables_input"); // Input tables
+			emi = emf2.createEntityManager();
+		}
+
+		System.out.println("Ordernumber = " + orderNumber);
 		
-		em.getTransaction().begin();
-		List<Stpb> stpbL = Utils.createObjects("iisg.nl.hsnimport.Stpb", inputFiles);
-		if(stpbL == null) stpbL = Utils.createObjects2("iisg.nl.hsnimport.Stpb", inputFiles);
+		//
+		
+		List<Stpb> stpbL = null;
+		if(inputMySQL) {
+			stpbL = emi.createQuery("select x from Stpb x where x.orderNumberI like :orderNumber ")
+        	.setParameter("orderNumber", orderNumber)
+        	.getResultList();
+			//System.out.println("Read Sptb " + stpbL.size() + " rows ");
+        }
+		else {
+			stpbL = Utils.createObjects("iisg.nl.hsnimport.Stpb", inputFiles);
+			if(stpbL == null) stpbL = Utils.createObjects2("iisg.nl.hsnimport.Stpb", inputFiles);
+		}
+		
 		if(stpbL == null) return false;
 		
+		// Save in our own tables
+		
+		em.getTransaction().begin();
+				
 		for(Stpb g: stpbL){
 			em.persist(g);
 		}
 		em.getTransaction().commit();
 		em.clear();
-		print("Read STPB.DBF, " + stpbL.size() + " rows");
+		print("Read STPB " + stpbL.size() + " rows");
+		
 		stpbL = null; // because we are going to read again from the SQL tables, in smaller portions
-
+		
 		//
 		
+		List<Gebakte> gebakteL = null;
+		if(inputMySQL) {
+			gebakteL = emi.createQuery("select x from Gebakte x where x.orderNumberI like :orderNumber ")
+        	.setParameter("orderNumber", orderNumber)
+        	.getResultList();
+        	//System.out.println("Read Gebakte " + gebakteL.size() + " rows ");
+        }
+		else {
+			gebakteL = Utils.createObjects("iisg.nl.hsnimport.Gebakte", inputFiles);
+			if(gebakteL == null) gebakteL = Utils.createObjects2("iisg.nl.hsnimport.Gebakte", inputFiles);
+		}
+		
+		if(gebakteL == null) return false;
+
 		em = emf.createEntityManager();
 		em.getTransaction().begin();		
-		List<Gebakte> gebakteL = Utils.createObjects("iisg.nl.hsnimport.Gebakte", inputFiles);
-		if(gebakteL == null) gebakteL = Utils.createObjects2("iisg.nl.hsnimport.Gebakte", inputFiles);
-		if(gebakteL == null) return false;
-		
+				
 		for(Gebakte g: gebakteL){
 			em.persist(g);
 		}
 		em.getTransaction().commit();
 		em.clear();
-		print("Read GEBAKTE.DBF, " + gebakteL.size() + " rows");
+		print("Read GEBAKTE " + gebakteL.size() + " rows");
 		gebakteL = null;
 		
 		//
+		
+		List<Gebbyz>   gebbyzL = null;
+		
+		if(inputMySQL) {
+			gebbyzL = emi.createQuery("select x from Gebbyz x where x.orderNumberI like :orderNumber ")
+        	.setParameter("orderNumber", orderNumber)
+        	.getResultList();
+        	//System.out.println("Read Gebbyz " + gebbyzL.size() + " rows ");
+        }
+		else {
+			
+			gebbyzL = Utils.createObjects("iisg.nl.hsnimport.Gebbyz", inputFiles);
+			if(gebbyzL == null) gebbyzL = Utils.createObjects2("iisg.nl.hsnimport.Gebbyz", inputFiles);
+			if(gebbyzL == null) return false;
+		}
+		
+		if(gebbyzL == null) return false;
 
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		List<Gebbyz>   gebbyzL = Utils.createObjects("iisg.nl.hsnimport.Gebbyz", inputFiles);
-		if(gebbyzL == null) gebbyzL = Utils.createObjects2("iisg.nl.hsnimport.Gebbyz", inputFiles);
-		if(gebbyzL == null) return false;
-		
+				
 		for(Gebbyz g: gebbyzL){
 			em.persist(g);
 		}
 		em.getTransaction().commit();
 		em.clear();
-		print("Read GEBBYZ.DBF, " + gebbyzL.size() + " rows");
+		print("Read GEBBYZ " + gebbyzL.size() + " rows");
 		gebbyzL = null;
 		
 		//
 		
+		List<Gebgtg>   gebgtgL = null;
+		
+		if(inputMySQL) {
+			gebgtgL = emi.createQuery("select x from Gebgtg x where x.orderNumberI like :orderNumber ")
+        	.setParameter("orderNumber", orderNumber)
+        	.getResultList();
+        	//System.out.println("Read Gebgtg " + gebgtgL.size() + " rows ");
+        }
+		else {
+			gebgtgL = Utils.createObjects("iisg.nl.hsnimport.Gebgtg", inputFiles);
+			if(gebgtgL == null) gebgtgL = Utils.createObjects2("iisg.nl.hsnimport.Gebgtg", inputFiles);
+			
+		}
+		
+		if(gebgtgL == null) return false;
+		
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		List<Gebgtg>   gebgtgL = Utils.createObjects("iisg.nl.hsnimport.Gebgtg", inputFiles);
-		if(gebgtgL == null) gebgtgL = Utils.createObjects2("iisg.nl.hsnimport.Gebgtg", inputFiles);
-		if(gebgtgL == null) return false;
+		
 		
 		for(Gebgtg g: gebgtgL){
 			em.persist(g);
 		}
 		em.getTransaction().commit();
 		em.clear();
-		print("Read GEBGTG.DBF, " + gebgtgL.size() + " rows");
+		print("Read GEBGTG, " + gebgtgL.size() + " rows");
 		gebgtgL = null;
 		
 		//
 
+		List<Gebkant>   gebkantL = null;
+		if(inputMySQL) {
+			gebkantL = emi.createQuery("select x from Gebkant x where x.orderNumberI like :orderNumber ")
+        	.setParameter("orderNumber", orderNumber)
+        	.getResultList();
+        	//System.out.println("Read Gebkant " + gebkantL.size() + " rows ");
+        }
+		else {
+			gebkantL = Utils.createObjects("iisg.nl.hsnimport.Gebkant", inputFiles);
+			if(gebkantL == null) gebkantL = Utils.createObjects2("iisg.nl.hsnimport.Gebkant", inputFiles);
+				
+		}
+		
+		if(gebkantL == null) return false;	
+		
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		List<Gebkant>   gebkantL = Utils.createObjects("iisg.nl.hsnimport.Gebkant", inputFiles);
-		if(gebkantL == null) gebkantL = Utils.createObjects2("iisg.nl.hsnimport.Gebkant", inputFiles);
-		if(gebkantL == null) return false;
+		
 		
 		for(Gebkant g: gebkantL){
 			em.persist(g);
 		}
 		em.getTransaction().commit();
 		em.clear();
-		print("Read GEBKANT.DBF, " + gebkantL.size() + " rows");
+		print("Read GEBKANT " + gebkantL.size() + " rows");
 		gebkantL = null;
 		
 		//
 
+		List<Gebknd>   gebkndL = null;
+		
+		if(inputMySQL) {
+			gebkndL = emi.createQuery("select x from Gebknd x where x.orderNumberI like :orderNumber ")
+        	.setParameter("orderNumber", orderNumber)
+        	.getResultList();
+        	//System.out.println("Read Gebknd " + gebkndL.size() + " rows ");
+        }
+		else {
+			
+			gebkndL = Utils.createObjects("iisg.nl.hsnimport.Gebknd", inputFiles);
+			if(gebkndL == null) gebkndL = Utils.createObjects2("iisg.nl.hsnimport.Gebknd", inputFiles);
+			
+		}
+		
+		if(gebkndL == null) return false;
+		
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		List<Gebknd>   gebkndL = Utils.createObjects("iisg.nl.hsnimport.Gebknd", inputFiles);
-		if(gebkndL == null) gebkndL = Utils.createObjects2("iisg.nl.hsnimport.Gebknd", inputFiles);
-		if(gebkndL == null) return false;
+		
 		
 		for(Gebknd g: gebkndL){
 			em.persist(g);
 		}
 		em.getTransaction().commit();
 		em.clear();
-		print("Read GEBKND.DBF, " + gebkndL.size() + " rows");
+		print("Read GEBKND " + gebkndL.size() + " rows");
 		gebkndL = null;
 		
 		//
+		
+		List<Gebvdr>   gebvdrL = null;
+		
+		if(inputMySQL) {
+			gebvdrL = emi.createQuery("select x from Gebvdr x where x.orderNumberI like :orderNumber ")
+        	.setParameter("orderNumber", orderNumber)
+        	.getResultList();
+        	//System.out.println("Read Gebvdr " + gebvdrL.size() + " rows ");
+        }
+		else {
+			 gebvdrL = Utils.createObjects("iisg.nl.hsnimport.Gebvdr", inputFiles);
+			if(gebvdrL == null) gebvdrL = Utils.createObjects2("iisg.nl.hsnimport.Gebvdr", inputFiles);
+			
+		}
+		
+		if(gebvdrL == null) return false;	
 
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		em.clear();
-		List<Gebvdr>   gebvdrL = Utils.createObjects("iisg.nl.hsnimport.Gebvdr", inputFiles);
-		if(gebvdrL == null) gebvdrL = Utils.createObjects2("iisg.nl.hsnimport.Gebvdr", inputFiles);
-		if(gebvdrL == null) return false;
+		
 		
 		for(Gebvdr g: gebvdrL){
 			em.persist(g);
 		}
 		em.getTransaction().commit();
 		em.clear();
-		print("Read GEBVDR.DBF, " + gebvdrL.size() + " rows");
+		print("Read GEBVDR " + gebvdrL.size() + " rows");
 		gebvdrL = null;
 		
 		//
 		
-		em = emf.createEntityManager();
-		em.getTransaction().begin();
-		List<Ovlagv>   ovlagvL = Utils.createObjects("iisg.nl.hsnimport.Ovlagv", inputFiles);
-		if(ovlagvL == null) ovlagvL = Utils.createObjects2("iisg.nl.hsnimport.Ovlagv", inputFiles);
+		List<Ovlagv>   ovlagvL = null;
+		
+		if(inputMySQL) {
+			ovlagvL = emi.createQuery("select x from Ovlagv x where x.orderNumberI like :orderNumber ")
+        	.setParameter("orderNumber", orderNumber)
+        	.getResultList();
+        	//System.out.println("Read Ovlagv " + ovlagvL.size() + " rows ");
+        }
+		else {
+			ovlagvL = Utils.createObjects("iisg.nl.hsnimport.Ovlagv", inputFiles);
+			if(ovlagvL == null) ovlagvL = Utils.createObjects2("iisg.nl.hsnimport.Ovlagv", inputFiles);
+				
+		}
+		
 		if(ovlagvL == null) return false;
+		
+		em = emf.createEntityManager();
+		em.getTransaction().begin();		
 		
 		for(Ovlagv g: ovlagvL){
 			em.persist(g);
 		}
 		em.getTransaction().commit();
 		em.clear();
-		print("Read OVLAGV.DBF, " + ovlagvL.size() + " rows");
+		print("Read OVLAGV " + ovlagvL.size() + " rows");
 		ovlagvL = null;
 		
 		//
+		
+		List<Ovlbyz>   ovlbyzL = null;
+		
+		if(inputMySQL) {
+			ovlbyzL = emi.createQuery("select x from Ovlbyz x where x.orderNumberI like :orderNumber ")
+        	.setParameter("orderNumber", orderNumber)
+        	.getResultList();
+        	//System.out.println("Read Ovlbyz " + ovlbyzL.size() + " rows ");
+        }
+		else {
+			ovlbyzL = Utils.createObjects("iisg.nl.hsnimport.Ovlbyz", inputFiles);
+			if(ovlbyzL == null) ovlbyzL = Utils.createObjects2("iisg.nl.hsnimport.Ovlbyz", inputFiles);
+		}
 
-		em = emf.createEntityManager();
-		em.getTransaction().begin();
-		List<Ovlbyz>   ovlbyzL = Utils.createObjects("iisg.nl.hsnimport.Ovlbyz", inputFiles);
-		if(ovlbyzL == null) ovlbyzL = Utils.createObjects2("iisg.nl.hsnimport.Ovlbyz", inputFiles);
 		if(ovlbyzL == null) return false;
 		
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+			
 		for(Ovlbyz g: ovlbyzL){
 			em.persist(g);
 		}
 		em.getTransaction().commit();
 		em.clear();
-		print("Read OVLBYZ.DBF, " + ovlbyzL.size() + " rows");
+		print("Read OVLBYZ " + ovlbyzL.size() + " rows");
 		ovlbyzL = null;
 
 		//
 		
+		List<Ovlech>   ovlechL = null;
+		
+		if(inputMySQL) {
+			ovlechL = emi.createQuery("select x from Ovlech x where x.orderNumberI like :orderNumber ")
+        	.setParameter("orderNumber", orderNumber)
+        	.getResultList();
+        	//System.out.println("Read Ovlech " + ovlechL.size() + " rows ");
+        }
+		else {
+			
+			ovlechL = Utils.createObjects("iisg.nl.hsnimport.Ovlech", inputFiles);
+			if(ovlechL == null) ovlechL = Utils.createObjects2("iisg.nl.hsnimport.Ovlech", inputFiles);
+		
+		
+		}
+		
+		if(ovlechL == null) return false;
+		
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		List<Ovlech>   ovlechL = Utils.createObjects("iisg.nl.hsnimport.Ovlech", inputFiles);
-		if(ovlechL == null) ovlechL = Utils.createObjects2("iisg.nl.hsnimport.Ovlech", inputFiles);
-		if(ovlechL == null) return false;
+		
 		
 		for(Ovlech g: ovlechL){
 			em.persist(g);
 		}
 		em.getTransaction().commit();
 		em.clear();
-		print("Read OVLECH.DBF, " + ovlechL.size() + " rows");
+		print("Read OVLECH " + ovlechL.size() + " rows");
 		ovlechL = null;
 
 		//
 		
+		List<Ovlknd>   ovlkndL = null;
+		
+		if(inputMySQL) {
+			ovlkndL = emi.createQuery("select x from Ovlknd x where x.orderNumberI like :orderNumber ")
+        	.setParameter("orderNumber", orderNumber)
+        	.getResultList();
+        	//System.out.println("Read Ovlknd " + ovlkndL.size() + " rows ");
+        }
+		else {
+			ovlkndL = Utils.createObjects("iisg.nl.hsnimport.Ovlknd", inputFiles);
+			if(ovlkndL == null) ovlkndL = Utils.createObjects2("iisg.nl.hsnimport.Ovlknd", inputFiles);
+					
+		}
+		
+		if(ovlkndL == null) return false;
+		
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		List<Ovlknd>   ovlkndL = Utils.createObjects("iisg.nl.hsnimport.Ovlknd", inputFiles);
-		if(ovlkndL == null) ovlkndL = Utils.createObjects2("iisg.nl.hsnimport.Ovlknd", inputFiles);
-		if(ovlkndL == null) return false;
+		
 		
 		for(Ovlknd g: ovlkndL){
 			em.persist(g);
 		}
 		em.getTransaction().commit();
 		em.clear();
-		print("Read OVLKND.DBF, " + ovlkndL.size() + " rows");
+		print("Read OVLKND " + ovlkndL.size() + " rows");
 		ovlkndL = null;
 		
 		//
-
+		
+		List<Huwknd>   huwkndL = null;
+		
+		if(inputMySQL) {
+			huwkndL = emi.createQuery("select x from Huwknd x where x.orderNumberI like :orderNumber ")
+        	.setParameter("orderNumber", orderNumber)
+        	.getResultList();
+        	//System.out.println("Read Huwknd " + huwkndL.size() + " rows ");
+        }
+		else {
+			huwkndL = Utils.createObjects("iisg.nl.hsnimport.Huwknd", inputFiles);
+			if(huwkndL == null) huwkndL = Utils.createObjects2("iisg.nl.hsnimport.Huwknd", inputFiles);
+			
+		
+		}
+		
+		if(huwkndL == null) return false;	
+		
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		List<Huwknd>   huwkndL = Utils.createObjects("iisg.nl.hsnimport.Huwknd", inputFiles);
-		if(huwkndL == null) huwkndL = Utils.createObjects2("iisg.nl.hsnimport.Huwknd", inputFiles);
-		if(huwkndL == null) return false;
+		
 		
 		for(Huwknd g: huwkndL){
 			em.persist(g);
 		}
 		em.getTransaction().commit();
 		em.clear();
-		print("Read HUWKND.DBF, " + huwkndL.size() + " rows");
+		print("Read HUWKND " + huwkndL.size() + " rows");
 		huwkndL = null;
 
 		//
 		
+		List<Huwafk>   huwafkL = null;
+		
+		if(inputMySQL) {
+			huwafkL = emi.createQuery("select x from Huwafk x where x.orderNumberI like :orderNumber ")
+        	.setParameter("orderNumber", orderNumber)
+        	.getResultList();
+        	//System.out.println("Read Huwafk " + huwafkL.size() + " rows ");
+        }
+		else {
+			huwafkL = Utils.createObjects("iisg.nl.hsnimport.Huwafk", inputFiles);
+			if(huwafkL == null) huwafkL = Utils.createObjects2("iisg.nl.hsnimport.Huwafk", inputFiles);
+			
+		
+		}
+		
+		if(huwafkL == null) return false;
+		
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		List<Huwafk>   huwafkL = Utils.createObjects("iisg.nl.hsnimport.Huwafk", inputFiles);
-		if(huwafkL == null) huwafkL = Utils.createObjects2("iisg.nl.hsnimport.Huwafk", inputFiles);
-		if(huwafkL == null) return false;
+		
 		
 		for(Huwafk g: huwafkL){
 			em.persist(g);
 		}
 		em.getTransaction().commit();
 		em.clear();
-		print("Read HUWAFK.DBF, " + huwafkL.size() + " rows");
+		print("Read HUWAFK " + huwafkL.size() + " rows");
 		huwafkL = null;
 		
 		//
 
-		em = emf.createEntityManager();
-		em.getTransaction().begin();
-		List<Huweer>   huweerL = Utils.createObjects("iisg.nl.hsnimport.Huweer", inputFiles);
-		if(huweerL == null) huweerL  = Utils.createObjects2("iisg.nl.hsnimport.Huweer", inputFiles);
+		List<Huweer>   huweerL = null;
+		
+		if(inputMySQL) {
+			huweerL = emi.createQuery("select x from Huweer x where x.orderNumberI like :orderNumber ")
+        	.setParameter("orderNumber", orderNumber)
+        	.getResultList();
+        	//System.out.println("Read Huweer " + huweerL.size() + " rows ");
+        }
+		else {
+			huweerL = Utils.createObjects("iisg.nl.hsnimport.Huweer", inputFiles);
+			if(huweerL == null) huweerL  = Utils.createObjects2("iisg.nl.hsnimport.Huweer", inputFiles);
+			
+		
+		}
+		
 		if(huweerL == null) return false;
 		
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+				
 		for(Huweer g: huweerL){
 			em.persist(g);
 		}
 		em.getTransaction().commit();
 		em.clear();
-		print("Read HUWEER.DBF, " + huweerL.size() + " rows");
+		print("Read HUWEER " + huweerL.size() + " rows");
 		huweerL = null;
 		
 		//
 
-		em = emf.createEntityManager();
-		em.getTransaction().begin();
-		List<Huwgtg>   huwgtgL = Utils.createObjects("iisg.nl.hsnimport.Huwgtg", inputFiles);
-		if(huwgtgL == null) huwgtgL = Utils.createObjects2("iisg.nl.hsnimport.Huwgtg", inputFiles);
+		List<Huwgtg>   huwgtgL = null;
+		
+		if(inputMySQL) {
+			huwgtgL = emi.createQuery("select x from Huwgtg x where x.orderNumberI like :orderNumber ")
+        	.setParameter("orderNumber", orderNumber)
+        	.getResultList();
+        	//System.out.println("Read Huwgtg " + huwgtgL.size() + " rows ");
+        }
+		else {
+			huwgtgL = Utils.createObjects("iisg.nl.hsnimport.Huwgtg", inputFiles);
+			if(huwgtgL == null) huwgtgL = Utils.createObjects2("iisg.nl.hsnimport.Huwgtg", inputFiles);
+			
+		
+		}
+		
 		if(huwgtgL == null) return false;
 		
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+				
 		for(Huwgtg g: huwgtgL){
 			em.persist(g);
 		}
 		em.getTransaction().commit();
 		em.clear();
-		print("Read HUWGTG.DBF, " + huwgtgL.size() + " rows");
+		print("Read HUWGTG " + huwgtgL.size() + " rows");
 		huwgtgL = null;
 		
 		//
-
+		
+		List<Huwvrknd>   huwvrkndL = null;
+		
+		if(inputMySQL) {
+			huwvrkndL = emi.createQuery("select x from Huwvrknd x where x.orderNumberI like :orderNumber ")
+        	.setParameter("orderNumber", orderNumber)
+        	.getResultList();
+        	//System.out.println("Read Huwvrknd " + huwvrkndL.size() + " rows ");
+        }
+		else {
+			
+			huwvrkndL = Utils.createObjects("iisg.nl.hsnimport.Huwvrknd", inputFiles);
+			if(huwvrkndL == null) huwvrkndL = Utils.createObjects2("iisg.nl.hsnimport.Huwvrknd", inputFiles);
+				
+		}
+		
+		if(huwvrkndL == null) return false;
+		
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		List<Huwvrknd>   huwvrkndL = Utils.createObjects("iisg.nl.hsnimport.Huwvrknd", inputFiles);
-		if(huwvrkndL == null) huwvrkndL = Utils.createObjects2("iisg.nl.hsnimport.Huwvrknd", inputFiles);
-		if(huwvrkndL == null) return false;
+		
 		
 		for(Huwvrknd g: huwvrkndL){
 			em.persist(g);
 		}
 		em.getTransaction().commit();
 		em.clear();
-		print("Read HUWVRKND.DBF, " + huwvrkndL.size() + " rows");
+		print("Read HUWVRKND " + huwvrkndL.size() + " rows");
 		huwvrkndL = null;
 		
 		//
 
-		em = emf.createEntityManager();
-		em.getTransaction().begin();
-		List<Huwbyz>   huwbyzL = Utils.createObjects("iisg.nl.hsnimport.Huwbyz", inputFiles);
-		if(huwbyzL == null) huwbyzL = Utils.createObjects2("iisg.nl.hsnimport.Huwbyz", inputFiles);
+		List<Huwbyz>   huwbyzL = null;
+		
+		if(inputMySQL) {
+			huwbyzL = emi.createQuery("select x from Huwbyz x where x.orderNumberI like :orderNumber ")
+        	.setParameter("orderNumber", orderNumber)
+        	.getResultList();
+        	//System.out.println("Read Gebknd " + huwbyzL.size() + " rows ");
+        }
+		else {
+			huwbyzL = Utils.createObjects("iisg.nl.hsnimport.Huwbyz", inputFiles);
+			if(huwbyzL == null) huwbyzL = Utils.createObjects2("iisg.nl.hsnimport.Huwbyz", inputFiles);
+					
+		}
+		
 		if(huwbyzL == null) return false;
 		
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
+			
 		for(Huwbyz g: huwbyzL){
 			em.persist(g);
 		}
 		em.getTransaction().commit();
 		em.clear();
-		print("Read HUWBYZ.DBF, " + huwbyzL.size() + " rows");
+		print("Read HUWBYZ " + huwbyzL.size() + " rows");
 		huwbyzL = null;
-
+		
 		// Load 3 tables only used by statistics
 		
 		//if(1==1) return;
 
+		
+		List<PkKnd>   pkkndL = null;
+		
+		if(inputMySQL) {
+			pkkndL = emi.createQuery("select x from PkKnd x where x.orderNumberI like :orderNumber ")
+        	.setParameter("orderNumber", orderNumber)
+        	.getResultList();
+        	//System.out.println("Read PkKnd " + pkkndL.size() + " rows ");
+        }
+		else {
+			pkkndL = Utils.createObjects("iisg.nl.hsnimport.PkKnd", inputFiles);
+			if(pkkndL == null)   pkkndL = Utils.createObjects2("iisg.nl.hsnimport.PkKnd", inputFiles);
+			
+		}
+		
+		if(pkkndL == null) return false;
+		
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		List<PkKnd>   pkkndL = Utils.createObjects("iisg.nl.hsnimport.PkKnd", inputFiles);
-		if(pkkndL == null)   pkkndL = Utils.createObjects2("iisg.nl.hsnimport.PkKnd", inputFiles);
-		if(pkkndL == null) return false;
+		
 		
 		for(PkKnd g: pkkndL){
 			em.persist(g);
 		}
 		em.getTransaction().commit();
 		em.clear();
-		print("Read PKKND.DBF, " + pkkndL.size() + " rows");
+		print("Read PKKND " + pkkndL.size() + " rows");
 		pkkndL = null;
 		
 		//
 
-		em = emf.createEntityManager();
-		em.getTransaction().begin();
-		List<Plaats>   plaatsL = Utils.createObjects("iisg.nl.hsnimport.Plaats", inputFiles);
-		if(plaatsL == null) plaatsL = Utils.createObjects2("iisg.nl.hsnimport.Plaats", inputFiles);
+		List<Plaats>   plaatsL = null;
+		
+		if(inputMySQL) {
+			plaatsL = emi.createQuery("select x from Plaats x where x.orderNumberI like :orderNumber ")
+        	.setParameter("orderNumber", orderNumber)
+        	.getResultList();
+        	//System.out.println("Read Plaats " + plaatsL.size() + " rows ");
+        }
+		else {
+			plaatsL = Utils.createObjects("iisg.nl.hsnimport.Plaats", inputFiles);
+			if(plaatsL == null) plaatsL = Utils.createObjects2("iisg.nl.hsnimport.Plaats", inputFiles);
+			
+		}
+		
 		if(plaatsL == null) return false;
 		
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+				
 		for(Plaats g: plaatsL){
 			em.persist(g);
 		}
 		em.getTransaction().commit();
 		em.clear();
-		print("Read PLAATS.DBF, " + plaatsL.size() + " rows");
+		print("Read PLAATS " + plaatsL.size() + " rows");
 		plaatsL = null;
 
 		//
+		// Phase out this table?
+		//
+		
+		List<Beheer>   beheerL = null;
+
+		if(inputMySQL) {
+			beheerL = emi.createQuery("select x from Beheer x where x.orderNumberI like :orderNumber ")
+        	.setParameter("orderNumber", orderNumber)
+        	.getResultList();
+			//System.out.println("Read Beheer " + beheerL.size() + " rows ");
+        }
+		else {
+			beheerL = Utils.createObjects("iisg.nl.hsnimport.Beheer", inputFiles);
+			if(beheerL == null)  beheerL = Utils.createObjects2("iisg.nl.hsnimport.Beheer", inputFiles);
+			
+		}
+		
+		if(beheerL == null) return false;
 		
 		em = emf.createEntityManager();
 		em.getTransaction().begin();
-		List<Beheer>   beheerL = Utils.createObjects("iisg.nl.hsnimport.Beheer", inputFiles);
-		if(beheerL == null)  beheerL = Utils.createObjects2("iisg.nl.hsnimport.Beheer", inputFiles);
-		if(beheerL == null) return false;
+		
 		
 		for(Beheer g: beheerL){
 			em.persist(g);
 		}
 		em.getTransaction().commit();
 		em.clear();
-		print("Read BEHEER.DBF, " + beheerL.size() + " rows");
+		print("Read BEHEER " + beheerL.size() + " rows");
 		beheerL = null;
 		
 		return true;

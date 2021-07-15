@@ -29,7 +29,7 @@ public class Gebknd {
      @Column(name="JAAR")        private int jaar;
      @Column(name="AKTENR")      private int aktenr;
      @Column(name="COHORTNR")    private int cohortnr;
-     @Column(name="IDNR")        private int idnr;
+  @Id@Column(name="IDNR")        private int idnr;
      @Column(name="OVERSAMP")    private String oversamp;
      @Column(name="INVBEPER")    private String invbeper;
      @Column(name="AKTEUUR")     private int akteuur;
@@ -68,19 +68,20 @@ public class Gebknd {
      @Column(name="VRN3GEB")     private String vrn3geb;
      @Column(name="KANT")        private String kant;
      @Column(name="PROBLM")      private String problm;
-     @Column(name="ARCH")        private String arch;
+  //   @Column(name="ARCH")        private String arch;
      @Column(name="OPDRNR")      private String opdrnr;
      @Column(name="DATUM")       private String datum;
      @Column(name="INIT")        private String init;
      @Column(name="VERSIE")      private String versie;
      @Column(name="ONDRZKO")     private String ondrzko;
-     @Column(name="ARCHO")       private String archo;
+  //   @Column(name="ARCHO")       private String archo;
      @Column(name="OPDRNRO")     private String opdrnro;
      @Column(name="DATUMO")      private String datumo;
      @Column(name="INITO")       private String inito;
      @Column(name="VERSIEO")     private String versieo;
-     @Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
-     @Column(name="RecordID") private int recordID;
+     @Column(name="OPDRNRI")    private String orderNumberI;
+//     @Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
+//     @Column(name="RecordID") private int recordID;
  
  @Transient                  private ArrayList<Gebgtg>  gebgtgL  = new ArrayList<Gebgtg>();
  @Transient                  private ArrayList<Gebbyz>  gebbyzL  = new ArrayList<Gebbyz>();
@@ -573,14 +574,6 @@ public void setProblm(String problm) {
 	this.problm = problm;
 }
 
-public String getArch() {
-	return arch;
-}
-
-public void setArch(String arch) {
-	this.arch = arch;
-}
-
 public String getOpdrnr() {
 	return opdrnr;
 }
@@ -621,14 +614,6 @@ public void setOndrzko(String ondrzko) {
 	this.ondrzko = ondrzko;
 }
 
-public String getArcho() {
-	return archo;
-}
-
-public void setArcho(String archo) {
-	this.archo = archo;
-}
-
 public String getOpdrnro() {
 	return opdrnro;
 }
@@ -661,6 +646,15 @@ public void setVersieo(String versieo) {
 	this.versieo = versieo;
 }
 
+
+public String getOrderNumberI() {
+	return orderNumberI;
+}
+
+public void setOrderNumberI(String orderNumberI) {
+	this.orderNumberI = orderNumberI;
+}
+
 public ArrayList<Gebgtg> getGebgtgL() {
 	return gebgtgL;
 }
@@ -668,9 +662,6 @@ public ArrayList<Gebgtg> getGebgtgL() {
 public void setGebgtgL(ArrayList<Gebgtg> gebgtg) {
 	this.gebgtgL = gebgtg;
 }
-
-
-
 
 public ArrayList<Gebbyz> getGebbyzL() {
 	return gebbyzL;
@@ -720,14 +711,6 @@ public void setHuwkndL(ArrayList<Huwknd> huwknd) {
 	this.huwkndL = huwknd;
 }
 
-
-public int getRecordID() {
-	return recordID;
-}
-
-public void setRecordID(int recordID) {
-	this.recordID = recordID;
-}
 public String getBirthActLocation() {
 	return birthActLocation;
 }

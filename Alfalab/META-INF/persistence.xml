@@ -138,11 +138,51 @@
 		</properties>
 	</persistence-unit>
 
-	<persistence-unit name="b_tables_input" transaction-type="RESOURCE_LOCAL">		
+	<persistence-unit name="tables_input" transaction-type="RESOURCE_LOCAL">		
 	        <class>nl.iisg.ids03.Person</class>
 	        <class>nl.iisg.ids03.PersonDynamic</class>
 	        <class>nl.iisg.ids03.Registration</class>
 	        <class>nl.iisg.ids03.RegistrationAddress</class>
+
+		<class>iisg.nl.hsnimport.Stpb</class>
+                <class>iisg.nl.hsnimport.Gebakte</class>
+                <class>iisg.nl.hsnimport.Gebbyz</class>
+                <class>iisg.nl.hsnimport.Gebgtg</class>
+                <class>iisg.nl.hsnimport.Gebkant</class>
+                <class>iisg.nl.hsnimport.Gebknd</class>
+                <class>iisg.nl.hsnimport.Gebvdr</class>
+                <class>iisg.nl.hsnimport.Huwafk</class>
+                <class>iisg.nl.hsnimport.Huwbyz</class>
+                <class>iisg.nl.hsnimport.Huweer</class>
+                <class>iisg.nl.hsnimport.Huwgtg</class>
+                <class>iisg.nl.hsnimport.Huwknd</class>
+                <class>iisg.nl.hsnimport.Huwvrknd</class>
+                <class>iisg.nl.hsnimport.Ovlagv</class>
+                <class>iisg.nl.hsnimport.Ovlbyz</class>
+                <class>iisg.nl.hsnimport.Ovlknd</class>
+                <class>iisg.nl.hsnimport.Ovlech</class>
+                <class>iisg.nl.hsnimport.PkKnd</class>
+                <class>iisg.nl.hsnimport.Plaats</class>
+                <class>iisg.nl.hsnimport.Beheer</class>
+
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/invoer?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" />
+			<property name="javax.persistence.jdbc.user" value="cor" />
+			<property name="javax.persistence.jdbc.password" value="zaq12wsx" />
+		</properties>
+	</persistence-unit>
+
+	<persistence-unit name="tables_input2" transaction-type="RESOURCE_LOCAL">		
+	        
+	        <class>nl.iisg.convertPK.P7</class>
+	        <class>nl.iisg.convertPK.P8</class>
+	        <class>nl.iisg.convertPK.PkAdres</class>
+	        <class>nl.iisg.convertPK.PkBrp</class>
+	        <class>nl.iisg.convertPK.PkByz</class>
+	        <class>nl.iisg.convertPK.PkEigknd</class>
+	        <class>nl.iisg.convertPK.PkHuw</class>
+	        <class>nl.iisg.convertPK.PkKnd</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/invoer?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" />

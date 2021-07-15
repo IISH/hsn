@@ -25,7 +25,7 @@ import nl.iisg.ref.Ref_Municipality;
 @Table(name="ovlknd")
 public class Ovlknd {
 
-     @Column(name="IDNR")           private int idnr;
+     @Id@Column(name="IDNR")           private int idnr;
      @Column(name="OACGEMNR")       private int oacgemnr;
      @Column(name="OACGEMNM")       private String oacgemnm;
      @Column(name="OAKTENR")        private int oaktenr;
@@ -85,19 +85,20 @@ public class Ovlknd {
      @Column(name="ADRMOVL")        private String adrmovl;
      @Column(name="EXTRACT")        private String extract;
      @Column(name="PROBLM")         private String problm;
-     @Column(name="ARCH")           private String arch;
+ //    @Column(name="ARCH")           private String arch;
      @Column(name="OPDRNR")         private String opdrnr;
      @Column(name="DATUM")          private String datum;
      @Column(name="INIT")           private String init;
      @Column(name="VERSIE")         private String versie;
      @Column(name="ONDRZKO")        private String ondrzko;
-     @Column(name="ARCHO")          private String archo;
+  //   @Column(name="ARCHO")          private String archo;
      @Column(name="OPDRNRO")        private String opdrnro;
      @Column(name="DATUMO")         private String datumo;
      @Column(name="INITO")          private String inito;
      @Column(name="VERSIEO")        private String versieo;
-     @Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
-     @Column(name="RecordID") private int recordID;
+     @Column(name="OPDRNRI")        private String orderNumberI;
+     //@Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
+     //@Column(name="RecordID") private int recordID;
  
  @Transient                     private ArrayList<Ovlech>   ovlechL = new ArrayList<Ovlech>();
  @Transient                     private ArrayList<Ovlbyz>   ovlbyzL = new ArrayList<Ovlbyz>();
@@ -559,12 +560,7 @@ public String getProblm() {
 public void setProblm(String problm) {
 	this.problm = problm;
 }
-public String getArch() {
-	return arch;
-}
-public void setArch(String arch) {
-	this.arch = arch;
-}
+
 public String getOpdrnr() {
 	return opdrnr;
 }
@@ -595,12 +591,7 @@ public String getOndrzko() {
 public void setOndrzko(String ondrzko) {
 	this.ondrzko = ondrzko;
 }
-public String getArcho() {
-	return archo;
-}
-public void setArcho(String archo) {
-	this.archo = archo;
-}
+
 public String getOpdrnro() {
 	return opdrnro;
 }
@@ -625,6 +616,15 @@ public String getVersieo() {
 public void setVersieo(String versieo) {
 	this.versieo = versieo;
 }
+
+public String getOrderNumberI() {
+	return orderNumberI;
+}
+
+public void setOrderNumberI(String orderNumberI) {
+	this.orderNumberI = orderNumberI;
+}
+
 public ArrayList<Ovlech> getOvlechL() {
 	return ovlechL;
 }
@@ -668,16 +668,6 @@ public int getLengeb() {
 
 public void setLengeb(int lengeb) {
 	this.lengeb = lengeb;
-}
-
-
-public int getRecordID() {
-	return recordID;
-}
-
-
-public void setRecordID(int recordID) {
-	this.recordID = recordID;
 }
 
 public String getDeathActPlace() {

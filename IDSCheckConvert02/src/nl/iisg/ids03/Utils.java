@@ -49,7 +49,7 @@ public class Utils {
 	static EntityManager em_original_tabs = getFactory_original_tabs().createEntityManager();
 	static int em_original_btabs_Count = 0;
 
-	static EntityManagerFactory factory_original_tabs2 = Persistence.createEntityManagerFactory("b_tables_input");
+	static EntityManagerFactory factory_original_tabs2 = Persistence.createEntityManagerFactory("tables_input");
 	static EntityManager em_original_tabs2 = getFactory_original_tabs2().createEntityManager();
 	static int em_original_btabs2_Count = 0;
 

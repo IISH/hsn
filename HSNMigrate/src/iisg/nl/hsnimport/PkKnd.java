@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="pkknd")
 public class PkKnd {
-    @Column(name="IDNR")		private int idnr;        
+    @Id@Column(name="IDNR")		private int idnr;        
     @Column(name="IDNRP")    	private int idnrp;
     @Column(name="GAKTNRP")  	private String gaktnrp;     
     @Column(name="PKTYPE")   	private int pktype;   
@@ -85,8 +85,9 @@ public class PkKnd {
     @Column(name="DATUMO")      private String datumo;   
     @Column(name="INITO")       private String inito;   
     @Column(name="VERSIEO")     private String versieo;  
-    @Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
-    @Column(name="RecordID")    private int recordID;
+    @Column(name="OPDRNRI")     private String orderNumberI;
+    //@Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
+    //@Column(name="RecordID")    private int recordID;
     
     
     
@@ -534,18 +535,12 @@ public class PkKnd {
 	public void setVersieo(String versieo) {
 		this.versieo = versieo;
 	}
-	public int getRecordID() {
-		return recordID;
+	
+	public String getOrderNumberI() {
+		return orderNumberI;
 	}
-	public void setRecordID(int recordID) {
-		this.recordID = recordID;
+	public void setOrderNumberI(String orderNumberI) {
+		this.orderNumberI = orderNumberI;
 	}
-
-	
-	
-	
-	
-	
-	
 
 }

@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Table(name="beheer")
 public class Beheer {
 	
-    @Column(name="IDNR")		private int idnr;        
+@Id @Column(name="IDNR")		private int idnr;        
     @Column(name="OVLDAG")    	private int ovldag;
     @Column(name="OVLMND")    	private int ovlmnd;
     @Column(name="OVLJAAR")    	private int ovljaar;
@@ -22,8 +22,9 @@ public class Beheer {
     @Column(name="OVLPLAATS")  	private String ovlplaats;
     @Column(name="INVOERSTAT") 	private String invoerstat;
     @Column(name="RANDOMGETA") 	private int randomgeta;
-    @Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
-    @Column(name="RecordID")    private int recordID;
+    @Column(name="OPDRNRI")     private String orderNumberI;
+    //@Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
+    //@Column(name="RecordID")    private int recordID;
     
 	public int getIdnr() {
 		return idnr;
@@ -79,12 +80,15 @@ public class Beheer {
 	public void setRandomgeta(int randomgeta) {
 		this.randomgeta = randomgeta;
 	}
-	public int getRecordID() {
-		return recordID;
+	
+	public String getOrderNumberI() {
+		return orderNumberI;
 	}
-	public void setRecordID(int recordID) {
-		this.recordID = recordID;
+	public void setOrderNumberI(String orderNumberI) {
+		this.orderNumberI = orderNumberI;
 	}
+	
+	
 	public String getOvlplaats() {
 		return ovlplaats;
 	}

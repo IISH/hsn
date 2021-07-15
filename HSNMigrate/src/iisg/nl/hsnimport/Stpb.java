@@ -24,12 +24,13 @@ public class Stpb {
     @Column(name="JAAR")	 private int jaar; 
 	@Column(name="AKTENR")   private int aktenr; 
 	@Column(name="COHORTNR") private int cohortnr;
-    @Column(name="IDNR")     private int idnr;	
+ @Id@Column(name="IDNR")     private int idnr;	
 	@Column(name="PROVNR")   private int provnr;
 	@Column(name="REGNR")    private int regnr;
 	@Column(name="SUBCOHNR") private int subcohnr;
-    @Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
-    @Column(name="RecordID") private int recordID;
+	@Column(name="OPDRNRI")  private String orderNumberI;
+    //@Id@GeneratedValue(strategy=GenerationType.IDENTITY) 
+    //@Column(name="RecordID") private int recordID;
 
 @Transient               private ArrayList<Gebknd>  gebkndL  = new ArrayList<Gebknd>();
 @Transient               private ArrayList<Gebakte> gebakteL = new ArrayList<Gebakte>();
@@ -125,6 +126,17 @@ public int getSubcohnr() {
 public void setSubcohnr(int subcohnr) {
 	this.subcohnr = subcohnr;
 }
+
+public String getOrderNumberI() {
+	return orderNumberI;
+}
+
+public void setOrderNumberI(String orderNumberI) {
+	this.orderNumberI = orderNumberI;
+}
+
+
+
 public ArrayList<Gebknd> getGebkndL() {
 	return gebkndL;
 }
@@ -138,18 +150,5 @@ public void setGebakteL(ArrayList<Gebakte> gebakte) {
 	this.gebakteL = gebakte;
 }
 
-
-public int getRecordID() {
-	return recordID;
-}
-
-
-public void setRecordID(int recordID) {
-	this.recordID = recordID;
-}
-	
-	
-	
-	
 
 }

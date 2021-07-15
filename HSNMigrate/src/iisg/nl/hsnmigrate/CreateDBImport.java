@@ -29,8 +29,9 @@ public class CreateDBImport {
          "   AKTENR     INT, " +
          "   IDNR       INT, " +
          "   GEMEENTE   CHAR(50), " +
-         "   RecordID   INT NOT NULL AUTO_INCREMENT, " +
-         "   PRIMARY KEY( RecordID )" +
+         " OPDRNRI VARCHAR(3) " +
+      // "   RecordID   INT NOT NULL AUTO_INCREMENT, " +
+      // "   PRIMARY KEY( RecordID )" +
          ") Engine=InnoDB;";			
 	
 		public static final String gebakte =
@@ -43,19 +44,20 @@ public class CreateDBImport {
         "    IDNR     INT, " +
         "    GEBKODE  INT, " +
         "    OVERSAMP CHAR(1), " +
-        "    ARCH     CHAR(1), " +
+   //     "    ARCH     CHAR(1), " +
         "    OPDRNR   CHAR(3), " +
         "    DATUM    CHAR(10), " +
         "    INIT     CHAR(3), " +
         "    VERSIE   CHAR(5), " +
         "    ONDRZKO  CHAR(3), " +
-        "    ARCHO    CHAR(1), " +
+   //     "    ARCHO    CHAR(1), " +
         "    OPDRNRO  CHAR(3), " +
         "    DATUMO   CHAR(10), " +
         "    INITO    CHAR(3), " +
         "    VERSIEO  CHAR(5), " +
-        "   RecordID   INT NOT NULL AUTO_INCREMENT, " +
-        "   PRIMARY KEY( RecordID )" +
+        "    OPDRNRI VARCHAR(3) " +
+     //   "   RecordID   INT NOT NULL AUTO_INCREMENT, " +
+     //   "   PRIMARY KEY( RecordID )" +
         ") Engine=InnoDB;";			
 			
 			
@@ -67,20 +69,21 @@ public class CreateDBImport {
 	   "    IDNR     INT, " +
 	   "    BYZNR    SMALLINT, " +
 	   "    BYZ      CHAR(55), " +
-	   "    SCHERM   CHAR(10), " +
-	   "    ARCH     CHAR(1), " +
+	   "    SCHERM   CHAR(15), " +
+	//   "    ARCH     CHAR(1), " +
 	   "    OPDRNR   CHAR(3), " +
 	   "    DATUM    CHAR(10), " +
 	   "    INIT     CHAR(3), " +
 	   "    VERSIE   CHAR(5), " +
 	   "    ONDRZKO  CHAR(3), " +
-	   "    ARCHO    CHAR(1), " +
+	//   "    ARCHO    CHAR(1), " +
 	   "    OPDRNRO  CHAR(3), " +
 	   "    DATUMO   CHAR(10), " +
 	   "    INITO    CHAR(3), " +
 	   "    VERSIEO  CHAR(5), " +
-       "   RecordID   INT NOT NULL AUTO_INCREMENT, " +
-       "   PRIMARY KEY( RecordID )" +
+	   "    OPDRNRI VARCHAR(3) " +
+       //"   RecordID   INT NOT NULL AUTO_INCREMENT, " +
+       //"   PRIMARY KEY( RecordID )" +
 	   ") Engine=InnoDB;";
 			
 			
@@ -99,22 +102,23 @@ public class CreateDBImport {
 	   "    VRN2GT   CHAR(20), " +
 	   "    VRN3GT   CHAR(30), " +
 	   "    LFTGT    INT, " +
-	   "    BRPGT    CHAR(50), " +
+	   "    BRPGT    CHAR(254), " +
 	   "    ADRGT    CHAR(50), " +
 	   "    HNDGT    CHAR(1), " +
-	   "    ARCH     CHAR(1), " +
+	//   "    ARCH     CHAR(1), " +
 	   "    OPDRNR   CHAR(3), " +
 	   "    DATUM    CHAR(10), " +
 	   "    INIT     CHAR(3), " +
 	   "    VERSIE   CHAR(5), " +
 	   "    ONDRZKO  CHAR(3), " +
-	   "    ARCHO    CHAR(1), " +
+	//   "    ARCHO    CHAR(1), " +
 	   "    OPDRNRO  CHAR(3), " +
 	   "    DATUMO   CHAR(10), " +
 	   "    INITO    CHAR(3), " +
 	   "    VERSIEO  CHAR(5), " +
-       "   RecordID   INT NOT NULL AUTO_INCREMENT, " +
-       "   PRIMARY KEY( RecordID )" +
+	   "    OPDRNRI VARCHAR(3) " +
+    //   "   RecordID   INT NOT NULL AUTO_INCREMENT, " +
+    //   "   PRIMARY KEY( RecordID )" +
 	   ") Engine=InnoDB;";
 			
 			
@@ -146,26 +150,27 @@ public class CreateDBImport {
 	   "    KGMRB    CHAR(50), " +
 	   "    KGMERK   CHAR(50), " +
 	   "    KWGMMR   CHAR(50), " +
-	   "    KBRPMR   CHAR(50), " +
+	   "    KBRPMR   CHAR(254), " +
 	   "    KANMGEB  CHAR(50), " +
 	   "    KVRN1GEB CHAR(20), " +
 	   "    KVRN2GEB CHAR(20), " +
 	   "    KVRN3GEB CHAR(30), " +
 	   "    KTUSGEB  CHAR(10), " +
 	   "    KSEXGEB  CHAR(1), " +
-	   "    ARCH     CHAR(1), " +
+	//   "    ARCH     CHAR(1), " +
 	   "    OPDRNR   CHAR(3), " +
 	   "    DATUM    CHAR(10), " +
 	   "    INIT     CHAR(3), " +
 	   "    VERSIE   CHAR(5), " +
 	   "    ONDRZKO  CHAR(3), " +
-	   "    ARCHO    CHAR(1), " +
+	//   "    ARCHO    CHAR(1), " +
 	   "    OPDRNRO  CHAR(3), " +
 	   "    DATUMO   CHAR(10), " +
 	   "    INITO    CHAR(3), " +
 	   "    VERSIEO  CHAR(5), " +
-       "   RecordID   INT NOT NULL AUTO_INCREMENT, " +
-       "   PRIMARY KEY( RecordID )" +
+	   "    OPDRNRI VARCHAR(3) " +
+      // "   RecordID   INT NOT NULL AUTO_INCREMENT, " +
+      // "   PRIMARY KEY( RecordID )" +
 	   ") Engine=InnoDB;";	
 			
 			
@@ -190,7 +195,7 @@ public class CreateDBImport {
        "    VRN2AG   CHAR(20), " +
        "    VRN3AG   CHAR(30), " +
        "    LFTAG    SMALLINT, " +
-       "    BRPAG    CHAR(100), " +
+       "    BRPAG    CHAR(254), " +
        "    ADRAG    CHAR(100), " +
        "    HNDAG    CHAR(1), " +
        "    GEBDAG   SMALLINT, " +
@@ -207,7 +212,7 @@ public class CreateDBImport {
        "    VRN3MR   CHAR(30), " +
        "    LFTMR    SMALLINT, " +
        "    BRGSTMR  CHAR(1), " +
-       "    BRPMR    CHAR(50), " +
+       "    BRPMR    CHAR(254), " +
        "    ADRMR    CHAR(50), " +
        "    ANMGEB   CHAR(50), " +
        "    TUSGEB   CHAR(10), " +
@@ -216,19 +221,20 @@ public class CreateDBImport {
        "    VRN3GEB  CHAR(30), " +
        "    KANT     CHAR(1), " +
        "    PROBLM   CHAR(1), " +
-       "    ARCH     CHAR(1), " +
+  //     "    ARCH     CHAR(1), " +
        "    OPDRNR   CHAR(3), " +
        "    DATUM    CHAR(10), " +
        "    INIT     CHAR(3), " +
        "    VERSIE   CHAR(5), " +
        "    ONDRZKO  CHAR(3), " +
-       "    ARCHO    CHAR(1), " +
+  //      "    ARCHO    CHAR(1), " +
        "    OPDRNRO  CHAR(3), " +
        "    DATUMO   CHAR(10), " +
        "    INITO    CHAR(3), " +
        "    VERSIEO  CHAR(5), " +
-       "   RecordID   INT NOT NULL AUTO_INCREMENT, " +
-       "   PRIMARY KEY( RecordID )" +
+       "    OPDRNRI VARCHAR(3) " +
+     //  "   RecordID   INT NOT NULL AUTO_INCREMENT, " +
+     //  "   PRIMARY KEY( RecordID )" +
        ") Engine=InnoDB;";
 			
 		public static final String gebvdr = 		
@@ -243,7 +249,7 @@ public class CreateDBImport {
        "    VRN2VR   CHAR(20), " +
        "    VRN3VR   CHAR(30), " +
        "    LFTVR    SMALLINT, " +
-       "    BRPVR    CHAR(50), " +
+       "    BRPVR    CHAR(254), " +
        "    ADRVR    CHAR(50), " +
        "    G5OOSD   SMALLINT, " +
        "    G5OOSM   SMALLINT, " +
@@ -253,19 +259,20 @@ public class CreateDBImport {
        "    G5VOOM   SMALLINT, " +
        "    G5VOOJ   SMALLINT, " +
        "    G5VOGO   CHAR(50), " +
-       "    ARCH     CHAR(1), " +
+      // "    ARCH     CHAR(1), " +
        "    OPDRNR   CHAR(3), " +
        "    DATUM    CHAR(10), " +
        "    INIT     CHAR(3), " +
        "    VERSIE   CHAR(5), " +
        "    ONDRZKO  CHAR(3), " +
-       "    ARCHO    CHAR(1), " +
+      // "    ARCHO    CHAR(1), " +
        "    OPDRNRO  CHAR(3), " +
        "    DATUMO   CHAR(10), " +
        "    INITO    CHAR(3), " +
        "    VERSIEO  CHAR(5), " +
-       "   RecordID   INT NOT NULL AUTO_INCREMENT, " +
-       "   PRIMARY KEY( RecordID )" +
+       "    OPDRNRI VARCHAR(3) " +
+     //  "   RecordID   INT NOT NULL AUTO_INCREMENT, " +
+     //  "   PRIMARY KEY( RecordID )" +
        ") Engine=InnoDB;";
 
 /***********************************************************/	
@@ -283,22 +290,23 @@ public class CreateDBImport {
         "    VRN3AGV    CHAR(30), " +
         "    RAGVOVL    CHAR(50), " +
         "    LFTAGV     SMALLINT, " +
-        "    BRPAGV     CHAR(50), " +
+        "    BRPAGV     CHAR(254), " +
         "    ADRAGV     CHAR(50), " +
         "    HNDAGV     CHAR(1), " +
-        "    ARCH     CHAR(1), " +
+     //   "    ARCH     CHAR(1), " +
         "    OPDRNR   CHAR(3), " +
         "    DATUM    CHAR(10), " +
         "    INIT     CHAR(3), " +
         "    VERSIE   CHAR(5), " +
         "    ONDRZKO  CHAR(3), " +
-        "    ARCHO    CHAR(1), " +
+    //    "    ARCHO    CHAR(1), " +
         "    OPDRNRO  CHAR(3), " +
         "    DATUMO   CHAR(10), " +
         "    INITO    CHAR(3), " +
         "    VERSIEO  CHAR(5), " +
-        "   RecordID   INT NOT NULL AUTO_INCREMENT, " +
-        "   PRIMARY KEY( RecordID )" +
+        "    OPDRNRI VARCHAR(3) " +
+    //    "   RecordID   INT NOT NULL AUTO_INCREMENT, " +
+    //    "   PRIMARY KEY( RecordID )" +
         ") Engine=InnoDB;";			
         
 	public static final String ovlbyz = 		
@@ -308,20 +316,21 @@ public class CreateDBImport {
         "    IDNR       INT, " +
         "    BYZNR      SMALLINT, " +
         "    BYZ        CHAR(55), " +
-        "    SCHERM     CHAR(10), " +
-        "    ARCH     CHAR(1), " +
+        "    SCHERM     CHAR(15), " +
+    //    "    ARCH     CHAR(1), " +
         "    OPDRNR   CHAR(3), " +
         "    DATUM    CHAR(10), " +
         "    INIT     CHAR(3), " +
         "    VERSIE   CHAR(5), " +
         "    ONDRZKO  CHAR(3), " +
-        "    ARCHO    CHAR(1), " +
+    //    "    ARCHO    CHAR(1), " +
         "    OPDRNRO  CHAR(3), " +
         "    DATUMO   CHAR(10), " +
-        "    INITO    CHAR(3), " +
+        "    INITO    CHAR(3), " +   
         "    VERSIEO  CHAR(5), " +
-        "   RecordID   INT NOT NULL AUTO_INCREMENT, " +
-        "   PRIMARY KEY( RecordID )" +
+        "    OPDRNRI VARCHAR(3) " +
+  //      "   RecordID   INT NOT NULL AUTO_INCREMENT, " +
+  //      "   PRIMARY KEY( RecordID )" +
         ") Engine=InnoDB;";			
         
 		public static final String ovlech =
@@ -337,21 +346,22 @@ public class CreateDBImport {
         "    VRN3EOVL   CHAR(30), " +
         "    LEVEOVL    CHAR(50), " +
         "    LFTEOVL    SMALLINT, " +
-        "    BRPEOVL    CHAR(50), " +
+        "    BRPEOVL    CHAR(254), " +
         "    ADREOVL    CHAR(50), " +
-        "    ARCH     CHAR(1), " +
+    //    "    ARCH     CHAR(1), " +
         "    OPDRNR   CHAR(3), " +
         "    DATUM    CHAR(10), " +
         "    INIT     CHAR(3), " +
         "    VERSIE   CHAR(5), " +
         "    ONDRZKO  CHAR(3), " +
-        "    ARCHO    CHAR(1), " +
+    //    "    ARCHO    CHAR(1), " +
         "    OPDRNRO  CHAR(3), " +
         "    DATUMO   CHAR(10), " +
         "    INITO    CHAR(3), " +
         "    VERSIEO  CHAR(5), " +
-        "   RecordID   INT NOT NULL AUTO_INCREMENT, " +
-        "   PRIMARY KEY( RecordID )" +
+        "    OPDRNRI VARCHAR(3) " +
+ //       "   RecordID   INT NOT NULL AUTO_INCREMENT, " +
+ //       "   PRIMARY KEY( RecordID )" +
         ") Engine=InnoDB;";			
         
 		public static final String ovlknd =
@@ -367,7 +377,7 @@ public class CreateDBImport {
         "    OAKTEDAG   SMALLINT, " +
         "    OAKTEMND   SMALLINT, " +
         "    OAKTEJR    INT, " +
-        "    LENGEB     FLOAT, " +
+        "    LENGEB     INT, " +
         "    AGVVADR    CHAR(1), " +
         "    NAGVR      SMALLINT, " +
         "    HNDTKV     CHAR(1), " +
@@ -380,7 +390,7 @@ public class CreateDBImport {
         "    VRN2OVL    CHAR(20), " +
         "    VRN3OVL    CHAR(30), " +
         "    LAAUG      SMALLINT, " +
-        "    BRPOVL     CHAR(50), " +
+        "    BRPOVL     CHAR(254), " +
         "    GBPOVL     SMALLINT, " +
         "    GGMOVL     CHAR(50), " +
         "    ADROVL     CHAR(50), " +
@@ -404,7 +414,7 @@ public class CreateDBImport {
         "    VRN2VOVL   CHAR(20), " +
         "    VRN3VOVL   CHAR(30), " +
         "    LEVVOVL    CHAR(1), " +
-        "    BRPVOVL    CHAR(50), " +
+        "    BRPVOVL    CHAR(254), " +
         "    LFVROVL    SMALLINT, " +
         "    ADRVOVL    CHAR(50), " +
         "    ANMMOVL    CHAR(50), " +
@@ -413,31 +423,31 @@ public class CreateDBImport {
         "    VRN2MOVL   CHAR(20), " +
         "    VRN3MOVL   CHAR(30), " +
         "    LEVMOVL    CHAR(1), " +
-        "    BRPMOVL    CHAR(50), " +
+        "    BRPMOVL    CHAR(254), " +
         "    LFMROVL    SMALLINT, " +
         "    ADRMOVL    CHAR(50), " +
         "    EXTRACT    CHAR(1), " +
         "    PROBLM     CHAR(1), " +
-        "    ARCH     CHAR(1), " +
+   //     "    ARCH     CHAR(1), " +
         "    OPDRNR   CHAR(3), " +
         "    DATUM    CHAR(10), " +
         "    INIT     CHAR(3), " +
         "    VERSIE   CHAR(5), " +
         "    ONDRZKO  CHAR(3), " +
-        "    ARCHO    CHAR(1), " +
+    //    "    ARCHO    CHAR(1), " +
         "    OPDRNRO  CHAR(3), " +
         "    DATUMO   CHAR(10), " +
         "    INITO    CHAR(3), " +
         "    VERSIEO  CHAR(5), " +
-        "   RecordID   INT NOT NULL AUTO_INCREMENT, " +
-        "   PRIMARY KEY( RecordID )" +
+        "    OPDRNRI VARCHAR(3) " +
+ //       "   RecordID   INT NOT NULL AUTO_INCREMENT, " +
+ //       "   PRIMARY KEY( RecordID )" +
         ") Engine=InnoDB;";			
         
 		public static final String huwknd =
 			
    "CREATE TABLE IF NOT EXISTS huwknd (" +
    "IDNR       INT, " +
-   "HVLGNR     SMALLINT, " +
    "HGEMNR     INT, " +
    "HAKTENR    INT, " +
    "HPLTS      CHAR(50), " +
@@ -462,7 +472,7 @@ public class CreateDBImport {
    "VRN1HM     CHAR(20), " +
    "VRN2HM     CHAR(20), " +
    "VRN3HM     CHAR(30), " +
-   "BRPHM      CHAR(50), " +
+   "BRPHM      CHAR(254), " +
    "GEBPLNHM   SMALLINT, " +
    "GEBPLHM    CHAR(50), " +
    "ADRHM      CHAR(50), " +
@@ -475,8 +485,8 @@ public class CreateDBImport {
    "VRN1HV     CHAR(20), " +
    "VRN2HV     CHAR(20), " +
    "VRN3HV     CHAR(30), " +
-   "BRPHV      CHAR(50), " +
-   "GEBPLNHV   CHAR(50), " +
+   "BRPHV      CHAR(254), " +
+   "GEBPLNHV   INT, " +               // Check, was char(50)!
    "GEBPLHV    CHAR(50), " +
    "ADRHV      CHAR(50), " +
    "OADRHV     CHAR(50), " +
@@ -490,7 +500,7 @@ public class CreateDBImport {
    "VRN1VRHM   CHAR(20), " +
    "VRN2VRHM   CHAR(20), " +
    "VRN3VRHM   CHAR(30), " +
-   "BRPVRHM    CHAR(50), " +
+   "BRPVRHM    CHAR(254), " +
    "ADRVRHM    CHAR(50), " +
    "PLOVVRHM   CHAR(50), " +
    "HNDVRHM    CHAR(1), " +
@@ -514,7 +524,7 @@ public class CreateDBImport {
    "VRN1VRHV   CHAR(20), " +
    "VRN2VRHV   CHAR(20), " +
    "VRN3VRHV   CHAR(30), " +
-   "BRPVRHV    CHAR(50), " +
+   "BRPVRHV    CHAR(254), " +
    "ADRVRHV    CHAR(50), " +
    "PLOVVRHV   CHAR(50), " +
    "HNDVRHV    CHAR(1), " +
@@ -526,7 +536,7 @@ public class CreateDBImport {
    "VRN1MRHV   CHAR(20), " +
    "VRN2MRHV   CHAR(20), " +
    "VRN3MRHV   CHAR(30), " +
-   "BRPMRHV    CHAR(50), " +
+   "BRPMRHV    CHAR(254), " +
    "ADRMRHV    CHAR(50), " +
    "PLOVMRHV   CHAR(50), " +
    "HNDMRHV    CHAR(1), " +
@@ -544,21 +554,22 @@ public class CreateDBImport {
    "GEGVR      CHAR(1), " +
    "GEGMR      CHAR(1), " +
    "PROBLM     CHAR(1), " +
-   "NGTG       CHAR(2), " +
+   "NGTG       INT, " +        // Check, was char(2)!
    "ERKEN      CHAR(1), " +
-   "ARCH       CHAR(1), " +
+ //  "ARCH       CHAR(1), " +
    "OPDRNR     CHAR(3), " +
    "DATUM      CHAR(10), " +
    "INIT       CHAR(3), " +
    "VERSIE     CHAR(5), " +
    "ONDRZKO    CHAR(3), " +
-   "ARCHO      CHAR(1), " +
+//   "ARCHO      CHAR(1), " +
    "OPDRNRO    CHAR(3), " +
    "DATUMO     CHAR(10), " +
    "INITO      CHAR(3), " +
    "VERSIEO    CHAR(5), " +
-   "RecordID   INT NOT NULL AUTO_INCREMENT, " +
-   "PRIMARY KEY( RecordID )" +
+   "OPDRNRI VARCHAR(3) " +
+  // "RecordID   INT NOT NULL AUTO_INCREMENT, " +
+  // "PRIMARY KEY( RecordID )" +
    ") Engine=InnoDB;";
     
 	public static final String huwafk =
@@ -568,26 +579,26 @@ public class CreateDBImport {
    "HDAG       SMALLINT, " +
    "HMAAND     SMALLINT, " +
    "HJAAR      SMALLINT, " +
-   "HVLGNR     SMALLINT, " +
    "HWAKNR     SMALLINT, " +
    "HWAKDG     SMALLINT, " +
    "HWAKMD     SMALLINT, " +
    "HWAKJR     SMALLINT, " +
    "HWAKGR     SMALLINT, " +  // Cor Changed from SMALLINT
    "HWAKPL     CHAR(50), " +
-   "ARCH       CHAR(1), " +
+ //  "ARCH       CHAR(1), " +
    "OPDRNR     CHAR(3), " +
    "DATUM      CHAR(10), " +
    "INIT       CHAR(3), " +
    "VERSIE     CHAR(5), " +
    "ONDRZKO    CHAR(3), " +
-   "ARCHO      CHAR(1), " +
+ //  "ARCHO      CHAR(1), " +
    "OPDRNRO    CHAR(3), " +
    "DATUMO     CHAR(10), " +
    "INITO      CHAR(3), " +
    "VERSIEO    CHAR(5), " +
-   "RecordID   INT NOT NULL AUTO_INCREMENT, " +
-   "PRIMARY KEY( RecordID ) " +
+   "OPDRNRI VARCHAR(3) " +
+ //  "RecordID   INT NOT NULL AUTO_INCREMENT, " +
+ //  "PRIMARY KEY( RecordID ) " +
    ") Engine=InnoDB";
    
 	public static final String huweer =
@@ -597,7 +608,6 @@ public class CreateDBImport {
    "HDAG       SMALLINT, " +
    "HMAAND     SMALLINT, " +
    "HJAAR      SMALLINT, " +
-   "HVLGNR      SMALLINT, " +
    "VLGNREH    SMALLINT, " +
    "HUWER      CHAR(1), " +
    "ANMEH      CHAR(50), " +
@@ -606,19 +616,20 @@ public class CreateDBImport {
    "VRN2EH     CHAR(20), " +
    "VRN3EH     CHAR(30), " +
    "EINDEH     CHAR(1), " +
-   "ARCH       CHAR(1), " +
+ //  "ARCH       CHAR(1), " +
    "OPDRNR     CHAR(3), " +
    "DATUM      CHAR(10), " +
    "INIT       CHAR(3), " +
    "VERSIE     CHAR(5), " +
    "ONDRZKO    CHAR(3), " +
-   "ARCHO      CHAR(1), " +
+ //  "ARCHO      CHAR(1), " +
    "OPDRNRO    CHAR(3), " +
    "DATUMO     CHAR(10), " +
    "INITO      CHAR(3), " +
    "VERSIEO    CHAR(5), " +
-   "RecordID   INT NOT NULL AUTO_INCREMENT, " +
-   "PRIMARY KEY( RecordID ) " +
+   "OPDRNRI VARCHAR(3) " +
+  // "RecordID   INT NOT NULL AUTO_INCREMENT, " +
+  // "PRIMARY KEY( RecordID ) " +
    ") Engine=InnoDB;";
    
 	public static final String huwgtg =
@@ -628,7 +639,6 @@ public class CreateDBImport {
     "HDAG       SMALLINT, " +
     "HMAAND     SMALLINT, " +
     "HJAAR      SMALLINT, " +
-    "HVLGNR      SMALLINT, " +
     "VLGNRGT    SMALLINT, " +
     "ANMGT      CHAR(50), " +
     "TUSGT      CHAR(10), " +
@@ -636,24 +646,25 @@ public class CreateDBImport {
     "VRN2GT     CHAR(20), " +
     "VRN3GT     CHAR(30), " +
     "LFTJGT     SMALLINT, " +
-    "BRPGT      CHAR(50), " +
+    "BRPGT      CHAR(254), " +
     "ADRGT      CHAR(50), " +
     "HNDGT      CHAR(1), " +
     "RELWIE     CHAR(1), " +
     "RELGT      CHAR(50), " +
-    "ARCH       CHAR(1), " +
+//    "ARCH       CHAR(1), " +
     "OPDRNR     CHAR(3), " +
     "DATUM      CHAR(10), " +
     "INIT       CHAR(3), " +
     "VERSIE     CHAR(5), " +
     "ONDRZKO    CHAR(3), " +
-    "ARCHO      CHAR(1), " +
+//    "ARCHO      CHAR(1), " +
     "OPDRNRO    CHAR(3), " +
     "DATUMO     CHAR(10), " +
     "INITO      CHAR(3), " +
     "VERSIEO    CHAR(5), " +
-    "RecordID   INT NOT NULL AUTO_INCREMENT, " +
-    "PRIMARY KEY( RecordID ) " +
+    "OPDRNRI VARCHAR(3) " +
+  //  "RecordID   INT NOT NULL AUTO_INCREMENT, " +
+  //  "PRIMARY KEY( RecordID ) " +
     ") Engine=InnoDB; ";
     
 	public static final String huwvrknd =
@@ -663,7 +674,6 @@ public class CreateDBImport {
     "HDAG       SMALLINT, " +
     "HMAAND     SMALLINT, " +
     "HJAAR      SMALLINT, " +
-    "HVLGNR     SMALLINT, " +
     "VLGNRVK    SMALLINT, " +
     "ANMVK      CHAR(50), " +
     "TUSVK      CHAR(10), " +
@@ -685,19 +695,20 @@ public class CreateDBImport {
     "VEKMDVK    SMALLINT, " +
     "VEKJRVK    SMALLINT, " +
     "VEKPLVK    CHAR(50), " +
-    "ARCH       CHAR(1), " +
+ //   "ARCH       CHAR(1), " +
     "OPDRNR     CHAR(3), " +
     "DATUM      CHAR(10), " +
     "INIT       CHAR(3), " +
     "VERSIE     CHAR(5), " +
     "OPDRNRO    CHAR(3), " +
-    "ARCHO      CHAR(1), " +
+ //   "ARCHO      CHAR(1), " +
     "ONDRZKO    CHAR(3), " +
     "DATUMO     CHAR(10), " +
     "INITO      CHAR(3), " +
     "VERSIEO    CHAR(5), " +
-    "RecordID   INT NOT NULL AUTO_INCREMENT, " +
-    "PRIMARY KEY( RecordID ) " +
+    "OPDRNRI VARCHAR(3) " +
+//    "RecordID   INT NOT NULL AUTO_INCREMENT, " +
+//    "PRIMARY KEY( RecordID ) " +
     ") Engine=InnoDB;";
     
 	public static final String huwbyz =
@@ -707,23 +718,23 @@ public class CreateDBImport {
     "HDAG       SMALLINT, " +
     "HMAAND     SMALLINT, " +
     "HJAAR      SMALLINT, " +
-    "HVLGNR     SMALLINT, " +
     "BYZNR      SMALLINT, " +
     "BYZ        CHAR(55), " +
-    "SCHERM     CHAR(10), " +
-    "ARCH       CHAR(1), " +
+    "SCHERM     CHAR(15), " +
+   // "ARCH       CHAR(1), " +
     "OPDRNR     CHAR(3), " +
     "DATUM      CHAR(10), " +
     "INIT       CHAR(3), " +
     "VERSIE     CHAR(5), " +
     "ONDRZKO    CHAR(3), " +
-    "ARCHO      CHAR(1), " +
+  //  "ARCHO      CHAR(1), " +
     "OPDRNRO    CHAR(3), " +
     "DATUMO     CHAR(10), " +
     "INITO      CHAR(3), " +
     "VERSIEO    CHAR(5), " +
-    "RecordID   INT NOT NULL AUTO_INCREMENT, " +
-    "PRIMARY KEY( RecordID ) " +
+    "OPDRNRI VARCHAR(3) " +
+    //"RecordID   INT NOT NULL AUTO_INCREMENT, " +
+    //"PRIMARY KEY( RecordID ) " +
     ") Engine=InnoDB;";
   
 	
@@ -804,10 +815,11 @@ public class CreateDBImport {
          "   DATUMO      CHAR(10), " +
          "   INITO       CHAR(3), " +
          "   VERSIEO     CHAR(5), " +
-         "   RecordID    INT NOT NULL AUTO_INCREMENT, " +
-         "   PRIMARY KEY( RecordID ), " +
-         "   INDEX       (IDNR), " +
-         "   INDEX       (IDNRP) " +
+         "   OPDRNRI VARCHAR(3) " +
+     //    "   RecordID    INT NOT NULL AUTO_INCREMENT, " +
+     //    "   PRIMARY KEY( RecordID ), " +
+     //    "   INDEX       (IDNR), " +
+     //    "   INDEX       (IDNRP) " +
          ") Engine=InnoDB;";
 			
 			
@@ -825,9 +837,10 @@ public class CreateDBImport {
         "    OVLPLAATS  CHAR(50), " +
         "    INVOERSTAT CHAR(1), " +
         "    RANDOMGETA INT, " +
-        "    RecordID   INT NOT NULL AUTO_INCREMENT, " +
-        "    PRIMARY KEY( RecordID ), " +
-        "    INDEX(IDNR) " +
+        "    OPDRNRI VARCHAR(3) " +
+     //   "    RecordID   INT NOT NULL AUTO_INCREMENT, " +
+     //   "    PRIMARY KEY( RecordID ), " +
+     //   "    INDEX(IDNR) " +
         ") Engine=InnoDB;";			
 
 			
@@ -842,10 +855,11 @@ public class CreateDBImport {
         "    VOLGNR     SMALLINT, " +
         "    GEMNAAM    CHAR(50), " +
 //        "    NWINLST    CHAR(1), " +
-        "    RecordID   INT NOT NULL AUTO_INCREMENT, " +
-        "    PRIMARY KEY( RecordID ), " +
-        "    INDEX( GEMNAAM ), " +
-       "    UNIQUE INDEX( GEMNR, PROVNR )" +
+        "    OPDRNRI VARCHAR(3) " +
+//        "    RecordID   INT NOT NULL AUTO_INCREMENT, " +
+//        "    PRIMARY KEY( RecordID ), " +
+//        "    INDEX( GEMNAAM ), " +
+//       "    UNIQUE INDEX( GEMNR, PROVNR )" +
         ") Engine=InnoDB;";			
 			
 	

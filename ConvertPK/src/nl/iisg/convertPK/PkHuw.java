@@ -48,7 +48,7 @@ public class PkHuw {
 
 	 	                                                                    
 	 /*
-	  * 0	To be interpreted as ‘1’ if ojrhuwp is valid ; for the problem see description data herefore
+	  * 0	To be interpreted as ï¿½1ï¿½ if ojrhuwp is valid ; for the problem see description data herefore
 		1	Death of the spouse: PK_holder becomes widow -> record for PK_holder with code 2 on [b3kode]
 		2	Divorce  									 -> record for PK-holder and for spouse with code  3 on [b3kode]
 		3	Other reason							     -> record for PK-holder and for spouse with code 12 on [b3kode]
@@ -84,6 +84,7 @@ public class PkHuw {
 	 @Column(name="DATUMO")         private  String   datumo;           // original date   
 	 @Column(name="INITO")          private  String   inito;            // original initials    
 	 @Column(name="VERSIEO")        private  String   versieo;          // original version
+	 @Column(name="OPDRNRI")        private  String   orderNumberI;  	// order number 2
 	 
      @Transient                     private  PkKnd    pkHolder;         // PK-Holder
 
@@ -795,6 +796,14 @@ public class PkHuw {
 	}
 	public void setVersieo(String versieo) {
 		this.versieo = versieo;
+	}
+	
+	public String getorderNumberI() {
+		return orderNumberI;
+	}
+
+	public void setorderNumberI(String orderNumberI) {
+		this.orderNumberI = orderNumberI;
 	}
 
 	public PkKnd getPkHolder() {

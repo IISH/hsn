@@ -1028,10 +1028,20 @@ private boolean CheckBirthDate(PersonStandardized ps, PersonStandardized pus, bo
 	String id1 = ps.getKeyToRP() + "-" + ps.getKeyToSourceRegister() + "-" + ps.getEntryDateHead() +  "-" + ps.getKeyToPersons();
 	String id2 = pus.getKeyToRP() + "-" + pus.getKeyToSourceRegister() + "-" + pus.getEntryDateHead() +  "-" + pus.getKeyToPersons();
 	
+	// drop ids
+	
+	id1 = "";
+	id2 = ""; 
+	
 	id1 = id1 + " " + ps.getFirstName() + " " + ps.getFamilyName() + " (" + ps.getDateOfBirth() + ")";
 	id2 = id2 + " " + pus.getFirstName() + " " + pus.getFamilyName() + " (" + pus.getDateOfBirth() + ")";
 	
+		
 	String id = " " + id1 + " vs " + id2;
+	
+	// Nullify id
+	
+	//id = "";
 
 	
 	if(date1.equals("00-00-0000") == true || date2.equals("00-00-0000") == true) // invalid dates
@@ -1039,37 +1049,57 @@ private boolean CheckBirthDate(PersonStandardized ps, PersonStandardized pus, bo
 
 	if(year1 == 0 || year2 == 0)
 		return false;
+	
+	
+	boolean daysEqual = false;
+	boolean monthsEqual = false;
+	boolean yearsEqual = false;
 
 	if(day1 > 0 && month1 > 0 && day2 > 0 && month2 > 0){
-
-		if(Math.abs(day1 - day2) > 1) { // days differ significantly
-			if(Math.abs(month1 - month2) != 0 || Math.abs(year1 - year2) != 0)
-				return false;	
-		}
-
-		if(Math.abs(month1 - month2) != 0) { // months differ 
-			if(Math.abs(day1 - day2) > 1 || Math.abs(year1 - year2) != 0)
-				return false;
-		}
 		
-		if(Math.abs(year1 - year2) != 0) {// years differ
+		if(Math.abs(day1 - day2) <= 1) daysEqual   = true;
+		if(month1 == month2)           monthsEqual = true; 
+		if(year1 == year2)             yearsEqual  = true; 
+		
+		if(!(daysEqual && monthsEqual) || (daysEqual && yearsEqual) || (monthsEqual && yearsEqual)) {
 			
-			if((Math.abs(year1 - year2)) % 10 == 0) {
+			if(date1.substring(0, date1.length() - 1).equals(date2.substring(0, date2.length() - 1))) // only last digits differ
+				if(giveMessage)
+					message("4009", (new Integer(year1).toString()), (new Integer(year2).toString()), id);
+			
+			return false;
+		}
+		else {
+			
 
-				if(Math.abs(day1 - day2) > 1 || Math.abs(month1 - month2) != 0) {
-					return false;
+			// We have a match situation, but we want to give some additional messages
+
+			if(day1 != day2)
+				if(giveMessage)
+					message("4006", (new Integer(day1).toString()), (new Integer(day2).toString()), id); 
+			if(month1 != month2)
+				if(giveMessage)
+					message("4007", (new Integer(month1).toString()), (new Integer(month2).toString()), id); 
+			if(year1 != year2) {		
+				if(Math.abs(year1 - year2) % 100 == 0) {
+					if(giveMessage)
+						message("4012", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
+				}
+				else {
+					if(Math.abs(year1 - year2) % 10 == 0) {
+						if(giveMessage)
+							message("4010", (new Integer(year1).toString()), (new Integer(year2).toString()), id);
+					}
+					else {		
+						if(giveMessage)
+							message("4008", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
+					}
 				}
 			}
-			else {
-				
-				if(date1.substring(0, date1.length() - 1).equals(date2.substring(0, date2.length() - 1))) // only last digits differ
-					if(giveMessage)
-						message("4009", (new Integer(year1).toString()), (new Integer(year2).toString()), id);
-
-				return false;
-			}
+			
 		}
 		
+		return true;
 	}
 	else
 		if(year1 > 1700 && year1 == year2) {
@@ -1078,31 +1108,8 @@ private boolean CheckBirthDate(PersonStandardized ps, PersonStandardized pus, bo
 			 return true;			
 		}
 		else return false;
-
-	if(day1 != day2)
-		if(giveMessage)
-			message("4006", (new Integer(day1).toString()), (new Integer(day2).toString()), id); 
-	if(month1 != month2)
-		if(giveMessage)
-			message("4007", (new Integer(month1).toString()), (new Integer(month2).toString()), id); 
-	if(year1 != year2) {		
-		if(Math.abs(year1 - year2) % 100 == 0) {
-			if(giveMessage)
-				message("4012", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
-		}
-		else {
-			if(Math.abs(year1 - year2) % 10 == 0) {
-				if(giveMessage)
-					message("4010", (new Integer(year1).toString()), (new Integer(year2).toString()), id);
-			}
-			else {		
-				if(giveMessage)
-					message("4008", (new Integer(year1).toString()), (new Integer(year2).toString()), id); 
-			}
-		}
-	}
 	
-	return true;
+	
 }
 
 

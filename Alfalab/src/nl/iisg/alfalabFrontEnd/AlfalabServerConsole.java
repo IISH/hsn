@@ -307,25 +307,40 @@ public class AlfalabServerConsole implements Runnable {
 
            deleteTempFiles();
             
-        } else if (command.equals(PERSONAL_CARDS_CONVERSION)) {
+        } else if (command.split(" ")[0].equals(PERSONAL_CARDS_CONVERSION)) {
 
+        	String parm = null;
+        	if(command.split(" ").length > 1 && command.split(" ")[1] != null)
+        		parm = command.split(" ")[1].trim();
+        	else
+        		parm = INPUT_DIRECTORY;
+        	
             //print("Started Standardize Personal Cards. Please wait..\n");
-            StandardizePersonalCards standardizePersonalCards = new StandardizePersonalCards(out, INPUT_DIRECTORY);
+            StandardizePersonalCards standardizePersonalCards = new StandardizePersonalCards(out, parm);
             workerThread = new Thread(standardizePersonalCards);
             workerThread.start();
 
         } else if (command.equals(PERSONAL_CARDS_TO_IDS)) {
 
             //print("Started Personal Card to IDS. Please wait..\n");
+        	
+        	
             PKToIDS PKToIDS = new PKToIDS(out);
             workerThread = new Thread(PKToIDS);
             workerThread.start();
 
-        } else if (command.equals(CIVIL_CERTS_CONVERSION)) {
+        } else if (command.split(" ")[0].equals(CIVIL_CERTS_CONVERSION)) {
 
             //print("Started Standardize Civil Certificates. Please wait..\n");
 //            StandardizePersonalCards standardizePersonalCards = new StandardizePersonalCards(out, INPUT_DIRECTORY);
-            StandardizeCivilCertificates standardizeCivilCertificates = new StandardizeCivilCertificates(out, INPUT_DIRECTORY);
+        	
+        	String parm = null;
+        	if(command.split(" ").length > 1 && command.split(" ")[1] != null)
+        		parm = command.split(" ")[1].trim();
+        	else
+        		parm = INPUT_DIRECTORY;
+        	
+            StandardizeCivilCertificates standardizeCivilCertificates = new StandardizeCivilCertificates(out, parm);
             workerThread = new Thread(standardizeCivilCertificates);
             workerThread.start();
 
