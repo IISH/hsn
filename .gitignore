@@ -1,7 +1,12 @@
 *.jar
+!java2word-3.3.jar
 temp
 out
 .svn
 bin
 .cfs
 .metadata
+target
+dependency-reduced-pom.xml
+*.log
+.idea
