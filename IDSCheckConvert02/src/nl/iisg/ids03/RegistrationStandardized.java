@@ -1098,6 +1098,10 @@ public class RegistrationStandardized {
     	
     	Marriages previousMarriage = null;
     	for(Marriages marriage: getMarriagesHead()){
+    		if(getKeyToRP() == 201196) {
+    			System.out.println(getKeyToRP() + "   " + getKeyToSourceRegister() + "   " + getEntryDateHead());
+    			marriage.print();
+    		}
     		if(previousMarriage != null){
     			if(previousMarriage.getHead() == marriage.getHead()){
     				if(previousMarriage.getEndDate() != null && marriage.getStartDate() != null && 
@@ -1425,8 +1429,8 @@ public class RegistrationStandardized {
     								nrMatchingFirstNames = 3;
     							}
 
-
-    							if(Utils.dayCount(ps.getDateOfBirth()) - Utils.dayCount(ps1.getDateOfBirth()) > 14 * 365){ // Mother must be at least 14 year older
+    							if(Common1.dateIsValid(ps.getDateOfBirth()) == 0 && Common1.dateIsValid(ps1.getDateOfBirth()) == 0 &&
+    							  Utils.dayCount(ps.getDateOfBirth()) - Utils.dayCount(ps1.getDateOfBirth()) > 14 * 365){ // Mother must be at least 14 year older
 
     								foundMother = true;
     								

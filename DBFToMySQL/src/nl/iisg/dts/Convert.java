@@ -60,10 +60,10 @@ public class Convert{
 
 			String[] a =  inputFile.split("[.\\\\]");
 
-			createTable += "hsn_msg.";
+			createTable += "hsn_ref.";
 			createTable +=  tableName ;
 			//String tableName = a[a.length - 2];
-			tableName = "hsn_msg." + tableName;
+			tableName = "hsn_ref." + tableName;
 
 			//System.out.println(tableName);
 			createTable += " (";

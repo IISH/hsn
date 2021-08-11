@@ -1061,7 +1061,7 @@ private boolean CheckBirthDate(PersonStandardized ps, PersonStandardized pus, bo
 		if(month1 == month2)           monthsEqual = true; 
 		if(year1 == year2)             yearsEqual  = true; 
 		
-		if(!(daysEqual && monthsEqual) || (daysEqual && yearsEqual) || (monthsEqual && yearsEqual)) {
+		if(!((daysEqual && monthsEqual) || (daysEqual && yearsEqual) || (monthsEqual && yearsEqual))) {
 			
 			if(date1.substring(0, date1.length() - 1).equals(date2.substring(0, date2.length() - 1))) // only last digits differ
 				if(giveMessage)
