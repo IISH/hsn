@@ -2,182 +2,169 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>nl.iisg.hsn</groupId>
-        <artifactId>hsn</artifactId>
-        <version>1.0</version>
-    </parent>
-
-    <artifactId>Alfalab</artifactId>
+  <parent>
+    <groupId>nl.iisg.hsn</groupId>
+    <artifactId>hsn</artifactId>
     <version>1.0</version>
-    <packaging>jar</packaging>
+  </parent>
 
-    <build>
+  <artifactId>Alfalab</artifactId>
+  <version>1.0</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>nl.iisg.hsn</groupId>
+      <artifactId>CivilCertificatesToIDS</artifactId>
+      <version>1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>nl.iisg.hsn</groupId>
+      <artifactId>ConvertPK</artifactId>
+      <version>1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>nl.iisg.hsn</groupId>
+      <artifactId>HSNLinksIntegration</artifactId>
+      <version>1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>nl.iisg.hsn</groupId>
+      <artifactId>HSNMigrate</artifactId>
+      <version>1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>nl.iisg.hsn</groupId>
+      <artifactId>IDS</artifactId>
+      <version>1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>nl.iisg.hsn</groupId>
+      <artifactId>IDSCheckConvert02</artifactId>
+      <version>1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>nl.iisg.hsn</groupId>
+      <artifactId>InitialiseIDS</artifactId>
+      <version>1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>nl.iisg.hsn</groupId>
+      <artifactId>LinksIDS</artifactId>
+      <version>1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>nl.iisg.hsn</groupId>
+      <artifactId>LinksInputAndMapping</artifactId>
+      <version>1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>nl.iisg.hsn</groupId>
+      <artifactId>PKToIDS</artifactId>
+      <version>1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>nl.iisg.hsn</groupId>
+      <artifactId>PopulationRegisterToIDS</artifactId>
+      <version>1.0</version>
+    </dependency>
+  </dependencies>
+
+  <profiles>
+    <profile>
+      <id>client</id>
+
+      <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.2</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <transformers>
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>nl.iisg.alfalabFrontEnd.AlfalabServerConsole</mainClass>
-                                </transformer>
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                            </transformers>
-                            <!-- Some jars may be signed, so we need to filter them out. -->
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-<!--
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>ideauidesigner-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>javac2</goal>
-                        </goals>
-                    </execution>
-                </executions>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version>
+
+            <configuration>
+              <includes>
+                <include>nl/iisg/alfalabFrontEnd/AlfalabClient.java</include>
+              </includes>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.2.4</version>
+
+            <executions>
+              <execution>
+                <phase>package</phase>
+
+                <goals>
+                  <goal>shade</goal>
+                </goals>
 
                 <configuration>
-                    <fork>true</fork>
-                    <debug>true</debug>
-                    <failOnError>true</failOnError>
+                  <minimizeJar>true</minimizeJar>
+
+                  <transformers>
+                    <transformer
+                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                      <mainClass>nl.iisg.alfalabFrontEnd.AlfalabClient</mainClass>
+                    </transformer>
+                  </transformers>
                 </configuration>
-            </plugin>
--->
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
-    </build>
+      </build>
+    </profile>
 
-    <dependencies>
-        <dependency>
-            <groupId>nl.iisg.hsn</groupId>
-            <artifactId>CivilCertificatesToIDS</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>nl.iisg.hsn</groupId>
-            <artifactId>Context</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>nl.iisg.hsn</groupId>
-            <artifactId>ConvertPK</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>nl.iisg.hsn</groupId>
-            <artifactId>DBFToMySQL</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>nl.iisg.hsn</groupId>
-            <artifactId>HSNCommon</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>nl.iisg.hsn</groupId>
-            <artifactId>HSNLinksIntegration</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>nl.iisg.hsn</groupId>
-            <artifactId>HSNMigrate</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>nl.iisg.hsn</groupId>
-            <artifactId>IDS</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>nl.iisg.hsn</groupId>
-            <artifactId>IDSCheckConvert02</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>nl.iisg.hsn</groupId>
-            <artifactId>JavaDBF</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>nl.iisg.hsn</groupId>
-            <artifactId>LinksIDS</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>nl.iisg.hsn</groupId>
-            <artifactId>LinksInputAndMapping</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>nl.iisg.hsn</groupId>
-            <artifactId>PKToIDS</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>nl.iisg.hsn</groupId>
-            <artifactId>PopulationRegisterToIDS</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>nl.iisg.hsn</groupId>
-            <artifactId>ReferenceTables</artifactId>
-            <version>1.0</version>
-        </dependency>
+    <profile>
+      <id>server</id>
 
-        <dependency>
-            <groupId>com.intellij</groupId>
-            <artifactId>forms_rt</artifactId>
-            <version>5.0</version>
-        </dependency>
-        <dependency>
-            <groupId>java2word</groupId>
-            <artifactId>java2word</artifactId>
-            <version>3.3</version>
-        </dependency>
-    </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.2.4</version>
 
-    <repositories>
-        <repository>
-            <id>java2word-maven-repository</id>
-            <name>java2word-maven-repository</name>
-            <url>file://${basedir}/repository</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-                <checksumPolicy>ignore</checksumPolicy>
-            </releases>
-        </repository>
-    </repositories>
+            <executions>
+              <execution>
+                <phase>package</phase>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+                <goals>
+                  <goal>shade</goal>
+                </goals>
 
+                <configuration>
+                  <transformers>
+                    <transformer
+                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                      <mainClass>nl.iisg.alfalabFrontEnd.AlfalabServerConsole</mainClass>
+                    </transformer>
+                  </transformers>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
