@@ -292,7 +292,7 @@
 		<class>nl.iisg.ref.Ref_GB</class>  		    		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://localhost:3306/hsn_ref?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" />" 
+			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://localhost:3306/hsn_ref?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" />
 			<property name="javax.persistence.jdbc.user" value="cor" />
 			<property name="javax.persistence.jdbc.password" value="zaq12wsx" />
 		</properties>
@@ -317,7 +317,7 @@
 
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://localhost:3306/hsn_ref?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" />" 
+			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://localhost:3306/hsn_ref?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" />
 			<property name="javax.persistence.jdbc.user" value="cor" />
 			<property name="javax.persistence.jdbc.password" value="zaq12wsx" />
 		</properties>
@@ -328,7 +328,7 @@
 		<class>nl.iisg.ref.Ref_Profession</class>       	
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://194.171.4.71:3306/links_general?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" />" 
+			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://194.171.4.71:3306/links_general?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" />
 			<property name="javax.persistence.jdbc.user" value="cmu" />
 			<property name="javax.persistence.jdbc.password" value="cmucmu" />
 		</properties>
@@ -358,7 +358,7 @@
 		<class>nl.iisg.ids06.INDIV_CONTEXT</class> 
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://localhost:3306/hsn_perscd_ids?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" />" 
+			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://localhost:3306/hsn_perscd_ids?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" />
 			<property name="javax.persistence.jdbc.user" value="cor" />
 			<property name="javax.persistence.jdbc.password" value="zaq12wsx" />
 
@@ -370,7 +370,7 @@
 		<class>nl.iisg.idscontext.CONTEXT_CONTEXT</class>       	      		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://localhost:3306/hsn_ids?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" />" 
+			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://localhost:3306/hsn_ids?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" />
 			<property name="javax.persistence.jdbc.user" value="cor" />
 			<property name="javax.persistence.jdbc.password" value="zaq12wsx" />
 		</properties>
@@ -382,7 +382,7 @@
 		<class>nl.iisg.ids05.INDIV_CONTEXT</class> 
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://localhost:3306/hsn_civrec_ids?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" />" 
+			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://localhost:3306/hsn_civrec_ids?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" /> 
 			<property name="javax.persistence.jdbc.user" value="cor" />
 			<property name="javax.persistence.jdbc.password" value="zaq12wsx" />
 
@@ -441,7 +441,7 @@
 		<class>nl.iisg.ids04.INDIV_CONTEXT</class> 
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://localhost:3306/hsn_popreg_total_ids?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" />" 
+			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://localhost:3306/hsn_popreg_total_ids?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" />
 			<property name="javax.persistence.jdbc.user" value="cor" />
 			<property name="javax.persistence.jdbc.password" value="zaq12wsx" />
 		</properties>
@@ -453,7 +453,7 @@
 		<class>nl.iisg.ids.INDIV_CONTEXT</class> 
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://localhost:3306/hsn_civrec_ids?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" />" 
+			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://localhost:3306/hsn_civrec_ids?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" /> 
 			<property name="javax.persistence.jdbc.user" value="cor" />
 			<property name="javax.persistence.jdbc.password" value="zaq12wsx" />
 		</properties>
@@ -464,7 +464,7 @@
 		<class>nl.iisg.ids.INDIV_CONTEXT</class> 
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://localhost:3306/hsn_perscd_ids?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" />" 
+			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://localhost:3306/hsn_perscd_ids?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" /> 
 			<property name="javax.persistence.jdbc.user" value="cor" />
 			<property name="javax.persistence.jdbc.password" value="zaq12wsx" />
 		</properties>
@@ -475,7 +475,7 @@
 		<class>nl.iisg.ids.INDIV_CONTEXT</class> 
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://localhost:3306/hsn_popreg_total_ids?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" />" 
+			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://localhost:3306/hsn_popreg_total_ids?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" /> 
 			<property name="javax.persistence.jdbc.user" value="cor" />
 			<property name="javax.persistence.jdbc.password" value="zaq12wsx" />
 		</properties>
@@ -487,7 +487,7 @@
 		<class>nl.iisg.ids.INDIV_CONTEXT</class> 
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://localhost:3306/hsn_ids?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" />" 
+			<property name="javax.persistence.jdbc.url"	value="jdbc:mysql://localhost:3306/hsn_ids?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=CET" />
 			<property name="javax.persistence.jdbc.user" value="cor" />
 			<property name="javax.persistence.jdbc.password" value="zaq12wsx" />
 		</properties>

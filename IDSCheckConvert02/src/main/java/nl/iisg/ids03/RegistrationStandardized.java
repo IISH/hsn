@@ -1426,7 +1426,8 @@ public class RegistrationStandardized {
     							}
 
 
-    							if(Utils.dayCount(ps.getDateOfBirth()) - Utils.dayCount(ps1.getDateOfBirth()) > 14 * 365){ // Mother must be at least 14 year older
+    							if(Common1.dateIsValid(ps.getDateOfBirth()) == 0 && Common1.dateIsValid(ps1.getDateOfBirth()) == 0 &&
+    									Utils.dayCount(ps.getDateOfBirth()) - Utils.dayCount(ps1.getDateOfBirth()) > 14 * 365){ // mother must be at least 14 year older
 
     								foundMother = true;
     								
