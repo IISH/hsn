@@ -336,6 +336,8 @@ public class Utils {
 	public static int dayCount(String date0){
 		
 		//System.out.println(date0);
+		
+		if(date0.length() != 10) return -1;
 			
 		int d = (new Integer(date0.substring(0,2))).intValue();
 		int m = (new Integer(date0.substring(3,5))).intValue();

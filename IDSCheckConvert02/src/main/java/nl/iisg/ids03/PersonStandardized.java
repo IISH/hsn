@@ -3415,7 +3415,7 @@ public class PersonStandardized {
 				copyDatingInfo(this, pds1);
 				copyDatingInfo(this, pds2);
 
-				if(Utils.dateIsValid(date) != 0) {
+				if(Utils.dateIsValid(date) == 0) {
 					pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(date) - 1));
 					pds1.setEndFlag(77); // marriage end date
 					pds1.setEndEst(100);
@@ -3451,8 +3451,10 @@ public class PersonStandardized {
 				
 				if(date1 == null || Utils.dateIsValid(date1) != 0){
 					if(date2 == null || Utils.dateIsValid(date2) != 0){
-						date1 = Utils.dateFromDayCount((Utils.dayCount(getStartDate()) + Utils.dayCount(getEndDate())) / 3);
-						date2 = Utils.dateFromDayCount(( 2 * Utils.dayCount(getStartDate()) + Utils.dayCount(getEndDate())) / 3);					
+						if(Common1.dateIsValid(getStartDate()) == 0 && Common1.dateIsValid(getEndDate()) == 0) {
+							date1 = Utils.dateFromDayCount((Utils.dayCount(getStartDate()) + Utils.dayCount(getEndDate())) / 3);
+							date2 = Utils.dateFromDayCount(( 2 * Utils.dayCount(getStartDate()) + Utils.dayCount(getEndDate())) / 3);	
+						}
 					}
 					else
 						if(Common1.dateIsValid(getStartDate()) == 0 && Common1.dateIsValid(getEndDate()) == 0)
@@ -3470,7 +3472,7 @@ public class PersonStandardized {
 				copyDatingInfo(this, pds2);
 				copyDatingInfo(this, pds3);
 
-				if(Utils.dateIsValid(date1) != 0) {
+				if(Utils.dateIsValid(date1) == 0) {
 
 					pds1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(date1) - 1));
 					pds1.setEndFlag(77); // marriage end date
@@ -3728,7 +3730,9 @@ public class PersonStandardized {
 				String endDate1   = pds.getEndDate();
 				//System.out.println("  " + startDate1 + "  " + endDate1);
 
-				if(Utils.dayCount(endDate1) > Utils.dayCount(startDate) && Utils.dayCount(startDate1) < Utils.dayCount(endDate)){
+				if(Utils.dateIsValid(endDate1) == 0 && Utils.dateIsValid(startDate) == 0 &&
+						Utils.dateIsValid(startDate1) == 0 && Utils.dateIsValid(endDate)  == 0 && 
+						Utils.dayCount(endDate1) > Utils.dayCount(startDate) && Utils.dayCount(startDate1) < Utils.dayCount(endDate)){
 					
 					//System.out.println("In loop");
 					
@@ -3823,7 +3827,7 @@ public class PersonStandardized {
 			if(Common1.dateIsValid(getDateOfBirth()) == 0) {
 				int flag = 0;
 				String startDate0 = null;
-				if(Utils.dateIsValid(pds1.getDateOfMutation2()) != 0){
+				if(Utils.dateIsValid(pds1.getDateOfMutation2()) == 0){
 					//System.out.println("ABBC 6 " + getDateOfBirth() + "  " + getEndDate());
 					if(Utils.dateIsValid(getEndDate()) == 0 && Utils.dayCount(getDateOfBirth()) + 15 * 365 >= Utils.dayCount(getEndDate()))
 						startDate0 = Utils.dateFromDayCount(Utils.dayCount(getEndDate()) - 1);
@@ -3838,7 +3842,7 @@ public class PersonStandardized {
 				else{
 					startDate0 = pds1.getDateOfMutation2();
 					
-					if(Utils.dateIsValid(pds1.getDateOfMutation2()) != 0 &&
+					if(Utils.dateIsValid(pds1.getDateOfMutation2())  != 0 &&
 							Utils.dayCount(getDateOfBirth()) + 12 * 365 > Utils.dayCount(pds1.getDateOfMutation2()))
 						startDate0 = Utils.dateFromDayCount(Utils.dayCount(getDateOfBirth()) + 12 * 365);
 					flag = 52;
