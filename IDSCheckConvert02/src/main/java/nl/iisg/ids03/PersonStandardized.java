@@ -2936,6 +2936,13 @@ public class PersonStandardized {
 		PersonDynamicStandardized pds2 = civilStatus.size() >= 2 ?  civilStatus.get(1) : null;
 		PersonDynamicStandardized pds3 = civilStatus.size() >= 3 ?  civilStatus.get(2) : null;
 		
+		int css = 0;
+		if(pds3 != null) css = 3;
+		else
+			if(pds2 != null) css = 2;
+			else
+				if(pds1 != null) css = 1;
+		
 		// for mutation dates with flag 41 or 42 replace month and/or day with Start month and/or day if Start year matches mutation year
 		if(pds1 != null && Common1.dateIsValid(pds1.getDateOfMutation2()) == 0 && Common1.dateIsValid(getStartDate()) == 0) {
 			if(pds1.getDateOfMutation2().substring(6,10).equals(getStartDate().substring(6,10))){
@@ -2997,13 +3004,13 @@ public class PersonStandardized {
 
 		
 		
-		switch(civilStatus.size()){		
+		switch(css){		
 		case 1:
-			if(pds1 != null && Utils.dateIsValid(pds1.getDateOfMutation2()) != 0){				
-				copyDatingInfo(this, pds1);
+			if(pds1 != null && Utils.dateIsValid(pds1.getDateOfMutation2()) != 0){				// Not dated
+				copyDatingInfo(this, pds1);                                                     // Use b2_st dates
 				((PDS_CivilStatus)pds1).setCivilStatusFlag(52); 
 			}
-			else{
+			else{                                               
 				if(pds1 != null && Common1.dateIsValid(pds1.getDateOfMutation2()) == 0  && Common1.dateIsValid(getStartDate()) == 0) {
 					if(Utils.dayCount(pds1.getDateOfMutation2()) > Utils.dayCount(getStartDate())){
 						PersonDynamicStandardized pdsnew = pds1.copyPersonDynamicStandardized();
@@ -3018,8 +3025,10 @@ public class PersonStandardized {
 						switch(((PDS_CivilStatus)pds1).getContentOfDynamicData()){
 						case ConstRelations2.WEDUWNAAR_WEDUWE:
 							((PDS_CivilStatus)pdsnew).setContentOfDynamicData(ConstRelations2.GEHUWD);
+							break;
 						case ConstRelations2.GESCHEIDEN:
 							((PDS_CivilStatus)pdsnew).setContentOfDynamicData(ConstRelations2.GEHUWD);
+							break;
 						case ConstRelations2.GEHUWD:
 							((PDS_CivilStatus)pdsnew).setContentOfDynamicData(ConstRelations2.ONBEKEND);
 
@@ -3050,7 +3059,8 @@ public class PersonStandardized {
 
 					}
 				}
-
+				
+				
 				pds1.setStartDate(pds1.getDateOfMutation2());
 				pds1.setStartFlag(32);
 				pds1.setStartEst(100); 
@@ -3061,8 +3071,9 @@ public class PersonStandardized {
 				
 			}
 			break;
+			
 		case 2:
-			if(Utils.dateIsValid(pds1.getDateOfMutation2()) == 0){	
+			if(Utils.dateIsValid(pds1.getDateOfMutation2()) != 0){	// Not dated
 				copyDatingInfo(this, pds1);
 				((PDS_CivilStatus)pds1).setCivilStatusFlag(52);  // declared 
 				if(Utils.dateIsValid(pds2.getDateOfMutation2()) == 0){
