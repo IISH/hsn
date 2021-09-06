@@ -715,6 +715,13 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 			
 			
 		}
+		
+		if(getDynamicData2() != null && getDynamicData2().length() > 0 && getDynamicData2().indexOf("@") >= 0)
+			message("1377");
+
+		if(getDynamicData2() != null && getDynamicData2().length() > 0 && getDynamicData2().indexOf("#") >= 0)
+			message("1378");
+
 
 
 	}

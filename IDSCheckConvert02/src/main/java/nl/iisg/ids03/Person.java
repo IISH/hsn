@@ -309,6 +309,7 @@ public class Person {
 
 		if(getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP ||
 				getNatureOfPerson() == ConstRelations2.FURTHER_APPEARANCE_OF_OP ){
+			
 			returnCode = checkOP(ainb);
 			//System.out.println("checkOP rc = " + returnCode); // ASDZ
 
@@ -1151,10 +1152,10 @@ public class Person {
 		
 		boolean returnCode = true;
 		
-		//if(getFamilyName().trim().equalsIgnoreCase("GEEN OP")){
+		if(getFamilyName().trim().equalsIgnoreCase("GEEN OP")){
 		//	System.out.println("GEEN OP!!!");
-		//	return true;
-		//}
+			return true;
+		}
 		
 		//Kees 14-07-2020:  �Geen OP� betekent dat er kunstmatig een inschrijving met OP is gemaakt.
 		//Dit komt voor in situaties dat een OP maar een week of wat heeft geleefd en niet is opgenomen 
@@ -1368,9 +1369,10 @@ public class Person {
 
 					// Check that birth year OP in B2 is more or less same as in HSNRP
 
-
-					if(getYearOfBirth() > rp1.getYearOfBirthRP() + 1 || getYearOfBirth() < rp1.getYearOfBirthRP() - 1 )
-						message("1186", new Integer(getYearOfBirth()).toString(), new Integer(rp1.getYearOfBirthRP()).toString());
+					int birthyear = getYearOfBirthAfterInterpretation() > 0 ? getYearOfBirthAfterInterpretation() : getYearOfBirth();
+					
+					if(birthyear > rp1.getYearOfBirthRP() + 1 || birthyear < rp1.getYearOfBirthRP() - 1 )
+						message("1186", "" + birthyear, "" + rp1.getYearOfBirthRP());
 
 				}
 
