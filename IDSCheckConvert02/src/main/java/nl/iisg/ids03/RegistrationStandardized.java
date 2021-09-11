@@ -101,15 +101,19 @@ public class RegistrationStandardized {
 	
     public void transformHeadOfHouseholdDate(Registration r){
 		
-		String temp = String.format("%02d-%02d-%04d", r.getDayEntryHead() , r.getMonthEntryHead(), r.getYearEntryHead());
-		setEntryDateHead(temp);		
-	}
+    	if(Common1.dateIsValid(r.getDayEntryHead() , r.getMonthEntryHead(), r.getYearEntryHead()) == 0) {
+    		String temp = String.format("%02d-%02d-%04d", r.getDayEntryHead() , r.getMonthEntryHead(), r.getYearEntryHead());
+    		setEntryDateHead(temp);		
+    	}
+    }
 
     public void transformEntryDateResearchPerson(Registration r){
 		
-		String temp = String.format("%02d-%02d-%04d", r.getDayEntryRP(), r.getMonthEntryRP(), r.getYearEntryRP());
-		setEntryDateRP(temp);		
-	}
+    	if(Common1.dateIsValid(r.getDayEntryRP(), r.getMonthEntryRP(), r.getYearEntryRP()) == 0) {
+    		String temp = String.format("%02d-%02d-%04d", r.getDayEntryRP(), r.getMonthEntryRP(), r.getYearEntryRP());
+    		setEntryDateRP(temp);		
+    	}
+    }
 
     public void print(){
 
@@ -206,9 +210,8 @@ public class RegistrationStandardized {
    	
     	for(PersonStandardized ps: getPersonsStandardizedInRegistration()){
     		
-    		if(ps.getDateOfDecease().equals("00-00-0000"))
-    			continue;
-
+    		if(Common1.dateIsValid(ps.getDateOfDecease()) != 0) continue;
+    		
     		for(PersonDynamicStandardized pds: ps.getDynamicDataOfPersonStandardized()){
 
     			if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.BURGELIJKE_STAAT && pds.getValueOfRelatedPerson() != 0 &&
@@ -216,6 +219,7 @@ public class RegistrationStandardized {
 
     				for(PersonStandardized ps1: getPersonsStandardizedInRegistration()){
 
+    					if(Common1.dateIsValid(ps1.getDateOfDecease()) != 0) continue;
     					
     					if(!ps1.getDateOfDecease().equals("00-00-0000") && Utils.dayCount(ps1.getDateOfDecease()) <= Utils.dayCount(ps.getDateOfDecease()))  // person dead already
     						continue;
@@ -226,12 +230,12 @@ public class RegistrationStandardized {
     						for(PersonDynamicStandardized pds1: ps1.getDynamicDataOfPersonStandardized()){
     							if(pds1.getKeyToDistinguishDynamicDataType() == ConstRelations2.BURGELIJKE_STAAT && ((PDS_CivilStatus)pds1).getContentOfDynamicData() == ConstRelations2.WEDUWNAAR_WEDUWE &&    									
     									pds1.getValueOfRelatedPerson() == ps.getKeyToPersons()){
-    								if(Math.abs(Utils.dayCount(ps.getDateOfDecease()) - Utils.dayCount(pds1.getDateOfMutation2())) <= 10){
+    								if(Common1.dateIsValid(pds1.getDateOfMutation2()) == 0 && 	Common1.dayCount(ps.getDateOfDecease()) - Utils.dayCount(pds1.getDateOfMutation2()) <= 10){
         								found = true;
         								break;
     								}
     								else
-    									if(pds1.getDateOfMutation2().equals("00-00-0000")){
+    									if(pds1.getDateOfMutation2() != null && pds1.getDateOfMutation2().equals("00-00-0000")){
     										pds1.setDateOfMutation(ps.getDateOfDecease());
     										found = true;
     										break;
@@ -482,7 +486,7 @@ public class RegistrationStandardized {
 
     				if(start == true)
     					if(Common1.dateIsValid(ps2.getStartDate()) == 0 && Utils.dayCount(ps2.getStartDate()) < ps1Count) 
-    						if(ps3 == null || Utils.dayCount(ps2.getStartDate()) > Utils.dayCount(ps3.getStartDate()))
+    						if(ps3 == null || Common1.dateIsValid(ps3.getStartDate()) == 0 && Utils.dayCount(ps2.getStartDate()) > Utils.dayCount(ps3.getStartDate()))
     							ps3 = ps2;
     			}
     			
@@ -493,7 +497,7 @@ public class RegistrationStandardized {
     		
     		//System.out.println("ps 3 = " + ps3 + ", ps4 = " + ps4);
     		
-    		if(ps3 != null){
+    		if(ps3 != null && ps4 != null){
     			
     			int i4 = getPersonsStandardizedInRegistration().indexOf(ps4);    			
     			getPersonsStandardizedInRegistration().remove(i4);
@@ -577,6 +581,7 @@ public class RegistrationStandardized {
     	if(ainb == null) return;
     	
     	int endYear = ainb.getEndYearRegister();
+    	if(endYear == 0) return;
     	int endCount  = Utils.dayCount("31-12-" + endYear); 
     	int endCount2 = Utils.dayCount("31-12-" + (endYear + 2)); 
 
@@ -632,7 +637,8 @@ public class RegistrationStandardized {
     		if(!cont(ps))
     			continue;
     		if(ps.getEndFlag() <= 57)
-    			ps.setMaxStartDate(ps.getEndDate());
+    			if(Common1.dateIsValid(ps.getEndDate()) == 0)
+    				ps.setMaxStartDate(ps.getEndDate());
     	}
 
 		// check if person in  group, if so set lowest of group dates
@@ -853,7 +859,7 @@ public class RegistrationStandardized {
         	}
     		
     		int interval = 0;
-    		if(ps.getMaxStartDate() != null && ps.getMinStartDate() != null)
+    		if(Common1.dateIsValid(ps.getMaxStartDate()) == 0 && Common1.dateIsValid(ps.getMinStartDate()) == 0)
     			interval = (Utils.dayCount(ps.getMaxStartDate()) - Utils.dayCount(ps.getMinStartDate())) / (groupCount + 1);
     			
     		if(group == 0){    	
@@ -864,20 +870,22 @@ public class RegistrationStandardized {
     		else{    			
     			int index = 0;
     			//System.out.println("Start loop, interval = " + ps.getMinStartDate() + " - " + ps.getMaxStartDate());
-            	for(PersonStandardized ps1: getPersonsStandardizedInRegistration()){
-            		//System.out.println("In loop, index = " + index);
-            		for(PersonDynamicStandardized pds: ps1.getDynamicDataOfPersonStandardized()){
-            			if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.AANKOMST){
-            				 if(((PDS_PlaceOfOrigin)pds).getOriginGroup() == group){
-            		    			ps1.setStartDate(Utils.dateFromDayCount(Utils.dayCount(ps.getMinStartDate()) + (interval * index)));
-            		    			index++;
-            		    			//System.out.println("--> " + ps1.getStartDate() + "   " + ps1.getRegistrationStandardizedPersonAppearsIn().getKeyToRP() + " " + ps.getStartFlag());
-            		    			ps1.setStartFlag(11);  	
-            		    			break;
-            				 }
-            			}
-            		}
-            	}
+    			for(PersonStandardized ps1: getPersonsStandardizedInRegistration()){
+    				//System.out.println("In loop, index = " + index);
+    				for(PersonDynamicStandardized pds: ps1.getDynamicDataOfPersonStandardized()){
+    					if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.AANKOMST){
+    						if(((PDS_PlaceOfOrigin)pds).getOriginGroup() == group){
+    							if(Common1.dateIsValid(ps1.getMaxStartDate()) == 0 && Common1.dateIsValid(ps1.getMinStartDate()) == 0) {
+    								ps1.setStartDate(Utils.dateFromDayCount(Utils.dayCount(ps.getMinStartDate()) + (interval * index)));
+    								index++;
+    								//System.out.println("--> " + ps1.getStartDate() + "   " + ps1.getRegistrationStandardizedPersonAppearsIn().getKeyToRP() + " " + ps.getStartFlag());
+    								ps1.setStartFlag(11);  	
+    								break;
+    							}
+    						}
+    					}
+    				}
+    			}
     		}
     	}
     	
@@ -897,8 +905,9 @@ public class RegistrationStandardized {
     	if(ps.getStartFlag() == 1)
     		return true;
     	
-    	if(ps.getStartFlag() == 8 || ps.getStartFlag() == 9) // more records or group can still have head date  
-    	    if(ps.getStartDate().equals(ps.getEntryDateHead()))
+    	if(ps.getStartFlag() == 8 || ps.getStartFlag() == 9) // more records or group can still have head date 
+    		if(Common1.dateIsValid(ps.getStartDate()) == 0 && Common1.dateIsValid(ps.getEntryDateHead()) == 0)
+    			if(ps.getStartDate().equals(ps.getEntryDateHead()))
     	    		return true;
     	    
    	    return false;
@@ -1100,7 +1109,8 @@ public class RegistrationStandardized {
     	for(Marriages marriage: getMarriagesHead()){
     		if(previousMarriage != null){
     			if(previousMarriage.getHead() == marriage.getHead()){
-    				if(previousMarriage.getEndDate() != null && marriage.getStartDate() != null && 
+    				if(Common1.dateIsValid(previousMarriage.getEndDate()) == 0 && Common1.dateIsValid(marriage.getStartDate()) == 0 &&
+    				//if(previousMarriage.getEndDate() != null && marriage.getStartDate() != null && 
     						Utils.dayCount(previousMarriage.getEndDate()) >= Utils.dayCount(marriage.getStartDate()))
     					if(previousMarriage.getSpouse() != null && marriage.getSpouse() != null &&
     							previousMarriage.getSpouse().getPersonID() != marriage.getSpouse().getPersonID())		
@@ -1128,9 +1138,9 @@ public class RegistrationStandardized {
     		
     	}
     	
-    	
-    	if(startDate != null && endDate != null && Utils.dayCount(startDate) < Utils.dayCount(endDate))
-			message("4459", 0, "" + (Utils.dayCount(endDate) - Utils.dayCount(startDate)));
+    	if(Common1.dateIsValid(startDate) == 0 && Common1.dateIsValid(endDate) == 0 &&
+    			Utils.dayCount(startDate) < Utils.dayCount(endDate))
+    		message("4459", 0, "" + (Utils.dayCount(endDate) - Utils.dayCount(startDate)));
     	
 
     }
@@ -1183,7 +1193,7 @@ public class RegistrationStandardized {
     				for(PersonDynamicStandardized pds: ps0.getDynamicDataOfPersonStandardized()){
     					if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.BURGELIJKE_STAAT){
     						if(((PDS_CivilStatus)pds).getContentOfDynamicData() == ConstRelations2.GEHUWD){
-    							if(Utils.dayCount(pds.getDateOfMutation2()) < searchDays){
+    							if(Common1.dateIsValid(pds.getDateOfMutation2()) == 0 && Utils.dayCount(pds.getDateOfMutation2()) < searchDays){
     								pds0 = pds;
     							}
     						}
@@ -1299,8 +1309,10 @@ public class RegistrationStandardized {
     					if(ps1 == ps)
     						continue;
 
+    					if(ps1.getFamilyName() == null) continue;
     					String lastName   = ps1.getFamilyName();
 
+    					if(ps1.getFirstName() == null) continue;
     					String [] firstName = ps1.getFirstName().split(" ");
 
     					int NfirstNames = firstName.length; 
@@ -1604,9 +1616,7 @@ public class RegistrationStandardized {
     			if(ps.getPersonID_FA() == 0 && ps.getPersonID_MO() == 0){
     				if(getPersonsStandardizedInRegistration().get(0).getFamilyName().equalsIgnoreCase(ps.getFamilyName())){
     					for(Marriages marriage: getMarriagesHead()){
-    						if(marriage.getSpouse().getDateOfBirth() != null && 
-    								!marriage.getSpouse().getDateOfBirth().equals("00-00-0000") && 
-    								!ps.getDateOfBirth().equals("00-00-0000") &&
+    						if(Common1.dateIsValid(marriage.getSpouse().getDateOfBirth()) == 0 && Common1.dateIsValid(ps.getDateOfBirth()) == 0  &&
     								Utils.dayCount(marriage.getSpouse().getDateOfBirth()) + 17 * 365 > Utils.dayCount(ps.getDateOfBirth())){
     							if(ps.getKeyToPersons() > marriage.getSpouse().getKeyToPersons()){
     								ps.setPersonID_MO(marriage.getSpouse().getPersonID());
@@ -1681,7 +1691,9 @@ public class RegistrationStandardized {
     		// use marriage table to set relation ECHTGENOTE_HOOFD
     		
     		for(Marriages marriage: getMarriagesHead()){
-    			if(marriage.getStartDate() == null || marriage.getSpouse().getStartDate() == null) continue;
+    			
+    			if(Utils.dateIsValid(marriage.getStartDate()) != 0  || Utils.dateIsValid(marriage.getSpouse().getStartDate()) != 0) continue;
+    			
     			PDS_RelationToHead pdsNew = null;
     			int i = 0;
     			for(PersonDynamicStandardized pds: marriage.getSpouse().getDynamicDataOfPersonStandardized()){
@@ -1796,6 +1808,7 @@ public class RegistrationStandardized {
     		}
     	}
 
+    	  	
     	int endRegister = 0;
     	Ref_AINB ainb = Ref.getAINB(getKeyToSourceRegister());	
     	
@@ -2008,7 +2021,7 @@ public class RegistrationStandardized {
     		return departure;
     	}
     	
-    	if(ps.getDateOfDecease() != null && !ps.getDateOfDecease().equals("00-00-0000")){
+    	if(Common1.dateIsValid(ps.getDateOfDecease()) == 0) {
 
     		if(Utils.dayCount(ps.getDateOfDecease()) > Utils.dayCount("01-01-1600")){
     			return Utils.dayCount(ps.getDateOfDecease());
@@ -2126,7 +2139,7 @@ public class RegistrationStandardized {
     					}
     				}
 
-    				if(dayCountPreviousHead - Utils.dayCount(ps.getDateOfBirth()) >= 21 * 365){
+    				if(Common1.dateIsValid(ps.getDateOfBirth()) == 0 && dayCountPreviousHead - Utils.dayCount(ps.getDateOfBirth()) >= 21 * 365){
     					
 						a.add(ps);
 						a.add(ConstRelations2.IMPLICIET_HOOFD_BROER);
@@ -2295,8 +2308,7 @@ public class RegistrationStandardized {
     
     public void relateAllToAll(){
 
-    	int traceKey = 159225;
-    	int traceReg = 163308;
+    	
     	boolean trace = false;
 
     	//if(getKeyToRP() == traceKey && getKeyToSourceRegister() == traceReg) {
@@ -2812,9 +2824,11 @@ public class RegistrationStandardized {
     		ras.setStartFlag(startFlg);
     		ras.setStartEst(startEst);
     		
-    		dayCount[0] = Utils.dayCount(startDate);
-    		flags[0] = startFlg;
-    		ests[0] = startEst;
+    		if(Common1.dateIsValid(startDate) == 0) {
+    			dayCount[0] = Utils.dayCount(startDate);
+    			flags[0] = startFlg;
+    			ests[0] = startEst;
+    		}
     		
     		// last date is fixed
     		
@@ -2833,7 +2847,9 @@ public class RegistrationStandardized {
     				
     				int cnt = 0;
     				int daysAddressBefore = dayCount[i - 1]; // always possible
-    				int daysAddressAfter  = Utils.dayCount(endDate); // preset to end of range                                  
+    				int daysAddressAfter  = 0;        
+    				if(Common1.dateIsValid(endDate) == 0)
+    					daysAddressAfter  = Utils.dayCount(endDate); // preset to end of range
     				
     				for(int j = i; j < getAddressesStandardizedOfRegistration().size(); j++){
     					cnt++;

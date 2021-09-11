@@ -411,14 +411,19 @@ public void identify(){
 				       (((PDS_RelationToHead)pd).getContentOfDynamicData() >= ConstRelations2.EXPLICIET_HOOFD_ALLENSTAAND ||
                         ((PDS_RelationToHead)pd).getContentOfDynamicData() <= ConstRelations2.IMPLICIET_HOOFD_GEEN_VERWANT)) {
 
-						birthYear.add(p.getDateOfBirth().substring(6,10));
-						birthMonth.add(p.getDateOfBirth().substring(3,5));
-						birthDay.add(p.getDateOfBirth().substring(0,2));
-						firstName.add(p.getFirstName().split(" ")[0]);
-						lastName.add(p.getFamilyName());		
-						
-						personID.add(p.getPersonID());
-						break;
+						if(Common1.dateIsValid(p.getDateOfBirth()) == 0) {
+							
+							birthYear.add(p.getDateOfBirth().substring(6,10));
+							birthMonth.add(p.getDateOfBirth().substring(3,5));
+							birthDay.add(p.getDateOfBirth().substring(0,2));
+							firstName.add(p.getFirstName().split(" ")[0]);
+							lastName.add(p.getFamilyName());		
+
+							personID.add(p.getPersonID());
+							
+							break;
+
+						}
 					}
 				}
 			}
@@ -614,9 +619,11 @@ public void giveDate(){
 		for(RegistrationStandardized r: getRegistrationsStandardizedOfOP()){
 			for(PersonStandardized p: r.getPersonsStandardizedInRegistration()){
 				if(p.getPersonID() == id){
-					birthdate = p.getDateOfBirth();
-					m.add(p.getPersonID_MO());
-					f.add(p.getPersonID_FA());
+					if(Common1.dateIsValid(p.getDateOfBirth()) == 0) {
+						birthdate = p.getDateOfBirth();
+						m.add(p.getPersonID_MO());
+						f.add(p.getPersonID_FA());
+					}
 				}
 			}
 		}
@@ -650,13 +657,22 @@ public void giveDate(){
 
 private void insertPersonStandardized(PersonStandardized ps, ArrayList<PersonStandardized> personsStandardizedInRegistration){
 	
-	int dayCount = Utils.dayCount(ps.getStartDate());
+	
+	int dayCount = 0;
 	int index = 0;
 	int insertIndex = 0;
 	
+	if(Common1.dateIsValid(ps.getStartDate()) == 0)
+		dayCount = Utils.dayCount(ps.getStartDate());
+	else return;
+	
 	for(PersonStandardized ps1: personsStandardizedInRegistration){
 		
-		int dayCount1 = Utils.dayCount(ps1.getStartDate());
+		int dayCount1 = 0;
+		if(Common1.dateIsValid(ps1.getStartDate()) == 0)
+			dayCount1 = Utils.dayCount(ps1.getStartDate());
+		else continue;
+		
 		if(dayCount <= dayCount1)
 			insertIndex = index;
 
@@ -1014,7 +1030,8 @@ private boolean comparePersons(PersonStandardized ps, PersonStandardized pus, bo
  */
 private boolean CheckBirthDate(PersonStandardized ps, PersonStandardized pus, boolean giveMessage){
 	
-
+	if(Common1.dateIsValid(ps.getDateOfBirth()) != 0 || Common1.dateIsValid(pus.getDateOfBirth()) != 0) return false;
+	
 	String date1 = ps.getDateOfBirth();
 	int day1   = (new Integer(date1.split("-")[0])).intValue();
 	int month1 = (new Integer(date1.split("-")[1])).intValue();
