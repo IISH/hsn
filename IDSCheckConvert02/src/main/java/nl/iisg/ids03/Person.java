@@ -1398,13 +1398,14 @@ public class Person {
 					if(firstOP != null){
 
 						// Check if the family names match
-
-						if(!getFamilyName().equalsIgnoreCase(firstOP.getFamilyName()))
+						
+						
+						if(!getFamilyName().split("%")[0].trim().equalsIgnoreCase(firstOP.getFamilyName().split("%")[0].trim()))
 							message("1180");
 
 						// Check if the first names match
 
-						if(!getFirstName().equalsIgnoreCase(firstOP.getFirstName()))
+						if(!getFirstName().split("%")[0].trim().equalsIgnoreCase(firstOP.getFirstName().split("%")[0].trim()))
 							message("1181");
 
 						// Check if the birth dates match

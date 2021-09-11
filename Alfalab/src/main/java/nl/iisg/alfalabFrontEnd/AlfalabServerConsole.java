@@ -1784,6 +1784,93 @@ public class AlfalabServerConsole implements Runnable {
          }});
    
   
+        Collections.sort(persons, new Comparator<Person>(){ 
+
+        	public int compare(Person p1, Person p2){
+
+        		if     (p1.getKeyToRP() > p2.getKeyToRP()) return 1;
+        		else if(p1.getKeyToRP() < p2.getKeyToRP()) return -1;
+
+        		if     (p1.getYearEntryHead() > p2.getYearEntryHead()) return  1;
+        		else if(p1.getYearEntryHead() < p2.getYearEntryHead()) return -1;
+
+        		if     (p1.getMonthEntryHead() > p2.getMonthEntryHead()) return  1;
+        		else if(p1.getMonthEntryHead() < p2.getMonthEntryHead()) return -1;
+
+        		if     (p1.getDayEntryHead() > p2.getDayEntryHead()) return  1;
+        		else if(p1.getDayEntryHead() < p2.getDayEntryHead()) return -1;
+
+        		if     (p1.getKeyToSourceRegister() > p2.getKeyToSourceRegister()) return  1;
+        		else if(p1.getKeyToSourceRegister() < p2.getKeyToSourceRegister()) return -1;
+
+        		if     (p1.getKeyToRegistrationPersons() > p2.getKeyToRegistrationPersons()) return 1;
+        		else if(p1.getKeyToRegistrationPersons() < p2.getKeyToRegistrationPersons()) return -1;
+
+        		return 0;
+        	}});
+
+
+        Collections.sort(personsDynamic, new Comparator<PersonDynamic>(){ 
+
+
+        	public int compare(PersonDynamic pd1, PersonDynamic pd2){
+
+        		if     (pd1.getKeyToRP() > pd2.getKeyToRP()) return  1;
+        		else if(pd1.getKeyToRP() < pd2.getKeyToRP()) return -1;
+
+        		if     (pd1.getYearEntryHead() > pd2.getYearEntryHead()) return  1;
+        		else if(pd1.getYearEntryHead() < pd2.getYearEntryHead()) return -1;   
+
+        		if     (pd1.getMonthEntryHead() > pd2.getMonthEntryHead()) return  1;
+        		else if(pd1.getMonthEntryHead() < pd2.getMonthEntryHead()) return -1;
+
+        		if     (pd1.getDayEntryHead() > pd2.getDayEntryHead()) return  1;
+        		else if(pd1.getDayEntryHead() < pd2.getDayEntryHead()) return -1;   
+
+        		if     (pd1.getKeyToSourceRegister() > pd2.getKeyToSourceRegister()) return  1;
+        		else if(pd1.getKeyToSourceRegister() < pd2.getKeyToSourceRegister()) return -1;
+
+        		if     (pd1.getKeyToRegistrationPersons() > pd2.getKeyToRegistrationPersons()) return  1;
+        		else if(pd1.getKeyToRegistrationPersons() < pd2.getKeyToRegistrationPersons()) return -1;
+
+        		if     (pd1.getDynamicDataType() > pd2.getDynamicDataType()) return  1;
+        		else if(pd1.getDynamicDataType() < pd2.getDynamicDataType()) return -1;
+
+        		if     (pd1.getDynamicDataSequenceNumber() > pd2.getDynamicDataSequenceNumber()) return  1;
+        		else if(pd1.getDynamicDataSequenceNumber() < pd2.getDynamicDataSequenceNumber()) return -1;
+
+        		return 0;
+
+        	}});
+
+        Collections.sort(registrationAddresses, new Comparator<RegistrationAddress>(){       
+
+        	public int compare(RegistrationAddress ra1, RegistrationAddress ra2){
+
+        		if     (ra1.getKeyToRP() > ra2.getKeyToRP()) return  1;
+        		else if(ra1.getKeyToRP() < ra2.getKeyToRP()) return -1;
+
+        		if     (ra1.getYearEntryHead() > ra2.getYearEntryHead()) return  1;
+        		else if(ra1.getYearEntryHead() < ra2.getYearEntryHead()) return -1;   
+
+        		if     (ra1.getMonthEntryHead() > ra2.getMonthEntryHead()) return  1;
+        		else if(ra1.getMonthEntryHead() < ra2.getMonthEntryHead()) return -1;
+
+        		if     (ra1.getDayEntryHead() > ra2.getDayEntryHead()) return  1;
+        		else if(ra1.getDayEntryHead() < ra2.getDayEntryHead()) return -1;
+
+        		if     (ra1.getKeyToSourceRegister() > ra2.getKeyToSourceRegister()) return  1;
+        		else if(ra1.getKeyToSourceRegister() < ra2.getKeyToSourceRegister()) return -1;
+
+        		if     (ra1.getKeyToRegistrationPersons() > ra2.getKeyToRegistrationPersons()) return  1;
+        		else if(ra1.getKeyToRegistrationPersons() < ra2.getKeyToRegistrationPersons()) return -1;
+
+        		if     (ra1.getSequenceNumberToAddresses() > ra2.getSequenceNumberToAddresses()) return  1;
+        		else if(ra1.getSequenceNumberToAddresses() < ra2.getSequenceNumberToAddresses()) return -1;
+
+        		return 0;
+        	}});
+
         
 
         
@@ -1986,6 +2073,93 @@ public class AlfalabServerConsole implements Runnable {
            	 return 0;
             }});
       
+        Collections.sort(persons, new Comparator<Person>(){ 
+
+        	public int compare(Person p1, Person p2){
+
+        		if     (p1.getKeyToRP() > p2.getKeyToRP()) return 1;
+        		else if(p1.getKeyToRP() < p2.getKeyToRP()) return -1;
+
+        		if     (p1.getYearEntryHead() > p2.getYearEntryHead()) return  1;
+        		else if(p1.getYearEntryHead() < p2.getYearEntryHead()) return -1;
+
+        		if     (p1.getMonthEntryHead() > p2.getMonthEntryHead()) return  1;
+        		else if(p1.getMonthEntryHead() < p2.getMonthEntryHead()) return -1;
+
+        		if     (p1.getDayEntryHead() > p2.getDayEntryHead()) return  1;
+        		else if(p1.getDayEntryHead() < p2.getDayEntryHead()) return -1;
+
+        		if     (p1.getKeyToSourceRegister() > p2.getKeyToSourceRegister()) return  1;
+        		else if(p1.getKeyToSourceRegister() < p2.getKeyToSourceRegister()) return -1;
+
+        		if     (p1.getKeyToRegistrationPersons() > p2.getKeyToRegistrationPersons()) return 1;
+        		else if(p1.getKeyToRegistrationPersons() < p2.getKeyToRegistrationPersons()) return -1;
+
+        		return 0;
+        	}});
+
+
+        Collections.sort(personsDynamic, new Comparator<PersonDynamic>(){ 
+
+
+        	public int compare(PersonDynamic pd1, PersonDynamic pd2){
+
+        		if     (pd1.getKeyToRP() > pd2.getKeyToRP()) return  1;
+        		else if(pd1.getKeyToRP() < pd2.getKeyToRP()) return -1;
+
+        		if     (pd1.getYearEntryHead() > pd2.getYearEntryHead()) return  1;
+        		else if(pd1.getYearEntryHead() < pd2.getYearEntryHead()) return -1;   
+
+        		if     (pd1.getMonthEntryHead() > pd2.getMonthEntryHead()) return  1;
+        		else if(pd1.getMonthEntryHead() < pd2.getMonthEntryHead()) return -1;
+
+        		if     (pd1.getDayEntryHead() > pd2.getDayEntryHead()) return  1;
+        		else if(pd1.getDayEntryHead() < pd2.getDayEntryHead()) return -1;   
+
+        		if     (pd1.getKeyToSourceRegister() > pd2.getKeyToSourceRegister()) return  1;
+        		else if(pd1.getKeyToSourceRegister() < pd2.getKeyToSourceRegister()) return -1;
+
+        		if     (pd1.getKeyToRegistrationPersons() > pd2.getKeyToRegistrationPersons()) return  1;
+        		else if(pd1.getKeyToRegistrationPersons() < pd2.getKeyToRegistrationPersons()) return -1;
+
+        		if     (pd1.getDynamicDataType() > pd2.getDynamicDataType()) return  1;
+        		else if(pd1.getDynamicDataType() < pd2.getDynamicDataType()) return -1;
+
+        		if     (pd1.getDynamicDataSequenceNumber() > pd2.getDynamicDataSequenceNumber()) return  1;
+        		else if(pd1.getDynamicDataSequenceNumber() < pd2.getDynamicDataSequenceNumber()) return -1;
+
+        		return 0;
+
+        	}});
+
+        Collections.sort(registrationAddresses, new Comparator<RegistrationAddress>(){       
+
+        	public int compare(RegistrationAddress ra1, RegistrationAddress ra2){
+
+        		if     (ra1.getKeyToRP() > ra2.getKeyToRP()) return  1;
+        		else if(ra1.getKeyToRP() < ra2.getKeyToRP()) return -1;
+
+        		if     (ra1.getYearEntryHead() > ra2.getYearEntryHead()) return  1;
+        		else if(ra1.getYearEntryHead() < ra2.getYearEntryHead()) return -1;   
+
+        		if     (ra1.getMonthEntryHead() > ra2.getMonthEntryHead()) return  1;
+        		else if(ra1.getMonthEntryHead() < ra2.getMonthEntryHead()) return -1;
+
+        		if     (ra1.getDayEntryHead() > ra2.getDayEntryHead()) return  1;
+        		else if(ra1.getDayEntryHead() < ra2.getDayEntryHead()) return -1;
+
+        		if     (ra1.getKeyToSourceRegister() > ra2.getKeyToSourceRegister()) return  1;
+        		else if(ra1.getKeyToSourceRegister() < ra2.getKeyToSourceRegister()) return -1;
+
+        		if     (ra1.getKeyToRegistrationPersons() > ra2.getKeyToRegistrationPersons()) return  1;
+        		else if(ra1.getKeyToRegistrationPersons() < ra2.getKeyToRegistrationPersons()) return -1;
+
+        		if     (ra1.getSequenceNumberToAddresses() > ra2.getSequenceNumberToAddresses()) return  1;
+        		else if(ra1.getSequenceNumberToAddresses() < ra2.getSequenceNumberToAddresses()) return -1;
+
+        		return 0;
+        	}});
+
      
 
         try {
@@ -2063,30 +2237,116 @@ public class AlfalabServerConsole implements Runnable {
         EntityManager em = factory_log.createEntityManager();
         Query s = em.createQuery("SELECT m FROM Message m");
         //Collections.sort(registrations);
+        
         Collections.sort(registrations, new Comparator<Registration>(){       
-            
-            public int compare(Registration r1, Registration r2){
-           	 
-           	 if     (r1.getKeyToRP() > r2.getKeyToRP()) return 1;
-           	 else if(r1.getKeyToRP() < r2.getKeyToRP()) return -1;
 
-           	 if     (r1.getYearEntryHead() > r2.getYearEntryHead()) return  1;
-           	 else if(r1.getYearEntryHead() < r2.getYearEntryHead()) return -1;
-      
-      
-           	 if     (r1.getMonthEntryHead() > r2.getMonthEntryHead()) return  1;
-           	 else if(r1.getMonthEntryHead() < r2.getMonthEntryHead()) return -1;
-      
-           	 if     (r1.getDayEntryHead() > r2.getDayEntryHead()) return  1;
-           	 else if(r1.getDayEntryHead() < r2.getDayEntryHead()) return -1;
-      
-           	 if     (r1.getKeyToSourceRegister() > r2.getKeyToSourceRegister()) return  1;
-           	 else if(r1.getKeyToSourceRegister() < r2.getKeyToSourceRegister()) return -1;
+        	public int compare(Registration r1, Registration r2){
 
-           	 return 0;
-            }});
-      
-     
+        		if     (r1.getKeyToRP() > r2.getKeyToRP()) return 1;
+        		else if(r1.getKeyToRP() < r2.getKeyToRP()) return -1;
+
+        		if     (r1.getYearEntryHead() > r2.getYearEntryHead()) return  1;
+        		else if(r1.getYearEntryHead() < r2.getYearEntryHead()) return -1;
+
+
+        		if     (r1.getMonthEntryHead() > r2.getMonthEntryHead()) return  1;
+        		else if(r1.getMonthEntryHead() < r2.getMonthEntryHead()) return -1;
+
+        		if     (r1.getDayEntryHead() > r2.getDayEntryHead()) return  1;
+        		else if(r1.getDayEntryHead() < r2.getDayEntryHead()) return -1;
+
+        		if     (r1.getKeyToSourceRegister() > r2.getKeyToSourceRegister()) return  1;
+        		else if(r1.getKeyToSourceRegister() < r2.getKeyToSourceRegister()) return -1;
+
+        		return 0;
+        	}});
+
+        Collections.sort(persons, new Comparator<Person>(){ 
+
+        	public int compare(Person p1, Person p2){
+
+        		if     (p1.getKeyToRP() > p2.getKeyToRP()) return 1;
+        		else if(p1.getKeyToRP() < p2.getKeyToRP()) return -1;
+
+        		if     (p1.getYearEntryHead() > p2.getYearEntryHead()) return  1;
+        		else if(p1.getYearEntryHead() < p2.getYearEntryHead()) return -1;
+
+        		if     (p1.getMonthEntryHead() > p2.getMonthEntryHead()) return  1;
+        		else if(p1.getMonthEntryHead() < p2.getMonthEntryHead()) return -1;
+
+        		if     (p1.getDayEntryHead() > p2.getDayEntryHead()) return  1;
+        		else if(p1.getDayEntryHead() < p2.getDayEntryHead()) return -1;
+
+        		if     (p1.getKeyToSourceRegister() > p2.getKeyToSourceRegister()) return  1;
+        		else if(p1.getKeyToSourceRegister() < p2.getKeyToSourceRegister()) return -1;
+
+        		if     (p1.getKeyToRegistrationPersons() > p2.getKeyToRegistrationPersons()) return 1;
+        		else if(p1.getKeyToRegistrationPersons() < p2.getKeyToRegistrationPersons()) return -1;
+
+        		return 0;
+        	}});
+
+
+        Collections.sort(personsDynamic, new Comparator<PersonDynamic>(){ 
+
+
+        	public int compare(PersonDynamic pd1, PersonDynamic pd2){
+
+        		if     (pd1.getKeyToRP() > pd2.getKeyToRP()) return  1;
+        		else if(pd1.getKeyToRP() < pd2.getKeyToRP()) return -1;
+
+        		if     (pd1.getYearEntryHead() > pd2.getYearEntryHead()) return  1;
+        		else if(pd1.getYearEntryHead() < pd2.getYearEntryHead()) return -1;   
+
+        		if     (pd1.getMonthEntryHead() > pd2.getMonthEntryHead()) return  1;
+        		else if(pd1.getMonthEntryHead() < pd2.getMonthEntryHead()) return -1;
+
+        		if     (pd1.getDayEntryHead() > pd2.getDayEntryHead()) return  1;
+        		else if(pd1.getDayEntryHead() < pd2.getDayEntryHead()) return -1;   
+
+        		if     (pd1.getKeyToSourceRegister() > pd2.getKeyToSourceRegister()) return  1;
+        		else if(pd1.getKeyToSourceRegister() < pd2.getKeyToSourceRegister()) return -1;
+
+        		if     (pd1.getKeyToRegistrationPersons() > pd2.getKeyToRegistrationPersons()) return  1;
+        		else if(pd1.getKeyToRegistrationPersons() < pd2.getKeyToRegistrationPersons()) return -1;
+
+        		if     (pd1.getDynamicDataType() > pd2.getDynamicDataType()) return  1;
+        		else if(pd1.getDynamicDataType() < pd2.getDynamicDataType()) return -1;
+
+        		if     (pd1.getDynamicDataSequenceNumber() > pd2.getDynamicDataSequenceNumber()) return  1;
+        		else if(pd1.getDynamicDataSequenceNumber() < pd2.getDynamicDataSequenceNumber()) return -1;
+
+        		return 0;
+
+        	}});
+
+        Collections.sort(registrationAddresses, new Comparator<RegistrationAddress>(){       
+
+        	public int compare(RegistrationAddress ra1, RegistrationAddress ra2){
+
+        		if     (ra1.getKeyToRP() > ra2.getKeyToRP()) return  1;
+        		else if(ra1.getKeyToRP() < ra2.getKeyToRP()) return -1;
+
+        		if     (ra1.getYearEntryHead() > ra2.getYearEntryHead()) return  1;
+        		else if(ra1.getYearEntryHead() < ra2.getYearEntryHead()) return -1;   
+
+        		if     (ra1.getMonthEntryHead() > ra2.getMonthEntryHead()) return  1;
+        		else if(ra1.getMonthEntryHead() < ra2.getMonthEntryHead()) return -1;
+
+        		if     (ra1.getDayEntryHead() > ra2.getDayEntryHead()) return  1;
+        		else if(ra1.getDayEntryHead() < ra2.getDayEntryHead()) return -1;
+
+        		if     (ra1.getKeyToSourceRegister() > ra2.getKeyToSourceRegister()) return  1;
+        		else if(ra1.getKeyToSourceRegister() < ra2.getKeyToSourceRegister()) return -1;
+
+        		if     (ra1.getKeyToRegistrationPersons() > ra2.getKeyToRegistrationPersons()) return  1;
+        		else if(ra1.getKeyToRegistrationPersons() < ra2.getKeyToRegistrationPersons()) return -1;
+
+        		if     (ra1.getSequenceNumberToAddresses() > ra2.getSequenceNumberToAddresses()) return  1;
+        		else if(ra1.getSequenceNumberToAddresses() < ra2.getSequenceNumberToAddresses()) return -1;
+
+        		return 0;
+        	}});
 
 
         try {
