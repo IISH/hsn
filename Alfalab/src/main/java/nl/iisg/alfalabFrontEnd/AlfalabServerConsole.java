@@ -940,7 +940,10 @@ public class AlfalabServerConsole implements Runnable {
     private String safeGetContentOfDynamicData1(int contentOfDynamicData) {
 
         if (contentOfDynamicData > 0) {
-            return ConstRelations2.b3kode1[contentOfDynamicData];
+        	if(ConstRelations2.b3kode1[contentOfDynamicData]  != null)
+        		return ConstRelations2.b3kode1[contentOfDynamicData];
+        	else
+        		return "";
         } else {
             return Integer.toString(contentOfDynamicData);
         }
