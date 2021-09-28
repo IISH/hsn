@@ -2839,7 +2839,7 @@ public class RegistrationStandardized {
     		ras.setEndEst(endEst);
     		
     		
-    		for(int i = 0; i < getAddressesStandardizedOfRegistration().size(); i++){
+    		for(int i = 1; i < getAddressesStandardizedOfRegistration().size(); i++){
     			
     			if(dayCount[i] == 0){
     				
