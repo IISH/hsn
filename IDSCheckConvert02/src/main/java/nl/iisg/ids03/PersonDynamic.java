@@ -898,8 +898,10 @@ public class PersonDynamic implements Comparable<PersonDynamic> {
 		// Check if b2fcbg - natureOfPerson has the same value as the corresponding Person object
         // Corona
 		
-		if(getNatureOfPerson() != getPersonToWhomDynamicDataRefers().getNatureOfPerson())
-			message("1161", new Integer(getKeyToRegistrationPersons()).toString());
+		// Disable, Kerim's input tool neemt deze waarde niet (meer) mee
+		
+		//if(getNatureOfPerson() != getPersonToWhomDynamicDataRefers().getNatureOfPerson())
+			//message("1161", new Integer(getKeyToRegistrationPersons()).toString());
 		
 		
 	}

@@ -279,6 +279,13 @@ public class Person {
 		
 		//System.out.println("Check Person In  " + getKeyToRP()); 
 
+		// Some adaptations are performed before checking the object
+
+		adaptRegistrationDate();
+		adaptDateOfBirth();
+		adaptDateOfDecease();
+		adaptFirstName();
+		adaptFamilyName();
 
 		boolean returnCode = true;
 		//System.out.println("Check Person");
@@ -436,6 +443,8 @@ public class Person {
 
 	public void checkDates(Ref_AINB ainb){
 		
+		if(getFamilyName().trim().equalsIgnoreCase("GEEN OP"))
+			return;
 		
 		int headDateValid = Common1.dateIsValid(getDayEntryHead(), getMonthEntryHead(),getYearEntryHead());
 
@@ -1580,7 +1589,7 @@ public class Person {
 
 						if(registerDateLatest != 0){
 
-							if(arrivalDateEarliest > registerDateLatest + 30)
+							if(pd.getDynamicDataSequenceNumber() == 1 && arrivalDateEarliest > registerDateLatest + 30) // Only for 1st arrival
 								message("1146", "" + getDayOfRegistration() + "-" + getMonthOfRegistration() + "-" + getYearOfRegistration(),
 									            "" + pd.getDayOfMutation()  + "-" + pd.getMonthOfMutation()  + "-" + pd.getYearOfMutation());  
 
