@@ -746,13 +746,14 @@ public void relateAllToAll(){
 	
 	class PersonStandardizedExt extends PersonStandardized {
 		
-		int relationToOP;
+				
+		Set<Integer> relationToOP = new HashSet<Integer>();
 
-		public int getRelationToOP() {
+		public Set<Integer> getRelationToOP() {
 			return relationToOP;
 		}
 
-		public void setRelationToOP(int relationToOP) {
+		public void setRelationToOP(Set<Integer> relationToOP) {
 			this.relationToOP = relationToOP;
 		}
 
@@ -764,9 +765,12 @@ public void relateAllToAll(){
 		
 		int OPKey = 0;
 		
-		for(PersonStandardized p : r.getPersonsStandardizedInRegistration())
-			if(p.getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP)
+		for(PersonStandardized p : r.getPersonsStandardizedInRegistration()) {
+			if(p.getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP) {
 				OPKey = p.getKeyToPersons();
+				break;
+			}
+		}
 		
 		for(PersonStandardized p : r.getPersonsStandardizedInRegistration()) {	
 		
@@ -777,13 +781,13 @@ public void relateAllToAll(){
 			
 			for(PersonDynamicStandardized pds : p.getToAll()) {				
 				if(((PDS_AllToAll)pds).getValueOfRelatedPerson() == OPKey) {
-					pse.setRelationToOP(((PDS_AllToAll)pds).getContentOfDynamicData());
-					
+					pse.getRelationToOP().add(((PDS_AllToAll)pds).getContentOfDynamicData());
+										
 				}
 			}
 			
 			if(p.getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP)
-				pse.setRelationToOP(0); // this is a pseudo-relation, used to distinguish the RP
+				pse.getRelationToOP().add(0); // this is a pseudo-relation, used to distinguish the RP
 			
 			ps.add(pse);
 			
@@ -801,10 +805,10 @@ public void relateAllToAll(){
 		 }
 	}); 
 	
-	Set<Integer> hh = new HashSet<Integer>();
+
 	Set<Integer> ho = new HashSet<Integer>();
 	
-	PersonStandardized previousP = null; 
+	PersonStandardizedExt previousP = null; 
 	
 	for(PersonStandardizedExt p: ps) {
 		if(previousP != null && p.getPersonID() != previousP.getPersonID()) {
@@ -822,7 +826,7 @@ public void relateAllToAll(){
 			
 			
   		}			
-		ho.add(p.getRelationToOP());
+		ho.addAll(p.getRelationToOP());
 		previousP = p;
 		
 		//for(PersonDynamicStandardized pds : p.getDynamicDataOfPersonStandardized())
@@ -836,18 +840,21 @@ public void relateAllToAll(){
 	
 	// Check for inconsistencies in relation to Head (per Registration)
 	
+	PersonStandardized previousPx = null; 
+	Set<Integer> hh = new HashSet<Integer>();	
+	
    for(RegistrationStandardized r : getRegistrationsStandardizedOfOP()) {
 	   
-	   previousP = null;
+	   previousPx = null;
 		for(PersonStandardized p : r.getPersonsStandardizedInRegistration()) {
 			
-			if(previousP != null && p != previousP) {  
+			if(previousPx != null && p != previousPx) {  
 				
 				if(hh.size() > 1) {
 					int prev = -1;
 					for(Integer i: hh) { 
 						if(prev >= 0 && i >= 0)
-							message("4162", previousP.getDateOfBirth(),
+							message("4162", previousPx.getDateOfBirth(),
 									 ConstRelations2.b3kode1[prev], 
 									 ConstRelations2.b3kode1[i]);
 						prev = i;
@@ -860,7 +867,7 @@ public void relateAllToAll(){
 					if(pds.getKeyToDistinguishDynamicDataType() == ConstRelations2.RELATIE_TOT_HOOFD_ST)
 						hh.add(((PDS_RelationToHead)pds).getContentOfDynamicData());
 			
-			previousP = p;
+			previousPx = p;
 		}
    }
 	
