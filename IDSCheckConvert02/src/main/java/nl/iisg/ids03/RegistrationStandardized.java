@@ -1244,6 +1244,8 @@ public class RegistrationStandardized {
     	//if(1==1)return;
     	
     	// B via Birth Certificate 
+    	
+    	//System.out.println("____ "  + Ref.getAINB(getKeyToSourceRegister()).getTypeRegister());
 
     	for(PersonStandardized ps: getPersonsStandardizedInRegistration()){
 
@@ -1378,20 +1380,26 @@ public class RegistrationStandardized {
 
     								message("4439", ps.getKeyToPersons());
 
-    								if(compareResultLastName != 0)
-    									message("4435", ps.getKeyToPersons());
+    								int shiftInMessageTableForCRegister = 0;
+    								if(Ref.getAINB(getKeyToSourceRegister()).getTypeRegister().equalsIgnoreCase("C")) // C-Register
+    									shiftInMessageTableForCRegister = 10;
+    								
+    								if(!rp.getLastNameFather().equalsIgnoreCase(ps1.getFamilyName()))
+    									message("" + (4435 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(), 
+    											rp.getLastNameFather(), ps1.getFamilyName());
 
-    								if(compareResultFirstName1 != 0)
-    									message("4436", ps.getKeyToPersons(), firstName1Father);
-
-    								if(compareResultFirstName2 != 0)
-    									message("4436", ps.getKeyToPersons(), firstName2Father);
-
-    								if(compareResultFirstName3 != 0)
-    									message("4436", ps.getKeyToPersons(), firstName3Father);
-
+    								if(!rp.getFirstNameFather().equalsIgnoreCase(ps1.getFirstName()))
+    									message("" + (4436 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(), 
+    											rp.getFirstNameFather(), ps1.getFirstName());
+    								
     								if(nrMatchingFirstNames == 1)
-    									message("4437",  ps.getKeyToPersons());
+    									message("" + (4437 - shiftInMessageTableForCRegister),  ps1.getKeyToPersons(),
+    											ps1.getFirstName());
+    								
+    								if(!rp.getLastNameFather().equalsIgnoreCase(ps.getFamilyName()))  // OP = ps
+    									if(Ref.getAINB(getKeyToSourceRegister()).getTypeRegister().equalsIgnoreCase("C"))
+    										message("4428" , ps.getKeyToPersons(), rp.getLastNameFather(), ps.getFamilyName());
+    								   								
 
     							}
 
@@ -1451,21 +1459,22 @@ public class RegistrationStandardized {
     								ps.setPersonID_MO_FG(41); 
 
     								message("4438", ps.getKeyToPersons());
+    								
+    								int shiftInMessageTableForCRegister = 0;
+    								if(Ref.getAINB(getKeyToSourceRegister()).getTypeRegister().equalsIgnoreCase("C")) // C-Register
+    									shiftInMessageTableForCRegister = 10;
 
-    								if(compareResultLastName != 0)
-    									message("4432", ps.getKeyToPersons());
+    								if(!rp.getLastNameMother().equalsIgnoreCase(ps1.getFamilyName()))
+    									message("" + (4432 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(),
+    											rp.getLastNameMother(), ps1.getFamilyName());
 
-    								if(compareResultFirstName1 != 0)
-    									message("4433", ps.getKeyToPersons(), firstName1Mother);
-
-    								if(compareResultFirstName2 != 0)
-    									message("4433", ps.getKeyToPersons(), firstName2Mother);
-
-    								if(compareResultFirstName3 != 0)
-    									message("4433", ps.getKeyToPersons(), firstName3Mother);
+    								if(!rp.getFirstNameMother().equalsIgnoreCase(ps1.getFirstName()))
+    									message("" + (4433 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(), 
+    											rp.getFirstNameMother(), ps1.getFirstName());
 
     								if(nrMatchingFirstNames == 1)
-    									message("4434", ps.getKeyToPersons());
+    									message("" + (4434 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(),
+    											ps1.getFirstName());
 
     							}
 
