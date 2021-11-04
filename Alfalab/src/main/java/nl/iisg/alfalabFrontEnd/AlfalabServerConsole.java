@@ -2420,13 +2420,14 @@ public class AlfalabServerConsole implements Runnable {
                             personsDynamic);
 
                 } else {
-                    output += "Geen eerste HSN-volgnummer in Idnr: " + r.getKeyToRP() + " Hoofddatum: " + r.getDayEntryHead()
+                    output += "Geen meldingen bij Idnr: " + r.getKeyToRP() + " Hoofddatum: " + r.getDayEntryHead()
                             + "/" + r.getMonthEntryHead() + "/" + r.getYearEntryHead() + " Bronnr: /" + r.getKeyToSourceRegister() + "\n";
                     output += "------------ daarom ook geen inschrijving weergegeven ---------------------------\n";
                     output += "---------------------------------------------------------------------------------\n\n";
 
                 }
                 printFile.write(output);
+                //System.out.println(output); // DDSX
             }
             printFile.close();
 
