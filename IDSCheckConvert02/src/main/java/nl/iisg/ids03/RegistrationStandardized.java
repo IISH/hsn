@@ -1249,11 +1249,19 @@ public class RegistrationStandardized {
 
     	for(PersonStandardized ps: getPersonsStandardizedInRegistration()){
 
-    		if(ps.getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP || ps.getNatureOfPerson() == ConstRelations2.FURTHER_APPEARANCE_OF_OP){
+    		if(ps.getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP){
 
     			Ref_RP rp = Ref.getRP(ps.getKeyToRP());
     			
     			if(rp != null){
+    				
+    				String RPBirthDay = String.format("%02d-%02d-%04d", rp.getDayOfBirthRP(), rp.getMonthOfBirthRP(), rp.getYearOfBirthRP());
+    				if(!RPBirthDay.equalsIgnoreCase(ps.getDateOfBirth())) {
+    					
+    					ps.setDateOfBirth(RPBirthDay);
+    					message("4440", ps.getKeyToPersons());
+    					
+    				}
 
     				String       lastNameFather   = rp.getLastNameFather();
 
@@ -1306,35 +1314,193 @@ public class RegistrationStandardized {
     				boolean foundFather = false;
     				boolean foundMother = false;
     				
-    				for(PersonStandardized ps1: getPersonsStandardizedInRegistration()){
+    				for(PersonStandardized ps1: getPersonsStandardizedInRegistration()){  // -
 
     					if(ps1 == ps)
     						continue;
+    					
+    					if(ps.getPersonID_FA() == ps1.getPersonID() || ps.getPersonID_MO() == ps1.getPersonID()) { // father or mother according to bevolkingsregister
+    						
+    						if(ps1.getFamilyName() == null) continue;
+        					String lastName   = ps1.getFamilyName();
 
-    					if(ps1.getFamilyName() == null) continue;
-    					String lastName   = ps1.getFamilyName();
+        					if(ps1.getFirstName() == null) continue;
+        					String [] firstName = ps1.getFirstName().split(" ");
 
-    					if(ps1.getFirstName() == null) continue;
-    					String [] firstName = ps1.getFirstName().split(" ");
+        					int NfirstNames = firstName.length; 
 
-    					int NfirstNames = firstName.length; 
+        					String firstName1 = firstName.length > 0 ? firstName[0] : null;
+        					String firstName2 = firstName.length > 1 ? firstName[1] : null;
+        					String firstName3 = firstName.length > 2 ? firstName[2] : null;
 
-    					String firstName1 = firstName.length > 0 ? firstName[0] : null;
-    					String firstName2 = firstName.length > 1 ? firstName[1] : null;
-    					String firstName3 = firstName.length > 2 ? firstName[2] : null;
+        					int compareResultLastName = 0;
+        					int compareResultFirstName1 = 0;
+        					int compareResultFirstName2 = 0;
+        					int compareResultFirstName3 = 0;
+    						
+        					if(ps.getPersonID_FA() == ps1.getPersonID()){
 
-    					int compareResultLastName = 0;
-    					int compareResultFirstName1 = 0;
-    					int compareResultFirstName2 = 0;
-    					int compareResultFirstName3 = 0;
+        						compareResultLastName = compareNames(lastName, lastNameFather);
+        						if(compareResultLastName > 2)
+        							continue;
 
-    					if(!foundFather) {
-    						if(ps1.getSex().equalsIgnoreCase("M")){
+        						compareResultFirstName1 = compareNames(firstName1, firstName1Father);
+        						if(compareResultFirstName1 > 2)
+        							continue;
+
+        						int nrMatchingFirstNames = 1;
+
+
+        						// 2nd names must match or both not specified
+
+        						if(firstName2 != null &&  firstName2Father != null){
+        							compareResultFirstName2 = compareNames(firstName2, firstName2Father);
+        							if(compareResultFirstName2 > 2)
+        								continue;
+        							nrMatchingFirstNames = 2;
+        						}
+        						else{
+        							if(firstName2 != null &&  firstName2Father == null || firstName2 == null &&  firstName2Father != null)
+        								continue;
+        							else; // both null is OK
+        						}
+
+        						// 3rd names must match if both specified
+
+        						if(firstName3 != null &&  firstName3Father != null){
+        							compareResultFirstName3 = compareNames(firstName3, firstName3Father);
+        							if(compareResultFirstName3 > 2)
+        								continue;
+        							nrMatchingFirstNames = 3;
+        						}
+        						
+        						foundFather = true;
+
+        						int shiftInMessageTableForCRegister = 0;
+        						if(Ref.getAINB(getKeyToSourceRegister()).getTypeRegister().equalsIgnoreCase("C")) // C-Register
+        							shiftInMessageTableForCRegister = 10;
+
+
+        						if(!rp.getLastNameFather().equalsIgnoreCase(ps1.getFamilyName()))
+        							message("" + (4435 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(), 
+        									rp.getLastNameFather(), ps1.getFamilyName());
+
+        						if(!rp.getFirstNameFather().equalsIgnoreCase(ps1.getFirstName()))
+        							message("" + (4436 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(), 
+        									rp.getFirstNameFather(), ps1.getFirstName());
+
+        						if(nrMatchingFirstNames == 1)
+        							message("" + (4437 - shiftInMessageTableForCRegister),  ps1.getKeyToPersons(),
+        									ps1.getFirstName());
+
+        						if(!rp.getLastNameFather().equalsIgnoreCase(ps.getFamilyName()))  // OP = ps
+        							if(Ref.getAINB(getKeyToSourceRegister()).getTypeRegister().equalsIgnoreCase("C"))
+        								message("4428" , ps.getKeyToPersons(), rp.getLastNameFather(), ps.getFamilyName());
+
+        						// Er moet een nieuwe melding komen voor niet-C-register situatie
+
+        					}
+        					
+
+
+
+
+        					if(ps.getPersonID_MO() == ps1.getPersonID()) { // mother according to bevolkingsregister
+
+        						compareResultLastName = compareNames(lastName, lastNameMother);
+        						if(compareResultLastName > 2)
+        							continue;
+
+
+        						compareResultFirstName1 = compareNames(firstName1, firstName1Mother);
+        						if(compareResultFirstName1 > 2)
+        							continue;
+
+        						int nrMatchingFirstNames = 1;
+
+
+        						// 2nd names must match or both not specified
+
+        						if(firstName2 != null &&  firstName2Mother != null){
+        							compareResultFirstName2 = compareNames(firstName2, firstName2Mother);
+        							if(compareResultFirstName2 > 2)
+        								continue;
+        							nrMatchingFirstNames = 2;
+        						}
+        						else{
+        							if(firstName2 != null &&  firstName2Mother == null || firstName2 == null &&  firstName2Mother != null)
+        								continue;
+        							else; // both null is OK
+        						}
+
+        						// 3rd names must match if both specified
+
+        						if(firstName3 != null &&  firstName3Mother != null){
+        							compareResultFirstName3 = compareNames(firstName3, firstName3Mother);
+        							if(compareResultFirstName3 > 2)
+        								continue;
+        							nrMatchingFirstNames = 3;
+        						}
+        						
+        						foundMother = true;
+        						int shiftInMessageTableForCRegister = 0;
+								if(Ref.getAINB(getKeyToSourceRegister()).getTypeRegister().equalsIgnoreCase("C")) // C-Register
+									shiftInMessageTableForCRegister = 10;
+
+								if(!rp.getLastNameMother().equalsIgnoreCase(ps1.getFamilyName()))
+									message("" + (4432 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(),
+											rp.getLastNameMother(), ps1.getFamilyName());
+
+								if(!rp.getFirstNameMother().equalsIgnoreCase(ps1.getFirstName()))
+									message("" + (4433 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(), 
+											rp.getFirstNameMother(), ps1.getFirstName());
+
+								if(nrMatchingFirstNames == 1)
+									message("" + (4434 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(),
+											ps1.getFirstName());
+        						
+        						
+
+        					}
+
+    					}
+    				} // -
+    				
+    				// See if other persons in registration are father or mother
+    				
+    				if(!foundMother || !foundFather) {
+    					
+    					message("4150", ps.getKeyToPersons());
+    					
+    					for(PersonStandardized ps1: getPersonsStandardizedInRegistration()){  // -
+
+    						if(ps1 == ps)
+    							continue;
+
+
+
+    						if(ps1.getFamilyName() == null) continue;
+    						String lastName   = ps1.getFamilyName();
+
+    						if(ps1.getFirstName() == null) continue;
+    						String [] firstName = ps1.getFirstName().split(" ");
+
+    						int NfirstNames = firstName.length; 
+
+    						String firstName1 = firstName.length > 0 ? firstName[0] : null;
+    						String firstName2 = firstName.length > 1 ? firstName[1] : null;
+    						String firstName3 = firstName.length > 2 ? firstName[2] : null;
+
+    						int compareResultLastName = 0;
+    						int compareResultFirstName1 = 0;
+    						int compareResultFirstName2 = 0;
+    						int compareResultFirstName3 = 0;
+
+    						if(!foundFather && ps1.getSex().equalsIgnoreCase("M")){
 
     							compareResultLastName = compareNames(lastName, lastNameFather);
     							if(compareResultLastName > 2)
     								continue;
-
 
     							compareResultFirstName1 = compareNames(firstName1, firstName1Father);
     							if(compareResultFirstName1 > 2)
@@ -1366,49 +1532,40 @@ public class RegistrationStandardized {
     								nrMatchingFirstNames = 3;
     							}
 
+    							foundFather = true;
+    							
+    							message("4439", ps.getKeyToPersons());
 
-    							if(Common1.dateIsValid(ps.getDateOfBirth()) == 0 && Common1.dateIsValid(ps1.getDateOfBirth()) == 0 &&
-    									Utils.dayCount(ps.getDateOfBirth()) - Utils.dayCount(ps1.getDateOfBirth()) > 16 * 365){ // father must be at least 16 year older
+    							int shiftInMessageTableForCRegister = 0;
+    							if(Ref.getAINB(getKeyToSourceRegister()).getTypeRegister().equalsIgnoreCase("C")) // C-Register
+    								shiftInMessageTableForCRegister = 10;
 
-    								foundFather = true;
 
-    								if(ps.getPersonID_FA() != 0 && ps.getPersonID_FA() != ps1.getPersonID())
-    									message("4150", ps.getKeyToPersons());
+    							if(!rp.getLastNameFather().equalsIgnoreCase(ps1.getFamilyName()))
+    								message("" + (4435 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(), 
+    										rp.getLastNameFather(), ps1.getFamilyName());
 
-    								ps.setPersonID_FA(ps1.getPersonID());  // accept the person as father
-    								ps.setPersonID_FA_FG(41); 
+    							if(!rp.getFirstNameFather().equalsIgnoreCase(ps1.getFirstName()))
+    								message("" + (4436 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(), 
+    										rp.getFirstNameFather(), ps1.getFirstName());
 
-    								message("4439", ps.getKeyToPersons());
+    							if(nrMatchingFirstNames == 1)
+    								message("" + (4437 - shiftInMessageTableForCRegister),  ps1.getKeyToPersons(),
+    										ps1.getFirstName());
 
-    								int shiftInMessageTableForCRegister = 0;
-    								if(Ref.getAINB(getKeyToSourceRegister()).getTypeRegister().equalsIgnoreCase("C")) // C-Register
-    									shiftInMessageTableForCRegister = 10;
-    								
-    								if(!rp.getLastNameFather().equalsIgnoreCase(ps1.getFamilyName()))
-    									message("" + (4435 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(), 
-    											rp.getLastNameFather(), ps1.getFamilyName());
+    							if(!rp.getLastNameFather().equalsIgnoreCase(ps.getFamilyName()))  // OP = ps
+    								if(Ref.getAINB(getKeyToSourceRegister()).getTypeRegister().equalsIgnoreCase("C"))
+    									message("4428" , ps.getKeyToPersons(), rp.getLastNameFather(), ps.getFamilyName());
 
-    								if(!rp.getFirstNameFather().equalsIgnoreCase(ps1.getFirstName()))
-    									message("" + (4436 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(), 
-    											rp.getFirstNameFather(), ps1.getFirstName());
-    								
-    								if(nrMatchingFirstNames == 1)
-    									message("" + (4437 - shiftInMessageTableForCRegister),  ps1.getKeyToPersons(),
-    											ps1.getFirstName());
-    								
-    								if(!rp.getLastNameFather().equalsIgnoreCase(ps.getFamilyName()))  // OP = ps
-    									if(Ref.getAINB(getKeyToSourceRegister()).getTypeRegister().equalsIgnoreCase("C"))
-    										message("4428" , ps.getKeyToPersons(), rp.getLastNameFather(), ps.getFamilyName());
-    								   								
-
-    							}
-
+    							// Er moet een nieuwe melding komen voor niet-C-register situatie
 
     						}
-    					}
-    					
-    					if(!foundMother) {
-    						if(ps1.getSex().equalsIgnoreCase("V")){
+
+
+
+
+
+    						if(!foundMother && ps1.getSex().equalsIgnoreCase("V")) { 
 
     							compareResultLastName = compareNames(lastName, lastNameMother);
     							if(compareResultLastName > 2)
@@ -1445,45 +1602,36 @@ public class RegistrationStandardized {
     								nrMatchingFirstNames = 3;
     							}
 
+    							foundMother = true;
+    							
+    							message("4438", ps.getKeyToPersons());
+    							
+    							int shiftInMessageTableForCRegister = 0;
+    							if(Ref.getAINB(getKeyToSourceRegister()).getTypeRegister().equalsIgnoreCase("C")) // C-Register
+    								shiftInMessageTableForCRegister = 10;
 
-    							if(Common1.dateIsValid(ps.getDateOfBirth()) == 0 && Common1.dateIsValid(ps1.getDateOfBirth()) == 0 &&
-    									Utils.dayCount(ps.getDateOfBirth()) - Utils.dayCount(ps1.getDateOfBirth()) > 14 * 365){ // mother must be at least 14 year older
+    							if(!rp.getLastNameMother().equalsIgnoreCase(ps1.getFamilyName()))
+    								message("" + (4432 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(),
+    										rp.getLastNameMother(), ps1.getFamilyName());
 
-    								foundMother = true;
-    								
-    								if(ps.getPersonID_MO() != 0 && ps.getPersonID_MO() != ps1.getPersonID())
-    									message("4150", ps.getKeyToPersons());
+    							if(!rp.getFirstNameMother().equalsIgnoreCase(ps1.getFirstName()))
+    								message("" + (4433 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(), 
+    										rp.getFirstNameMother(), ps1.getFirstName());
 
+    							if(nrMatchingFirstNames == 1)
+    								message("" + (4434 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(),
+    										ps1.getFirstName());
 
-    								ps.setPersonID_MO(ps1.getPersonID());  // accept the person as Mother
-    								ps.setPersonID_MO_FG(41); 
-
-    								message("4438", ps.getKeyToPersons());
-    								
-    								int shiftInMessageTableForCRegister = 0;
-    								if(Ref.getAINB(getKeyToSourceRegister()).getTypeRegister().equalsIgnoreCase("C")) // C-Register
-    									shiftInMessageTableForCRegister = 10;
-
-    								if(!rp.getLastNameMother().equalsIgnoreCase(ps1.getFamilyName()))
-    									message("" + (4432 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(),
-    											rp.getLastNameMother(), ps1.getFamilyName());
-
-    								if(!rp.getFirstNameMother().equalsIgnoreCase(ps1.getFirstName()))
-    									message("" + (4433 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(), 
-    											rp.getFirstNameMother(), ps1.getFirstName());
-
-    								if(nrMatchingFirstNames == 1)
-    									message("" + (4434 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(),
-    											ps1.getFirstName());
-
-    							}
 
 
     						}
-    					}
 
+
+        				} // -
+    					
     				}
-    			}
+
+    			}	
     		}
     	}
 
