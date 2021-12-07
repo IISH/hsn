@@ -159,7 +159,7 @@ public class PersonStandardized {
 	 * @param p Person
 	 */
 	private void transformFamilyname(Person p){
-
+		
 
 		String name = p.getFamilyName().trim();
 		String prefix = null;

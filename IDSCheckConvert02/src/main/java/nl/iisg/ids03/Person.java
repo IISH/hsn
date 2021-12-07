@@ -1899,13 +1899,13 @@ public class Person {
 		String name = getFamilyName();
 		
 		int i = name.indexOf("$");  
-		if(i >= 0) name = name.substring(0, i-1);
+		if(i >= 0) name = name.substring(0, i);
 		
 		i = name.indexOf("!");  
-		if(i >= 0) name = name.substring(0, i-1);
+		if(i >= 0) name = name.substring(0, i);
 		
 		i = name.indexOf("%");  
-		if(i >= 0) name = name.substring(0, i-1);
+		if(i >= 0) name = name.substring(0, i);
 		
 		setFamilyName(name); 
 		
