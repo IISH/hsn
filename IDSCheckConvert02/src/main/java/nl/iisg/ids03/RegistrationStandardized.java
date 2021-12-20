@@ -1270,22 +1270,27 @@ public class RegistrationStandardized {
     				String       firstName1Father = null;
     				String       firstName2Father = null;
     				String       firstName3Father = null;
+    				
+    				int          firstNameFatherN = 0;
+    				
 
     				if(rp.getFirstNameFather() != null){
     					String[] a  = rp.getFirstNameFather().split(" ");
 
     					if(a.length > 0 && a[0] != null){
     						firstName1Father = a[0];
+    						firstNameFatherN++;
 
     					}
 
     					if(a.length > 1 && a[1] != null){
     						firstName2Father = a[1];
-
+    						firstNameFatherN++;
     					}
 
     					if(a.length > 2 && a[2] != null){
     						firstName3Father = a[2];
+    						firstNameFatherN++;
     					}
     				}
 
@@ -1294,6 +1299,8 @@ public class RegistrationStandardized {
     				String       firstName1Mother = null;
     				String       firstName2Mother = null;
     				String       firstName3Mother = null;
+    				
+    				int          firstNameMotherN = 0; 
 
 
     				if(rp.getFirstNameMother() != null){
@@ -1301,14 +1308,17 @@ public class RegistrationStandardized {
 
     					if(b.length > 0 && b[0] != null){
     						firstName1Mother = b[0];
+    						firstNameMotherN++;
 
     					}
     					if(b.length > 1 && b[1] != null){
     						firstName2Mother = b[1];
+    						firstNameMotherN++;
 
     					}
     					if(b.length > 2 && b[2] != null){
     						firstName3Mother = b[2];
+    						firstNameMotherN++;
     					}
     				}
 
@@ -1345,7 +1355,7 @@ public class RegistrationStandardized {
         						compareResultLastName = compareNames(lastName, lastNameFather);
         						if(compareResultLastName > 2) {
         							
-        							message("4150", ps.getKeyToPersons());
+        							message("4150", ps.getKeyToPersons(), rp.getLastNameFather(), rp.getFirstNameFather(), ps1.getFamilyName(), ps1.getFirstName());
         							continue;
         				    	}
 
@@ -1362,7 +1372,7 @@ public class RegistrationStandardized {
         							compareResultFirstName2 = compareNames(firstName2, firstName2Father);
         							if(compareResultFirstName2 > 2){
             							
-            							message("4150", ps.getKeyToPersons());
+            							message("4150", ps.getKeyToPersons(), rp.getLastNameFather(), rp.getFirstNameFather(), ps1.getFamilyName(), ps1.getFirstName());
             							continue;
             				    	}
         							nrMatchingFirstNames = 2;
@@ -1370,7 +1380,7 @@ public class RegistrationStandardized {
         						else{
     								if((firstName2 != null &&  firstName2Mother == null) || (firstName2 == null &&  firstName2Mother != null)){
             							
-            							message("4150", ps.getKeyToPersons());
+            							message("4150", ps.getKeyToPersons(), rp.getLastNameFather(), rp.getFirstNameFather(), ps1.getFamilyName(), ps1.getFirstName());
             							continue;
             				    	}
         							else; // both null is OK
@@ -1382,7 +1392,7 @@ public class RegistrationStandardized {
         							compareResultFirstName3 = compareNames(firstName3, firstName3Father);
         							if(compareResultFirstName3 > 2)	{
             							
-            							message("4150", ps.getKeyToPersons());
+            							message("4150", ps.getKeyToPersons(), rp.getLastNameFather(), rp.getFirstNameFather(), ps1.getFamilyName(), ps1.getFirstName());
             							continue;
             				    	}
         							nrMatchingFirstNames = 3;
@@ -1404,7 +1414,7 @@ public class RegistrationStandardized {
         							message("" + (4436 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(), 
         									rp.getFirstNameFather(), ps1.getFirstName());
 
-        						if(nrMatchingFirstNames == 1)
+        						if(nrMatchingFirstNames == 1  && (NfirstNames > 1 || firstNameFatherN > 1))
         							message("" + (4437 - shiftInMessageTableForCRegister),  ps1.getKeyToPersons(),
         									ps1.getFirstName());
 
@@ -1425,7 +1435,7 @@ public class RegistrationStandardized {
 
         						compareResultLastName = compareNames(lastName, lastNameMother);
         						if(compareResultLastName > 2) {
-        							message("4150", ps.getKeyToPersons());
+        							message("4149", ps.getKeyToPersons(), rp.getLastNameMother(), rp.getFirstNameMother(), ps1.getFamilyName(), ps1.getFirstName());
         							continue;
         				    	}
 
@@ -1433,20 +1443,20 @@ public class RegistrationStandardized {
         						compareResultFirstName1 = compareNames(firstName1, firstName1Mother);
         						if(compareResultFirstName1 > 2)	{
         							
-        							message("4150", ps.getKeyToPersons());
+        							message("4149", ps.getKeyToPersons(), rp.getLastNameMother(), rp.getFirstNameMother(), ps1.getFamilyName(), ps1.getFirstName());
         							continue;
         				    	}
 
         						int nrMatchingFirstNames = 1;
 
 
-        						// 2nd names must match or both not specified
+        						// 2nd names must match if both specified
 
         						if(firstName2 != null &&  firstName2Mother != null){
         							compareResultFirstName2 = compareNames(firstName2, firstName2Mother);
         							if(compareResultFirstName2 > 2)	{
             							
-            							message("4150", ps.getKeyToPersons());
+            							message("4149", ps.getKeyToPersons(), rp.getLastNameMother(), rp.getFirstNameMother(), ps1.getFamilyName(), ps1.getFirstName());
             							continue;
             				    	}
         							nrMatchingFirstNames = 2;
@@ -1454,7 +1464,7 @@ public class RegistrationStandardized {
         						else{
     								if((firstName2 != null &&  firstName2Mother == null) || (firstName2 == null &&  firstName2Mother != null)){
             							
-            							message("4150", ps.getKeyToPersons());
+            							message("4149", ps.getKeyToPersons(), rp.getLastNameMother(), rp.getFirstNameMother(), ps1.getFamilyName(), ps1.getFirstName());
             							continue;
             				    	}
         							else; // both null is OK
@@ -1466,7 +1476,7 @@ public class RegistrationStandardized {
         							compareResultFirstName3 = compareNames(firstName3, firstName3Mother);
         							if(compareResultFirstName3 > 2)	{
             							
-            							message("4150", ps.getKeyToPersons());
+            							message("4149", ps.getKeyToPersons(), rp.getLastNameMother(), rp.getFirstNameMother(), ps1.getFamilyName(), ps1.getFirstName());
             							continue;
             				    	}
         							nrMatchingFirstNames = 3;
@@ -1485,7 +1495,7 @@ public class RegistrationStandardized {
 									message("" + (4433 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(), 
 											rp.getFirstNameMother(), ps1.getFirstName());
 
-								if(nrMatchingFirstNames == 1)
+								if(nrMatchingFirstNames == 1  && (NfirstNames > 1 || firstNameMotherN > 1))
 									message("" + (4434 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(),
 											ps1.getFirstName());
         						
@@ -1578,7 +1588,7 @@ public class RegistrationStandardized {
     								message("" + (4436 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(), 
     										rp.getFirstNameFather(), ps1.getFirstName());
 
-    							if(nrMatchingFirstNames == 1)
+    							if(nrMatchingFirstNames == 1  && (NfirstNames > 1 || firstNameFatherN > 1))
     								message("" + (4437 - shiftInMessageTableForCRegister),  ps1.getKeyToPersons(),
     										ps1.getFirstName());
 
@@ -1649,7 +1659,7 @@ public class RegistrationStandardized {
     								message("" + (4433 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(), 
     										rp.getFirstNameMother(), ps1.getFirstName());
 
-    							if(nrMatchingFirstNames == 1)
+    							if(nrMatchingFirstNames == 1  && (NfirstNames > 1 || firstNameMotherN > 1))
     								message("" + (4434 - shiftInMessageTableForCRegister), ps1.getKeyToPersons(),
     										ps1.getFirstName());
 
