@@ -1251,9 +1251,11 @@ public class RegistrationStandardized {
 
     		if(ps.getNatureOfPerson() == ConstRelations2.FIRST_APPEARANCE_OF_OP){
 
+    			
     			Ref_RP rp = Ref.getRP(ps.getKeyToRP());
     			
     			if(rp != null){
+    				
     				
     				String RPBirthDay = String.format("%02d-%02d-%04d", rp.getDayOfBirthRP(), rp.getMonthOfBirthRP(), rp.getYearOfBirthRP());
     				if(!RPBirthDay.equalsIgnoreCase(ps.getDateOfBirth())) {
@@ -1328,10 +1330,12 @@ public class RegistrationStandardized {
     				
     				for(PersonStandardized ps1: getPersonsStandardizedInRegistration()){  // -
 
+    					   					
     					if(ps1 == ps)
     						continue;
     					
     					if(ps.getPersonID_FA() == ps1.getPersonID() || ps.getPersonID_MO() == ps1.getPersonID()) { // father or mother according to bevolkingsregister
+    						
     						
     						if(ps1.getFamilyName() == null) continue;
         					String lastName   = ps1.getFamilyName();
@@ -1352,6 +1356,7 @@ public class RegistrationStandardized {
     						
         					if(ps.getPersonID_FA() == ps1.getPersonID()){
 
+        						if(ps.getKeyToRP() == 200256) System.out.println("cas " + lastName + " " + lastNameFather);
         						compareResultLastName = compareNames(lastName, lastNameFather);
         						if(compareResultLastName > 2) {
         							
