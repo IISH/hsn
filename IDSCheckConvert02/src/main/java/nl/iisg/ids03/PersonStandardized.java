@@ -2943,6 +2943,8 @@ public class PersonStandardized {
 			else
 				if(pds1 != null) css = 1;
 		
+		//System.out.println("BBBNN " + getKeyToRP() + "-" + getEntryDateHead() + "-" + getKeyToSourceRegister() + "-" +  getKeyToPersons() +": "+ civilStatus.size() +  "  " + css);
+		
 		// for mutation dates with flag 41 or 42 replace month and/or day with Start month and/or day if Start year matches mutation year
 		if(pds1 != null && Common1.dateIsValid(pds1.getDateOfMutation2()) == 0 && Common1.dateIsValid(getStartDate()) == 0) {
 			if(pds1.getDateOfMutation2().substring(6,10).equals(getStartDate().substring(6,10))){
@@ -3069,7 +3071,39 @@ public class PersonStandardized {
 				pds1.setEndFlag(getEndFlag());
 				pds1.setEndEst(getEndEst());
 				
+				
+				
 			}
+			
+			// We check if this person's partner died during this registration
+			// If so, a new pds record is made with status WEDUWE/WEDUWNAAR
+			
+			if(((PDS_CivilStatus)pds1).getContentOfDynamicData() == ConstRelations2.GEHUWD){
+				if(((PDS_CivilStatus)pds1).getValueOfRelatedPerson() != 0) {
+					for(PersonStandardized p: getRegistrationStandardizedPersonAppearsIn().getPersonsStandardizedInRegistration()) {
+						if(p.getKeyToPersons() == ((PDS_CivilStatus)pds1).getValueOfRelatedPerson()) {
+							if(!p.getDateOfDecease().equals("00-00-0000")) {
+								
+								//System.out.println("XCVVV adding new pds for idnr = " + getKeyToRP());
+								pds1.setEndDate(p.getDateOfDecease()); // status 'GEHUWD' ends when partner dies
+								
+								PersonDynamicStandardized pdsnew = pds1.copyPersonDynamicStandardized();
+								((PDS_CivilStatus)pdsnew).setContentOfDynamicData(ConstRelations2.WEDUWNAAR_WEDUWE);
+								copyDatingInfo(this, pdsnew); // This sets correct end date
+								pdsnew.setDateOfMutation(Utils.dateFromDayCount(Utils.dayCount(p.getDateOfDecease()) + 1));
+								pdsnew.setStartDate(pdsnew.getDateOfMutation());
+								pdsnew.setStartFlag(32);
+								pdsnew.setStartEst(100);
+								
+								((PDS_CivilStatus)pdsnew).setCivilStatusFlag(52);
+								civilStatus.add(1, pdsnew); // add behind
+							}							
+						}
+						break;
+					}									
+				}
+			}
+			
 			break;
 			
 		case 2:
@@ -3138,6 +3172,59 @@ public class PersonStandardized {
 				}
 			}
 			
+			// We check if this person's partner died during this registration and the next record is not status WEDUWE/WEDUWNAAR
+			// If so, a new pds record is made with status WEDUWE/WEDUWNAAR
+			
+			PersonDynamicStandardized pdsnew1 = null;
+			
+			//System.out.println("AAAABB 2");
+			
+			if(((PDS_CivilStatus)pds1).getContentOfDynamicData() == ConstRelations2.GEHUWD &&
+					((PDS_CivilStatus)pds2).getContentOfDynamicData() != ConstRelations2.WEDUWNAAR_WEDUWE){
+				//System.out.println("AAAABB 3");
+				if(((PDS_CivilStatus)pds1).getValueOfRelatedPerson() != 0) {
+					//System.out.println("AAAABB 4");
+					for(PersonStandardized p: getRegistrationStandardizedPersonAppearsIn().getPersonsStandardizedInRegistration()) {
+						//System.out.println("AAAABB 5");
+						//System.out.println(p.getKeyToPersons() + " "  + ((PDS_CivilStatus)pds1).getValueOfRelatedPerson() );
+						if(p.getKeyToPersons() == ((PDS_CivilStatus)pds1).getValueOfRelatedPerson()) {
+							if(!p.getDateOfDecease().equals("00-00-0000")) {
+								
+								//System.out.println("AAAABB 1");
+								pds1.setEndDate(p.getDateOfDecease()); // status 'GEHUWD' ends when partner dies
+								
+								pdsnew1 = pds1.copyPersonDynamicStandardized();
+								((PDS_CivilStatus)pdsnew1).setContentOfDynamicData(ConstRelations2.WEDUWNAAR_WEDUWE);
+								copyDatingInfo(this, pdsnew1); 
+								
+								if(Utils.dateIsValid(pds2.getDateOfMutation2()) == 0){
+									pdsnew1.setEndDate(Utils.dateFromDayCount(Utils.dayCount(pds2.getDateOfMutation2()) - 1));
+									pdsnew1.setEndFlag(32); // date from b32_st
+									pdsnew1.setEndEst(100);				
+								}
+								
+								pdsnew1.setDateOfMutation(Utils.dateFromDayCount(Utils.dayCount(p.getDateOfDecease()) + 1));
+								pdsnew1.setStartDate(pdsnew1.getDateOfMutation());
+								pdsnew1.setStartFlag(32);
+								pdsnew1.setStartEst(100);
+								
+								((PDS_CivilStatus)pdsnew1).setCivilStatusFlag(52);
+								civilStatus.add(1, pdsnew1); // add behind 1
+								//System.out.println("XCVVV2 adding new pds for idnr = " + getKeyToRP());
+								//System.out.println(pdsnew1.getKeyToRP());
+								//System.out.println(pdsnew1.getKeyToSourceRegister());
+								//System.out.println(pdsnew1.getEntryDateHead());
+								//System.out.println(pdsnew1.getKeyToRegistrationPersons());
+								//System.out.println(pdsnew1.getKeyToDistinguishDynamicDataType());
+							}	
+							break;
+						}
+					}									
+				}
+			}
+			
+			// Second record
+			
 			if(Utils.dateIsValid(pds2.getDateOfMutation2()) == 0){
 				copyDatingInfo(this, pds2);
 				pds2.setStartDate(pds2.getDateOfMutation2());
@@ -3146,9 +3233,9 @@ public class PersonStandardized {
 			}
 			else{
 				copyDatingInfo(this, pds2);
-				pds2.setStartDate(pds2.getEndDate());
-				pds2.setStartFlag(pds2.getEndFlag());
-				pds2.setStartEst(pds2.getEndEst());
+				pds2.setStartDate(pdsnew1 != null ? pdsnew1.getEndDate() : pds1.getEndDate());
+				pds2.setStartFlag(pdsnew1 != null ? pdsnew1.getEndFlag() : pds1.getEndFlag());
+				pds2.setStartEst (pdsnew1 != null ? pdsnew1.getEndEst()  : pds1.getEndEst());
 
 				if(((PDS_CivilStatus)pds2).getContentOfDynamicData() == ConstRelations2.GEHUWD){
 					
