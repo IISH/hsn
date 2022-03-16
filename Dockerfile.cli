@@ -1,0 +1,13 @@
+FROM maven:3.8.1-openjdk-11-slim AS build
+
+COPY . /app
+WORKDIR /app
+
+RUN mvn install -DskipTests -P cli
+RUN mkdir -p Alfalab/target/dependency && (cd Alfalab/target/dependency; jar -xf ../Alfalab-1.0.jar)
+
+FROM openjdk:11-jdk-slim
+
+COPY --from=build /app/Alfalab/target/dependency/ /app
+
+ENTRYPOINT ["java", "-cp", "/app", "nl.iisg.alfalabFrontEnd.AlfalabCLI"]

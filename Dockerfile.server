@@ -1,9 +1,9 @@
-FROM openjdk:11-jdk-slim AS build
+FROM maven:3.8.1-openjdk-11-slim AS build
 
 COPY . /app
 WORKDIR /app
 
-RUN ./mvnw install -DskipTests -P server
+RUN mvn install -DskipTests -P server
 RUN mkdir -p Alfalab/target/dependency && (cd Alfalab/target/dependency; jar -xf ../Alfalab-1.0.jar)
 
 FROM openjdk:11-jdk-slim
