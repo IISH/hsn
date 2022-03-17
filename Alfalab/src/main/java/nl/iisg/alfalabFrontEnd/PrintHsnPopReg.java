@@ -44,7 +44,7 @@ public class PrintHsnPopReg implements Runnable {
     static String inputDirectory = null;
     static BiConsumer<File, String> withFile = null;
 
-    public PrintHsnPopReg(DataOutputStream out, String inputDirector) {
+    public PrintHsnPopReg(DataOutputStream out, String inputDirectory) {
         setInputDirectory(inputDirectory);
         setOut(out);
     }

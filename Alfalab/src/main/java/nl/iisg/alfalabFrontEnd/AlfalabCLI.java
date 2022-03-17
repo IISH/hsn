@@ -37,9 +37,6 @@ public class AlfalabCLI {
         if (args.length == 0)
             throw new Exception("Please specify a command!");
 
-        File f = new File(INPUT_DIRECTORY);
-        System.out.println(f.getAbsolutePath());
-
         Thread workerThread;
         DataOutputStream out = new DataOutputStream(System.out);
 
@@ -57,7 +54,7 @@ public class AlfalabCLI {
                 workerThread = new Thread(new CivilCertificatesToIDS(out));
                 break;
             case POP_REG_TEST_ERRORS:
-                workerThread = new Thread(new StandardizePopulationRegister(out, INPUT_DIRECTORY));
+                workerThread = new Thread(new StandardizePopulationRegister(out, getWorkItemOrDirectory(args)));
                 break;
             case POP_REG_TO_IDS:
                 workerThread = new Thread(new PopulationRegisterToIDS(out));
